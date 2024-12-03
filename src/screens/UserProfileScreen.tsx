@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import { useRealm } from '@/src/hooks/useRealm';
-import { User } from '@/src/models/RealmModels';
-import { Button, Input, Text, VStack, Select, SelectTrigger, SelectInput, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectItem } from '@gluestack-ui/themed';
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
+import { useRealm } from "@/src/hooks/useRealm";
+import { User } from "@/src/models/RealmModels";
+import { Button } from "@/src/components/ui/button";
+import { Input, InputField } from "@/src/components/ui/input";
+import { Text } from "@/src/components/ui/text";
+import { VStack } from "@/src/components/ui/vstack";
+import { Select, SelectTrigger, SelectInput, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectItem } from "@/src/components/ui/select";
 
 export function UserProfileScreen({ route }) {
   const realm = useRealm();
@@ -11,7 +15,7 @@ export function UserProfileScreen({ route }) {
 
   useEffect(() => {
     const fetchUser = () => {
-      const fetchedUser = realm.objectForPrimaryKey('User', new Realm.BSON.ObjectId(userId));
+      const fetchedUser = realm.objectForPrimaryKey("User", new Realm.BSON.ObjectId(userId));
       setUser(fetchedUser);
     };
 
@@ -34,24 +38,30 @@ export function UserProfileScreen({ route }) {
     <View className="flex-1 p-4">
       <VStack space="md">
         <Text className="text-xl font-bold">User Profile</Text>
-        <Input
-          placeholder="Name"
-          value={user.name}
-          onChangeText={(value) => updateUser('name', value)}
-        />
-        <Input
-          placeholder="Phone"
-          value={user.phone}
-          onChangeText={(value) => updateUser('phone', value)}
-        />
-        <Input
-          placeholder="Email"
-          value={user.email || ''}
-          onChangeText={(value) => updateUser('email', value)}
-        />
+        <Input>
+          <InputField
+            placeholder="Name"
+            value={user.name}
+            onChangeText={(value) => updateUser("name", value)}
+          />
+        </Input>
+        <Input>
+          <InputField
+            placeholder="Phone"
+            value={user.phone}
+            onChangeText={(value) => updateUser("phone", value)}
+          />
+        </Input>
+        <Input>
+          <InputField
+            placeholder="Email"
+            value={user.email || ""}
+            onChangeText={(value) => updateUser("email", value)}
+          />
+        </Input>
         <Select
           selectedValue={user.role}
-          onValueChange={(value) => updateUser('role', value)}
+          onValueChange={(value) => updateUser("role", value)}
         >
           <SelectTrigger>
             <SelectInput placeholder="Select Role" />
@@ -68,7 +78,7 @@ export function UserProfileScreen({ route }) {
           </SelectPortal>
         </Select>
         <Text>Total Ratings: {user.totalRatings || 0}</Text>
-        <Text>Average Rating: {user.averageRating?.toFixed(2) || 'N/A'}</Text>
+        <Text>Average Rating: {user.averageRating?.toFixed(2) || "N/A"}</Text>
       </VStack>
     </View>
   );

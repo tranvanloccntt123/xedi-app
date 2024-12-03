@@ -7,7 +7,7 @@ export const createBookingApi = async (booking) => {
   const newBooking = {
     ...booking,
     id: Date.now().toString(),
-    status: 'confirmed',
+    status: "confirmed",
   };
   bookings.push(newBooking);
   return newBooking;

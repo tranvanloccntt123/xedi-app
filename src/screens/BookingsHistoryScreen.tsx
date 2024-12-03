@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { Text } from '@gluestack-ui/themed';
-import { fetchBookingsRequest } from '../features/bookings/bookingsSlice';
-import { RootState } from '../store';
+import React, { useEffect } from "react";
+import { View, StyleSheet, FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { Text } from "@/src/components/ui/text";
+import { fetchBookingsRequest } from "../features/bookings/bookingsSlice";
+import { RootState } from "../store";
 
 export default function BookingsHistoryScreen() {
   const dispatch = useDispatch();
@@ -49,19 +49,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   bookingItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
   },
   error: {
-    color: 'red',
+    color: "red",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 

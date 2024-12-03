@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from 'redux-saga/effects';
+import { takeLatest, put, call } from "redux-saga/effects";
 import {
   createBookingRequest,
   createBookingSuccess,
@@ -6,8 +6,8 @@ import {
   fetchBookingsRequest,
   fetchBookingsSuccess,
   fetchBookingsFailure,
-} from './bookingsSlice';
-import { createBookingApi, fetchBookingsApi } from '../../api/bookings';
+} from "./bookingsSlice";
+import { createBookingApi, fetchBookingsApi } from "../../api/bookings";
 
 function* createBookingSaga(action: ReturnType<typeof createBookingRequest>) {
   try {

@@ -1,9 +1,24 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Button, Input, Select, Text } from '@gluestack-ui/themed';
+import { Button } from "@/src/components/ui/button";
+import { Input, InputField } from "@/src/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+  SelectItem
+} from "@/src/components/ui/select";
+import { Text } from "@/src/components/ui/text";
+import { Box } from "@/src/components/ui/box";
+import { VStack } from "@/src/components/ui/vstack";
 import { createBookingRequest } from '../features/bookings/bookingsSlice';
 import { RootState } from '../store';
 import { RouteName, RouteParamsList } from '../types/route';
@@ -32,46 +47,46 @@ export default function BookingScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Input
-        placeholder="Pickup Location"
-        value={pickup}
-        onChangeText={setPickup}
-        style={styles.input}
-      />
-      <Input
-        placeholder="Drop-off Location"
-        value={dropoff}
-        onChangeText={setDropoff}
-        style={styles.input}
-      />
-      <Select
-        selectedValue={rideType}
-        onValueChange={setRideType}
-        style={styles.input}
-      >
-        <Select.Item label="Standard" value="standard" />
-        <Select.Item label="Premium" value="premium" />
-      </Select>
-      <Button onPress={handleBooking} disabled={isLoading}>
-        <Text>{isLoading ? 'Booking...' : 'Book Ride'}</Text>
-      </Button>
-      {error && <Text style={styles.error}>{error}</Text>}
-    </View>
+    <Box className="flex-1 p-6 bg-gray-100">
+      <VStack space="md" className="bg-white p-6 rounded-lg shadow-md">
+        <Input>
+          <InputField 
+            placeholder="Pickup Location" 
+            value={pickup} 
+            onChangeText={setPickup}
+          />
+        </Input>
+        <Input>
+          <InputField 
+            placeholder="Drop-off Location" 
+            value={dropoff} 
+            onChangeText={setDropoff}
+          />
+        </Input>
+        <Select
+          selectedValue={rideType}
+          onValueChange={setRideType}
+        >
+          <SelectTrigger variant="outline" size="md" className="mb-4 p-3 border border-gray-300 rounded-md">
+            <SelectInput placeholder="Select Ride Type" />
+          </SelectTrigger>
+          <SelectPortal>
+            <SelectBackdrop />
+            <SelectContent>
+              <SelectDragIndicatorWrapper>
+                <SelectDragIndicator />
+              </SelectDragIndicatorWrapper>
+              <SelectItem label="Standard" value="standard" />
+              <SelectItem label="Premium" value="premium" />
+            </SelectContent>
+          </SelectPortal>
+        </Select>
+        <Button onPress={handleBooking} disabled={isLoading} className="bg-blue-500 py-3 rounded-md">
+          <Text className="text-white font-semibold">{isLoading ? 'Booking...' : 'Book Ride'}</Text>
+        </Button>
+        {error && <Text className="text-red-500 mt-2">{error}</Text>}
+      </VStack>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  input: {
-    marginBottom: 10,
-  },
-  error: {
-    color: 'red',
-    marginTop: 10,
-  },
-});
 

@@ -1,5 +1,6 @@
 export enum RouteName {
   Login = 'Login',
+  Register = 'Register',
   Home = 'Home',
   Booking = 'Booking',
   Confirmation = 'Confirmation',
@@ -12,7 +13,8 @@ export enum RouteName {
 
 export type RouteParamsList = {
   [RouteName.Login]: undefined;
-  [RouteName.Home]: undefined;
+  [RouteName.Register]: undefined;
+  [RouteName.Home]: { userId: string };
   [RouteName.Booking]: undefined;
   [RouteName.Confirmation]: {
     bookingId: string;

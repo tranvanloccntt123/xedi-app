@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { useRealm } from "@/src/hooks/useRealm";
-import { TripRequestForFixedRoute } from "@/src/models/RealmModels";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { useRealm } from '@/src/hooks/useRealm';
+import { TripRequestForFixedRoute } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
@@ -9,17 +9,17 @@ import { Select, SelectTrigger, SelectInput, SelectPortal, SelectBackdrop, Selec
 
 export function TripRequestForFixedRouteScreen({ route }) {
   const realm = useRealm();
-  const [requestType, setRequestType] = useState<"join" | "cancel">("join");
+  const [requestType, setRequestType] = useState<'join' | 'cancel'>('join');
   const { fixedRouteId, customerId } = route.params;
 
   const submitTripRequestForFixedRoute = () => {
     realm.write(() => {
-      realm.create("TripRequestForFixedRoute", {
+      realm.create('TripRequestForFixedRoute', {
         _id: new Realm.BSON.ObjectId(),
         fixedRouteId: new Realm.BSON.ObjectId(fixedRouteId),
         customerId: new Realm.BSON.ObjectId(customerId),
         requestType,
-        status: "pending",
+        status: 'pending',
         requestTime: new Date(),
         updatedAt: new Date(),
       });
@@ -33,7 +33,7 @@ export function TripRequestForFixedRouteScreen({ route }) {
         <Text className="text-xl font-bold">Request for Fixed Route</Text>
         <Select
           selectedValue={requestType}
-          onValueChange={(value) => setRequestType(value as "join" | "cancel")}
+          onValueChange={(value) => setRequestType(value as 'join' | 'cancel')}
         >
           <SelectTrigger>
             <SelectInput placeholder="Select Request Type" />

@@ -1,14 +1,14 @@
 export enum RouteName {
-  Login = "Login",
-  Register = "Register",
-  Home = "Home",
-  Booking = "Booking",
-  Confirmation = "Confirmation",
-  BookingsHistory = "BookingsHistory",
-  TripRequest = "TripRequest",
-  TripRequestForFixedRoute = "TripRequestForFixedRoute",
-  UserProfile = "UserProfile",
-  VehicleRegistration = "VehicleRegistration",
+  Login = 'Login',
+  Register = 'Register',
+  Home = 'Home',
+  Booking = 'Booking',
+  Confirmation = 'Confirmation',
+  BookingsHistory = 'BookingsHistory',
+  TripRequest = 'TripRequest',
+  TripRequestForFixedRoute = 'TripRequestForFixedRoute',
+  UserProfile = 'UserProfile',
+  VehicleRegistration = 'VehicleRegistration',
 }
 
 export type RouteParamsList = {

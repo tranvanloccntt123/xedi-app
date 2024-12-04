@@ -1,10 +1,10 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import { Text } from "@/src/components/ui/text";
 import { Box } from "@/src/components/ui/box";
-import { RootState } from "../store";
-import { RouteName, RouteParamsList } from "../types/route";
+import { RootState } from '../store';
+import { RouteName, RouteParamsList } from '../types/route';
 
 type ConfirmationScreenRouteProp = RouteProp<RouteParamsList, RouteName.Confirmation>;
 

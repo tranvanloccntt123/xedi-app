@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface Booking {
   id: string;
@@ -6,7 +6,7 @@ interface Booking {
   pickup: string;
   dropoff: string;
   rideType: string;
-  status: "pending" | "confirmed" | "completed" | "cancelled";
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
 }
 
 interface BookingsState {
@@ -22,10 +22,10 @@ const initialState: BookingsState = {
 };
 
 const bookingsSlice = createSlice({
-  name: "bookings",
+  name: 'bookings',
   initialState,
   reducers: {
-    createBookingRequest: (state, action: PayloadAction<Omit<Booking, "id" | "status">>) => {
+    createBookingRequest: (state, action: PayloadAction<Omit<Booking, 'id' | 'status'>>) => {
       state.isLoading = true;
       state.error = null;
     },

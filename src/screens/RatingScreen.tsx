@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View, TextInput } from "react-native";
-import { useRealm } from "@/src/hooks/useRealm";
-import { Rating } from "@/src/models/RealmModels";
+import React, { useState } from 'react';
+import { View, TextInput } from 'react-native';
+import { useRealm } from '@/src/hooks/useRealm';
+import { Rating } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
@@ -10,13 +10,13 @@ import { HStack } from "@/src/components/ui/hstack";
 export function RatingScreen({ route }) {
   const realm = useRealm();
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
 
   const { tripId, driverId, customerId } = route.params;
 
   const submitRating = () => {
     realm.write(() => {
-      realm.create("Rating", {
+      realm.create('Rating', {
         _id: new Realm.BSON.ObjectId(),
         driverId: new Realm.BSON.ObjectId(driverId),
         customerId: new Realm.BSON.ObjectId(customerId),
@@ -38,7 +38,7 @@ export function RatingScreen({ route }) {
             <Button
               key={star}
               onPress={() => setRating(star)}
-              variant={rating >= star ? "solid" : "outline"}
+              variant={rating >= star ? 'solid' : 'outline'}
             >
               <Text>{star}</Text>
             </Button>

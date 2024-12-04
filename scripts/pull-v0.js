@@ -19,6 +19,7 @@ async function replaceQuotesInFile(filePath) {
     let content = await fs.readFileSync(filePath, "utf8");
     const originalContent = content;
     content = content.replace(/'\"/g, "'");
+    content = content.replace(/\"'/g, "'");
 
     if (content !== originalContent) {
       await fs.writeFileSync(filePath, content, "utf8");

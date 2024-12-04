@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "xedi",
-    "slug": "xedi",
+    "name": "xedi-app",
+    "slug": "xedi-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,14 +10,14 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.xedi"
+      "bundleIdentifier": "com.teiresource.xediapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.xedi"
+      "package": "com.teiresource.xediapp"
     },
     "web": {
       "bundler": "metro",

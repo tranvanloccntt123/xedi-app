@@ -1,26 +1,10 @@
 {
-  "components": {
-    "Button": {
-      "theme": {
-        "borderRadius": "md",
-        "backgroundColor": {
-          "base": "$primary500",
-          "hover": "$primary600"
-        }
-      }
-    },
-    "Input": {
-      "theme": {
-        "borderRadius": "md",
-        "borderWidth": 1
-      }
-    }
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "global.css"
   },
-  "tokens": {
-    "colors": {
-      "primary500": "#007AFF",
-      "primary600": "#0060CB"
-    }
+  "app": {
+    "entry": "index.ts",
+    "components": "src/components/ui"
   }
 }
-

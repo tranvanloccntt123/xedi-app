@@ -31,9 +31,17 @@ export default function App() {
             <PersistGate loading={null} persistor={persistor}>
               <NavigationContainer>
                 <Stack.Navigator initialRouteName={RouteName.Login}>
-                  <Stack.Screen name={RouteName.Login} component={LoginScreen} />
+                  <Stack.Screen 
+                    name={RouteName.Login} 
+                    component={LoginScreen} 
+                    options={{ headerShown: false }}
+                  />
                   <Stack.Screen name={RouteName.Register} component={RegisterScreen} />
-                  <Stack.Screen name={RouteName.Home} component={HomeScreen} />
+                  <Stack.Screen 
+                    name={RouteName.Home} 
+                    component={HomeScreen}
+                    options={{ headerShown: false }}
+                  />
                   <Stack.Screen name={RouteName.Booking} component={BookingScreen} />
                   <Stack.Screen name={RouteName.Confirmation} component={ConfirmationScreen} />
                   <Stack.Screen name={RouteName.BookingsHistory} component={BookingsHistoryScreen} />

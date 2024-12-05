@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { useRealm } from "@/src/hooks/useRealm";
-import { TripRequest } from "@/src/models/RealmModels";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { useRealm } from '@/src/hooks/useRealm';
+import { TripRequest } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Input, InputField } from "@/src/components/ui/input";
 import { Text } from "@/src/components/ui/text";
@@ -17,23 +17,23 @@ import {
   SelectDragIndicatorWrapper,
   SelectDragIndicator,
   SelectItem
-} from "@/src/components/ui/select";
+} from '@/src/components/ui/select';
 
 export function TripRequestScreen() {
   const realm = useRealm();
-  const [startLocation, setStartLocation] = useState("");
-  const [endLocation, setEndLocation] = useState("");
+  const [startLocation, setStartLocation] = useState('');
+  const [endLocation, setEndLocation] = useState('');
   const [departureTime, setDepartureTime] = useState(new Date());
 
   const submitTripRequest = () => {
     realm.write(() => {
-      realm.create("TripRequest", {
+      realm.create('TripRequest', {
         _id: new Realm.BSON.ObjectId(),
         customerId: new Realm.BSON.ObjectId(), // This should be the actual logged-in user's ID
         startLocation,
         endLocation,
         departureTime,
-        status: "pending",
+        status: 'pending',
         requestTime: new Date(),
         updatedAt: new Date(),
       });

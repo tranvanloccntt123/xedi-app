@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { useRealm } from "@/src/hooks/useRealm";
-import { Vehicle } from "@/src/models/RealmModels";
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { useRealm } from '@/src/hooks/useRealm';
+import { Vehicle } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Input, InputField } from "@/src/components/ui/input";
 import { Text } from "@/src/components/ui/text";
@@ -9,15 +9,15 @@ import { VStack } from "@/src/components/ui/vstack";
 
 export function VehicleRegistrationScreen({ route }) {
   const realm = useRealm();
-  const [licensePlate, setLicensePlate] = useState("");
-  const [model, setModel] = useState("");
-  const [color, setColor] = useState("");
-  const [capacity, setCapacity] = useState("");
+  const [licensePlate, setLicensePlate] = useState('');
+  const [model, setModel] = useState('');
+  const [color, setColor] = useState('');
+  const [capacity, setCapacity] = useState('');
   const { driverId } = route.params;
 
   const registerVehicle = () => {
     realm.write(() => {
-      realm.create("Vehicle", {
+      realm.create('Vehicle', {
         _id: new Realm.BSON.ObjectId(),
         driverId: new Realm.BSON.ObjectId(driverId),
         licensePlate,

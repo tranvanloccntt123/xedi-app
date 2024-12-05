@@ -45,7 +45,7 @@ export function RatingScreen({ route }) {
           ))}
         </HStack>
         <TextInput
-          className="border p-2 rounded"
+          className="p-2 rounded"
           placeholder="Leave a comment (optional)"
           value={comment}
           onChangeText={setComment}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "@/src/components/ui/button";
@@ -9,8 +10,13 @@ import { Box } from "@/src/components/ui/box";
 import { useRealm, useQuery } from "@/src/hooks/useRealm";
 import { User } from "@/src/models/RealmModels";
 import { RouteName, RouteParamsList } from "@/src/types/route";
+import { scale } from "react-native-size-matters";
+import AppStyles from "@/src/themes/styles";
 
-type LoginScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.Login>;
+type LoginScreenNavigationProp = StackNavigationProp<
+  RouteParamsList,
+  RouteName.Login
+>;
 
 export default function LoginScreen() {
   const [phone, setPhone] = useState("");
@@ -21,7 +27,8 @@ export default function LoginScreen() {
   const users = useQuery<User>("User");
 
   const validateVietnamesePhoneNumber = (phoneNumber: string) => {
-    const phoneRegex = /^(0|\+84)(\s?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])(\d)(\s?\d{3})(\s?\d{3})$/;
+    const phoneRegex =
+      /^(0|\+84)(\s?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])(\d)(\s?\d{3})(\s?\d{3})$/;
     return phoneRegex.test(phoneNumber);
   };
 
@@ -45,7 +52,6 @@ export default function LoginScreen() {
     const user = users.filtered("phone = $0", phone)[0];
 
     if (user && user.password === password) {
-      // In a real app, you should use proper password hashing and verification
       navigation.navigate(RouteName.Home, { userId: user._id.toHexString() });
     } else {
       setError("Invalid phone number or password");
@@ -53,34 +59,50 @@ export default function LoginScreen() {
   };
 
   return (
-    <Box className="flex-1 justify-center p-6 bg-gray-100">
-      <VStack space="md" className="bg-white p-8 rounded-lg shadow-md">
-        <Text className="text-3xl font-bold mb-6 text-blue-600">Login</Text>
-        <Input>
-          <InputField 
-            placeholder="Phone Number" 
-            value={phone} 
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-        </Input>
-        <Input>
-          <InputField 
-            placeholder="Password" 
-            value={password} 
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </Input>
-        <Button onPress={handleLogin} className="w-full bg-blue-500 py-3 rounded-md">
-          <Text className="text-white font-semibold">Login</Text>
-        </Button>
-        {error ? <Text className="text-red-500 mt-2">{error}</Text> : null}
-        <Button variant="outline" onPress={() => navigation.navigate(RouteName.Register)} className="w-full mt-4 border border-neutral-200 border-blue-500 py-3 rounded-md dark:border-neutral-800">
-          <Text className="text-blue-500">Don't have an account? Register</Text>
-        </Button>
-      </VStack>
-    </Box>
+    <View className="flex-1 justify-center items-center bg-gray-100 p-6">
+      <Box className="w-full bg-white rounded-lg shadow-md p-8">
+        <VStack space="md">
+          <Text className="text-2xl font-bold mb-6 text-center text-gray-800">
+            Login
+          </Text>
+          <Input style={AppStyles.input}>
+            <InputField
+              placeholder="Phone Number"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              className="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </Input>
+          <Input style={AppStyles.input}>
+            <InputField
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              className="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </Input>
+          <Button
+            onPress={handleLogin}
+            className="bg-blue-500 hover:bg-blue-700 rounded"
+          >
+            <Text className="text-white font-bold px-4">Login</Text>
+          </Button>
+          {error ? (
+            <Text className="text-red-500 text-center mt-2">{error}</Text>
+          ) : null}
+          <Button
+            variant="outline"
+            onPress={() => navigation.navigate(RouteName.Register)}
+            className="mt-4 border-blue-500 rounded"
+          >
+            <Text className="text-blue-500 px-4">
+              Don't have an account? Register
+            </Text>
+          </Button>
+        </VStack>
+      </Box>
+    </View>
   );
 }
-

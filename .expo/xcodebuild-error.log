@@ -1,0 +1,1 @@
+AssertMacros: amdErr = AMDeviceConnect(tmpDevice) == 0 ,  file: /AppleInternal/Library/BuildRoots/a4863622-4599-11ef-9474-e2437461156c/Library/Caches/com.apple.xbs/Sources/MobileDevice/Source/AMDevicePowerAssertion.c, line: 224, value: -402653180

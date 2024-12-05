@@ -8,7 +8,6 @@ import {
   Select,
   SelectTrigger,
   SelectInput,
-  SelectIcon,
   SelectPortal,
   SelectBackdrop,
   SelectContent,
@@ -67,7 +66,7 @@ export default function BookingScreen() {
           selectedValue={rideType}
           onValueChange={setRideType}
         >
-          <SelectTrigger variant="outline" size="md" className="mb-4 p-3 border border-gray-300 rounded-md">
+          <SelectTrigger variant="outline" size="md" className="mb-4 p-3 border-gray-300 rounded-md">
             <SelectInput placeholder="Select Ride Type" />
           </SelectTrigger>
           <SelectPortal>
@@ -81,7 +80,7 @@ export default function BookingScreen() {
             </SelectContent>
           </SelectPortal>
         </Select>
-        <Button onPress={handleBooking} disabled={isLoading} className="bg-blue-500 py-3 rounded-md">
+        <Button onPress={handleBooking} disabled={isLoading} className="bg-blue-500 rounded-md">
           <Text className="text-white font-semibold">{isLoading ? 'Booking...' : 'Book Ride'}</Text>
         </Button>
         {error && <Text className="text-red-500 mt-2">{error}</Text>}

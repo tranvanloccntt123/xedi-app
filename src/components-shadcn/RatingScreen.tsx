@@ -1,24 +1,22 @@
-import React, { useState } from "react";
-import { View, TextInput } from "react-native";
-import { useRealm } from "@/src/hooks/useRealm";
-import { Rating } from "@/src/models/RealmModels";
+import React, { useState } from 'react';
+import { View, TextInput } from 'react-native';
+import { useRealm } from '@/src/hooks/useRealm';
+import { Rating } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
-import { useRoute } from "@react-navigation/native";
 
-export function RatingScreen() {
-  const route = useRoute<any>();
+export function RatingScreen({ route }) {
   const realm = useRealm();
   const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
 
   const { tripId, driverId, customerId } = route.params;
 
   const submitRating = () => {
     realm.write(() => {
-      realm.create("Rating", {
+      realm.create('Rating', {
         _id: new Realm.BSON.ObjectId(),
         driverId: new Realm.BSON.ObjectId(driverId),
         customerId: new Realm.BSON.ObjectId(customerId),
@@ -35,12 +33,12 @@ export function RatingScreen() {
     <View className="flex-1 p-4">
       <VStack space="md">
         <Text className="text-xl font-bold">Rate Your Trip</Text>
-        <HStack space="sm" className="justify-center">
+        <HStack space="sm" justifyContent="center">
           {[1, 2, 3, 4, 5].map((star) => (
             <Button
               key={star}
               onPress={() => setRating(star)}
-              variant={rating >= star ? "solid" : "outline"}
+              variant={rating >= star ? 'solid' : 'outline'}
             >
               <Text>{star}</Text>
             </Button>
@@ -60,3 +58,4 @@ export function RatingScreen() {
     </View>
   );
 }
+

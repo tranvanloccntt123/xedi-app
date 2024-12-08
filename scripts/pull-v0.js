@@ -84,57 +84,66 @@ console.log(`Starting to process files in: ${rootDirectory}`);
 console.log(`Ignoring paths: ${ignorePaths.join(", ")}`);
 
 //move to correct folder
+const appStruct = require("../app.struct");
 
-const componentsFolder = `${rootDirectory}/src/components`;
+async function moveFiles() {
+  try {
+    // Đọc danh sách các file trong thư mục component-shadcn
+    const files = await fs.readdirSync(
+      `${rootDirectory}/src/components-shadcn`
+    );
 
-const screensFolder = `${rootDirectory}/src/screens`;
+    for (const [key, destPath] of Object.entries(appStruct)) {
+      const fileName = path.basename(destPath);
 
-const screenFunctionRegex = /function\s+(\w+Screen)\s*\(/;
+      // Tìm file trong component-shadcn có tên trùng với file được config
+      const sourceFile = files.find(
+        (file) => path.parse(file).name === path.parse(fileName).name
+      );
 
-const screenRegex = /function\s+(\w+Screen)\s*\(/;
+      if (sourceFile) {
+        const sourcePath = path.join(
+          `${rootDirectory}/src/components-shadcn`,
+          sourceFile
+        );
 
-function extractScreenName(content) {
-  const match = content.match(screenRegex);
+        const actualPath = path.join(rootDirectory, destPath);
 
-  if (match) {
-    return match[1];
-  } else {
-    return null;
+        // Tạo thư mục đích nếu nó chưa tồn tại
+        await fs.mkdirSync(path.dirname(actualPath), { recursive: true });
+
+        // Di chuyển file
+        await fs.renameSync(sourcePath, actualPath);
+        console.log(`Đã di chuyển ${sourcePath} đến ${actualPath}`);
+      }
+    }
+
+    console.log("Hoàn thành việc di chuyển các file.");
+  } catch (error) {
+    console.error("Đã xảy ra lỗi:", error);
+  } finally {
+    await fs.unlinkSync(`${rootDirectory}/src/components-shadcn`);
   }
 }
 
-async function readFilesFromList(listFilePath) {
-  try {
-    // Read the list of files
-    const entries = await fs.readdirSync(listFilePath, { withFileTypes: true });
-
-    // Read each file in the list
-    for (const entry of entries) {
-      try {
-        const fullPath = path.join(listFilePath, entry.name);
-        if (entry.isFile()) {
-          const content = await fs.readFileSync(fullPath, "utf8");
-          const isScreen = screenFunctionRegex.test(content || "");
-          const screenName = extractScreenName(content);
-          if (isScreen && screenName) {
-            const rootScreenPath = `${screensFolder}/${screenName}.tsx`;
-            await fs.writeFileSync(rootScreenPath, content, "utf8");
-            await fs.unlinkSync(fullPath);
-          }
-        }
-      } catch (err) {
-        console.error(`Error reading file ${entry.name}`, err);
-      }
-    }
-  } catch (err) {
-    console.error(`Error reading file list: ${err.message}`);
+async function manualMoveTypeFile() {
+  const wrongPath = path.join(rootDirectory, 'src/src/types');
+  const wrongFiles = await fs.readdirSync(wrongPath);
+  for (const file of wrongFiles) {
+    const filePath = path.join(wrongPath, file);
+    const actualPath = path.join(rootDirectory, 'src/types', file);
+    await fs.mkdirSync(path.dirname(actualPath), { recursive: true });
+    await fs.renameSync(filePath, actualPath);
   }
+  await fs.unlinkSync(wrongPath);
 }
 
 const run = async () => {
   try {
     await processDirectory(rootDirectory);
-    await readFilesFromList(componentsFolder);
+    // await readFilesFromList(componentsFolder);
+    await moveFiles();
+    await manualMoveTypeFile();
   } catch (e) {}
 };
 

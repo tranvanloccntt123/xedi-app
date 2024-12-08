@@ -11,9 +11,9 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/src/components",
-    "utils": "@/lib/utils",
-    "ui": "@/src/components/ui",
+    "components": "@/src/components-shadcn",
+    "utils": "@/src/utils",
+    "ui": "@/src/ui",
     "lib": "@/lib",
     "hooks": "@/src/hooks",
     "screens": "@/src/screens"

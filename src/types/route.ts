@@ -1,6 +1,7 @@
 export enum RouteName {
   Login = 'Login',
   Register = 'Register',
+  MainTab = 'MainTab',
   Home = 'Home',
   Booking = 'Booking',
   Confirmation = 'Confirmation',
@@ -9,12 +10,14 @@ export enum RouteName {
   TripRequestForFixedRoute = 'TripRequestForFixedRoute',
   UserProfile = 'UserProfile',
   VehicleRegistration = 'VehicleRegistration',
+  Settings = 'Settings',
 }
 
 export type RouteParamsList = {
   [RouteName.Login]: undefined;
   [RouteName.Register]: undefined;
-  [RouteName.Home]: { userId: string };
+  [RouteName.MainTab]: undefined;
+  [RouteName.Home]: undefined;
   [RouteName.Booking]: undefined;
   [RouteName.Confirmation]: {
     bookingId: string;
@@ -31,5 +34,6 @@ export type RouteParamsList = {
   [RouteName.VehicleRegistration]: {
     driverId: string;
   };
+  [RouteName.Settings]: undefined;
 };
 

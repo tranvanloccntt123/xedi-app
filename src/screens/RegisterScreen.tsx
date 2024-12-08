@@ -22,6 +22,7 @@ import { User } from '@/src/models/RealmModels';
 import Realm from 'realm';
 import { RouteName, RouteParamsList } from '@/src/types/route';
 import AppStyles from "@/src/themes/styles";
+import { validateName, validateVietnamesePhoneNumber, validatePassword, PHONE_NUMBER_EXAMPLES } from "@/src/utils/validation";
 
 type RegisterScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.Register>;
 
@@ -36,8 +37,19 @@ export default function RegisterScreen() {
 
   const handleRegister = () => {
     setError('');
-    if (!name || !phone || !password) {
-      setError('All fields are required');
+
+    if (!validateName(name)) {
+      setError('Name must be between 2 and 50 characters');
+      return;
+    }
+
+    if (!validateVietnamesePhoneNumber(phone)) {
+      setError('Invalid phone number format');
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError('Password must be 8-20 characters long and contain no spaces');
       return;
     }
 
@@ -79,6 +91,9 @@ export default function RegisterScreen() {
             keyboardType="phone-pad"
           />
         </Input>
+        <Text className="text-xs text-gray-500 mt-1 mb-2">
+          Example formats: {PHONE_NUMBER_EXAMPLES.join(", ")}
+        </Text>
         <Input style={AppStyles.input}>
           <InputField 
             placeholder="Password" 

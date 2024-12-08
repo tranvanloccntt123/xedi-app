@@ -8,12 +8,11 @@ import { GluestackUIProvider } from "@/src/components/ui/gluestack-ui-provider";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RealmContext } from '@/src/contexts/RealmContext';
 import { store, persistor } from '@/src/store';
-import HomeScreen from '@/src/screens/HomeScreen';
+import { MainTab } from '@/src/navigation/MainTab';
 import LoginScreen from '@/src/screens/LoginScreen';
 import RegisterScreen from '@/src/screens/RegisterScreen';
 import BookingScreen from '@/src/screens/BookingScreen';
 import ConfirmationScreen from '@/src/screens/ConfirmationScreen';
-import BookingsHistoryScreen from '@/src/screens/BookingsHistoryScreen';
 import { TripRequestScreen } from '@/src/screens/TripRequestScreen';
 import { TripRequestForFixedRouteScreen } from '@/src/screens/TripRequestForFixedRouteScreen';
 import { UserProfileScreen } from '@/src/screens/UserProfileScreen';
@@ -38,13 +37,12 @@ export default function App() {
                   />
                   <Stack.Screen name={RouteName.Register} component={RegisterScreen} />
                   <Stack.Screen 
-                    name={RouteName.Home} 
-                    component={HomeScreen}
+                    name={RouteName.MainTab} 
+                    component={MainTab}
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen name={RouteName.Booking} component={BookingScreen} />
                   <Stack.Screen name={RouteName.Confirmation} component={ConfirmationScreen} />
-                  <Stack.Screen name={RouteName.BookingsHistory} component={BookingsHistoryScreen} />
                   <Stack.Screen name={RouteName.TripRequest} component={TripRequestScreen} />
                   <Stack.Screen name={RouteName.TripRequestForFixedRoute} component={TripRequestForFixedRouteScreen} />
                   <Stack.Screen name={RouteName.UserProfile} component={UserProfileScreen} />

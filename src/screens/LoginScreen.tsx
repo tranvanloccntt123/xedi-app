@@ -10,8 +10,8 @@ import { Box } from "@/src/components/ui/box";
 import { useRealm, useQuery } from "@/src/hooks/useRealm";
 import { User } from "@/src/models/RealmModels";
 import { RouteName, RouteParamsList } from "@/src/types/route";
-import { scale } from "react-native-size-matters";
 import AppStyles from "@/src/themes/styles";
+import { validateVietnamesePhoneNumber, validatePassword, PHONE_NUMBER_EXAMPLES } from "@/src/utils/validation";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -25,16 +25,6 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const realm = useRealm();
   const users = useQuery<User>("User");
-
-  const validateVietnamesePhoneNumber = (phoneNumber: string) => {
-    const phoneRegex =
-      /^(0|\+84)(\s?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])(\d)(\s?\d{3})(\s?\d{3})$/;
-    return phoneRegex.test(phoneNumber);
-  };
-
-  const validatePassword = (pass: string) => {
-    return pass.length >= 8 && pass.length <= 20 && !/\s/.test(pass);
-  };
 
   const handleLogin = () => {
     setError("");
@@ -52,7 +42,9 @@ export default function LoginScreen() {
     const user = users.filtered("phone = $0", phone)[0];
 
     if (user && user.password === password) {
-      navigation.navigate(RouteName.Home, { userId: user._id.toHexString() });
+      // In a real-world scenario, you should use a secure password hashing method
+      // and compare hashed passwords instead of plain text
+      navigation.navigate(RouteName.MainTab);
     } else {
       setError("Invalid phone number or password");
     }
@@ -74,6 +66,9 @@ export default function LoginScreen() {
               className="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
           </Input>
+          <Text className="text-xs text-gray-500 mt-1">
+            Example formats: {PHONE_NUMBER_EXAMPLES.join(", ")}
+          </Text>
           <Input style={AppStyles.input}>
             <InputField
               placeholder="Password"
@@ -106,3 +101,4 @@ export default function LoginScreen() {
     </View>
   );
 }
+

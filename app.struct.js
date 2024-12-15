@@ -14,6 +14,9 @@ module.exports = {
   screenTripRequestForFixedRoute: 'src/screens/TripRequestForFixedRouteScreen.tsx',
   screenUserProfile: 'src/screens/UserProfileScreen.tsx',
   screenVehicleRegistration: 'src/screens/VehicleRegistrationScreen.tsx',
+  screenRoleSelection: 'src/screens/RoleSelectionScreen.tsx',
+  screenCreateFixedRoute: 'src/screens/CreateFixedRouteScreen.tsx',
+  screenTripRequestDetails: 'src/screens/TripRequestDetailsScreen.tsx',
 
   // Store
   storeIndex: 'src/store/index.ts',

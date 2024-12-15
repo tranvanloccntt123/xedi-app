@@ -7,9 +7,15 @@ interface AuthState {
 }
 
 interface User {
-  id: string;
-  email: string;
+  _id: string;
   name: string;
+  phone: string;
+  email?: string;
+  role: 'customer' | 'driver';
+  vehicleId?: string;
+  totalRatings?: number;
+  averageRating?: number;
+  createdAt: Date;
 }
 
 const initialState: AuthState = {

@@ -119,23 +119,26 @@ async function moveFiles() {
     }
 
     console.log("Hoàn thành việc di chuyển các file.");
+    // await fs.unlinkSync(`${rootDirectory}/src/components-shadcn`);
   } catch (error) {
     console.error("Đã xảy ra lỗi:", error);
-  } finally {
-    await fs.unlinkSync(`${rootDirectory}/src/components-shadcn`);
   }
 }
 
 async function manualMoveTypeFile() {
-  const wrongPath = path.join(rootDirectory, 'src/src/types');
-  const wrongFiles = await fs.readdirSync(wrongPath);
-  for (const file of wrongFiles) {
-    const filePath = path.join(wrongPath, file);
-    const actualPath = path.join(rootDirectory, 'src/types', file);
-    await fs.mkdirSync(path.dirname(actualPath), { recursive: true });
-    await fs.renameSync(filePath, actualPath);
+  try {
+    const wrongPath = path.join(rootDirectory, 'src/src/types');
+    const wrongFiles = await fs.readdirSync(wrongPath);
+    for (const file of wrongFiles) {
+      const filePath = path.join(wrongPath, file);
+      const actualPath = path.join(rootDirectory, 'src/types', file);
+      await fs.mkdirSync(path.dirname(actualPath), { recursive: true });
+      await fs.renameSync(filePath, actualPath);
+    }
+    // await fs.unlinkSync(wrongPath);
+  } catch (e) {
+    console.error("Đã xảy ra lỗi:", error);
   }
-  await fs.unlinkSync(wrongPath);
 }
 
 const run = async () => {

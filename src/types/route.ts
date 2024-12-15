@@ -1,6 +1,7 @@
 export enum RouteName {
   Login = 'Login',
   Register = 'Register',
+  RoleSelection = 'RoleSelection',
   MainTab = 'MainTab',
   Home = 'Home',
   Booking = 'Booking',
@@ -11,11 +12,16 @@ export enum RouteName {
   UserProfile = 'UserProfile',
   VehicleRegistration = 'VehicleRegistration',
   Settings = 'Settings',
+  CreateFixedRoute = 'CreateFixedRoute',
+  TripRequestDetails = 'TripRequestDetails',
 }
 
 export type RouteParamsList = {
   [RouteName.Login]: undefined;
-  [RouteName.Register]: undefined;
+  [RouteName.Register]: {
+    role: "customer" | "driver";
+  };
+  [RouteName.RoleSelection]: undefined;
   [RouteName.MainTab]: undefined;
   [RouteName.Home]: undefined;
   [RouteName.Booking]: undefined;
@@ -35,5 +41,9 @@ export type RouteParamsList = {
     driverId: string;
   };
   [RouteName.Settings]: undefined;
+  [RouteName.CreateFixedRoute]: undefined;
+  [RouteName.TripRequestDetails]: {
+    requestId: string;
+  };
 };
 

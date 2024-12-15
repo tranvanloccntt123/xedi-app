@@ -18,23 +18,54 @@ import { TripRequestForFixedRouteScreen } from '@/src/screens/TripRequestForFixe
 import { UserProfileScreen } from '@/src/screens/UserProfileScreen';
 import { VehicleRegistrationScreen } from '@/src/screens/VehicleRegistrationScreen';
 import { RouteName, RouteParamsList } from '@/src/types/route';
+import { StatusBar } from 'react-native';
+import RoleSelectionScreen from '@/src/screens/RoleSelectionScreen';
+import CreateFixedRouteScreen from '@/src/screens/CreateFixedRouteScreen';
+import { LinkingOptions } from '@react-navigation/native';
 
 const Stack = createStackNavigator<RouteParamsList>();
+
+const linking: LinkingOptions<RouteParamsList> = {
+  prefixes: ['xediapp://', 'https://xediapp.com'],
+  config: {
+    screens: {
+      [RouteName.Login]: 'login',
+      [RouteName.Register]: 'register',
+      [RouteName.MainTab]: {
+        screens: {
+          [RouteName.Home]: 'home',
+          [RouteName.BookingsHistory]: 'bookings-history',
+          [RouteName.Settings]: 'settings',
+        },
+      },
+      [RouteName.Booking]: 'booking',
+      [RouteName.Confirmation]: 'confirmation/:bookingId',
+      [RouteName.TripRequest]: 'trip-request',
+      [RouteName.TripRequestForFixedRoute]: 'trip-request-fixed-route/:fixedRouteId/:customerId',
+      [RouteName.UserProfile]: 'user-profile/:userId',
+      [RouteName.VehicleRegistration]: 'vehicle-registration/:driverId',
+      [RouteName.CreateFixedRoute]: 'create-fixed-route',
+      [RouteName.TripRequestDetails]: 'trip-request-details/:requestId',
+    },
+  },
+};
 
 export default function App() {
   return (
     <RealmContext.RealmProvider>
+      <StatusBar barStyle="dark-content" />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GluestackUIProvider>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <NavigationContainer>
+              <NavigationContainer linking={linking}>
                 <Stack.Navigator initialRouteName={RouteName.Login}>
                   <Stack.Screen 
                     name={RouteName.Login} 
                     component={LoginScreen} 
                     options={{ headerShown: false }}
                   />
+                  <Stack.Screen name={RouteName.RoleSelection} component={RoleSelectionScreen} options={{ headerShown: false }} />
                   <Stack.Screen name={RouteName.Register} component={RegisterScreen} />
                   <Stack.Screen 
                     name={RouteName.MainTab} 
@@ -47,6 +78,7 @@ export default function App() {
                   <Stack.Screen name={RouteName.TripRequestForFixedRoute} component={TripRequestForFixedRouteScreen} />
                   <Stack.Screen name={RouteName.UserProfile} component={UserProfileScreen} />
                   <Stack.Screen name={RouteName.VehicleRegistration} component={VehicleRegistrationScreen} />
+                  <Stack.Screen name={RouteName.CreateFixedRoute} component={CreateFixedRouteScreen} />
                 </Stack.Navigator>
               </NavigationContainer>
             </PersistGate>

@@ -1,91 +1,90 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useRealm } from '@/src/hooks/useRealm';
 import { TripRequest } from '@/src/models/RealmModels';
 import { Button } from "@/src/components/ui/button";
 import { Input, InputField } from "@/src/components/ui/input";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
-import {
-  Select,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectPortal,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
-  SelectItem
-} from '@/src/components/ui/select';
+import { Box } from "@/src/components/ui/box";
+import { Select, SelectTrigger, SelectInput, SelectPortal, SelectBackdrop, SelectContent, SelectDragIndicatorWrapper, SelectDragIndicator, SelectItem } from '@/src/components/ui/select';
+import { RouteName, RouteParamsList } from '@/src/types/route';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/src/store';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+type TripRequestScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.TripRequest>;
 
 export function TripRequestScreen() {
   const realm = useRealm();
+  const navigation = useNavigation<TripRequestScreenNavigationProp>();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [startLocation, setStartLocation] = useState('');
   const [endLocation, setEndLocation] = useState('');
   const [departureTime, setDepartureTime] = useState(new Date());
+  const [error, setError] = useState<string | null>(null);
 
   const submitTripRequest = () => {
-    realm.write(() => {
-      realm.create('TripRequest', {
-        _id: new Realm.BSON.ObjectId(),
-        customerId: new Realm.BSON.ObjectId(), // This should be the actual logged-in user's ID
-        startLocation,
-        endLocation,
-        departureTime,
-        status: 'pending',
-        requestTime: new Date(),
-        updatedAt: new Date(),
+    if (!startLocation || !endLocation) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    try {
+      realm.write(() => {
+        realm.create('TripRequest', {
+          _id: new Realm.BSON.ObjectId(),
+          customerId: new Realm.BSON.ObjectId(user?._id),
+          startLocation,
+          endLocation,
+          departureTime,
+          status: 'pending',
+          requestTime: new Date(),
+          updatedAt: new Date(),
+        });
       });
-    });
-    // Navigate back or show confirmation
+      navigation.goBack();
+    } catch (e) {
+      setError('Failed to submit trip request. Please try again.');
+    }
   };
 
   return (
-    <View className="flex-1 p-4">
+    <Box className="flex-1 bg-gray-100 p-6">
       <VStack space="md">
-        <Text className="text-xl font-bold">Request a Trip</Text>
-        <Input>
+        <Text className="text-2xl font-bold mb-4">Request a Trip</Text>
+        <Input className="bg-white rounded-md">
           <InputField
             placeholder="Start Location"
             value={startLocation}
             onChangeText={setStartLocation}
           />
         </Input>
-        <Input>
+        <Input className="bg-white rounded-md">
           <InputField
             placeholder="End Location"
             value={endLocation}
             onChangeText={setEndLocation}
           />
         </Input>
-        <Select
-          onValueChange={(value) => setDepartureTime(new Date(value))}
-        >
-          <SelectTrigger variant="outline" size="md">
-            <SelectInput placeholder="Select Departure Time" />
-          </SelectTrigger>
-          <SelectPortal>
-            <SelectBackdrop />
-            <SelectContent>
-              <SelectDragIndicatorWrapper>
-                <SelectDragIndicator />
-              </SelectDragIndicatorWrapper>
-              {[...Array(24)].map((_, index) => (
-                <SelectItem
-                  key={index}
-                  label={`${index}:00`}
-                  value={new Date().setHours(index, 0, 0, 0).toString()}
-                />
-              ))}
-            </SelectContent>
-          </SelectPortal>
-        </Select>
-        <Button onPress={submitTripRequest}>
-          <Text>Submit Trip Request</Text>
+        <Text className="text-lg font-semibold mb-2">Departure Time:</Text>
+        <DateTimePicker
+          value={departureTime}
+          mode="datetime"
+          is24Hour={true}
+          display="default"
+          onChange={(event, selectedDate) => {
+            const currentDate = selectedDate || departureTime;
+            setDepartureTime(currentDate);
+          }}
+        />
+        <Button onPress={submitTripRequest} className="bg-blue-500 rounded-md mt-4">
+          <Text className="text-white font-semibold">Submit Trip Request</Text>
         </Button>
+        {error && <Text className="text-red-500 mt-2">{error}</Text>}
       </VStack>
-    </View>
+    </Box>
   );
 }
 

@@ -154,7 +154,7 @@ export class User extends Realm.Object<User> {
   _id!: Realm.BSON.ObjectId;
   name!: string;
   phone!: string;
-  password!: string; // Add password field
+  password!: string;
   email?: string;
   role!: 'customer' | 'driver';
   vehicleId?: Realm.BSON.ObjectId;
@@ -169,7 +169,7 @@ export class User extends Realm.Object<User> {
       _id: 'objectId',
       name: 'string',
       phone: 'string',
-      password: 'string', // Add password to schema
+      password: 'string',
       email: 'string?',
       role: 'string',
       vehicleId: 'objectId?',

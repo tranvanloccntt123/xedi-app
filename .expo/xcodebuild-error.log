@@ -1,1 +1,6 @@
-AssertMacros: amdErr = AMDeviceConnect(tmpDevice) == 0 ,  file: /AppleInternal/Library/BuildRoots/a4863622-4599-11ef-9474-e2437461156c/Library/Caches/com.apple.xbs/Sources/MobileDevice/Source/AMDevicePowerAssertion.c, line: 224, value: -402653180
+** BUILD FAILED **
+
+
+The following build commands failed:
+	CompileC /Users/tiepvv/Library/Developer/Xcode/DerivedData/xediapp-ayywoixqycpyndddeoxbkwsdinyf/Build/Intermediates.noindex/Pods.build/Debug-iphonesimulator/ExpoModulesCore.build/Objects-normal/x86_64/ExpoViewProps.o /Users/tiepvv/Desktop/xedi-app/node_modules/expo-modules-core/common/cpp/fabric/ExpoViewProps.cpp normal x86_64 c++ com.apple.compilers.llvm.clang.1_0.compiler (in target 'ExpoModulesCore' from project 'Pods')
+(1 failure)

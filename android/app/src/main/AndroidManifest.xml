@@ -26,6 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.teiresource.xediapp"/>
+        <data android:scheme="exp+xedi-app"/>
       </intent-filter>
     </activity>
   </application>

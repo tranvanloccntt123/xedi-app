@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from "@/src/components/ui/text";
+import { Box } from "@/src/components/ui/box";
+import { VStack } from "@/src/components/ui/vstack";
+import { Spinner } from "@/src/components/ui/spinner";
 import { fetchBookingsRequest } from '../features/bookings/bookingsSlice';
 import { RootState } from '../store';
 
@@ -14,54 +17,43 @@ export default function BookingsHistoryScreen() {
   }, [dispatch]);
 
   const renderBookingItem = ({ item }) => (
-    <View style={styles.bookingItem}>
-      <Text>Pickup: {item.pickup}</Text>
-      <Text>Drop-off: {item.dropoff}</Text>
-      <Text>Ride Type: {item.rideType}</Text>
-      <Text>Status: {item.status}</Text>
-    </View>
+    <Box className="bg-gray-100 p-4 mb-4 rounded-lg">
+      <VStack space="xs">
+        <Text className="text-gray-600">Pickup: {item.pickup}</Text>
+        <Text className="text-gray-600">Drop-off: {item.dropoff}</Text>
+        <Text className="text-gray-600">Ride Type: {item.rideType}</Text>
+        <Text className="text-gray-600">Status: {item.status}</Text>
+      </VStack>
+    </Box>
   );
 
   if (isLoading) {
-    return <Text>Loading bookings...</Text>;
+    return (
+      <Box className="flex-1 justify-center items-center">
+        <Spinner size="large" />
+        <Text className="mt-4">Loading bookings...</Text>
+      </Box>
+    );
   }
 
   if (error) {
-    return <Text style={styles.error}>{error}</Text>;
+    return (
+      <Box className="flex-1 justify-center items-center">
+        <Text className="text-red-500 text-lg">{error}</Text>
+      </Box>
+    );
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Booking History</Text>
+    <Box className="flex-1 p-6 bg-white">
+      <Text className="text-2xl font-bold mb-6">Booking History</Text>
       <FlatList
         data={bookings}
         renderItem={renderBookingItem}
         keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingBottom: 20 }}
       />
-    </View>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  bookingItem: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  error: {
-    color: 'red',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
 

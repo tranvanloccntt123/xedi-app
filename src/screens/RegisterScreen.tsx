@@ -109,7 +109,9 @@ export default function RegisterScreen() {
         {error ? <Text className="text-red-500 mt-2">{error}</Text> : null}
       </VStack>
       <Box className="flex-1 justify-end items-center mb-6">
-        <Text>Quay lại đăng nhập</Text>
+        <Text onPress={() => navigation.navigate(RouteName.Login)}>
+          Quay lại đăng nhập
+        </Text>
       </Box>
     </Box>
   );

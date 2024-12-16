@@ -60,7 +60,12 @@ export default function App() {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <NavigationContainer linking={linking}>
-                <Stack.Navigator initialRouteName={RouteName.Login}>
+                <Stack.Navigator
+                  initialRouteName={RouteName.Login}
+                  screenOptions={{
+                    animation: "fade",
+                  }}
+                >
                   <Stack.Screen
                     name={RouteName.Login}
                     component={LoginScreen}

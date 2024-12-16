@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Modal, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "@/src/components/ui/button";
@@ -30,15 +30,19 @@ export default function RoleSelectionScreen() {
         <VStack space="md">
           <Button
             onPress={() => handleRoleSelection("customer")}
-            className="bg-blue-500 rounded-md"
+            className="rounded-md"
+            variant="outline"
+            style={AppStyles.btn}
           >
-            <Text className="text-white font-semibold">Customer</Text>
+            <Text className="text-primary font-semibold">Customer</Text>
           </Button>
           <Button
             onPress={() => handleRoleSelection("driver")}
-            className="bg-green-500 rounded-md"
+            className="rounded-md"
+            variant="outline"
+            style={AppStyles.btn}
           >
-            <Text className="text-white font-semibold">Driver</Text>
+            <Text className="text-primary font-semibold">Driver</Text>
           </Button>
         </VStack>
       </Box>

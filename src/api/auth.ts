@@ -4,7 +4,7 @@ export const loginApi = async ({ email, password }) => {
 
   if (email === 'user@example.com' && password === 'password') {
     return {
-      id: '1',
+      _id: '1',  // Changed from id: '1'
       email: 'user@example.com',
       name: 'John Doe',
     };

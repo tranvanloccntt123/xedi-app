@@ -21,6 +21,7 @@ import { RouteName, RouteParamsList } from "@/src/types/route";
 import { StatusBar } from "react-native";
 import RoleSelectionScreen from "@/src/screens/RoleSelectionScreen";
 import CreateFixedRouteScreen from "@/src/screens/CreateFixedRouteScreen";
+import TripRequestDetailsScreen from "@/src/screens/TripRequestDetailsScreen";
 import { LinkingOptions } from "@react-navigation/native";
 
 const Stack = createStackNavigator<RouteParamsList>();
@@ -76,7 +77,6 @@ export default function App() {
                     component={RoleSelectionScreen}
                     options={{
                       headerShown: false,
-                      presentation: "transparentModal",
                     }}
                   />
                   <Stack.Screen
@@ -119,6 +119,10 @@ export default function App() {
                     name={RouteName.CreateFixedRoute}
                     component={CreateFixedRouteScreen}
                   />
+                  <Stack.Screen
+                    name={RouteName.TripRequestDetails}
+                    component={TripRequestDetailsScreen}
+                  />
                 </Stack.Navigator>
               </NavigationContainer>
             </PersistGate>
@@ -128,3 +132,4 @@ export default function App() {
     </RealmContext.RealmProvider>
   );
 }
+

@@ -13,6 +13,7 @@ import { logout } from '@/src/features/auth/authSlice';
 import { RouteName, RouteParamsList } from '@/src/types/route';
 import { useRealm, useQuery } from '@/src/hooks/useRealm';
 import { FixedRoute, TripRequest, User } from '@/src/models/RealmModels';
+import Realm from "realm";
 
 type HomeScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.Home>;
 
@@ -33,7 +34,7 @@ export default function HomeScreen() {
     navigation.navigate(RouteName.CreateFixedRoute);
   };
 
-  const userFixedRoutes = fixedRoutes.filtered('driverId == $0', user?._id);
+  const userFixedRoutes = fixedRoutes.filtered('driverId == $0', new Realm.BSON.ObjectId(user?._id));
   const pendingTripRequests = tripRequests.filtered('status == $0', 'pending');
 
   const renderTripRequest = ({ item }: { item: TripRequest }) => (

@@ -36,7 +36,7 @@ export default function BookingScreen() {
   const handleBooking = () => {
     if (user) {
       dispatch(createBookingRequest({
-        userId: user.id,
+        userId: user._id,
         pickup,
         dropoff,
         rideType,

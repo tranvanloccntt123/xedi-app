@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useDispatch } from "react-redux";
 import { Button } from "@/src/components/ui/button";
 import { Input, InputField } from "@/src/components/ui/input";
 import { Text } from "@/src/components/ui/text";
@@ -17,6 +18,8 @@ import {
   validatePassword,
   PHONE_NUMBER_EXAMPLES,
 } from "@/src/utils/validation";
+import { loginSuccess } from "@/src/features/auth/authSlice";
+import { SafeAreaView } from 'react-native';
 
 type RegisterScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -33,22 +36,23 @@ export default function RegisterScreen() {
   const realm = useRealm();
   const route = useRoute<RegisterScreenRouteProp>();
   const { role } = route.params;
+  const dispatch = useDispatch();
 
   const handleRegister = () => {
     setError("");
 
     if (!validateName(name)) {
-      setError("Name must be between 2 and 50 characters");
+      setError("Tên phải từ 2 đến 50 ký tự");
       return;
     }
 
     if (!validateVietnamesePhoneNumber(phone)) {
-      setError("Invalid phone number format");
+      setError("Số điện thoại không hợp lệ");
       return;
     }
 
     if (!validatePassword(password)) {
-      setError("Password must be 8-20 characters long and contain no spaces");
+      setError("Mật khẩu phải từ 8-20 ký tự và không chứa khoảng trắng");
       return;
     }
 
@@ -56,7 +60,7 @@ export default function RegisterScreen() {
       .objects<User>("User")
       .filtered("phone = $0", phone)[0];
     if (existingUser) {
-      setError("A user with this phone number already exists");
+      setError("Số điện thoại này đã được đăng ký");
       return;
     }
 
@@ -69,50 +73,76 @@ export default function RegisterScreen() {
         role,
         createdAt: new Date(),
       });
+
+      // Create a plain object with user data to store in Redux
+      const userForRedux = {
+        _id: newUser._id.toHexString(),
+        name: newUser.name,
+        phone: newUser.phone,
+        email: newUser.email,
+        role: newUser.role,
+        vehicleId: newUser.vehicleId?.toHexString(),
+        totalRatings: newUser.totalRatings,
+        averageRating: newUser.averageRating,
+        createdAt: newUser.createdAt.toISOString(),
+      };
+
+      // Dispatch the loginSuccess action to store the user in Redux
+      dispatch(loginSuccess(userForRedux as never));
+
       navigation.navigate(RouteName.Home);
     });
   };
 
   return (
-    <Box className="flex-1 bg-white p-6">
-      <Text className="text-left text-2xl font-bold mb-3">Bắt đầu xedi</Text>
-      <Text className="text-sm text-gray-600 mb-6">
-        Đăng kí ngay đặt xe liền tay
-      </Text>
-      <VStack space="md" className="mt-5">
-        <Input style={AppStyles.input}>
-          <InputField placeholder="Name" value={name} onChangeText={setName} />
-        </Input>
-        <Input style={AppStyles.input}>
-          <InputField
-            placeholder="Phone Number"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-        </Input>
-        <Input style={AppStyles.input}>
-          <InputField
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </Input>
-        <Button
-          onPress={handleRegister}
-          className="w-full bg-blue-500 rounded-md"
-          style={AppStyles.btn}
-        >
-          <Text className="text-white font-semibold">Register</Text>
-        </Button>
-        {error ? <Text className="text-red-500 mt-2">{error}</Text> : null}
-      </VStack>
-      <Box className="flex-1 justify-end items-center mb-6">
-        <Text onPress={() => navigation.navigate(RouteName.Login)}>
-          Quay lại đăng nhập
+    <SafeAreaView style={AppStyles.container} className="bg-white">
+      <Box className="flex-1 p-6">
+        <Text className="text-left text-2xl font-bold mb-3">Bắt đầu xedi</Text>
+        <Text className="text-sm text-gray-600 mb-6">
+          Đăng ký ngay đặt xe liền tay
         </Text>
+        <VStack space="md" className="mt-5">
+          <Input style={AppStyles.input}>
+            <InputField placeholder="Họ tên" value={name} onChangeText={setName} />
+          </Input>
+          <Input style={AppStyles.input}>
+            <InputField
+              placeholder="Số điện thoại"
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+            />
+          </Input>
+          <Text className="text-xs text-gray-500 mt-1 mb-2">
+            Ví dụ: {PHONE_NUMBER_EXAMPLES.join(", ")}
+          </Text>
+          <Input style={AppStyles.input}>
+            <InputField
+              placeholder="Mật khẩu"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+            />
+          </Input>
+          <Button
+            onPress={handleRegister}
+            className="w-full bg-blue-500 rounded-md"
+            style={AppStyles.btn}
+          >
+            <Text className="text-white font-semibold">Đăng ký</Text>
+          </Button>
+          {error ? <Text className="text-red-500 mt-2 text-center">{error}</Text> : null}
+        </VStack>
+        <Box className="flex-1 justify-end items-center mb-6">
+          <Text 
+            onPress={() => navigation.navigate(RouteName.Login)}
+            className="text-blue-500 font-semibold"
+          >
+            Quay lại đăng nhập
+          </Text>
+        </Box>
       </Box>
-    </Box>
+    </SafeAreaView>
   );
 }
+

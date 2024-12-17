@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { useDispatch } from "react-redux";
 import { Button } from "@/src/components/ui/button";
 import { Input, InputField } from "@/src/components/ui/input";
 import { Text } from "@/src/components/ui/text";
@@ -14,6 +15,7 @@ import {
   validatePassword,
 } from "@/src/utils/validation";
 import AppStyles from "../themes/styles";
+import { loginSuccess, loginFailure } from "@/src/features/auth/authSlice";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -27,31 +29,50 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const realm = useRealm();
   const users = useQuery<User>("User");
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     setError("");
 
     if (!validateVietnamesePhoneNumber(phone)) {
-      setError("Invalid phone number format");
+      setError("Số điện thoại không hợp lệ");
       return;
     }
 
     if (!validatePassword(password)) {
-      setError("Password must be 8-20 characters long and contain no spaces");
+      setError("Mật khẩu phải từ 8-20 ký tự và không chứa khoảng trắng");
       return;
     }
 
     const user = users.filtered("phone = $0", phone)[0];
 
+    console.log('[USER INFO]', user);
+
     if (user && user.password === password) {
+      // Create a plain object with user data to store in Redux
+      const userForRedux = {
+        _id: user._id.toHexString(),
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        role: user.role,
+        vehicleId: user.vehicleId?.toHexString(),
+        totalRatings: user.totalRatings,
+        averageRating: user.averageRating,
+        createdAt: user.createdAt.toISOString(),
+      };
+      dispatch(loginSuccess(userForRedux as never));
       navigation.navigate(RouteName.MainTab);
     } else {
-      setError("Invalid phone number or password");
+      const errorMessage = "Số điện thoại hoặc mật khẩu không đúng";
+      setError(errorMessage);
+      dispatch(loginFailure(errorMessage));
     }
   };
 
   return (
-    <View className="flex-1 bg-white p-6">
+    <SafeAreaView style={AppStyles.container} className="flex-1 bg-white">
+      <View className="flex-1 p-6">
       <Text className="text-left text-2xl font-bold mb-3">Lên xedi</Text>
       <Text className="text-sm text-gray-600 mb-6">
         Đăng nhập xedi ngay thôi nào
@@ -96,7 +117,8 @@ export default function LoginScreen() {
           nếu bạn chưa có tài khoản
         </Text>
       </View>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,28 +1,31 @@
 import "./global.css";
 import React from "react";
+import { StatusBar } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, LinkingOptions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { GluestackUIProvider } from "@/src/components/ui/gluestack-ui-provider";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSelector } from 'react-redux';
+
+import { GluestackUIProvider } from "@/src/components/ui/gluestack-ui-provider";
 import { RealmContext } from "@/src/contexts/RealmContext";
 import { store, persistor } from "@/src/store";
-import { MainTab } from "@/src/navigation/MainTab";
-import LoginScreen from "@/src/screens/LoginScreen";
-import RegisterScreen from "@/src/screens/RegisterScreen";
+import { RootState } from '@/src/store';
+import { RouteName, RouteParamsList } from "@/src/types/route";
+
 import BookingScreen from "@/src/screens/BookingScreen";
 import ConfirmationScreen from "@/src/screens/ConfirmationScreen";
-import { TripRequestScreen } from "@/src/screens/TripRequestScreen";
+import CreateFixedRouteScreen from "@/src/screens/CreateFixedRouteScreen";
+import LoginScreen from "@/src/screens/LoginScreen";
+import RegisterScreen from "@/src/screens/RegisterScreen";
+import RoleSelectionScreen from "@/src/screens/RoleSelectionScreen";
 import { TripRequestForFixedRouteScreen } from "@/src/screens/TripRequestForFixedRouteScreen";
+import { TripRequestScreen } from "@/src/screens/TripRequestScreen";
+import TripRequestDetailsScreen from "@/src/screens/TripRequestDetailsScreen";
 import { UserProfileScreen } from "@/src/screens/UserProfileScreen";
 import { VehicleRegistrationScreen } from "@/src/screens/VehicleRegistrationScreen";
-import { RouteName, RouteParamsList } from "@/src/types/route";
-import { StatusBar } from "react-native";
-import RoleSelectionScreen from "@/src/screens/RoleSelectionScreen";
-import CreateFixedRouteScreen from "@/src/screens/CreateFixedRouteScreen";
-import TripRequestDetailsScreen from "@/src/screens/TripRequestDetailsScreen";
-import { LinkingOptions } from "@react-navigation/native";
+import { MainTab } from "@/src/navigation/MainTab";
 
 const Stack = createStackNavigator<RouteParamsList>();
 
@@ -52,6 +55,80 @@ const linking: LinkingOptions<RouteParamsList> = {
   },
 };
 
+const Navigator = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  return (
+    <NavigationContainer linking={linking}>
+      <Stack.Navigator
+        screenOptions={{
+          animation: "fade",
+        }}
+      >
+        {!user ? (
+          <Stack.Group>
+            <Stack.Screen
+              name={RouteName.Login}
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={RouteName.RoleSelection}
+              component={RoleSelectionScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={RouteName.Register}
+              component={RegisterScreen}
+              options={{ headerShown: false }}
+            />
+          </Stack.Group>
+        ) : (
+          <Stack.Group>
+            <Stack.Screen
+              name={RouteName.MainTab}
+              component={MainTab}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={RouteName.Booking}
+              component={BookingScreen}
+            />
+            <Stack.Screen
+              name={RouteName.Confirmation}
+              component={ConfirmationScreen}
+            />
+            <Stack.Screen
+              name={RouteName.TripRequest}
+              component={TripRequestScreen}
+            />
+            <Stack.Screen
+              name={RouteName.TripRequestForFixedRoute}
+              component={TripRequestForFixedRouteScreen}
+            />
+            <Stack.Screen
+              name={RouteName.UserProfile}
+              component={UserProfileScreen}
+            />
+            <Stack.Screen
+              name={RouteName.VehicleRegistration}
+              component={VehicleRegistrationScreen}
+            />
+            <Stack.Screen
+              name={RouteName.CreateFixedRoute}
+              component={CreateFixedRouteScreen}
+            />
+            <Stack.Screen
+              name={RouteName.TripRequestDetails}
+              component={TripRequestDetailsScreen}
+            />
+          </Stack.Group>
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 export default function App() {
   return (
     <RealmContext.RealmProvider>
@@ -60,71 +137,7 @@ export default function App() {
         <GluestackUIProvider>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              <NavigationContainer linking={linking}>
-                <Stack.Navigator
-                  initialRouteName={RouteName.Login}
-                  screenOptions={{
-                    animation: "fade",
-                  }}
-                >
-                  <Stack.Screen
-                    name={RouteName.Login}
-                    component={LoginScreen}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name={RouteName.RoleSelection}
-                    component={RoleSelectionScreen}
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name={RouteName.Register}
-                    component={RegisterScreen}
-                    options={{
-                      headerShown: false,
-                    }}
-                  />
-                  <Stack.Screen
-                    name={RouteName.MainTab}
-                    component={MainTab}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name={RouteName.Booking}
-                    component={BookingScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.Confirmation}
-                    component={ConfirmationScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.TripRequest}
-                    component={TripRequestScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.TripRequestForFixedRoute}
-                    component={TripRequestForFixedRouteScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.UserProfile}
-                    component={UserProfileScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.VehicleRegistration}
-                    component={VehicleRegistrationScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.CreateFixedRoute}
-                    component={CreateFixedRouteScreen}
-                  />
-                  <Stack.Screen
-                    name={RouteName.TripRequestDetails}
-                    component={TripRequestDetailsScreen}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
+              <Navigator />
             </PersistGate>
           </Provider>
         </GluestackUIProvider>

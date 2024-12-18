@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from "@/src/components/ui/text";
 import { Box } from "@/src/components/ui/box";
@@ -7,6 +7,9 @@ import { VStack } from "@/src/components/ui/vstack";
 import { Spinner } from "@/src/components/ui/spinner";
 import { fetchBookingsRequest } from '../features/bookings/bookingsSlice';
 import { RootState } from '../store';
+import AppStyles from "@/src/themes/styles";
+
+// Removed the inline AppStyles definition
 
 export default function BookingsHistoryScreen() {
   const dispatch = useDispatch();
@@ -29,30 +32,42 @@ export default function BookingsHistoryScreen() {
 
   if (isLoading) {
     return (
-      <Box className="flex-1 justify-center items-center">
-        <Spinner size="large" />
-        <Text className="mt-4">Loading bookings...</Text>
+      <Box className="flex-1 bg-white">
+        <SafeAreaView style={AppStyles.container}>
+          <Box className="flex-1 justify-center items-center">
+            <Spinner size="large" />
+            <Text className="mt-4">Loading bookings...</Text>
+          </Box>
+        </SafeAreaView>
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Box className="flex-1 justify-center items-center">
-        <Text className="text-red-500 text-lg">{error}</Text>
+      <Box className="flex-1 bg-white">
+        <SafeAreaView style={AppStyles.container}>
+          <Box className="flex-1 justify-center items-center">
+            <Text className="text-red-500 text-lg">{error}</Text>
+          </Box>
+        </SafeAreaView>
       </Box>
     );
   }
 
   return (
-    <Box className="flex-1 p-6 bg-white">
-      <Text className="text-2xl font-bold mb-6">Booking History</Text>
-      <FlatList
-        data={bookings}
-        renderItem={renderBookingItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 20 }}
-      />
+    <Box className="flex-1 bg-white">
+      <SafeAreaView style={AppStyles.container}>
+        <Box className="flex-1 p-6 bg-white">
+          <Text className="text-2xl font-bold mb-6">Booking History</Text>
+          <FlatList
+            data={bookings}
+            renderItem={renderBookingItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </Box>
+      </SafeAreaView>
     </Box>
   );
 }

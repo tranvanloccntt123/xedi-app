@@ -1,5 +1,4 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "@/src/components/ui/button";
@@ -7,7 +6,7 @@ import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
 import { Box } from "@/src/components/ui/box";
 import { RouteName, RouteParamsList } from "@/src/types/route";
-import AppStyles from "../themes/styles";
+import AppStyles from "@/src/themes/styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type RoleSelectionScreenNavigationProp = StackNavigationProp<
@@ -23,7 +22,7 @@ export default function RoleSelectionScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <Box className="flex-1 bg-white">
       <SafeAreaView style={AppStyles.container}>
         <Box className="p-6 flex-1">
           <Text className="text-2xl font-bold mb-6">Bạn là</Text>
@@ -55,17 +54,7 @@ export default function RoleSelectionScreen() {
           </Box>
         </Box>
       </SafeAreaView>
-    </View>
+    </Box>
   );
 }
 
-const styles = StyleSheet.create({
-  bgBtn: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 0,
-  },
-});

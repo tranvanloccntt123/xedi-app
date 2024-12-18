@@ -4,8 +4,10 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { Text } from "@/src/components/ui/text";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootState } from '../store';
 import { RouteName, RouteParamsList } from '../types/route';
+import AppStyles from "@/src/themes/styles"; // Updated import
 
 type ConfirmationScreenRouteProp = RouteProp<RouteParamsList, RouteName.Confirmation>;
 
@@ -17,25 +19,33 @@ export default function ConfirmationScreen() {
 
   if (!booking) {
     return (
-      <Box className="flex-1 justify-center items-center bg-gray-100">
-        <Text className="text-xl text-red-500">Booking not found</Text>
+      <Box className="flex-1 bg-white">
+        <SafeAreaView style={AppStyles.container}>
+          <Box className="flex-1 justify-center items-center bg-gray-100">
+            <Text className="text-xl text-red-500">Booking not found</Text>
+          </Box>
+        </SafeAreaView>
       </Box>
     );
   }
 
   return (
-    <Box className="flex-1 p-6 justify-center items-center bg-gray-100">
-      <Box className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <VStack space="md">
-          <Text className="text-3xl font-bold text-green-600 text-center">Booking Confirmed!</Text>
-          <Text className="text-lg">Pickup: {booking.pickup}</Text>
-          <Text className="text-lg">Drop-off: {booking.dropoff}</Text>
-          <Text className="text-lg">Ride Type: {booking.rideType}</Text>
-          <Text className="text-base text-center text-gray-600">
-            Your ride will arrive shortly. Thank you for using Xedi Ride!
-          </Text>
-        </VStack>
-      </Box>
+    <Box className="flex-1 bg-white">
+      <SafeAreaView style={AppStyles.container}>
+        <Box className="flex-1 p-6 justify-center items-center bg-gray-100">
+          <Box className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <VStack space="md">
+              <Text className="text-3xl font-bold text-green-600 text-center">Booking Confirmed!</Text>
+              <Text className="text-lg">Pickup: {booking.pickup}</Text>
+              <Text className="text-lg">Drop-off: {booking.dropoff}</Text>
+              <Text className="text-lg">Ride Type: {booking.rideType}</Text>
+              <Text className="text-base text-center text-gray-600">
+                Your ride will arrive shortly. Thank you for using Xedi Ride!
+              </Text>
+            </VStack>
+          </Box>
+        </Box>
+      </SafeAreaView>
     </Box>
   );
 }

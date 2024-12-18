@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useDispatch } from "react-redux";
@@ -16,6 +16,7 @@ import {
 } from "@/src/utils/validation";
 import AppStyles from "../themes/styles";
 import { loginSuccess, loginFailure } from "@/src/features/auth/authSlice";
+import { Box } from "@/src/components/ui/box";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -62,7 +63,6 @@ export default function LoginScreen() {
         createdAt: user.createdAt.toISOString(),
       };
       dispatch(loginSuccess(userForRedux as never));
-      navigation.navigate(RouteName.MainTab);
     } else {
       const errorMessage = "Số điện thoại hoặc mật khẩu không đúng";
       setError(errorMessage);
@@ -71,54 +71,56 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView style={AppStyles.container} className="flex-1 bg-white">
-      <View className="flex-1 p-6">
-      <Text className="text-left text-2xl font-bold mb-3">Lên xedi</Text>
-      <Text className="text-sm text-gray-600 mb-6">
-        Đăng nhập xedi ngay thôi nào
-      </Text>
-      <VStack space="md" className="mt-5">
-        <Input style={AppStyles.input}>
-          <InputField
-            placeholder="Số điện thoại"
-            value={phone}
-            onChangeText={setPhone}
-            keyboardType="phone-pad"
-          />
-        </Input>
-        <Input style={AppStyles.input}>
-          <InputField
-            placeholder="Mật khẩu"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </Input>
-        <Button
-          onPress={handleLogin}
-          className="bg-blue-500 rounded"
-          style={AppStyles.btn}
-        >
-          <Text className="text-white font-bold">Đăng nhập</Text>
-        </Button>
-        {error ? (
-          <Text className="text-red-500 text-center mt-2">{error}</Text>
-        ) : null}
-      </VStack>
-      <View className="flex-1 justify-end items-center mb-6">
-        <Text>
-          Vui lòng{" "}
-          <Text
-            className="text-blue-500"
-            onPress={() => navigation.navigate(RouteName.RoleSelection)}
-          >
-            Tạo tài khoản
-          </Text>{" "}
-          nếu bạn chưa có tài khoản
-        </Text>
-      </View>
-      </View>
-    </SafeAreaView>
+    <Box className="flex-1 bg-white">
+      <SafeAreaView style={AppStyles.container}>
+        <Box className="flex-1 p-6">
+          <Text className="text-left text-2xl font-bold mb-3">Lên xedi</Text>
+          <Text className="text-sm text-gray-600 mb-6">
+            Đăng nhập xedi ngay thôi nào
+          </Text>
+          <VStack space="md" className="mt-5">
+            <Input style={AppStyles.input}>
+              <InputField
+                placeholder="Số điện thoại"
+                value={phone}
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+              />
+            </Input>
+            <Input style={AppStyles.input}>
+              <InputField
+                placeholder="Mật khẩu"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+            </Input>
+            <Button
+              onPress={handleLogin}
+              className="bg-blue-500 rounded"
+              style={AppStyles.btn}
+            >
+              <Text className="text-white font-bold">Đăng nhập</Text>
+            </Button>
+            {error ? (
+              <Text className="text-red-500 text-center mt-2">{error}</Text>
+            ) : null}
+          </VStack>
+          <Box className="flex-1 justify-end items-center mb-6">
+            <Text>
+              Vui lòng{" "}
+              <Text
+                className="text-blue-500"
+                onPress={() => navigation.navigate(RouteName.RoleSelection)}
+              >
+                Tạo tài khoản
+              </Text>{" "}
+              nếu bạn chưa có tài khoản
+            </Text>
+          </Box>
+        </Box>
+      </SafeAreaView>
+    </Box>
   );
 }
 

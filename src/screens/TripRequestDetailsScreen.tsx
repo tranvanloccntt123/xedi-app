@@ -4,10 +4,12 @@ import { Button } from "@/src/components/ui/button";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
 import { Box } from "@/src/components/ui/box";
-import { Card, CardHeader, CardContent } from "@/src/components/ui/card";
+import { Card } from "@/src/components/ui/card";
 import { useRealm } from '@/src/hooks/useRealm';
 import { TripRequest } from '@/src/models/RealmModels';
 import { RouteName, RouteParamsList } from '@/src/types/route';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AppStyles from '@/src/themes/styles';
 
 type TripRequestDetailsScreenRouteProp = RouteProp<RouteParamsList, RouteName.TripRequestDetails>;
 
@@ -39,36 +41,40 @@ export default function TripRequestDetailsScreen() {
 
   if (!tripRequest) {
     return (
-      <Box className="flex-1 justify-center items-center bg-gray-100">
-        <Text className="text-xl text-red-500">Trip request not found</Text>
+      <Box className="flex-1 bg-white">
+        <SafeAreaView style={AppStyles.container}>
+          <Box className="flex-1 justify-center items-center bg-gray-100">
+            <Text className="text-xl text-red-500">Trip request not found</Text>
+          </Box>
+        </SafeAreaView>
       </Box>
     );
   }
 
   return (
-    <Box className="flex-1 bg-gray-100 p-6">
-      <Card className="mb-6">
-        <CardHeader>
-          <Text className="text-2xl font-bold text-blue-600">Trip Request Details</Text>
-        </CardHeader>
-        <CardContent>
+    <Box className="flex-1 bg-white">
+      <SafeAreaView style={AppStyles.container}>
+        <Box className="flex-1 bg-gray-100 p-6">
+          <Card className="mb-6 p-4">
+            <Text className="text-2xl font-bold text-blue-600 mb-4">Trip Request Details</Text>
+            <VStack space="md">
+              <Text className="text-lg"><Text className="font-semibold">From:</Text> {tripRequest.startLocation}</Text>
+              <Text className="text-lg"><Text className="font-semibold">To:</Text> {tripRequest.endLocation}</Text>
+              <Text className="text-lg"><Text className="font-semibold">Departure:</Text> {tripRequest.departureTime.toLocaleString()}</Text>
+              <Text className="text-lg"><Text className="font-semibold">Status:</Text> {tripRequest.status}</Text>
+              <Text className="text-lg"><Text className="font-semibold">Request Time:</Text> {tripRequest.requestTime.toLocaleString()}</Text>
+            </VStack>
+          </Card>
           <VStack space="md">
-            <Text className="text-lg"><Text className="font-semibold">From:</Text> {tripRequest.startLocation}</Text>
-            <Text className="text-lg"><Text className="font-semibold">To:</Text> {tripRequest.endLocation}</Text>
-            <Text className="text-lg"><Text className="font-semibold">Departure:</Text> {tripRequest.departureTime.toLocaleString()}</Text>
-            <Text className="text-lg"><Text className="font-semibold">Status:</Text> {tripRequest.status}</Text>
-            <Text className="text-lg"><Text className="font-semibold">Request Time:</Text> {tripRequest.requestTime.toLocaleString()}</Text>
+            <Button onPress={handleAccept} className="bg-green-500 rounded-md" disabled={tripRequest.status !== 'pending'}>
+              <Text className="text-white font-semibold">Accept Request</Text>
+            </Button>
+            <Button onPress={handleReject} className="bg-red-500 rounded-md" disabled={tripRequest.status !== 'pending'}>
+              <Text className="text-white font-semibold">Reject Request</Text>
+            </Button>
           </VStack>
-        </CardContent>
-      </Card>
-      <VStack space="md">
-        <Button onPress={handleAccept} className="bg-green-500 rounded-md" disabled={tripRequest.status !== 'pending'}>
-          <Text className="text-white font-semibold">Accept Request</Text>
-        </Button>
-        <Button onPress={handleReject} className="bg-red-500 rounded-md" disabled={tripRequest.status !== 'pending'}>
-          <Text className="text-white font-semibold">Reject Request</Text>
-        </Button>
-      </VStack>
+        </Box>
+      </SafeAreaView>
     </Box>
   );
 }

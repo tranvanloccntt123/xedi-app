@@ -13,6 +13,7 @@ import AppStyles from "@/src/themes/styles";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/src/store';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type CreateFixedRouteScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.CreateFixedRoute>;
 
@@ -59,57 +60,61 @@ export default function CreateFixedRouteScreen() {
   };
 
   return (
-    <Box className="flex-1 bg-white p-6">
-      <Text className="text-left text-2xl font-bold mb-6">Create Fixed Route</Text>
-      <VStack space="md">
-        <Input style={AppStyles.input}>
-          <InputField 
-            placeholder="Start Location" 
-            value={startLocation} 
-            onChangeText={setStartLocation}
-          />
-        </Input>
-        <Input style={AppStyles.input}>
-          <InputField 
-            placeholder="End Location" 
-            value={endLocation} 
-            onChangeText={setEndLocation}
-          />
-        </Input>
-        <Text>Departure Time:</Text>
-        <DateTimePicker
-          value={departureTime}
-          mode="time"
-          is24Hour={true}
-          display="default"
-          onChange={(event, selectedDate) => {
-            const currentDate = selectedDate || departureTime;
-            setDepartureTime(currentDate);
-          }}
-        />
-        <Input style={AppStyles.input}>
-          <InputField 
-            placeholder="Total Seats" 
-            value={totalSeats} 
-            onChangeText={setTotalSeats}
-            keyboardType="numeric"
-          />
-        </Input>
-        <Input style={AppStyles.input}>
-          <InputField 
-            placeholder="Price" 
-            value={price} 
-            onChangeText={setPrice}
-            keyboardType="numeric"
-          />
-        </Input>
-        <Button onPress={handleSubmit} className="bg-blue-500 rounded" style={AppStyles.btn}>
-          <Text className="text-white font-bold">Create Fixed Route</Text>
-        </Button>
-        {error ? (
-          <Text className="text-red-500 text-center mt-2">{error}</Text>
-        ) : null}
-      </VStack>
+    <Box className="flex-1 bg-white">
+      <SafeAreaView style={AppStyles.container}>
+        <Box className="flex-1 bg-white p-6">
+          <Text className="text-left text-2xl font-bold mb-6">Create Fixed Route</Text>
+          <VStack space="md">
+            <Input style={AppStyles.input}>
+              <InputField 
+                placeholder="Start Location" 
+                value={startLocation} 
+                onChangeText={setStartLocation}
+              />
+            </Input>
+            <Input style={AppStyles.input}>
+              <InputField 
+                placeholder="End Location" 
+                value={endLocation} 
+                onChangeText={setEndLocation}
+              />
+            </Input>
+            <Text>Departure Time:</Text>
+            <DateTimePicker
+              value={departureTime}
+              mode="time"
+              is24Hour={true}
+              display="default"
+              onChange={(event, selectedDate) => {
+                const currentDate = selectedDate || departureTime;
+                setDepartureTime(currentDate);
+              }}
+            />
+            <Input style={AppStyles.input}>
+              <InputField 
+                placeholder="Total Seats" 
+                value={totalSeats} 
+                onChangeText={setTotalSeats}
+                keyboardType="numeric"
+              />
+            </Input>
+            <Input style={AppStyles.input}>
+              <InputField 
+                placeholder="Price" 
+                value={price} 
+                onChangeText={setPrice}
+                keyboardType="numeric"
+              />
+            </Input>
+            <Button onPress={handleSubmit} className="bg-blue-500 rounded" style={AppStyles.btn}>
+              <Text className="text-white font-bold">Create Fixed Route</Text>
+            </Button>
+            {error ? (
+              <Text className="text-red-500 text-center mt-2">{error}</Text>
+            ) : null}
+          </VStack>
+        </Box>
+      </SafeAreaView>
     </Box>
   );
 }

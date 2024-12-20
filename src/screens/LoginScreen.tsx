@@ -17,6 +17,7 @@ import {
 import AppStyles from "../themes/styles";
 import { loginSuccess, loginFailure } from "@/src/features/auth/authSlice";
 import { Box } from "@/src/components/ui/box";
+import { Ionicons } from '@expo/vector-icons';
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -27,6 +28,7 @@ export default function LoginScreen() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const realm = useRealm();
   const users = useQuery<User>("User");
@@ -92,8 +94,19 @@ export default function LoginScreen() {
                 placeholder="Mật khẩu"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
+                secureTextEntry={!showPassword}
               />
+              <Button
+                onPress={() => setShowPassword(!showPassword)}
+                variant="ghost"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={24}
+                  color="gray"
+                />
+              </Button>
             </Input>
             <Button
               onPress={handleLogin}

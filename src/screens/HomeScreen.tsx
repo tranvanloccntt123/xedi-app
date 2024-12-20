@@ -61,13 +61,13 @@ export default function HomeScreen() {
   return (
     <Box className="flex-1 bg-white">
       <Box className="flex-1">
-        <VStack space="md">
+        <VStack space="md" className="flex-1">
           <Box className="bg-green-500 p-6">
-            <Box style={{paddingTop: insets.top}}>
+            <Box style={{ paddingTop: insets.top }}>
               <Text className="text-2xl font-bold mb-6 text-black">
                 Xin chào, {user?.name}
               </Text>
-              {user?.role === "driver" && userFixedRoutes.length === 0 && (
+              {userFixedRoutes.length === 0 && (
                 <Box className="mb-6">
                   <Text className="mb-6 text-lg text-black">
                     Bắt đầu ngày mới ngay thôi
@@ -84,25 +84,19 @@ export default function HomeScreen() {
               )}
             </Box>
           </Box>
-          <Box className="p-6">
-            {user?.role === "driver" && (
-              <>
-                <Text className="text-xl font-semibold mb-4">
-                  Pending Trip Requests
-                </Text>
-                <FlatList
-                  data={pendingTripRequests}
-                  renderItem={renderTripRequest}
-                  keyExtractor={(item) => item._id.toHexString()}
-                  className="w-full"
-                  ListEmptyComponent={
-                    <Text className="text-center">
-                      No pending trip requests
-                    </Text>
-                  }
-                />
-              </>
-            )}
+          <Box className="p-6 flex-1">
+            <Text className="text-xl font-semibold mb-4">
+              Pending Trip Requests
+            </Text>
+            <FlatList
+              data={pendingTripRequests}
+              renderItem={renderTripRequest}
+              keyExtractor={(item) => item._id.toHexString()}
+              style={AppStyles.container}
+              ListEmptyComponent={
+                <Text className="text-center">No pending trip requests</Text>
+              }
+            />
           </Box>
         </VStack>
       </Box>

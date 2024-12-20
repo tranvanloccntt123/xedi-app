@@ -13,7 +13,7 @@ import { RouteName, RouteParamsList } from "@/src/types/route";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/src/features/auth/authSlice";
 import { RootState } from "@/src/store";
-import AppStyles from "@/src/themes/styles"; // Added import
+import AppStyles from "@/src/themes/styles";
 
 type SettingScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -44,7 +44,7 @@ export default function SettingScreen() {
 
   return (
     <Box className="flex-1 bg-white">
-      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView style={AppStyles.container}>
         <ScrollView className="flex-1 bg-gray-100">
           <Box className="bg-green-500 p-6">
             <HStack space="md" className="items-center">
@@ -113,3 +113,4 @@ export default function SettingScreen() {
     </Box>
   );
 }
+

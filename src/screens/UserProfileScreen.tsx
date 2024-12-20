@@ -57,7 +57,7 @@ export function UserProfileScreen() {
     fetchUser();
   }, [realm, userId]);
 
-  const updateUser = (field: any, value: string) => {
+  const updateUser = (field: string, value: string) => {
     setError(null);
     if (field === "name" && !validateName(value)) {
       setError("Name must be between 2 and 50 characters");
@@ -154,7 +154,7 @@ export function UserProfileScreen() {
               </Text>
             </VStack>
           </Card>
-          {error && <Text className="text-red-500 mb-4">{error}</Text>}
+          {!!error && <Text className="text-red-500 mb-4">{error}</Text>}
           <Button onPress={handleSave} className="bg-blue-500 rounded-md">
             <Text className="text-white font-semibold">Save Changes</Text>
           </Button>

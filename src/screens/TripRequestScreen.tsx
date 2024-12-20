@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/src/store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import AppStyles from '../themes/styles';
+import AppStyles from '@/src/themes/styles'; // Updated import
 
 type TripRequestScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.TripRequest>;
 

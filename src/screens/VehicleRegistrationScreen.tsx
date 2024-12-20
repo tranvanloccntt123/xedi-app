@@ -99,7 +99,7 @@ export function VehicleRegistrationScreen() {
               </Input>
             </VStack>
           </Card>
-          {error && <Text className="text-red-500 mb-4">{error}</Text>}
+          {!!error && <Text className="text-red-500 mb-4">{error}</Text>}
           <Button onPress={registerVehicle} className="bg-blue-500 rounded-md">
             <Text className="text-white font-semibold">Register Vehicle</Text>
           </Button>

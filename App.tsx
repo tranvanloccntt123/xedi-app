@@ -6,12 +6,12 @@ import { PersistGate } from "redux-persist/integration/react";
 import { NavigationContainer, LinkingOptions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 import { GluestackUIProvider } from "@/src/components/ui/gluestack-ui-provider";
 import { RealmContext } from "@/src/contexts/RealmContext";
 import { store, persistor } from "@/src/store";
-import { RootState } from '@/src/store';
+import { RootState } from "@/src/store";
 import { RouteName, RouteParamsList } from "@/src/types/route";
 
 import BookingScreen from "@/src/screens/BookingScreen";
@@ -90,10 +90,7 @@ const Navigator = () => {
               component={MainTab}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name={RouteName.Booking}
-              component={BookingScreen}
-            />
+            <Stack.Screen name={RouteName.Booking} component={BookingScreen} />
             <Stack.Screen
               name={RouteName.Confirmation}
               component={ConfirmationScreen}
@@ -117,6 +114,7 @@ const Navigator = () => {
             <Stack.Screen
               name={RouteName.CreateFixedRoute}
               component={CreateFixedRouteScreen}
+              options={{ headerShown: false }}
             />
             <Stack.Screen
               name={RouteName.TripRequestDetails}
@@ -132,7 +130,11 @@ const Navigator = () => {
 export default function App() {
   return (
     <RealmContext.RealmProvider>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar
+        barStyle="dark-content"
+        translucent={true}
+        backgroundColor={"transparent"}
+      />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GluestackUIProvider>
           <Provider store={store}>
@@ -145,4 +147,3 @@ export default function App() {
     </RealmContext.RealmProvider>
   );
 }
-

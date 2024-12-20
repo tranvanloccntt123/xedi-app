@@ -15,11 +15,11 @@ import AppStyles from "@/src/themes/styles";
 import {
   validateName,
   validateVietnamesePhoneNumber,
-  validatePassword,
-  PHONE_NUMBER_EXAMPLES,
+  validatePassword
 } from "@/src/utils/validation";
 import { loginSuccess } from "@/src/features/auth/authSlice";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
 type RegisterScreenNavigationProp = StackNavigationProp<
   RouteParamsList,
@@ -32,6 +32,7 @@ export default function RegisterScreen() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation<RegisterScreenNavigationProp>();
   const realm = useRealm();
   const route = useRoute<RegisterScreenRouteProp>();
@@ -112,16 +113,24 @@ export default function RegisterScreen() {
                 keyboardType="phone-pad"
               />
             </Input>
-            <Text className="text-xs text-gray-500 mt-1 mb-2">
-              Ví dụ: {PHONE_NUMBER_EXAMPLES.join(", ")}
-            </Text>
             <Input style={AppStyles.input}>
               <InputField
                 placeholder="Mật khẩu"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
+                secureTextEntry={!showPassword}
               />
+              <Button
+                onPress={() => setShowPassword(!showPassword)}
+                variant="ghost"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={24}
+                  color="gray"
+                />
+              </Button>
             </Input>
             <Button
               onPress={handleRegister}

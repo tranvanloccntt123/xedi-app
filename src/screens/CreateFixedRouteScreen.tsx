@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/src/store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Header } from '@/src/components/Header';
 
 type CreateFixedRouteScreenNavigationProp = StackNavigationProp<RouteParamsList, RouteName.CreateFixedRoute>;
 
@@ -61,9 +62,12 @@ export default function CreateFixedRouteScreen() {
 
   return (
     <Box className="flex-1 bg-white">
+      <Header 
+        title="Create Fixed Route" 
+        onBack={() => navigation.goBack()}
+      />
       <SafeAreaView style={AppStyles.container}>
         <Box className="flex-1 bg-white p-6">
-          <Text className="text-left text-2xl font-bold mb-6">Create Fixed Route</Text>
           <VStack space="md">
             <Input style={AppStyles.input}>
               <InputField 

@@ -1,29 +1,35 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import createSagaMiddleware from 'redux-saga';
-import rootReducer from '@/src/store/rootReducer';
-import rootSaga from '@/src/store/rootSaga';
+
+import authReducer from './authSlice';
+import userReducer from './userSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'bookings'],
+  whitelist: ['auth', 'user'] // both auth and user will be persisted
 };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const rootReducer = combineReducers({
+  auth: authReducer,
+  user: userReducer,
+});
 
-const sagaMiddleware = createSagaMiddleware();
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST'],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);
-
-sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

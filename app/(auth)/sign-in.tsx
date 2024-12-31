@@ -32,24 +32,28 @@ export default function SignIn() {
   const router = useRouter();
 
   const handleLogin = () => {
-    const validateForm = formValidatePerField(authValidator, {
-      phone,
-      password,
-    });
-    setError({
-      phone: validateForm.phone.message,
-      password: validateForm.password.message,
-    });
-    if (!formValidateSuccess(validateForm)) {
-      return;
-    }
-    const user = findUser(phone, password);
-    if (user) {
-      dispatch(setUser(user));
-      dispatch(setAuthenticated(user));
-      router.replace("/");
-    } else {
-      setErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
+    try {
+      const validateForm = formValidatePerField(authValidator, {
+        phone,
+        password,
+      });
+      setError({
+        phone: validateForm.phone.message,
+        password: validateForm.password.message,
+      });
+      if (!formValidateSuccess(validateForm)) {
+        return;
+      }
+      const user = findUser(phone, password);
+      if (user) {
+        dispatch(setUser(user));
+        dispatch(setAuthenticated(user));
+        router.replace("/");
+      } else {
+        setErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -109,7 +113,9 @@ export default function SignIn() {
           )}
           <Button
             size="lg"
-            className="w-full bg-blue-500"
+            className={`w-full bg-blue-500 ${
+              !phone.trim() || !password.trim() ? "opacity-75" : "opacity-100"
+            }`}
             onPress={handleLogin}
             disabled={!phone.trim() || !password.trim()}
           >

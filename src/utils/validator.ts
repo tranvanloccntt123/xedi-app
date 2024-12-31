@@ -2,6 +2,12 @@ export const formValidate = (
   config: ConfigValidateForm,
   value: string
 ): ValidatorResult => {
+  if (!config) {
+    return {
+      message: "",
+      status: true,
+    };
+  }
   let message = "";
   if (config.required && !value) {
     message = config.required.message;
@@ -37,7 +43,7 @@ export const formValidatePerField = (
 ) => {
   const res: Record<string, ValidatorResult> = {};
   Object.keys(form).forEach((key) => {
-    res[key] = formValidate(validator[key], form["key"]);
+    res[key] = formValidate(validator[key], form[key]);
   });
   return res;
 };

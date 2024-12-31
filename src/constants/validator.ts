@@ -1,4 +1,6 @@
-export const authValidator: ValidatorObject<AuthForm> = {
+import { IUser } from "../types";
+
+export const authValidator: ValidatorObject<keyof IUser> = {
   phone: {
     required: {
       message: "Số điện thoại không được để trống.",
@@ -59,4 +61,4 @@ export const authValidator: ValidatorObject<AuthForm> = {
       message: "Bạn là khách hàng hay tài xế.",
     },
   },
-};
+} as ValidatorObject<keyof IUser>;

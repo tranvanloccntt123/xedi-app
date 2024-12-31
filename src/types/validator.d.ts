@@ -18,6 +18,4 @@ type ConfigValidateForm = {
 
 type ValidatorObject<T = string> = Record<T, ConfigValidateForm>;
 
-type AuthForm = 'phone' | 'name' | 'password' | 'email' | 'role';
-
 type ValidatorResult = { status: boolean; message?: string };

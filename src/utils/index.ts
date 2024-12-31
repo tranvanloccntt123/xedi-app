@@ -6,4 +6,3 @@ export const findUser = (phone: string, password: string) => {
     const { user } = getState();
     return Object.values(user.users).find(u => u.phone === phone && u.password === password);
 }
-

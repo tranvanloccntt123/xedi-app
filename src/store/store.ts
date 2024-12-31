@@ -5,16 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import authReducer from './authSlice';
 import userReducer from './userSlice';
+import fixedRoutesReducer from './fixedRoutesSlice';
+import tripRequestsReducer from './tripRequestsSlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'user'] // both auth and user will be persisted
+  whitelist: ['auth', 'user', 'fixedRoutes', 'tripRequests']
 };
 
 const rootReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
+  fixedRoutes: fixedRoutesReducer,
+  tripRequests: tripRequestsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

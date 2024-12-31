@@ -1,19 +1,46 @@
-import React from 'react';
-import { Redirect, Slot } from 'expo-router';
-import { Box } from '@/src/components/ui/box';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/src/store/store';
+import React from "react";
+import { Tabs } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function AppLayout() {
-  const {isAuthenticated} = useSelector((state: RootState) => state.auth);
-
-  if (!isAuthenticated) {
-    return <Redirect href={'/sign-in'} />
-  }
   return (
-    <Box className="flex-1">
-      <Slot />
-    </Box>
+    <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="business" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="ride"
+        options={{
+          title: "Ride",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="car" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="food"
+        options={{
+          title: "Food",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" size={size} color={color} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
-

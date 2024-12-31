@@ -1,0 +1,54 @@
+import React from 'react';
+import { FlatList } from 'react-native';
+import { Box } from '@/src/components/ui/box';
+import { Text } from '@/src/components/ui/text';
+import { Heading } from '@/src/components/ui/heading';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/src/store/store';
+import { IFixedRoute } from '@/src/types';
+
+interface FixedRoutesListProps {
+  searchQuery: string;
+}
+
+export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const fixedRoutes = useSelector((state: RootState) => state.fixedRoutes.routes);
+
+  const filteredRoutes = fixedRoutes.filter(
+    (route) =>
+      route.driverId === user?.id &&
+      (route.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        route.endLocation.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  const renderItem = ({ item }: { item: IFixedRoute }) => (
+    <Box className="bg-white p-4 mb-2 rounded-md shadow-sm">
+      <Text className="font-bold">{item.startLocation} to {item.endLocation}</Text>
+      <Text>Departure: {new Date(item.departureTime).toLocaleString()}</Text>
+      <Text>Available Seats: {item.availableSeats}/{item.totalSeats}</Text>
+      <Text>Price: ${item.price}</Text>
+    </Box>
+  );
+
+  if (filteredRoutes.length === 0) {
+    return (
+      <Box>
+        <Heading size="md" className="mb-2">Your Fixed Routes</Heading>
+        <Text>No fixed routes found. Add a new route to get started!</Text>
+      </Box>
+    );
+  }
+
+  return (
+    <Box>
+      <Heading size="md" className="mb-2">Your Fixed Routes</Heading>
+      <FlatList
+        data={filteredRoutes}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+      />
+    </Box>
+  );
+}
+

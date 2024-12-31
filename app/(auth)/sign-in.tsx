@@ -48,7 +48,7 @@ export default function SignIn() {
       if (user) {
         dispatch(setUser(user));
         dispatch(setAuthenticated(user));
-        router.replace("/");
+        router.replace('/');  // Navigate to the main app
       } else {
         setErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
       }
@@ -150,3 +150,4 @@ export default function SignIn() {
     </Box>
   );
 }
+

@@ -7,7 +7,7 @@ export const authValidator: ValidatorObject<keyof IUser> = {
     },
     regex: {
       value: function (value: string): boolean {
-        return /^(0|\+84)(\s?[3-9]){1}(\d\s?){8}\d$/.test(value.trim());
+        return /^(0|\+84)(\s?[3-9]){1}(\d\s?){8}/.test(value.trim());
       },
       message: "Số điện thoại không hợp lệ.",
     },

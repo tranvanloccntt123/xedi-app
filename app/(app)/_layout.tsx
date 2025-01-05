@@ -1,6 +1,9 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import HomeIcon from "@/src/components/icons/HomeIcon";
+import MotoIcon from "@/src/components/icons/MotoIcon";
+import ProfileIcon from "@/src/components/icons/ProfileIcon";
 
 export default function AppLayout() {
   return (
@@ -10,7 +13,7 @@ export default function AppLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="business" size={size} color={color} />
+            <HomeIcon size={size} color={color} />
           ),
         }}
       />
@@ -19,7 +22,7 @@ export default function AppLayout() {
         options={{
           title: "Ride",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="car" size={size} color={color} />
+            <MotoIcon size={size} color={color} />
           ),
         }}
       />
@@ -28,7 +31,7 @@ export default function AppLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" size={size} color={color} />
+            <ProfileIcon size={size} color={color} />
           ),
         }}
       />

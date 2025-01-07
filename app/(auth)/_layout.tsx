@@ -1,3 +1,5 @@
+const APP_STRUCT = 'AUTH_LAYOUT';
+
 import React from 'react';
 import { Slot } from 'expo-router';
 import { Box } from '@/src/components/ui/box';

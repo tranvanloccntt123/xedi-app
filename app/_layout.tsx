@@ -1,3 +1,5 @@
+const APP_STRUCT = 'ROOT_LAYOUT';
+
 import "@/global.css";
 
 import React from 'react';

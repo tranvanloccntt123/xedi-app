@@ -6,6 +6,9 @@ import { Heading } from '@/src/components/ui/heading';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/src/store/store';
 import { IFixedRoute } from '@/src/types';
+import { Button } from '@/src/components/ui/button';
+import { ButtonText } from '@/src/components/ui/button';
+import { router } from 'expo-router';
 
 interface FixedRoutesListProps {
   searchQuery: string;
@@ -27,7 +30,7 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
       <Text className="font-bold">{item.startLocation} to {item.endLocation}</Text>
       <Text>Departure: {new Date(item.departureTime).toLocaleString()}</Text>
       <Text>Available Seats: {item.availableSeats}/{item.totalSeats}</Text>
-      <Text>Price: ${item.price}</Text>
+      <Text>Price: {item.price.toLocaleString()} VND</Text>
     </Box>
   );
 
@@ -36,6 +39,9 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
       <Box>
         <Heading size="md" className="mb-2">Your Fixed Routes</Heading>
         <Text>No fixed routes found. Add a new route to get started!</Text>
+        <Button size="sm" className="mt-4 bg-blue-500" onPress={() => router.navigate('create-fixed-route')}>
+          <ButtonText className="text-white">Add New Route</ButtonText>
+        </Button>
       </Box>
     );
   }
@@ -48,6 +54,9 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
+      <Button size="sm" className="mt-4 bg-blue-500" onPress={() => router.navigate('create-fixed-route')}>
+        <ButtonText className="text-white">Add New Route</ButtonText>
+      </Button>
     </Box>
   );
 }

@@ -97,9 +97,17 @@ async function moveFiles() {
       const fileName = path.basename(destPath);
 
       // Tìm file trong component-shadcn có tên trùng với file được config
-      const sourceFile = files.find(
+      const listFilter = files.filter(
         (file) => path.parse(file).name === path.parse(fileName).name
       );
+
+      let sourceFile = '';
+
+      for(const f of listFilter) {
+        console.log(f);
+      }
+
+      break;
 
       if (sourceFile) {
         const sourcePath = path.join(

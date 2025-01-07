@@ -1,3 +1,5 @@
+const APP_STRUCT = 'SIGN_IN_SCREEN';
+
 import React, { useState } from "react";
 import { Box } from "@/src/components/ui/box";
 import { Button } from "@/src/components/ui/button";

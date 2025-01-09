@@ -23,7 +23,7 @@ export interface IFixedRoute {
   driverId: string;
   startLocation: string;
   endLocation: string;
-  departureTime: Date;
+  departureTime: string;
   totalSeats: number;
   availableSeats: number;
   price: number;

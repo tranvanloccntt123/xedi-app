@@ -24,8 +24,8 @@ export default function Home() {
 
   useEffect(() => {
     // Load mock data into Redux store
-    dispatch(setFixedRoutes(mockFixedRoutes));
-  }, [dispatch]);
+    dispatch(setFixedRoutes(mockFixedRoutes.map(v => ({...v, driverId: user.id}))));
+  }, []);
 
   const openAddModal = () => {
     router.navigate('create-fixed-route')

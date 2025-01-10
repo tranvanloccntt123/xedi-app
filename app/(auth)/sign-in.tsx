@@ -1,4 +1,4 @@
-const APP_STRUCT = 'SIGN_IN_SCREEN';
+const APP_STRUCT = "SIGN_IN_SCREEN";
 
 import React, { useState } from "react";
 import { Box } from "@/src/components/ui/box";
@@ -50,7 +50,7 @@ export default function SignIn() {
       if (user) {
         dispatch(setUser(user));
         dispatch(setAuthenticated(user));
-        router.replace('/');  // Navigate to the main app
+        router.replace("/"); // Navigate to the main app
       } else {
         setErrorMessage("Số điện thoại hoặc mật khẩu không đúng");
       }
@@ -64,71 +64,73 @@ export default function SignIn() {
       <HStack className="flex-1 flex-col lg:flex-row">
         <VStack
           space="xl"
-          className="w-full h-full lg:w-3/12 p-4 lg:p-8 z-10 bg-white"
+          className="w-full h-full lg:w-4/12 p-4 z-10 bg-white items-center justify-center lg:justify-start"
         >
-          <VStack space="xs" className="mb-6">
-            <Heading size="2xl">Đăng nhập Xedi</Heading>
-            <Text>Lên xe ngay đi</Text>
-          </VStack>
-          <FormControl className="mb-2 w-full" isInvalid={!!error.phone}>
-            <Text className="mb-2 text-sm font-medium text-gray-700">
-              Số điện thoại
-            </Text>
-            <Input variant="outline" size="md">
-              <InputField
-                placeholder="Nhập số điện thoại"
-                value={phone}
-                onChangeText={(value) => {
-                  setPhone(value);
-                  setErrorMessage("");
-                }}
-                keyboardType="phone-pad"
-              />
-            </Input>
-            {!!error.phone && (
-              <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
-            )}
-          </FormControl>
-          <FormControl className="mb-6 w-full" isInvalid={!!error.password}>
-            <Text className="mb-2 text-sm font-medium text-gray-700">
-              Mật khẩu
-            </Text>
-            <Input variant="outline" size="md">
-              <InputField
-                placeholder="Nhập mật khẩu"
-                value={password}
-                onChangeText={(value) => {
-                  setPassword(value);
-                  setErrorMessage("");
-                }}
-                secureTextEntry
-              />
-            </Input>
-            {!!error.password && (
-              <Text className="text-red-500 text-sm mt-1">
-                {error.password}
+          <VStack className="w-full lg:w-full md:w-1/3 sm:w-1/2 xs:w-full">
+            <VStack space="xs" className="mb-6">
+              <Heading size="2xl">Đăng nhập Xedi</Heading>
+              <Text>Lên xe ngay đi</Text>
+            </VStack>
+            <FormControl className="w-full mb-1" isInvalid={!!error.phone}>
+              <Text className="mb-2 text-sm font-medium text-gray-700">
+                Số điện thoại
               </Text>
+              <Input variant="outline" size="md">
+                <InputField
+                  placeholder="Nhập số điện thoại"
+                  value={phone}
+                  onChangeText={(value) => {
+                    setPhone(value);
+                    setErrorMessage("");
+                  }}
+                  keyboardType="phone-pad"
+                />
+              </Input>
+              {!!error.phone && (
+                <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
+              )}
+            </FormControl>
+            <FormControl className="w-full mb-6" isInvalid={!!error.password}>
+              <Text className="mb-2 text-sm font-medium text-gray-700">
+                Mật khẩu
+              </Text>
+              <Input variant="outline" size="md">
+                <InputField
+                  placeholder="Nhập mật khẩu"
+                  value={password}
+                  onChangeText={(value) => {
+                    setPassword(value);
+                    setErrorMessage("");
+                  }}
+                  secureTextEntry
+                />
+              </Input>
+              {!!error.password && (
+                <Text className="text-red-500 text-sm mt-1">
+                  {error.password}
+                </Text>
+              )}
+            </FormControl>
+            {errorMessage && (
+              <Text className="text-red-500 mb-4">{errorMessage}</Text>
             )}
-          </FormControl>
-          {errorMessage && (
-            <Text className="text-red-500 mb-4">{errorMessage}</Text>
-          )}
-          <Button
-            size="lg"
-            className={`w-full bg-blue-500 ${
-              !phone.trim() || !password.trim() ? "opacity-75" : "opacity-100"
-            }`}
-            onPress={handleLogin}
-            disabled={!phone.trim() || !password.trim()}
-          >
-            <ButtonText className="text-white">Đăng nhập</ButtonText>
-          </Button>
-          <Text className="text-center mt-4">
-            Chưa có tài khoản?{" "}
-            <Link href="/sign-up" className="text-blue-500">
-              Đăng ký
-            </Link>
-          </Text>
+            <Button
+              size="lg"
+              className={`w-full bg-blue-500 ${
+                !phone.trim() || !password.trim() ? "opacity-75" : "opacity-100"
+              }`}
+              onPress={handleLogin}
+              disabled={!phone.trim() || !password.trim()}
+            >
+              <ButtonText className="text-white">Đăng nhập</ButtonText>
+            </Button>
+            <Text className="text-center mt-4">
+              Chưa có tài khoản?{" "}
+              <Link href="/sign-up" className="text-blue-500">
+                Đăng ký
+              </Link>
+            </Text>
+          </VStack>
         </VStack>
         <VStack
           space="md"

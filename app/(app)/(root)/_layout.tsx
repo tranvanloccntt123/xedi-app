@@ -1,12 +1,20 @@
-const APP_STRUCT = 'ROOT_GROUP_LAYOUT';
+const APP_STRUCT = "ROOT_GROUP_LAYOUT";
 
 import React from "react";
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import HomeIcon from "@/src/components/icons/HomeIcon";
 import MotoIcon from "@/src/components/icons/MotoIcon";
 import ProfileIcon from "@/src/components/icons/ProfileIcon";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/store/store";
 
 export default function RootGroupLayout() {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  if (!isAuthenticated) {
+    return <Redirect href="/sign-in" />;
+  }
   return (
     <Tabs screenOptions={{ headerShown: false }}>
       <Tabs.Screen

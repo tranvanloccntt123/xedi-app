@@ -93,28 +93,17 @@ async function moveFiles() {
       `${rootDirectory}/src/components-shadcn`
     );
 
-    for (const [key, destPath] of Object.entries(appStruct)) {
-      const fileName = path.basename(destPath);
-
-      // Tìm file trong component-shadcn có tên trùng với file được config
-      const listFilter = files.filter(
-        (file) => path.parse(file).name === path.parse(fileName).name
+    for (const newFile of files) {
+      const sourcePath = path.join(
+        `${rootDirectory}/src/components-shadcn`,
+        newFile
       );
-
-      let sourceFile = '';
-
-      for(const f of listFilter) {
-        console.log(f);
-      }
-
-      break;
-
-      if (sourceFile) {
-        const sourcePath = path.join(
-          `${rootDirectory}/src/components-shadcn`,
-          sourceFile
-        );
-
+      const content = await fs.readFileSync(sourcePath, "utf8");
+      const pathToRealFile = content.match(
+        /(?<=APP_STRUCT\s=\s\")([A-Z]+(\_)*)+/g
+      )?.[0];
+      if (appStruct[pathToRealFile]) {
+        const destPath = appStruct[pathToRealFile];
         const actualPath = path.join(rootDirectory, destPath);
 
         // Tạo thư mục đích nếu nó chưa tồn tại
@@ -125,9 +114,7 @@ async function moveFiles() {
         console.log(`Đã di chuyển ${sourcePath} đến ${actualPath}`);
       }
     }
-
     console.log("Hoàn thành việc di chuyển các file.");
-    // await fs.unlinkSync(`${rootDirectory}/src/components-shadcn`);
   } catch (error) {
     console.error("Đã xảy ra lỗi:", error);
   }
@@ -135,11 +122,11 @@ async function moveFiles() {
 
 async function manualMoveTypeFile() {
   try {
-    const wrongPath = path.join(rootDirectory, 'src/src/types');
+    const wrongPath = path.join(rootDirectory, "src/src/types");
     const wrongFiles = await fs.readdirSync(wrongPath);
     for (const file of wrongFiles) {
       const filePath = path.join(wrongPath, file);
-      const actualPath = path.join(rootDirectory, 'src/types', file);
+      const actualPath = path.join(rootDirectory, "src/types", file);
       await fs.mkdirSync(path.dirname(actualPath), { recursive: true });
       await fs.renameSync(filePath, actualPath);
     }

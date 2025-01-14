@@ -19,10 +19,13 @@ const tripRequestsSlice = createSlice({
     addTripRequest: (state, action: PayloadAction<ITripRequest>) => {
       state.requests.push(action.payload);
     },
-    updateTripRequest: (state, action: PayloadAction<{ id: string; status: 'accepted' | 'rejected' | 'cancelled' }>) => {
+    updateTripRequest: (state, action: PayloadAction<{ id: string; riderId: string }>) => {
       const index = state.requests.findIndex(request => request.id === action.payload.id);
       if (index !== -1) {
-        state.requests[index].status = action.payload.status;
+        if (!state.requests[index].riderRequests.includes(action.payload.riderId)) {
+          state.requests[index].riderRequests.push(action.payload.riderId);
+        }
+        state.requests[index].updatedAt = new Date();
       }
     },
     deleteTripRequest: (state, action: PayloadAction<string>) => {

@@ -52,24 +52,24 @@ export default function Profile() {
       </Box>
 
       <VStack space="md" className="p-4">
-        <Heading size="sm">Account</Heading>
+        <Heading size="sm">Tài khoản</Heading>
         <ProfileSection
-          title="Personal Information"
-          subtitle="Manage your personal details"
+          title="Thông tin cá nhân"
+          subtitle="Quản lý thông tin cá nhân của bạn"
           onPress={() => {
             /* Navigate to personal info screen */
           }}
         />
         <ProfileSection
-          title="Payment Methods"
-          subtitle="Add or remove payment options"
+          title="Phương thức thanh toán"
+          subtitle="Thêm hoặc xóa phương thức thanh toán"
           onPress={() => {
             /* Navigate to payment methods screen */
           }}
         />
         <ProfileSection
-          title="Saved Places"
-          subtitle="Manage your favorite locations"
+          title="Địa điểm đã lưu"
+          subtitle="Quản lý các địa điểm yêu thích của bạn"
           onPress={() => {
             /* Navigate to saved places screen */
           }}
@@ -77,17 +77,17 @@ export default function Profile() {
 
         <Divider className="my-2" />
 
-        <Heading size="sm">Preferences</Heading>
+        <Heading size="sm">Tùy chọn</Heading>
         <ProfileSection
-          title="Notifications"
-          subtitle="Manage your notification settings"
+          title="Thông báo"
+          subtitle="Quản lý cài đặt thông báo của bạn"
           onPress={() => {
             /* Navigate to notifications screen */
           }}
         />
         <ProfileSection
-          title="Language"
-          subtitle="Change app language"
+          title="Ngôn ngữ"
+          subtitle="Thay đổi ngôn ngữ ứng dụng"
           onPress={() => {
             /* Navigate to language selection screen */
           }}
@@ -95,17 +95,17 @@ export default function Profile() {
 
         <Divider className="my-2" />
 
-        <Heading size="sm">Support</Heading>
+        <Heading size="sm">Hỗ trợ</Heading>
         <ProfileSection
-          title="Help Center"
-          subtitle="Get help and contact support"
+          title="Trung tâm trợ giúp"
+          subtitle="Nhận trợ giúp và liên hệ hỗ trợ"
           onPress={() => {
             /* Navigate to help center screen */
           }}
         />
         <ProfileSection
-          title="About"
-          subtitle="Learn more about Xedi"
+          title="Giới thiệu"
+          subtitle="Tìm hiểu thêm về Xedi"
           onPress={() => {
             /* Navigate to about screen */
           }}
@@ -117,7 +117,7 @@ export default function Profile() {
           className="mt-4"
           onPress={handleLogout}
         >
-          <ButtonText>Logout</ButtonText>
+          <ButtonText>Đăng xuất</ButtonText>
         </Button>
       </VStack>
     </ScrollView>

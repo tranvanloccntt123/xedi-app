@@ -1,3 +1,5 @@
+const APP_STRUCT = 'FIXED_ROUTES_LIST';
+
 import React from "react";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
@@ -8,6 +10,7 @@ import { IFixedRoute } from "@/src/types";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { router } from "expo-router";
+import { Pressable } from "react-native";
 
 interface FixedRoutesListProps {
   searchQuery: string;
@@ -27,31 +30,36 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   );
 
   const renderItem = (item: IFixedRoute) => (
-    <Box key={item.id} className="bg-white p-4 mb-2 rounded-md shadow-sm w-full">
-      <Text className="font-bold">
-        {item.startLocation} to {item.endLocation}
-      </Text>
-      <Text>Departure: {new Date(item.departureTime).toLocaleString()}</Text>
-      <Text>
-        Available Seats: {item.availableSeats}/{item.totalSeats}
-      </Text>
-      <Text>Price: {item.price.toLocaleString()} VND</Text>
-    </Box>
+    <Pressable
+      key={item.id}
+      onPress={() => router.push(`/fixed-route-detail/${item.id}`)}
+    >
+      <Box className="bg-white p-4 mb-2 rounded-md shadow-sm w-full">
+        <Text className="font-bold">
+          {item.startLocation} đến {item.endLocation}
+        </Text>
+        <Text>Khởi hành: {new Date(item.departureTime).toLocaleString()}</Text>
+        <Text>
+          Số ghế còn trống: {item.availableSeats}/{item.totalSeats}
+        </Text>
+        <Text>Giá: {item.price.toLocaleString()} VND</Text>
+      </Box>
+    </Pressable>
   );
 
   if (filteredRoutes.length === 0) {
     return (
       <Box className="w-full">
         <Heading size="md" className="mb-2">
-          Your Fixed Routes
+          Tuyến cố định của bạn
         </Heading>
-        <Text>No fixed routes found. Add a new route to get started!</Text>
+        <Text>Không tìm thấy tuyến cố định nào. Thêm một tuyến mới để bắt đầu!</Text>
         <Button
           size="sm"
           className="mt-4 bg-blue-500 w-full"
-          onPress={() => router.navigate("create-fixed-route")}
+          onPress={() => router.push("/create-fixed-route")}
         >
-          <ButtonText className="text-white">Add New Route</ButtonText>
+          <ButtonText className="text-white">Thêm tuyến mới</ButtonText>
         </Button>
       </Box>
     );
@@ -60,15 +68,15 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   return (
     <Box className="w-full">
       <Heading size="md" className="mb-2">
-        Your Fixed Routes
+        Tuyến cố định của bạn
       </Heading>
       {filteredRoutes.map((item) => renderItem(item))}
       <Button
         size="sm"
         className="mt-4 bg-blue-500 w-full"
-        onPress={() => router.navigate("create-fixed-route")}
+        onPress={() => router.push("/create-fixed-route")}
       >
-        <ButtonText className="text-white">Add New Route</ButtonText>
+        <ButtonText className="text-white">Thêm tuyến mới</ButtonText>
       </Button>
     </Box>
   );

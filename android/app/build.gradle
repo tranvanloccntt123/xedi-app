@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.teiresource.xediapp'
+    namespace 'com.anonymous.xediapp'
     defaultConfig {
-        applicationId 'com.teiresource.xediapp'
+        applicationId 'com.anonymous.xediapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

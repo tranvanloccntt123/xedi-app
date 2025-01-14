@@ -1,4 +1,4 @@
-package com.teiresource.xediapp
+package com.anonymous.xediapp
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

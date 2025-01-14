@@ -1,3 +1,5 @@
+const APP_STRUCT = 'ADD_FIXED_ROUTE_MODAL';
+
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
 import { Box } from '@/src/components/ui/box';

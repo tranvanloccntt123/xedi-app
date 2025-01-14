@@ -49,6 +49,7 @@
     "@gluestack-ui/toast": "^1.0.8",
     "@gluestack-ui/tooltip": "^0.1.37",
     "@legendapp/motion": "^2.4.0",
+    "@lottiefiles/dotlottie-react": "^0.12.1",
     "@react-native-async-storage/async-storage": "^2.1.0",
     "@react-native-community/cli": "^16.0.0",
     "@react-native-community/datetimepicker": "^8.2.0",
@@ -70,6 +71,7 @@
     "expo-symbols": "~0.2.0",
     "expo-system-ui": "~4.0.4",
     "expo-web-browser": "~14.0.1",
+    "lottie-react-native": "7.1.0",
     "nativewind": "^4.1.23",
     "react": "18.3.1",
     "react-datepicker": "^7.6.0",
@@ -104,4 +106,3 @@
   },
   "private": true
 }
-

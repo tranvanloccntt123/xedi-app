@@ -87,11 +87,15 @@ console.log(`Ignoring paths: ${ignorePaths.join(", ")}`);
 const appStruct = require("../app.struct");
 
 async function moveFiles() {
+  let total = 0;
+  let success = 0;
   try {
     // Đọc danh sách các file trong thư mục component-shadcn
     const files = await fs.readdirSync(
       `${rootDirectory}/src/components-shadcn`
     );
+
+    total = files.length;
 
     for (const newFile of files) {
       const sourcePath = path.join(
@@ -100,8 +104,9 @@ async function moveFiles() {
       );
       const content = await fs.readFileSync(sourcePath, "utf8");
       const pathToRealFile = content.match(
-        /(?<=APP_STRUCT\s=\s\")([A-Z]+(\_)*)+/g
+        /(?<=APP_STRUCT\s=\s[\"\'])([A-Z]+(\_)*)+/g
       )?.[0];
+      console.log("[Di chuyển] đang kiểm tra file ", pathToRealFile);
       if (appStruct[pathToRealFile]) {
         const destPath = appStruct[pathToRealFile];
         const actualPath = path.join(rootDirectory, destPath);
@@ -111,13 +116,18 @@ async function moveFiles() {
 
         // Di chuyển file
         await fs.renameSync(sourcePath, actualPath);
-        console.log(`Đã di chuyển ${sourcePath} đến ${actualPath}`);
+        console.log(`[Di chuyển] Đã di chuyển ${sourcePath} đến ${actualPath}`);
+        success++;
+      } else {
+        console.log("[Di chuyển] chưa định nghĩa trong app.struct.js");
       }
     }
     console.log("Hoàn thành việc di chuyển các file.");
   } catch (error) {
     console.error("Đã xảy ra lỗi:", error);
   }
+  console.log(`[Di chuyển] tệp trong thư mục: ${total}`);
+  console.log(`[Di chuyển] di chuyển thành công: ${success}`);
 }
 
 async function manualMoveTypeFile() {
@@ -138,10 +148,10 @@ async function manualMoveTypeFile() {
 
 const run = async () => {
   try {
-    await processDirectory(rootDirectory);
+    // await processDirectory(rootDirectory);
     // await readFilesFromList(componentsFolder);
     await moveFiles();
-    await manualMoveTypeFile();
+    // await manualMoveTypeFile();
   } catch (e) {}
 };
 

@@ -27,6 +27,8 @@
         <data android:scheme="myapp"/>
         <data android:scheme="com.teiresource.xediapp"/>
         <data android:scheme="exp+xedi-app"/>
+        <data android:scheme="xedi-app"/>
+        <data android:scheme="com.anonymous.xediapp"/>
       </intent-filter>
     </activity>
   </application>

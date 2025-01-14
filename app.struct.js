@@ -14,6 +14,13 @@ module.exports = {
   'RIDE_SCREEN': 'app/(app)/(root)/ride.tsx',
   'PROFILE_SCREEN': 'app/(app)/(root)/profile.tsx',
   'FOOD_SCREEN': 'app/(app)/food.tsx',
+  'FIXED_ROUTE_DETAIL_SCREEN': 'app/(app)/fixed-route-detail/[id].tsx',
+
+  // Components
+  'ADD_FIXED_ROUTE_MODAL': 'src/components/AddFixedRouteModal.tsx',
+  'FIXED_ROUTES_LIST': 'src/components/FixedRoutesList.tsx',
+  'TRIP_REQUEST_LIST': 'src/components/TripRequestList.tsx',
+  'DATE_TIME_PICKER': 'src/components/DateTime.tsx',
 
   // Src directory
   'STORE': 'src/store/store.ts',

@@ -46,9 +46,10 @@ export interface ITripRequest {
   startLocation: string;
   endLocation: string;
   departureTime: Date;
-  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
+  status: 'pending' | 'accepted' | 'completed' | 'cancelled';
   requestTime: Date;
   updatedAt: Date;
+  riderRequests: string[]; // Array of rider IDs who have requested this trip
 }
 
 export interface ITripRequestForFixedRoute {

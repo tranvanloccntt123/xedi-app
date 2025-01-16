@@ -18,7 +18,7 @@ export const formValidate = (
   if (message === "" && config.min && value.length < (config.min?.value ?? 0)) {
     message = config.min.message;
   }
-  if (message === "" && config.regex && !config.regex.value(value)) {
+  if (message === "" && config.regex && !config.regex?.value?.(value ?? "")) {
     message = config.regex.message;
   }
   if (message === "" && config.customs && config.customs.length) {
@@ -43,6 +43,7 @@ export const formValidatePerField = (
 ) => {
   const res: Record<string, ValidatorResult> = {};
   Object.keys(form).forEach((key) => {
+    console.log(key, validator[key], form[key]);
     res[key] = formValidate(validator[key], form[key]);
   });
   return res;

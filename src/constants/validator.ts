@@ -18,8 +18,8 @@ export const authValidator: ValidatorObject<keyof IUser> = {
     },
     regex: {
       value: function (value: string): boolean {
-        const regex = /[^a-zA-Z\s]/g;
-        return !value.trim().match(regex).length;
+        const regex = /[^a-zA-Z\s]+/g;
+        return !value.trim().match(regex)?.length;
       },
       message: "Tên không được chứa số và kí tự đặc biệt.",
     },

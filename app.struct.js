@@ -15,6 +15,7 @@ module.exports = {
   'PROFILE_SCREEN': 'app/(app)/(root)/profile.tsx',
   'FOOD_SCREEN': 'app/(app)/food.tsx',
   'FIXED_ROUTE_DETAIL_SCREEN': 'app/(app)/fixed-route-detail/[id].tsx',
+  'CHAT_SCREEN': 'app/(app)/chat/[id].tsx',
 
   // Components
   'ADD_FIXED_ROUTE_MODAL': 'src/components/AddFixedRouteModal.tsx',

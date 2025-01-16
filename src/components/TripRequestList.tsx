@@ -14,6 +14,7 @@ import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import LottieView from "lottie-react-native";
 import Lottie from "../lottie";
+import { router } from "expo-router";
 
 export default function TripRequestList() {
   const tripRequests = useSelector(
@@ -31,6 +32,8 @@ export default function TripRequestList() {
   const handleRequestTrip = (requestId: string) => {
     if (user?.id) {
       dispatch(updateTripRequest({ id: requestId, riderId: user.id }));
+      // Navigate to the chat screen
+      router.push(`/chat/${requestId}`);
     }
   };
 
@@ -88,3 +91,4 @@ export default function TripRequestList() {
     </Box>
   );
 }
+

@@ -28,11 +28,8 @@ export default function Home() {
         contentContainerStyle={{ width: "100%" }}
       >
         <VStack space="md" className="w-full p-4">
-          <Heading size="2xl" className="mb-4">
-            Chào mừng đến với Xedi
-          </Heading>
-          <Heading size="lg" className="mb-6">
-            Số điện thoại: {user?.phone}
+          <Heading size="lg" className="mb-4">
+            Xin Chào, {user?.phone}
           </Heading>
           <Box className="w-full mb-4">
             <TripRequestList />
@@ -42,3 +39,4 @@ export default function Home() {
     </Box>
   );
 }
+

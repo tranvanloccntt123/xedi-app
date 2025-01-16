@@ -1,7 +1,7 @@
 const APP_STRUCT = "CHAT_SCREEN";
 
 import React, { useState, useCallback, useEffect } from "react";
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { GiftedChat, IMessage } from "react-native-gifted-chat";
 import { Box } from "@/src/components/ui/box";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
@@ -19,16 +19,17 @@ import { VStack } from "@/src/components/ui/vstack";
 import { useLocalSearchParams } from "expo-router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
+import ChatInput from "@/src/components/ChatInput";
 
 // Mock chat messages for demonstration
 const mockMessages: IMessage[] = [
   {
     _id: 2,
-    text: 'Cảm ơn bạn! Bạn có thể cho tôi biết thời gian đón được không?',
+    text: "Cảm ơn bạn! Bạn có thể cho tôi biết thời gian đón được không?",
     createdAt: new Date(),
     user: {
-      _id: 'customer1',
-      name: 'Khách hàng',
+      _id: "customer1",
+      name: "Khách hàng",
     },
   },
 ];
@@ -37,7 +38,7 @@ export default function ChatScreen() {
   const { id } = useLocalSearchParams();
   const [messages, setMessages] = useState<IMessage[]>(mockMessages);
   const [showModal, setShowModal] = useState(false);
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState("");
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function ChatScreen() {
   }, []);
 
   const onSend = useCallback((newMessages: IMessage[] = []) => {
-    setMessages(previousMessages =>
+    setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, newMessages)
     );
     // Here you would typically send the message to your backend
@@ -57,53 +58,63 @@ export default function ChatScreen() {
     // Here you would typically send the order to your backend
     console.log(`Order trip request with price: ${price}`);
     setShowModal(false);
-    
+
     // Send a message to the chat thread
-    onSend([{
-      _id: Math.round(Math.random() * 1000000),
-      text: `Tài xế báo giá chuyến đi: ${price} VND`,
-      createdAt: new Date(),
-      user: {
-        _id: user?.id || '',
-        name: user?.name || '',
+    onSend([
+      {
+        _id: Math.round(Math.random() * 1000000),
+        text: `Tài xế báo giá chuyến đi: ${price} VND`,
+        createdAt: new Date(),
+        user: {
+          _id: user?.id || "",
+          name: user?.name || "",
+        },
       },
-    }]);
-    
-    setPrice('');
+    ]);
+
+    setPrice("");
+  };
+
+  const handleSendMessage = (text: string) => {
+    onSend([
+      {
+        _id: Math.round(Math.random() * 1000000),
+        text,
+        createdAt: new Date(),
+        user: {
+          _id: user?.id || "",
+          name: user?.name || "",
+        },
+      },
+    ]);
   };
 
   return (
     <Box className="flex-1 bg-gray-100">
-      {user?.role === 'driver' && (
-        <Button
-          onPress={() => setShowModal(true)}
-          className="m-2 bg-blue-500"
-        >
+      {user?.role === "driver" && (
+        <Button onPress={() => setShowModal(true)} className="m-2 bg-blue-500">
           <ButtonText>Đặt giá chuyến đi</ButtonText>
         </Button>
       )}
       <GiftedChat
         messages={messages}
-        onSend={messages => onSend(messages)}
+        onSend={(messages) => onSend(messages)}
         user={{
-          _id: user?.id || '',
-          name: user?.name || '',
+          _id: user?.id || "",
+          name: user?.name || "",
         }}
-        placeholder="Nhập tin nhắn..."
-        locale="vi" // Set locale to Vietnamese
-        dateFormat="DD/MM/YYYY"
-        timeFormat="HH:mm"
+        renderInputToolbar={() => null}
+        renderAvatar={null}
+        showUserAvatar={false}
         renderUsernameOnMessage={true}
-        showAvatarForEveryMessage={true}
+        showAvatarForEveryMessage={false}
         renderAvatarOnTop={true}
         alwaysShowSend={true}
         scrollToBottom={true}
         inverted={true}
       />
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-      >
+      <ChatInput onSend={handleSendMessage} />
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <ModalBackdrop />
         <ModalContent>
           <ModalHeader>
@@ -123,11 +134,7 @@ export default function ChatScreen() {
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              variant="outline"
-              mr="$3"
-              onPress={() => setShowModal(false)}
-            >
+            <Button variant="outline" onPress={() => setShowModal(false)}>
               <ButtonText>Hủy</ButtonText>
             </Button>
             <Button onPress={handleOrderTripRequest}>
@@ -139,4 +146,3 @@ export default function ChatScreen() {
     </Box>
   );
 }
-

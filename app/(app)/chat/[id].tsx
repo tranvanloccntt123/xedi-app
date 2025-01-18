@@ -92,9 +92,14 @@ export default function ChatScreen() {
   return (
     <Box className="flex-1 bg-gray-100">
       {user?.role === "driver" && (
-        <Button onPress={() => setShowModal(true)} className="m-2 bg-blue-500">
-          <ButtonText>Đặt giá chuyến đi</ButtonText>
-        </Button>
+        <Box className="bg-white">
+          <Button
+            onPress={() => setShowModal(true)}
+            className="my-2 mx-4 bg-blue-500"
+          >
+            <ButtonText>Báo giá</ButtonText>
+          </Button>
+        </Box>
       )}
       <GiftedChat
         messages={messages}
@@ -146,3 +151,4 @@ export default function ChatScreen() {
     </Box>
   );
 }
+

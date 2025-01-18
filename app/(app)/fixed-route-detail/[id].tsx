@@ -22,6 +22,7 @@ import {
 } from "@/src/components/ui/form-control";
 import { ScrollView } from "react-native";
 import DateTimePicker from "@/src/components/DateTime";
+import FixedRouteItem from "@/src/components/FixedRouteItem";
 
 export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();
@@ -140,15 +141,7 @@ export default function FixedRouteDetail() {
               </>
             ) : (
               <>
-                <Text>Điểm đi: {route.startLocation}</Text>
-                <Text>Điểm đến: {route.endLocation}</Text>
-                <Text>
-                  Thời gian khởi hành:{" "}
-                  {new Date(route.departureTime).toLocaleString()}
-                </Text>
-                <Text>Tổng số ghế: {route.totalSeats}</Text>
-                <Text>Số ghế còn trống: {route.availableSeats}</Text>
-                <Text>Giá: {route.price.toLocaleString()} VND</Text>
+                <FixedRouteItem fixedRoute={route} disabled />
                 <Button onPress={() => setEditMode(true)}>
                   <ButtonText>Chỉnh sửa tuyến đường</ButtonText>
                 </Button>
@@ -163,4 +156,3 @@ export default function FixedRouteDetail() {
     </Box>
   );
 }
-

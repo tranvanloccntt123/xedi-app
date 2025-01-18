@@ -1,3 +1,6 @@
+import { HStack } from "@/src/components/ui/hstack";
+import { useRouter } from "expo-router";
+
 const APP_STRUCT = 'RIDE_SCREEN';
 
 import React, { useState, useEffect } from 'react';
@@ -7,17 +10,16 @@ import { Text } from '@/src/components/ui/text';
 import { VStack } from '@/src/components/ui/vstack';
 import { Input } from '@/src/components/ui/input';
 import { InputField } from '@/src/components/ui/input';
-import { Button } from '@/src/components/ui/button';
-import { ButtonText } from '@/src/components/ui/button';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/src/store/store';
 import FixedRoutesList from '@/src/components/FixedRoutesList';
-import { router } from 'expo-router';
 import { mockFixedRoutes } from '@/src/mockData/fixedRoutes';
 import { setFixedRoutes } from '@/src/store/fixedRoutesSlice';
-import { Platform, ScrollView } from 'react-native';
+import { Button, ButtonText } from "@/src/components/ui/button";
+import AddIcon from "@/src/components/icons/AddIcon";
 
 export default function Ride() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const fixedRoutes = useSelector((state: RootState) => state.fixedRoutes.routes);
@@ -28,55 +30,37 @@ export default function Ride() {
     dispatch(setFixedRoutes(mockFixedRoutes.map(v => ({...v, driverId: user.id}))));
   }, []);
 
-  const openAddModal = () => {
-    router.navigate('create-fixed-route');
-  };
-
-  const userFixedRoutes = fixedRoutes.filter(route => route.driverId === user?.id);
-
   return (
-    <Box className="flex-1 bg-gray-100">
-      <ScrollView
-        style={{ flex: 1, width: '100%' }}
-        showsVerticalScrollIndicator={Platform.OS === "web"}
-        contentContainerStyle={{ width: '100%' }}
-      >
-        <VStack space="md" className="w-full p-4">
-          <Heading size="2xl" className="mb-4">Quản lý chuyến đi</Heading>
-          
-          {user?.role === 'driver' ? (
-            <>
-              <Input
-                variant="outline"
-                size="md"
-                className="w-full mb-4"
-              >
-                <InputField
-                  placeholder="Tìm kiếm tuyến đường..."
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                />
-              </Input>
-
-              {userFixedRoutes.length > 0 ? (
-                <Box className="w-full mb-4">
-                  <FixedRoutesList searchQuery={searchQuery} />
-                </Box>
-              ) : (
-                <Button
-                  size="lg"
-                  className="w-full mb-4 bg-blue-500"
-                  onPress={openAddModal}
-                >
-                  <ButtonText className="text-white">Thêm tuyến cố định</ButtonText>
-                </Button>
-              )}
-            </>
-          ) : (
-            <Text className="text-gray-600">Chức năng đặt xe sẽ sớm ra mắt!</Text>
-          )}
-        </VStack>
-      </ScrollView>
+    <Box className="flex-1 bg-gray-100 py-2">
+      <VStack space="md" className="w-full">
+        <HStack className="justify-between items-center px-4 mb-2">
+          <Heading size="lg">Tuyến cố định</Heading>
+          <Button
+            size="sm"
+            variant="link"
+            onPress={() => router.push("/create-fixed-route")}
+          >
+             <AddIcon size={24} color={'#000000'} />
+          </Button>
+        </HStack>
+        {/* <Heading size="lg" className="mb-1 mx-4">Tuyến cố định</Heading> */}
+        <Box className="px-4 mb-4">
+          <Input
+            variant="outline"
+            size="md"
+            className="w-full"
+          >
+            <InputField
+              placeholder="Tìm kiếm tuyến đường..."
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+          </Input>
+        </Box>
+        <Box className="flex-1 w-full">
+          <FixedRoutesList searchQuery={searchQuery} />
+        </Box>
+      </VStack>
     </Box>
   );
 }

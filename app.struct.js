@@ -12,6 +12,7 @@ module.exports = {
   'ROOT_GROUP_LAYOUT': 'app/(app)/(root)/_layout.tsx',
   'HOME_SCREEN': 'app/(app)/(root)/index.tsx',
   'RIDE_SCREEN': 'app/(app)/(root)/ride.tsx',
+  'TRIP_REQUESTS_SCREEN': 'app/(app)/(root)/trip-requests.tsx',
   'PROFILE_SCREEN': 'app/(app)/(root)/profile.tsx',
   'FOOD_SCREEN': 'app/(app)/food.tsx',
   'FIXED_ROUTE_DETAIL_SCREEN': 'app/(app)/fixed-route-detail/[id].tsx',
@@ -20,6 +21,7 @@ module.exports = {
   // Components
   'ADD_FIXED_ROUTE_MODAL': 'src/components/AddFixedRouteModal.tsx',
   'FIXED_ROUTES_LIST': 'src/components/FixedRoutesList.tsx',
+  'FIXED_ROUTES_ITEM': 'src/components/FixedRouteItem.tsx',
   'TRIP_REQUEST_LIST': 'src/components/TripRequestList.tsx',
   'DATE_TIME_PICKER': 'src/components/DateTime.tsx',
 

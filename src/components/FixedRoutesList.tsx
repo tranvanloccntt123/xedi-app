@@ -1,16 +1,18 @@
-const APP_STRUCT = 'FIXED_ROUTES_LIST';
-
-import React from "react";
+import React, { useCallback } from "react";
+import { FlatList } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
-import { Heading } from "@/src/components/ui/heading";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { IFixedRoute } from "@/src/types";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { router } from "expo-router";
-import { Pressable } from "react-native";
+import FixedRouteItem from "./FixedRouteItem";
+import moment from "moment";
+import { Heading } from "./ui/heading";
+
+const APP_STRUCT = "FIXED_ROUTES_LIST";
 
 interface FixedRoutesListProps {
   searchQuery: string;
@@ -29,56 +31,48 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
         route.endLocation.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const renderItem = (item: IFixedRoute) => (
-    <Pressable
-      key={item.id}
-      onPress={() => router.push(`/fixed-route-detail/${item.id}`)}
-    >
-      <Box className="bg-white p-4 mb-2 rounded-md shadow-sm w-full">
-        <Text className="font-bold">
-          {item.startLocation} đến {item.endLocation}
-        </Text>
-        <Text>Khởi hành: {new Date(item.departureTime).toLocaleString()}</Text>
-        <Text>
-          Số ghế còn trống: {item.availableSeats}/{item.totalSeats}
-        </Text>
-        <Text>Giá: {item.price.toLocaleString()} VND</Text>
-      </Box>
-    </Pressable>
+  const renderItem = useCallback(
+    ({ item, index }: { item: IFixedRoute; index: number }) => {
+      const month = moment(item.departureTime).format("MM/YYYY");
+      const upMonth =
+        index &&
+        moment(filteredRoutes[index - 1].departureTime).format("MM/YYYY");
+      return (
+        <Box className="px-4 mb-[15px] w-full">
+          {(index === 0 || month !== upMonth) && (
+            <Heading size="xs" className="mb-2 text-bold text-primary-600">
+              Tháng {month}
+            </Heading>
+          )}
+          <FixedRouteItem fixedRoute={item} />
+        </Box>
+      );
+    },
+    [filteredRoutes]
   );
-
-  if (filteredRoutes.length === 0) {
-    return (
-      <Box className="w-full">
-        <Heading size="md" className="mb-2">
-          Tuyến cố định của bạn
-        </Heading>
-        <Text>Không tìm thấy tuyến cố định nào. Thêm một tuyến mới để bắt đầu!</Text>
-        <Button
-          size="sm"
-          className="mt-4 bg-blue-500 w-full"
-          onPress={() => router.push("/create-fixed-route")}
-        >
-          <ButtonText className="text-white">Thêm tuyến mới</ButtonText>
-        </Button>
-      </Box>
-    );
-  }
 
   return (
     <Box className="w-full">
-      <Heading size="md" className="mb-2">
-        Tuyến cố định của bạn
-      </Heading>
-      {filteredRoutes.map((item) => renderItem(item))}
-      <Button
-        size="sm"
-        className="mt-4 bg-blue-500 w-full"
-        onPress={() => router.push("/create-fixed-route")}
-      >
-        <ButtonText className="text-white">Thêm tuyến mới</ButtonText>
-      </Button>
+      <FlatList
+        data={filteredRoutes}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <Box className="w-full px-4">
+            <Text className="text-center font-bold">
+              Không tìm thấy tuyến cố định nào. Thêm một tuyến mới để bắt đầu!
+            </Text>
+            <Button
+              size="sm"
+              className="mt-4 bg-blue-500 w-full"
+              onPress={() => router.push("/create-fixed-route")}
+            >
+              <ButtonText className="text-white">Thêm tuyến mới</ButtonText>
+            </Button>
+          </Box>
+        )}
+        contentContainerStyle={{ flexGrow: 1 }}
+      />
     </Box>
   );
 }
-

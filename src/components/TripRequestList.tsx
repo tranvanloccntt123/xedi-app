@@ -1,27 +1,38 @@
 const APP_STRUCT = "TRIP_REQUEST_LIST";
 
-import React from "react";
+import React, { useCallback, useEffect } from "react";
+import { FlatList } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
-import { Heading } from "@/src/components/ui/heading";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/src/store/store";
-import { updateTripRequest } from "@/src/store/tripRequestsSlice";
+import {
+  updateTripRequest,
+  setTripRequests,
+} from "@/src/store/tripRequestsSlice";
 import { ITripRequest } from "@/src/types";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import LottieView from "lottie-react-native";
 import Lottie from "../lottie";
 import { router } from "expo-router";
+import { mockTripRequests } from "@/src/mockData/tripRequests";
+import moment from "moment";
+import { Heading } from "./ui/heading";
 
 export default function TripRequestList() {
+  const dispatch = useDispatch();
   const tripRequests = useSelector(
     (state: RootState) => state.tripRequests.requests
   );
   const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Load mock data into Redux store
+    dispatch(setTripRequests(mockTripRequests));
+  }, [dispatch]);
 
   const pendingRequests = tripRequests.filter(
     (request) =>
@@ -37,57 +48,88 @@ export default function TripRequestList() {
     }
   };
 
-  const renderItem = (item: ITripRequest) => (
-    <Box
-      key={item.id}
-      className="bg-white p-4 mb-2 rounded-md shadow-sm w-full"
-    >
-      <VStack space="xs">
-        <Text className="font-bold">
-          {item.startLocation} đến {item.endLocation}
-        </Text>
-        <Text>Khởi hành: {new Date(item.departureTime).toLocaleString()}</Text>
-        <Text>
-          Thời gian yêu cầu: {new Date(item.requestTime).toLocaleString()}
-        </Text>
-        <Text>Trạng thái: {item.status}</Text>
-        <Text>Số người quan tâm: {item.riderRequests.length}</Text>
-        <HStack space="sm" className="justify-end mt-2">
-          <Button
-            size="sm"
-            className="bg-blue-500"
-            onPress={() => handleRequestTrip(item.id)}
-          >
-            <ButtonText className="text-white">Yêu cầu chuyến đi</ButtonText>
-          </Button>
-        </HStack>
-      </VStack>
-    </Box>
+  const renderItem = useCallback(
+    ({ item, index }: { item: ITripRequest; index: number }) => {
+      const month = moment(item.departureTime).format("MM/YYYY");
+      const upMonth =
+        index &&
+        moment(pendingRequests[index - 1]?.departureTime).format("MM/YYYY");
+      return (
+        <Box className="px-4 mb-[15px] w-full">
+          {(index === 0 || month !== upMonth) && (
+            <Heading size="xs" className="mb-2 text-bold text-primary-600">
+              Tháng {month}
+            </Heading>
+          )}
+          <VStack space="xs" className="mx-2 bg-white p-4 rounded-md">
+            <HStack className="justify-between">
+              <Text className="text-xs font-bold">
+                {moment(item?.departureTime).format("HH:mm")}
+              </Text>
+              {/* <Text className="text-xs font-bold">{item.status}</Text> */}
+            </HStack>
+            <VStack>
+              <HStack className="items-center">
+                <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
+                  <Box className="rounded-full w-full h-full bg-error-500" />
+                </Box>
+                <Text className="font-black font-normal text-sm">
+                  {item.startLocation}
+                </Text>
+              </HStack>
+              <Box className="w-[15px] h-[5px] justify-center items-center">
+                <Box className="rounded-full w-[3px] h-[3px] bg-primary-100" />
+              </Box>
+              <Box className="w-[15px] h-[5px] justify-center items-center">
+                <Box className="rounded-full w-[3px] h-[3px] bg-primary-100" />
+              </Box>
+              <HStack className="items-center">
+                <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
+                  <Box className="rounded-full w-full h-full bg-error-100" />
+                </Box>
+                <Text className="font-black font-normal text-sm">
+                  {item.endLocation}
+                </Text>
+              </HStack>
+            </VStack>
+            <HStack space="sm" className="justify-end mt-2">
+              <Button
+                size="xs"
+                className="bg-blue-500 rounded-lg"
+                onPress={() => handleRequestTrip(item.id)}
+              >
+                <ButtonText className="text-white">Nhắn tin</ButtonText>
+              </Button>
+            </HStack>
+          </VStack>
+        </Box>
+      );
+    },
+    []
   );
-
-  if (pendingRequests.length === 0) {
-    return (
-      <Box className="w-full">
-        <LottieView
-          source={Lottie.RIDE}
-          colorFilters={[]}
-          style={{ width: "100%", height: "100%" }}
-          autoPlay
-          loop
-        />
-        <Text className="text-center font-bold">
-          Đi thôi, đừng để khách đợi!
-        </Text>
-      </Box>
-    );
-  }
 
   return (
     <Box className="w-full">
-      <Heading size="md" className="mb-2">
-        Yêu cầu chuyến đi
-      </Heading>
-      <VStack space="md">{pendingRequests.map(renderItem)}</VStack>
+      <FlatList
+        data={pendingRequests}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        ListEmptyComponent={() => (
+          <Box className="w-full">
+            <LottieView
+              source={Lottie.RIDE}
+              colorFilters={[]}
+              style={{ width: "100%", height: 200 }}
+              autoPlay
+              loop
+            />
+            <Text className="text-center font-bold">
+              Hiện tại không có yêu cầu chuyến đi nào.
+            </Text>
+          </Box>
+        )}
+        contentContainerStyle={{ flexGrow: 1 }}
+      />
     </Box>
   );
 }

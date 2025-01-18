@@ -13,8 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@/src/store/authSlice";
 import { RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { Pressable, ScrollView } from "react-native";
+import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -23,7 +23,7 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
         <Text className="font-semibold">{title}</Text>
         <Text className="text-gray-600">{subtitle}</Text>
       </VStack>
-      <Ionicons name="chevron-forward" size={24} color="gray" />
+      <ChevronRightIcon size={24} color="gray" />
     </HStack>
   </Pressable>
 );
@@ -58,13 +58,6 @@ export default function Profile() {
           subtitle="Quản lý thông tin cá nhân của bạn"
           onPress={() => {
             /* Navigate to personal info screen */
-          }}
-        />
-        <ProfileSection
-          title="Phương thức thanh toán"
-          subtitle="Thêm hoặc xóa phương thức thanh toán"
-          onPress={() => {
-            /* Navigate to payment methods screen */
           }}
         />
         <ProfileSection

@@ -1,20 +1,23 @@
-const APP_STRUCT = "PROFILE_SCREEN";
+import { logout, clearAuthData } from "@/src/store/authSlice"
+import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice"
+import { clearTripRequests } from "@/src/store/tripRequestsSlice"
 
-import React from "react";
-import { Box } from "@/src/components/ui/box";
-import { VStack } from "@/src/components/ui/vstack";
-import { HStack } from "@/src/components/ui/hstack";
-import { Text } from "@/src/components/ui/text";
-import { Heading } from "@/src/components/ui/heading";
-import { Divider } from "@/src/components/ui/divider";
-import { Button } from "@/src/components/ui/button";
-import { ButtonText } from "@/src/components/ui/button";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "@/src/store/authSlice";
-import { RootState } from "@/src/store/store";
-import { useRouter } from "expo-router";
-import { Pressable, ScrollView } from "react-native";
-import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
+const APP_STRUCT = "PROFILE_SCREEN"
+
+import React from "react"
+import { Box } from "@/src/components/ui/box"
+import { VStack } from "@/src/components/ui/vstack"
+import { HStack } from "@/src/components/ui/hstack"
+import { Text } from "@/src/components/ui/text"
+import { Heading } from "@/src/components/ui/heading"
+import { Divider } from "@/src/components/ui/divider"
+import { Button } from "@/src/components/ui/button"
+import { ButtonText } from "@/src/components/ui/button"
+import { useSelector, useDispatch } from "react-redux"
+import type { RootState } from "@/src/store/store"
+import { useRouter } from "expo-router"
+import { Pressable, ScrollView } from "react-native"
+import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon"
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -26,28 +29,34 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
       <ChevronRightIcon size={24} color="gray" />
     </HStack>
   </Pressable>
-);
+)
 
 export default function Profile() {
-  const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const user = useSelector((state: RootState) => state.auth.user)
+  const dispatch = useDispatch()
 
   const handleLogout = () => {
-    dispatch(logout());
-    router.replace("/sign-in");
-  };
+    dispatch(logout())
+    dispatch(clearFixedRoutes())
+    dispatch(clearTripRequests())
+    dispatch(clearAuthData())
+    router.replace("/sign-in")
+  }
 
   return (
     <ScrollView>
       <Box className="bg-blue-500 p-4">
-        <HStack space="md" className="items-center">
+        <HStack space="md" className="items-center justify-between">
           <VStack>
             <Heading size="lg" className="text-white">
               {user?.name}
             </Heading>
             <Text className="text-white">{user?.phone}</Text>
           </VStack>
+          <Button size="sm" variant="outline" onPress={() => router.push("/edit-profile")}>
+            <ButtonText className="text-white">Chỉnh sửa</ButtonText>
+          </Button>
         </HStack>
       </Box>
 
@@ -56,9 +65,7 @@ export default function Profile() {
         <ProfileSection
           title="Thông tin cá nhân"
           subtitle="Quản lý thông tin cá nhân của bạn"
-          onPress={() => {
-            /* Navigate to personal info screen */
-          }}
+          onPress={() => router.push("/edit-profile")}
         />
         <ProfileSection
           title="Địa điểm đã lưu"
@@ -104,16 +111,11 @@ export default function Profile() {
           }}
         />
 
-        <Button
-          size="lg"
-          variant="outline"
-          className="mt-4"
-          onPress={handleLogout}
-        >
+        <Button size="lg" variant="outline" className="mt-4" onPress={handleLogout}>
           <ButtonText>Đăng xuất</ButtonText>
         </Button>
       </VStack>
     </ScrollView>
-  );
+  )
 }
 

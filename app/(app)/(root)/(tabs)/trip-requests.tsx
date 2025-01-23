@@ -1,10 +1,10 @@
-const APP_STRUCT = "TRIP_REQUESTS_SCREEN";
+const APP_STRUCT = "TRIP_REQUESTS_SCREEN"
 
-import React from "react";
-import { Box } from "@/src/components/ui/box";
-import { Heading } from "@/src/components/ui/heading";
-import { VStack } from "@/src/components/ui/vstack";
-import TripRequestList from "@/src/components/TripRequestList";
+import React from "react"
+import { Box } from "@/src/components/ui/box"
+import { Heading } from "@/src/components/ui/heading"
+import { VStack } from "@/src/components/ui/vstack"
+import TripRequestList from "@/src/components/TripRequestList"
 
 export default function TripRequestsScreen() {
   return (
@@ -18,6 +18,6 @@ export default function TripRequestsScreen() {
         </Box>
       </VStack>
     </Box>
-  );
+  )
 }
 

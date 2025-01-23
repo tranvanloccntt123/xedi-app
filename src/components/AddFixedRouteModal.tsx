@@ -1,32 +1,34 @@
-const APP_STRUCT = 'ADD_FIXED_ROUTE_MODAL';
+import { formatMoney, unformatMoney } from "@/src/utils/formatMoney"
 
-import React, { useState } from 'react';
-import { Modal } from 'react-native';
-import { Box } from '@/src/components/ui/box';
-import { Button } from '@/src/components/ui/button';
-import { ButtonText } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { InputField } from '@/src/components/ui/input';
-import { VStack } from '@/src/components/ui/vstack';
-import { Text } from '@/src/components/ui/text';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFixedRoute } from '@/src/store/fixedRoutesSlice';
-import { RootState } from '@/src/store/store';
+const APP_STRUCT = "ADD_FIXED_ROUTE_MODAL"
+
+import React, { useState } from "react"
+import { Modal } from "react-native"
+import { Box } from "@/src/components/ui/box"
+import { Button } from "@/src/components/ui/button"
+import { ButtonText } from "@/src/components/ui/button"
+import { Input } from "@/src/components/ui/input"
+import { InputField } from "@/src/components/ui/input"
+import { VStack } from "@/src/components/ui/vstack"
+import { Text } from "@/src/components/ui/text"
+import { useDispatch, useSelector } from "react-redux"
+import { addFixedRoute } from "@/src/store/fixedRoutesSlice"
+import type { RootState } from "@/src/store/store"
 
 interface AddFixedRouteModalProps {
-  isVisible: boolean;
-  onClose: () => void;
+  isVisible: boolean
+  onClose: () => void
 }
 
 export default function AddFixedRouteModal({ isVisible, onClose }: AddFixedRouteModalProps) {
-  const [startLocation, setStartLocation] = useState('');
-  const [endLocation, setEndLocation] = useState('');
-  const [departureTime, setDepartureTime] = useState('');
-  const [totalSeats, setTotalSeats] = useState('');
-  const [price, setPrice] = useState('');
+  const [startLocation, setStartLocation] = useState("")
+  const [endLocation, setEndLocation] = useState("")
+  const [departureTime, setDepartureTime] = useState("")
+  const [totalSeats, setTotalSeats] = useState("")
+  const [price, setPrice] = useState("")
 
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch()
+  const user = useSelector((state: RootState) => state.auth.user)
 
   const handleSubmit = () => {
     if (user) {
@@ -36,15 +38,15 @@ export default function AddFixedRouteModal({ isVisible, onClose }: AddFixedRoute
         startLocation,
         endLocation,
         departureTime: new Date(departureTime).toISOString(),
-        totalSeats: parseInt(totalSeats, 10),
-        availableSeats: parseInt(totalSeats, 10),
-        price: parseFloat(price),
+        totalSeats: Number.parseInt(totalSeats, 10),
+        availableSeats: Number.parseInt(totalSeats, 10),
+        price: unformatMoney(price),
         createdAt: new Date(),
-      };
-      dispatch(addFixedRoute(newRoute));
-      onClose();
+      }
+      dispatch(addFixedRoute(newRoute))
+      onClose()
     }
-  };
+  }
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true}>
@@ -53,18 +55,10 @@ export default function AddFixedRouteModal({ isVisible, onClose }: AddFixedRoute
           <Text className="text-xl font-bold mb-4">Add Fixed Route</Text>
           <VStack space="md">
             <Input>
-              <InputField
-                placeholder="Start Location"
-                value={startLocation}
-                onChangeText={setStartLocation}
-              />
+              <InputField placeholder="Start Location" value={startLocation} onChangeText={setStartLocation} />
             </Input>
             <Input>
-              <InputField
-                placeholder="End Location"
-                value={endLocation}
-                onChangeText={setEndLocation}
-              />
+              <InputField placeholder="End Location" value={endLocation} onChangeText={setEndLocation} />
             </Input>
             <Input>
               <InputField
@@ -83,9 +77,14 @@ export default function AddFixedRouteModal({ isVisible, onClose }: AddFixedRoute
             </Input>
             <Input>
               <InputField
-                placeholder="Price"
-                value={price}
-                onChangeText={setPrice}
+                placeholder="Giá"
+                value={formatMoney(price)}
+                onChangeText={(value) => {
+                  const numericValue = unformatMoney(value)
+                  if (!isNaN(numericValue)) {
+                    setPrice(numericValue.toString())
+                  }
+                }}
                 keyboardType="numeric"
               />
             </Input>
@@ -99,6 +98,6 @@ export default function AddFixedRouteModal({ isVisible, onClose }: AddFixedRoute
         </Box>
       </Box>
     </Modal>
-  );
+  )
 }
 

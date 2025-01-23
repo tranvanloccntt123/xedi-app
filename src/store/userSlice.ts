@@ -1,30 +1,34 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IUser } from '@/src/types';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import type { IUser } from "@/src/types"
 
 interface UserState {
-  users: Record<string, IUser>;
+  users: Record<string, IUser>
 }
 
 const initialState: UserState = {
   users: {},
-};
+}
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<IUser>) => {
-      // state.users = action.payload;
-      const users = {...state.users};
-      users[action?.payload?.id || 'empty'] = action.payload;
-      state.users = users;
+      const users = { ...state.users }
+      users[action?.payload?.id || "empty"] = action.payload
+      state.users = users
+    },
+    updateUser: (state, action: PayloadAction<IUser>) => {
+      if (state.users[action.payload.id]) {
+        state.users[action.payload.id] = action.payload
+      }
     },
     clearUser: (state) => {
-      state.users = {};
+      state.users = {}
     },
   },
-});
+})
 
-export const { setUser, clearUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { setUser, updateUser, clearUser } = userSlice.actions
+export default userSlice.reducer
 

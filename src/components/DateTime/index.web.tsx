@@ -1,5 +1,10 @@
 import React from "react";
-import DatePicker from "react-datepicker";
+import DateTimePicker from "react-datetime-picker";
+
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
+import "./styles.css";
 
 const DateTime: React.FC<XediDatePicker> = ({ date, onChangeDate }) => {
   const [initDate, setInitDate] = React.useState(date || new Date());
@@ -10,7 +15,13 @@ const DateTime: React.FC<XediDatePicker> = ({ date, onChangeDate }) => {
     }
     setInitDate(date as Date);
   };
-  return <DatePicker selected={initDate} onChange={onChange} />;
+  return (
+    <DateTimePicker
+      className={"p-2 border-[1.5px] rounded-md border-background-300"}
+      value={initDate}
+      onChange={onChange}
+    />
+  );
 };
 
 export default DateTime;

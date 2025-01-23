@@ -1,3 +1,5 @@
+import { formatMoney, unformatMoney } from "@/src/utils/formatMoney";
+
 const APP_STRUCT = "CREATE_FIXED_ROUTE_SCREEN";
 
 import React, { useState } from "react";
@@ -15,10 +17,10 @@ import {
 } from "@/src/components/ui/form-control";
 import { useDispatch, useSelector } from "react-redux";
 import { addFixedRoute } from "@/src/store/fixedRoutesSlice";
-import { RootState } from "@/src/store/store";
+import type { RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
 import DateTimePicker from "@/src/components/DateTime";
-import { IFixedRoute } from "@/src/types";
+import type { IFixedRoute } from "@/src/types";
 
 export default function CreateFixedRoute() {
   const [startLocation, setStartLocation] = useState("");
@@ -26,7 +28,6 @@ export default function CreateFixedRoute() {
   const [departureTime, setDepartureTime] = useState(new Date());
   const [totalSeats, setTotalSeats] = useState("");
   const [price, setPrice] = useState("");
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -40,9 +41,9 @@ export default function CreateFixedRoute() {
         startLocation,
         endLocation,
         departureTime: departureTime.toISOString(),
-        totalSeats: parseInt(totalSeats, 10),
-        availableSeats: parseInt(totalSeats, 10),
-        price: parseFloat(price),
+        totalSeats: Number.parseInt(totalSeats, 10),
+        availableSeats: Number.parseInt(totalSeats, 10),
+        price: unformatMoney(price),
         createdAt: new Date(),
       };
       dispatch(addFixedRoute(newRoute));
@@ -51,9 +52,7 @@ export default function CreateFixedRoute() {
   };
 
   const onChangeDepartureTime = (date: Date) => {
-    // const currentDate = selectedDate || departureTime;
-    // setShowDatePicker(false);
-    // setDepartureTime(currentDate);
+    setDepartureTime(date);
   };
 
   return (
@@ -61,14 +60,14 @@ export default function CreateFixedRoute() {
       <ScrollView>
         <Box className="p-4">
           <Heading size="xl" className="mb-6">
-            Create Fixed Route
+            Tạo tuyến cố định mới
           </Heading>
           <VStack space="md">
             <FormControl>
-              <FormControlLabel>Start Location</FormControlLabel>
+              <FormControlLabel>Điểm đi</FormControlLabel>
               <Input>
                 <InputField
-                  placeholder="Enter start location"
+                  placeholder="Nhập điểm đi"
                   value={startLocation}
                   onChangeText={setStartLocation}
                 />
@@ -76,10 +75,10 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl>
-              <FormControlLabel>End Location</FormControlLabel>
+              <FormControlLabel>Điểm đến</FormControlLabel>
               <Input>
                 <InputField
-                  placeholder="Enter end location"
+                  placeholder="Nhập điểm đến"
                   value={endLocation}
                   onChangeText={setEndLocation}
                 />
@@ -87,25 +86,18 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl>
-              <FormControlLabel>Departure Time</FormControlLabel>
-              <Button onPress={() => setShowDatePicker(true)}>
-                <ButtonText>{departureTime.toLocaleString()}</ButtonText>
-              </Button>
-              {showDatePicker && (
-                <DateTimePicker
-                  date={departureTime}
-                  // mode="datetime"
-                  // display="default"
-                  onChangeDate={onChangeDepartureTime}
-                />
-              )}
+              <FormControlLabel>Thời gian khởi hành</FormControlLabel>
             </FormControl>
+            <DateTimePicker
+              date={departureTime}
+              onChangeDate={onChangeDepartureTime}
+            />
 
             <FormControl>
-              <FormControlLabel>Total Seats</FormControlLabel>
+              <FormControlLabel>Tổng số ghế</FormControlLabel>
               <Input>
                 <InputField
-                  placeholder="Enter total seats"
+                  placeholder="Nhập tổng số ghế"
                   value={totalSeats}
                   onChangeText={setTotalSeats}
                   keyboardType="numeric"
@@ -114,19 +106,26 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl>
-              <FormControlLabel>Price</FormControlLabel>
+              <FormControlLabel>Giá</FormControlLabel>
               <Input>
                 <InputField
-                  placeholder="Enter price"
-                  value={price}
-                  onChangeText={setPrice}
+                  placeholder="Nhập giá"
+                  value={!!price ? formatMoney(price) : ""}
+                  onChangeText={(value) => {
+                    const numericValue = unformatMoney(value);
+                    if (!isNaN(numericValue)) {
+                      setPrice(numericValue.toString());
+                    } else {
+                      setPrice("");
+                    }
+                  }}
                   keyboardType="numeric"
                 />
               </Input>
             </FormControl>
 
             <Button size="lg" className="mt-4" onPress={handleCreateRoute}>
-              <ButtonText>Create Route</ButtonText>
+              <ButtonText>Tạo tuyến đường</ButtonText>
             </Button>
           </VStack>
         </Box>
@@ -134,4 +133,3 @@ export default function CreateFixedRoute() {
     </Box>
   );
 }
-

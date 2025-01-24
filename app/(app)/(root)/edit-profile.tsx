@@ -1,10 +1,10 @@
 const APP_STRUCT = "EDIT_PROFILE_SCREEN"
 
-import React, { useState } from "react"
+import React, { useState, useMemo } from "react"
 import { useRouter } from "expo-router"
 import { useSelector, useDispatch } from "react-redux"
 import type { RootState } from "@/src/store/store"
-import { updateUser } from "@/src/store/userSlice"
+import { updateUser } from "@/src/store/authSlice"
 import { Box } from "@/src/components/ui/box"
 import { VStack } from "@/src/components/ui/vstack"
 import { Heading } from "@/src/components/ui/heading"
@@ -14,6 +14,10 @@ import { Button } from "@/src/components/ui/button"
 import { ButtonText } from "@/src/components/ui/button"
 import { FormControl, FormControlLabel } from "@/src/components/ui/form-control"
 import { ScrollView } from "react-native"
+import { formValidatePerField, formValidateSuccess } from "@/src/utils/validator"
+import { authValidator } from "@/src/constants/validator"
+import { FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
+import { deepEqual } from "@/src/utils/deepEqual"
 
 export default function EditProfile() {
   const router = useRouter()
@@ -23,17 +27,45 @@ export default function EditProfile() {
   const [name, setName] = useState(user?.name || "")
   const [email, setEmail] = useState(user?.email || "")
   const [phone, setPhone] = useState(user?.phone || "")
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const originalUserData = useMemo(
+    () => ({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: user?.phone || "",
+    }),
+    [user],
+  )
+
+  const isFormChanged = useMemo(() => {
+    const currentData = { name, email, phone }
+    return !deepEqual(originalUserData, currentData)
+  }, [name, email, phone, originalUserData])
+
+  const handleInputChange = (field: string, value: string) => {
+    if (field === "name") setName(value)
+    if (field === "email") setEmail(value)
+    if (field === "phone") setPhone(value)
+    setErrors({ ...errors, [field]: "" })
+  }
 
   const handleSave = () => {
     if (user) {
-      const updatedUser = {
-        ...user,
-        name,
-        email,
-        phone,
+      const formData = { name, email, phone }
+      const validateForm = formValidatePerField(authValidator, formData as never)
+      setErrors(Object.fromEntries(Object.entries(validateForm).map(([key, value]) => [key, value.message])))
+
+      if (formValidateSuccess(validateForm)) {
+        const updatedUser = {
+          ...user,
+          name,
+          email,
+          phone,
+        }
+        dispatch(updateUser(updatedUser))
+        router.back()
       }
-      dispatch(updateUser(updatedUser))
-      router.back()
     }
   }
 
@@ -45,25 +77,42 @@ export default function EditProfile() {
             Chỉnh sửa hồ sơ
           </Heading>
           <VStack space="md">
-            <FormControl>
+            <FormControl isInvalid={!!errors.name}>
               <FormControlLabel>Họ và tên</FormControlLabel>
               <Input>
-                <InputField value={name} onChangeText={setName} />
+                <InputField value={name} onChangeText={(value) => handleInputChange("name", value)} />
               </Input>
+              <FormControlError>
+                <FormControlErrorText>{errors.name}</FormControlErrorText>
+              </FormControlError>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!errors.email}>
               <FormControlLabel>Email</FormControlLabel>
               <Input>
-                <InputField value={email} onChangeText={setEmail} keyboardType="email-address" />
+                <InputField
+                  value={email}
+                  onChangeText={(value) => handleInputChange("email", value)}
+                  keyboardType="email-address"
+                />
               </Input>
+              <FormControlError>
+                <FormControlErrorText>{errors.email}</FormControlErrorText>
+              </FormControlError>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!!errors.phone}>
               <FormControlLabel>Số điện thoại</FormControlLabel>
               <Input>
-                <InputField value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+                <InputField
+                  value={phone}
+                  onChangeText={(value) => handleInputChange("phone", value)}
+                  keyboardType="phone-pad"
+                />
               </Input>
+              <FormControlError>
+                <FormControlErrorText>{errors.phone}</FormControlErrorText>
+              </FormControlError>
             </FormControl>
-            <Button size="lg" className="mt-4" onPress={handleSave}>
+            <Button size="lg" className="mt-4" onPress={handleSave} disabled={!isFormChanged}>
               <ButtonText>Lưu thay đổi</ButtonText>
             </Button>
           </VStack>

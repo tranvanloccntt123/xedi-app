@@ -3,7 +3,7 @@ export interface IChatMessage {
   chatRoomId: string;
   senderId: string;
   message: string;
-  messageType: 'text' | 'image' | 'system';
+  messageType: "text" | "image" | "system";
   sentAt: Date;
 }
 
@@ -13,7 +13,7 @@ export interface IChatRoom {
   fixedRouteId?: string;
   customerId: string;
   driverId: string;
-  status: 'active' | 'pending' | 'closed';
+  status: "active" | "pending" | "closed";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -46,18 +46,21 @@ export interface ITripRequest {
   startLocation: string;
   endLocation: string;
   departureTime: Date;
-  status: 'pending' | 'accepted' | 'completed' | 'cancelled';
+  status: "pending" | "accepted" | "completed" | "cancelled";
   requestTime: Date;
   updatedAt: Date;
   riderRequests: string[]; // Array of rider IDs who have requested this trip
+  type: "Delivery" | "Taxi";
+  metadata?: Record<string, string | number>;
+  notes?: string;
 }
 
 export interface ITripRequestForFixedRoute {
   id: string;
   fixedRouteId: string;
   customerId: string;
-  requestType: 'join' | 'cancel';
-  status: 'pending' | 'accepted' | 'rejected' | 'cancelled';
+  requestType: "join" | "cancel";
+  status: "pending" | "accepted" | "rejected" | "cancelled";
   requestTime: Date;
   updatedAt: Date;
 }
@@ -68,7 +71,7 @@ export interface IUser {
   phone: string;
   password: string;
   email?: string;
-  role: 'customer' | 'driver';
+  role: "customer" | "driver";
   vehicleId?: string;
   totalRatings?: number;
   averageRating?: number;

@@ -1,4 +1,4 @@
-import { IUser } from "../types";
+import { IFixedRoute, IUser } from "../types";
 
 export const authValidator: ValidatorObject<keyof IUser> = {
   phone: {
@@ -62,3 +62,37 @@ export const authValidator: ValidatorObject<keyof IUser> = {
     },
   },
 } as ValidatorObject<keyof IUser>;
+
+export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
+  driverId: {
+    required: {
+      message: "Tuyến cố định này chưa có người lái xe.",
+    },
+  },
+  startLocation: {
+    required: {
+      message: "Bạn cần thêm điểm bắt đầu cho chuyến đi.",
+    },
+  },
+  endLocation: {
+    required: {
+      message: "Bạn cần thêm điểm kết thúc cho chuyến đi.",
+    },
+  },
+  departureTime: {
+    required: {
+      message: "Bạn cần thêm thời điểm bắt đầu chuyến đi.",
+    },
+  },
+  totalSeats: {
+    required: {
+      message: "Số ghế ngồi không được để trống.",
+    },
+    regex: {
+      value(total) {
+        return /^[1-9]+[0-9]*/g.test(total.trim());
+      },
+      message: "Số ghế phải nhập số."
+    },
+  },
+} as ValidatorObject<keyof IFixedRoute>;

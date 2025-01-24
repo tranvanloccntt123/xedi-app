@@ -16,9 +16,11 @@ module.exports = {
   PROFILE_SCREEN: "app/(app)/(root)/(tabs)/profile.tsx",
   FOOD_SCREEN: "app/(app)/food.tsx",
   CREATE_FIXED_ROUTE_SCREEN: "app/(app)/create-fixed-route.tsx",
+  CREATE_TRIP_REQUEST_SCREEN: "app/(app)/create-trip-request.tsx",
   FIXED_ROUTE_DETAIL_SCREEN: "app/(app)/fixed/[id]/detail.tsx",
   EDIT_FIXED_ROUTE_SCREEN: "app/(app)/fixed/[id]/edit.tsx",
   CHAT_SCREEN: "app/(app)/chat/[id].tsx",
+  EDIT_PROFILE_SCREEN: "app/(app)/(root)/edit-profile.tsx",
 
   // Components
   ADD_FIXED_ROUTE_MODAL: "src/components/AddFixedRouteModal.tsx",

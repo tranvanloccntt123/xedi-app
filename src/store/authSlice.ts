@@ -29,9 +29,14 @@ const authSlice = createSlice({
       state.user = null
       state.isAuthenticated = false
     },
+    updateUser: (state, action: PayloadAction<IUser>) => {
+      if (state.user && action.payload.id === state.user.id) {
+        state.user = action.payload
+      }
+    },
   },
 })
 
-export const { setAuthenticated, logout, clearAuthData } = authSlice.actions
+export const { setAuthenticated, logout, clearAuthData, updateUser } = authSlice.actions
 export default authSlice.reducer
 

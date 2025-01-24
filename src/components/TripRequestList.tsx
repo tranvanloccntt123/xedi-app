@@ -7,12 +7,12 @@ import { Text } from "@/src/components/ui/text";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/src/store/store";
+import type { RootState } from "@/src/store/store";
 import {
   updateTripRequest,
   setTripRequests,
 } from "@/src/store/tripRequestsSlice";
-import { ITripRequest } from "@/src/types";
+import type { ITripRequest } from "@/src/types";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import LottieView from "lottie-react-native";
@@ -21,6 +21,7 @@ import { router } from "expo-router";
 import { mockTripRequests } from "@/src/mockData/tripRequests";
 import moment from "moment";
 import { Heading } from "./ui/heading";
+import { Badge } from "@/src/components/ui/badge";
 
 export default function TripRequestList() {
   const dispatch = useDispatch();
@@ -66,7 +67,14 @@ export default function TripRequestList() {
               <Text className="text-xs font-bold">
                 {moment(item?.departureTime).format("HH:mm")}
               </Text>
-              {/* <Text className="text-xs font-bold">{item.status}</Text> */}
+              <Badge
+                size="sm"
+                variant={"solid"}
+                action={item.type === "Taxi" ? "success" : "warning"}
+                className="text-xs rounded-md"
+              >
+                {item.type === "Taxi" ? "Đón trả khách" : "Giao hàng"}
+              </Badge>
             </HStack>
             <VStack>
               <HStack className="items-center">

@@ -54,9 +54,7 @@ export default function Profile() {
             </Heading>
             <Text className="text-white">{user?.phone}</Text>
           </VStack>
-          <Button size="sm" variant="outline" onPress={() => router.push("/edit-profile")}>
-            <ButtonText className="text-white">Chỉnh sửa</ButtonText>
-          </Button>
+
         </HStack>
       </Box>
 

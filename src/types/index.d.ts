@@ -88,3 +88,21 @@ export interface IVehicle {
   createdAt: Date;
 }
 
+export interface INewsFeedItem {
+  id: string
+  author: {
+    id: string
+    name: string
+  }
+  createdAt: Date
+  updatedAt: Date
+  tripInfo: {
+    type: "fixedRoute" | "tripRequest"
+    data: IFixedRoute | ITripRequest
+  }
+  location: {
+    latitude: number
+    longitude: number
+  }
+  content: string
+}

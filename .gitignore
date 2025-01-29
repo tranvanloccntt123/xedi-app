@@ -33,3 +33,4 @@ yarn-error.*
 # Node.js
 node_modules/
 
+.vercel

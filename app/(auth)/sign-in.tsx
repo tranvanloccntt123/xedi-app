@@ -1,66 +1,61 @@
-const APP_STRUCT = "SIGN_IN_SCREEN"
+const APP_STRUCT = "SIGN_IN_SCREEN";
 
-import React, { useState } from "react"
-import { Box } from "@/src/components/ui/box"
-import { Button } from "@/src/components/ui/button"
-import { ButtonText } from "@/src/components/ui/button"
-import { FormControl } from "@/src/components/ui/form-control"
-import { Heading } from "@/src/components/ui/heading"
-import { Input } from "@/src/components/ui/input"
-import { InputField } from "@/src/components/ui/input"
-import { VStack } from "@/src/components/ui/vstack"
-import { useDispatch } from "react-redux"
-import { setAuthenticated } from "../../src/store/authSlice"
-import { setUser } from "../../src/store/userSlice"
-import { Text } from "@/src/components/ui/text"
-import { HStack } from "@/src/components/ui/hstack"
-import { Link, useRouter } from "expo-router"
-import { formValidatePerField, formValidateSuccess } from "@/src/utils/validator"
-import { authValidator } from "@/src/constants/validator"
-import { supabase } from "@/src/lib/supabase"
+import React, { useState } from "react";
+import { Box } from "@/src/components/ui/box";
+import { Button } from "@/src/components/ui/button";
+import { ButtonText } from "@/src/components/ui/button";
+import { FormControl } from "@/src/components/ui/form-control";
+import { Heading } from "@/src/components/ui/heading";
+import { Input } from "@/src/components/ui/input";
+import { InputField } from "@/src/components/ui/input";
+import { VStack } from "@/src/components/ui/vstack";
+import { Text } from "@/src/components/ui/text";
+import { HStack } from "@/src/components/ui/hstack";
+import { Link } from "expo-router";
+import {
+  formValidatePerField,
+  formValidateSuccess,
+} from "@/src/utils/validator";
+import { authValidator } from "@/src/constants/validator";
+import { supabase } from "@/src/lib/supabase";
+import { pattern } from "@/src/constants";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState<Record<string, string>>({
-    email: "",
+    phone: "",
     password: "",
-  })
-  const dispatch = useDispatch()
-  const router = useRouter()
+  });
 
   const handleLogin = async () => {
     try {
       const validateForm = formValidatePerField(authValidator, {
-        email,
+        phone,
         password,
-      })
+      });
       setError({
-        email: validateForm.email.message,
-        password: validateForm.password.message,
-      })
+        phone: validateForm.phone?.message || "",
+        password: validateForm.password?.message || "",
+      });
       if (!formValidateSuccess(validateForm)) {
-        return
+        return;
       }
 
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: `${phone}${pattern}`,
         password,
-      })
+      });
 
       if (error) {
-        setErrorMessage(error.message)
-      } else if (data.user) {
-        dispatch(setUser(data.user))
-        dispatch(setAuthenticated(data.user))
-        router.replace("/")
+        setErrorMessage(error.message);
       }
     } catch (e) {
-      console.error(e)
-      setErrorMessage("An unexpected error occurred")
+      console.error(e);
+      setErrorMessage("An unexpected error occurred");
     }
-  }
+  };
 
   return (
     <Box className="flex-1 bg-white">
@@ -74,42 +69,56 @@ export default function SignIn() {
               <Heading size="2xl">Đăng nhập Xedi</Heading>
               <Text>Lên xe ngay đi</Text>
             </VStack>
-            <FormControl className="w-full mb-1" isInvalid={!!error.email}>
-              <Text className="mb-2 text-sm font-medium text-gray-700">Email</Text>
+            <FormControl className="w-full mb-1" isInvalid={!!error.phone}>
+              <Text className="mb-2 text-sm font-medium text-gray-700">
+                Số điện thoại
+              </Text>
               <Input variant="outline" size="md">
                 <InputField
-                  placeholder="Nhập email"
-                  value={email}
+                  placeholder="Nhập số điện thoại"
+                  value={phone}
                   onChangeText={(value) => {
-                    setEmail(value)
-                    setErrorMessage("")
+                    setPhone(value);
+                    setErrorMessage("");
                   }}
-                  keyboardType="email-address"
+                  keyboardType="phone-pad"
                 />
               </Input>
-              {!!error.email && <Text className="text-red-500 text-sm mt-1">{error.email}</Text>}
+              {!!error.phone && (
+                <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
+              )}
             </FormControl>
             <FormControl className="w-full mb-6" isInvalid={!!error.password}>
-              <Text className="mb-2 text-sm font-medium text-gray-700">Mật khẩu</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">
+                Mật khẩu
+              </Text>
               <Input variant="outline" size="md">
                 <InputField
                   placeholder="Nhập mật khẩu"
                   value={password}
                   onChangeText={(value) => {
-                    setPassword(value)
-                    setErrorMessage("")
+                    setPassword(value);
+                    setErrorMessage("");
                   }}
                   secureTextEntry
                 />
               </Input>
-              {!!error.password && <Text className="text-red-500 text-sm mt-1">{error.password}</Text>}
+              {!!error.password && (
+                <Text className="text-red-500 text-sm mt-1">
+                  {error.password}
+                </Text>
+              )}
             </FormControl>
-            {errorMessage && <Text className="text-red-500 mb-4">{errorMessage}</Text>}
+            {errorMessage && (
+              <Text className="text-red-500 mb-4">{errorMessage}</Text>
+            )}
             <Button
               size="lg"
-              className={`w-full bg-blue-500 ${!email.trim() || !password.trim() ? "opacity-75" : "opacity-100"}`}
+              className={`w-full bg-blue-500 ${
+                !phone.trim() || !password.trim() ? "opacity-75" : "opacity-100"
+              }`}
               onPress={handleLogin}
-              disabled={!email.trim() || !password.trim()}
+              disabled={!phone.trim() || !password.trim()}
             >
               <ButtonText className="text-white">Đăng nhập</ButtonText>
             </Button>
@@ -128,7 +137,9 @@ export default function SignIn() {
           <Heading size="xl" className="text-center mb-4">
             Chào mừng đến với Xedi
           </Heading>
-          <Text className="text-center mb-4">Ứng dụng đặt xe và giao đồ ăn hàng đầu Việt Nam</Text>
+          <Text className="text-center mb-4">
+            Ứng dụng đặt xe và giao đồ ăn hàng đầu Việt Nam
+          </Text>
           <VStack space="md" className="items-center">
             <Text className="font-bold">Tính năng nổi bật:</Text>
             <Text>✓ Đặt xe nhanh chóng</Text>
@@ -139,6 +150,6 @@ export default function SignIn() {
         </VStack>
       </HStack>
     </Box>
-  )
+  );
 }
 

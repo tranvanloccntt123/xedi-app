@@ -76,7 +76,7 @@ export default function CreateTripRequest() {
               <FormControlLabel>Điểm đi</FormControlLabel>
               <Input>
                 <InputField
-                  placeholder="Nhập điểm đi"
+                  placeholder="Nhập đi���m đi"
                   value={startLocation}
                   onChangeText={(value) => {
                     setStartLocation(value)

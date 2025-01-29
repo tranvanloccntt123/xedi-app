@@ -19,15 +19,15 @@ export interface IChatRoom {
 }
 
 export interface IFixedRoute {
-  id: string
-  driverId: string
+  id: number
+  user_id: string
   startLocation: string
   endLocation: string
   departureTime: string
   totalSeats: number
   availableSeats: number
   price: number
-  createdAt: Date
+  created_at: Date
 }
 
 export interface IRating {

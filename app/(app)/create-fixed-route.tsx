@@ -21,6 +21,7 @@ import type { IFixedRoute } from "@/src/types"
 import { Text } from "@/src/components/ui/text"
 import { fixedRouteValidator } from "@/src/constants/validator"
 import { formValidatePerField, formValidateSuccess } from "@/src/utils/validator"
+import { xediSupabase } from "@/src/lib/supabase"
 
 export default function CreateFixedRoute() {
   const [startLocation, setStartLocation] = useState("")
@@ -34,7 +35,7 @@ export default function CreateFixedRoute() {
   const router = useRouter()
   const user = useSelector((state: RootState) => state.auth.user)
 
-  const handleCreateRoute = () => {
+  const handleCreateRoute = async () => {
     const formData = {
       startLocation,
       endLocation,
@@ -48,16 +49,17 @@ export default function CreateFixedRoute() {
 
     if (formValidateSuccess(validateForm) && user) {
       const newRoute: IFixedRoute = {
-        id: Date.now().toString(),
-        driverId: user.id || "",
+        id: parseInt(Math.random().toString()),
+        user_id: user.id || "",
         startLocation,
         endLocation,
         departureTime: departureTime.toISOString(),
         totalSeats: Number.parseInt(totalSeats, 10),
         availableSeats: Number.parseInt(totalSeats, 10),
         price: unformatMoney(price),
-        createdAt: new Date(),
+        created_at: new Date(),
       }
+      await xediSupabase.tables.fixedRoutes.addFixedRoutes([newRoute]);
       dispatch(addFixedRoute(newRoute))
       router.back()
     }
@@ -77,7 +79,7 @@ export default function CreateFixedRoute() {
           </Heading>
           <VStack space="md">
             <FormControl isInvalid={!!errors.startLocation}>
-              <FormControlLabel>Điểm đi</FormControlLabel>
+              <Text>Điểm đi</Text>
               <Input>
                 <InputField
                   placeholder="Nhập điểm đi"
@@ -94,7 +96,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.endLocation}>
-              <FormControlLabel>Điểm đến</FormControlLabel>
+              <Text>Điểm đến</Text>
               <Input>
                 <InputField
                   placeholder="Nhập điểm đến"
@@ -111,7 +113,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.departureTime}>
-              <FormControlLabel>Thời gian khởi hành</FormControlLabel>
+              <Text>Thời gian khởi hành</Text>
               <DateTimePicker date={departureTime} onChangeDate={onChangeDepartureTime} />
               <FormControlError>
                 <FormControlErrorText>{errors.departureTime}</FormControlErrorText>
@@ -119,7 +121,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.totalSeats}>
-              <FormControlLabel>Tổng số ghế</FormControlLabel>
+              <Text>Tổng số ghế</Text>
               <Input>
                 <InputField
                   placeholder="Nhập tổng số ghế"
@@ -137,7 +139,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.price}>
-              <FormControlLabel>Giá</FormControlLabel>
+              <Text>Giá</Text>
               <Input>
                 <InputField
                   placeholder="Nhập giá"

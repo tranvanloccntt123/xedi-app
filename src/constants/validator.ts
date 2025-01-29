@@ -44,9 +44,9 @@ export const authValidator: ValidatorObject<keyof IUser> = {
     },
   },
   email: {
-    required: {
-      message: "Hòm thư điện tử không được bỏ trống.",
-    },
+    // required: {
+    //   message: "Hòm thư điện tử không được bỏ trống.",
+    // },
     regex: {
       value: function (value: string): boolean {
         return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/g.test(
@@ -64,7 +64,7 @@ export const authValidator: ValidatorObject<keyof IUser> = {
 } as ValidatorObject<keyof IUser>;
 
 export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
-  driverId: {
+  user_id: {
     required: {
       message: "Tuyến cố định này chưa có người lái xe.",
     },
@@ -96,3 +96,4 @@ export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
     },
   },
 } as ValidatorObject<keyof IFixedRoute>;
+

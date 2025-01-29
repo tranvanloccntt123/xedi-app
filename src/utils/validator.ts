@@ -11,6 +11,11 @@ export const formValidate = (
   let message = "";
   if (config.required && !value) {
     message = config.required.message;
+  } else if (!config.required && !value) {
+    return {
+      message: "",
+      status: true,
+    }
   }
   if (message === "" && config.max && value.length > (config.max?.value ?? 0)) {
     message = config.max.message;
@@ -43,7 +48,6 @@ export const formValidatePerField = (
 ) => {
   const res: Record<string, ValidatorResult> = {};
   Object.keys(form).forEach((key) => {
-    console.log(key, validator[key], form[key]);
     res[key] = formValidate(validator[key], form[key]);
   });
   return res;

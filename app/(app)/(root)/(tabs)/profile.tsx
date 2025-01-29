@@ -1,6 +1,8 @@
 import { logout, clearAuthData } from "@/src/store/authSlice"
 import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice"
 import { clearTripRequests } from "@/src/store/tripRequestsSlice"
+import { supabase } from "@/src/lib/supabase"
+import { clearUser } from "@/src/store/userSlice"
 
 const APP_STRUCT = "PROFILE_SCREEN"
 
@@ -36,12 +38,18 @@ export default function Profile() {
   const user = useSelector((state: RootState) => state.auth.user)
   const dispatch = useDispatch()
 
-  const handleLogout = () => {
-    dispatch(logout())
-    dispatch(clearFixedRoutes())
-    dispatch(clearTripRequests())
-    dispatch(clearAuthData())
-    router.replace("/sign-in")
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      dispatch(logout())
+      dispatch(clearFixedRoutes())
+      dispatch(clearTripRequests())
+      dispatch(clearAuthData())
+      dispatch(clearUser())
+      router.replace("/sign-in")
+    } catch (error) {
+      console.error("Error signing out:", error)
+    }
   }
 
   return (
@@ -54,7 +62,6 @@ export default function Profile() {
             </Heading>
             <Text className="text-white">{user?.phone}</Text>
           </VStack>
-
         </HStack>
       </Box>
 

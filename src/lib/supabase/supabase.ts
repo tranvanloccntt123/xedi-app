@@ -14,3 +14,13 @@ export const supabase = createClient(supabaseUrl!, supabaseAnonKey!, {
   },
 })
 
+// Enable phone auth
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === "SIGNED_IN") {
+    console.log("User signed in:", session?.user?.phone)
+  } else if (event === "SIGNED_OUT") {
+    console.log("User signed out")
+    // You can add additional cleanup logic here if needed
+  }
+})
+

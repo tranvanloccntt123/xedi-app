@@ -1,20 +1,18 @@
-import React, { useCallback } from "react";
+const APP_STRUCT = "FIXED_ROUTES_LIST";
+
+import React, { useCallback, useEffect } from "react";
 import { FlatList } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/src/store/store";
 import type { IFixedRoute } from "@/src/types";
-import { Button } from "@/src/components/ui/button";
-import { ButtonText } from "@/src/components/ui/button";
-import { router } from "expo-router";
 import FixedRouteItem from "./FixedRouteItem";
 import moment from "moment";
 import { Heading } from "./ui/heading";
 import LottieView from "lottie-react-native";
 import Lottie from "../lottie";
-
-const APP_STRUCT = "FIXED_ROUTES_LIST";
+import { xediSupabase } from "../lib/supabase";
 
 interface FixedRoutesListProps {
   searchQuery: string;
@@ -26,9 +24,15 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
     (state: RootState) => state.fixedRoutes.routes
   );
 
+  useEffect(() => {
+    xediSupabase.tables.fixedRoutes
+      .selectByUserIdAfterId(null, 25)
+      .then((r) => console.log(r));
+  }, []);
+
   const filteredRoutes = fixedRoutes.filter(
-    (route) =>
-      route.driverId === user?.id &&
+    (route: IFixedRoute) =>
+      route.user_id === user?.id &&
       (route.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
         route.endLocation.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -78,4 +82,3 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
     </Box>
   );
 }
-

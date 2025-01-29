@@ -27,7 +27,7 @@ const fixedRoutesSlice = createSlice({
         state.routes[index] = action.payload;
       }
     },
-    deleteFixedRoute: (state, action: PayloadAction<string>) => {
+    deleteFixedRoute: (state, action: PayloadAction<number>) => {
       state.routes = state.routes.filter(
         (route) => route.id !== action.payload
       );

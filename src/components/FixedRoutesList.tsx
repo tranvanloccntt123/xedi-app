@@ -25,8 +25,8 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   );
 
   useEffect(() => {
-    xediSupabase.tables.fixedRoutes
-      .selectByUserIdAfterId(null, 25)
+    xediSupabase.tables.feed
+      .selectFeedAfterId()
       .then((r) => console.log(r));
   }, []);
 

@@ -11,62 +11,69 @@ type SupabaseTableInsert<T = any> = {
   error: any;
 };
 
+type SupbaseParams = {
+  select?: string;
+  pageNums?: number;
+  id?: number;
+};
+
 export class BaseTable<Data = any, Source = any> {
   supabase: SupabaseClient;
   tableName: string;
+  static PAGE_NUMS = 25;
   constructor(_supabase: SupabaseClient, _tableName: string) {
     this.supabase = _supabase;
     this.tableName = _tableName;
   }
 
-  async selectByUserIdAfterId(
-    id?: number,
-    _pageNums: number = 25
-  ): Promise<SupabaseTableFilter<Data>> {
+  validateSupbase() {
     if (!this.supabase) throw "Supabase is not initialy";
     if (!this.tableName) throw "Table not found";
-    const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
-    if (!userId) throw "User is empty";
-    if (id)
-      return this.supabase
-        .from(this.tableName)
-        .select("*")
-        .gte("id", id)
+    return true;
+  }
+
+  async selectByUserIdAfterId(
+    data?: SupbaseParams
+  ): Promise<SupabaseTableFilter<Data>> {
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      let query = this.supabase.from(this.tableName).select("*");
+      if (data?.id) query = query.gte("id", data?.id);
+
+      return query
         .eq("user_id", userId)
         .order("id", { ascending: true })
-        .range(0, _pageNums);
-
-    return this.supabase
-      .from(this.tableName)
-      .select("*")
-      .eq("user_id", userId)
-      .order("id", { ascending: true })
-      .range(0, _pageNums);
+        .range(0, data?.pageNums || BaseTable.PAGE_NUMS);
+    } catch (e) {
+      throw e;
+    }
   }
 
   async selectAfterId(
-    id?: number,
-    _pageNums: number = 25
+    data?: SupbaseParams
   ): Promise<SupabaseTableFilter<Data>> {
-    if (!this.supabase) throw "Supabase is not initialy";
-    if (!this.tableName) throw "Table not found";
-    if (id)
-      return this.supabase
-        .from(this.tableName)
-        .select("*")
-        .gte("id", id)
-        .order("id", { ascending: true })
-        .range(0, _pageNums);
+    try {
+      this.validateSupbase();
+      if (!this.supabase) throw "Supabase is not initialy";
+      if (!this.tableName) throw "Table not found";
+      let query = this.supabase.from(this.tableName).select("*");
+      if (data?.id) query = query.gte("id", data?.id);
 
-    return this.supabase
-      .from(this.tableName)
-      .select("*")
-      .order("id", { ascending: true })
-      .range(0, _pageNums);
+      return query
+        .order("id", { ascending: true })
+        .range(0, data?.pageNums || BaseTable.PAGE_NUMS);
+    } catch (e) {
+      throw e;
+    }
   }
   async add(data: Array<Source>): Promise<SupabaseTableInsert<Data>> {
-    if (!this.supabase) throw "Supabase is not initialy";
-    if (!this.tableName) throw "Table not found";
-    return this.supabase.from(this.tableName).insert(data).select();
+    try {
+      this.validateSupbase();
+      return this.supabase.from(this.tableName).insert(data).select();
+    } catch (e) {
+      throw e;
+    }
   }
 }

@@ -122,3 +122,4 @@ export class BaseTable<Data = any, Source = any> {
     }
   }
 }
+

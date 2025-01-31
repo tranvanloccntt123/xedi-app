@@ -21,7 +21,6 @@ export default class Feed extends BaseTable<IFeedSupbase> {
         id, 
         content,
         created_at,
-        users ( id, raw_user_meta_data ),
         ${Tables.FIXED_ROUTES} ( 
           id, 
           user_id, 
@@ -44,3 +43,4 @@ export default class Feed extends BaseTable<IFeedSupbase> {
     }
   }
 }
+

@@ -12,12 +12,13 @@ import { Input } from "@/src/components/ui/input"
 import { InputField } from "@/src/components/ui/input"
 import { Button } from "@/src/components/ui/button"
 import { ButtonText } from "@/src/components/ui/button"
-import { FormControl, FormControlLabel } from "@/src/components/ui/form-control"
+import { FormControl } from "@/src/components/ui/form-control"
 import { ScrollView } from "react-native"
 import { formValidatePerField, formValidateSuccess } from "@/src/utils/validator"
 import { authValidator } from "@/src/constants/validator"
 import { FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
 import { deepEqual } from "@/src/utils/deepEqual"
+import { Text } from "@/src/components/ui/text"
 
 export default function EditProfile() {
   const router = useRouter()
@@ -78,7 +79,7 @@ export default function EditProfile() {
           </Heading>
           <VStack space="md">
             <FormControl isInvalid={!!errors.name}>
-              <FormControlLabel>Họ và tên</FormControlLabel>
+              <Text>Họ và tên</Text>
               <Input>
                 <InputField value={name} onChangeText={(value) => handleInputChange("name", value)} />
               </Input>
@@ -87,7 +88,7 @@ export default function EditProfile() {
               </FormControlError>
             </FormControl>
             <FormControl isInvalid={!!errors.email}>
-              <FormControlLabel>Email</FormControlLabel>
+              <Text>Email</Text>
               <Input>
                 <InputField
                   value={email}
@@ -99,8 +100,8 @@ export default function EditProfile() {
                 <FormControlErrorText>{errors.email}</FormControlErrorText>
               </FormControlError>
             </FormControl>
-            <FormControl isInvalid={!!errors.phone}>
-              <FormControlLabel>Số điện thoại</FormControlLabel>
+            <FormControl isInvalid={!!errors.phone} isDisabled>
+              <Text>Số điện thoại</Text>
               <Input>
                 <InputField
                   value={phone}

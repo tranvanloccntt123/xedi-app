@@ -1,6 +1,4 @@
-const APP_STRUCT = "FIXED_ROUTES_LIST";
-
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
@@ -12,7 +10,8 @@ import moment from "moment";
 import { Heading } from "./ui/heading";
 import LottieView from "lottie-react-native";
 import Lottie from "../lottie";
-import { xediSupabase } from "../lib/supabase";
+
+const APP_STRUCT = "FIXED_ROUTES_LIST";
 
 interface FixedRoutesListProps {
   searchQuery: string;
@@ -23,12 +22,6 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   const fixedRoutes = useSelector(
     (state: RootState) => state.fixedRoutes.routes
   );
-
-  useEffect(() => {
-    xediSupabase.tables.feed
-      .selectFeedAfterId()
-      .then((r) => console.log(r));
-  }, []);
 
   const filteredRoutes = fixedRoutes.filter(
     (route: IFixedRoute) =>
@@ -82,3 +75,4 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
     </Box>
   );
 }
+

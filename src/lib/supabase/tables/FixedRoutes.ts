@@ -29,3 +29,4 @@ export default class FixedRoutes extends BaseTable<IFixedRoute> {
     }
   }
 }
+

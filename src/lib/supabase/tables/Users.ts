@@ -8,7 +8,7 @@ export default class Users extends BaseTable<IUser> {
     super(_supabase, Tables.USERS);
   }
   async signUp(data: IUser) {
-    return this.add([data]); 
+    return this.add([data]);
   }
   async updateUser(data: IUser) {
     return this.updateByUserId(data);
@@ -24,3 +24,4 @@ export default class Users extends BaseTable<IUser> {
     }
   }
 }
+

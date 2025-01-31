@@ -3,6 +3,7 @@ import { setUser, clearUser } from "@/src/store/userSlice"
 import { setAuthenticated, logout, clearAuthData } from "@/src/store/authSlice"
 import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice"
 import { clearTripRequests } from "@/src/store/tripRequestsSlice"
+import { fetchUserInfo } from "@/src/store/userThunks"
 
 const APP_STRUCT = "ROOT_LAYOUT"
 
@@ -19,7 +20,6 @@ import { store, persistor } from "../src/store/store"
 import { useSelector } from "react-redux"
 import type { RootState } from "../src/store/store"
 import { supabase } from "@/src/lib/supabase"
-import { Platform } from "react-native"
 import type { IUser } from "@/src/types"
 
 function AuthWrapper() {
@@ -43,16 +43,8 @@ function AuthWrapper() {
       if (event === "SIGNED_IN") {
         console.log("User signed in:", session?.user)
         if (session?.user) {
-          const user: IUser = {
-            id: session.user.id,
-            name: session.user.user_metadata.name || "",
-            phone: session.user.phone || "",
-            email: session.user.email || "",
-            role: session.user.user_metadata.role || "customer",
-            createdAt: new Date(session.user.created_at),
-          }
-          dispatch(setUser(user))
-          dispatch(setAuthenticated(user))
+          dispatch(fetchUserInfo())
+          dispatch(setAuthenticated(true))
         }
       } else if (event === "SIGNED_OUT") {
         console.log("User signed out")
@@ -73,7 +65,6 @@ function AuthWrapper() {
 }
 
 export default function RootLayout() {
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

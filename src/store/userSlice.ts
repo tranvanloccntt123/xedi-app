@@ -1,12 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
-import type { IUser } from "@/src/types"
-
-interface UserState {
-  users: Record<string, IUser>
-}
+import type { IUser, UserState } from "@/src/types"
+import { fetchUserInfo, updateUserInfo } from "./userThunks"
 
 const initialState: UserState = {
-  users: {},
+  currentUser: null,
+  loading: false,
+  error: null,
 }
 
 const userSlice = createSlice({
@@ -14,18 +13,43 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<IUser>) => {
-      const users = { ...state.users }
-      users[action?.payload?.id || "empty"] = action.payload
-      state.users = users
+      state.currentUser = action.payload
     },
     updateUser: (state, action: PayloadAction<IUser>) => {
-      if (state.users[action.payload.id]) {
-        state.users[action.payload.id] = action.payload
+      if (state.currentUser && action.payload.id === state.currentUser.id) {
+        state.currentUser = action.payload
       }
     },
     clearUser: (state) => {
-      state.users = {}
+      state.currentUser = null
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserInfo.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.loading = false
+        state.currentUser = action.payload
+      })
+      .addCase(fetchUserInfo.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload as string
+      })
+      .addCase(updateUserInfo.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(updateUserInfo.fulfilled, (state, action) => {
+        state.loading = false
+        state.currentUser = action.payload
+      })
+      .addCase(updateUserInfo.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.payload as string
+      })
   },
 })
 

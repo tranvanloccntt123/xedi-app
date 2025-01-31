@@ -26,7 +26,6 @@ yarn-error.*
 # local env files
 .env*.local
 .env
-.env.development
 
 # typescript
 *.tsbuildinfo
@@ -34,4 +33,3 @@ yarn-error.*
 # Node.js
 node_modules/
 
-.vercel

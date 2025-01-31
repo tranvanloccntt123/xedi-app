@@ -7,3 +7,4 @@ const supabaseAnonKey =
   process.env.SUPABASE_ANON_KEY || process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl!, supabaseAnonKey!);
+

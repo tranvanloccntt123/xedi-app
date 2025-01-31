@@ -13,3 +13,4 @@ export class XediTables {
     this.users = new Users(supabase);
   }
 }
+

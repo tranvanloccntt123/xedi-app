@@ -25,3 +25,4 @@ supabase.auth.onAuthStateChange((event, session) => {
     // You can add additional cleanup logic here if needed
   }
 });
+

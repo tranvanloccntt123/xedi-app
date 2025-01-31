@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { IUser } from "../types"
+import { fetchUserInfo, updateUserInfo } from "./userThunks"
 
 interface AuthState {
   isAuthenticated: boolean
@@ -15,10 +16,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuthenticated: (state, action: PayloadAction<IUser | null>) => {
+    setAuthenticated: (state, action: PayloadAction<boolean>) => {
       if (action.payload) {
         state.isAuthenticated = true
-        state.user = action.payload
       }
     },
     logout: (state) => {
@@ -34,6 +34,15 @@ const authSlice = createSlice({
         state.user = action.payload
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
+      .addCase(updateUserInfo.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
   },
 })
 

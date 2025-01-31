@@ -1,0 +1,26 @@
+import { Tables } from "@/src/constants";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { BaseTable } from "./BaseTable";
+import { IUser } from "@/src/types";
+
+export default class Users extends BaseTable<IUser> {
+  constructor(_supabase: SupabaseClient) {
+    super(_supabase, Tables.USERS);
+  }
+  async signUp(data: IUser) {
+    return this.add([data]); 
+  }
+  async updateUser(data: IUser) {
+    return this.updateByUserId(data);
+  }
+  async info(){
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      return this.supabase.from(this.tableName).select("*").eq("id", userId);
+    } catch (e) {
+      throw e;
+    }
+  }
+}

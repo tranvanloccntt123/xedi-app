@@ -48,7 +48,6 @@ function AuthWrapper() {
             name: session.user.user_metadata.name || "",
             phone: session.user.phone || "",
             email: session.user.email || "",
-            password: "Hidden",
             role: session.user.user_metadata.role || "customer",
             createdAt: new Date(session.user.created_at),
           }

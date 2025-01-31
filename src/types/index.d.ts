@@ -69,13 +69,13 @@ export interface IUser {
   id: string
   name: string
   phone: string
-  password: string
+  password?: string
   email?: string
   role: "customer" | "driver"
   vehicleId?: string
   totalRatings?: number
   averageRating?: number
-  createdAt: Date
+  createdAt?: Date
 }
 
 export interface IVehicle {

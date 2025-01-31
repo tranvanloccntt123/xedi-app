@@ -56,8 +56,6 @@ export class BaseTable<Data = any, Source = any> {
   ): Promise<SupabaseTableFilter<Data>> {
     try {
       this.validateSupbase();
-      if (!this.supabase) throw "Supabase is not initialy";
-      if (!this.tableName) throw "Table not found";
       let query = this.supabase.from(this.tableName).select("*");
       if (data?.id) query = query.gte("id", data?.id);
 
@@ -68,10 +66,57 @@ export class BaseTable<Data = any, Source = any> {
       throw e;
     }
   }
+
+  async selectById(id: any) {
+    try {
+      this.validateSupbase();
+      return this.supabase.from(this.tableName).select("*").eq("id", id);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async add(data: Array<Source>): Promise<SupabaseTableInsert<Data>> {
     try {
       this.validateSupbase();
       return this.supabase.from(this.tableName).insert(data).select();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async update(data: Source) {
+    try {
+      this.validateSupbase();
+      return this.supabase.from(this.tableName).update(data).select();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async updateByUserId(data: Source) {
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      return this.supabase
+        .from(this.tableName)
+        .update(data)
+        .eq("user_id", userId)
+        .select();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async updateById(id: any, data: Source) {
+    try {
+      this.validateSupbase();
+      return this.supabase
+        .from(this.tableName)
+        .update(data)
+        .eq("id", id)
+        .select();
     } catch (e) {
       throw e;
     }

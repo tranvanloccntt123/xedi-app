@@ -27,7 +27,7 @@ import {
 } from "@/src/utils/validator";
 import { authValidator } from "@/src/constants/validator";
 import { ScrollView } from "react-native";
-import { supabase } from "@/src/lib/supabase";
+import { supabase, xediSupabase } from "@/src/lib/supabase";
 import { pattern } from "@/src/constants";
 
 export default function SignUp() {
@@ -65,18 +65,18 @@ export default function SignUp() {
         phone: user.phone!,
         password: user.password!,
         email: `${user.phone}${pattern}`,
-        options: {
-          data: {
-            name: user.name,
-            role: user.role,
-            r_email: user.email,
-            r_phone: user.phone,
-          },
-        },
       });
 
       if (error) {
         setErrorMessage(error.message);
+      } else {
+        xediSupabase.tables.users.signUp({
+          id: data.user.id,
+          name: user.name || "",
+          phone: user.phone || "",
+          email: user.email || "",
+          role: user.role || "customer",
+        });
       }
     } catch (e) {
       console.error(e);

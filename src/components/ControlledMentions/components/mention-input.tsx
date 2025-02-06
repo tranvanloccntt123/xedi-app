@@ -40,7 +40,7 @@ const Colors = {
   primary: "black",
 };
 
-const MentionInput = forwardRef<MentionInputRef & TextInput, MentionInputProps>(
+const MentionInput = forwardRef<MentionInputRef, MentionInputProps>(
   (
     {
       value,
@@ -142,14 +142,13 @@ const MentionInput = forwardRef<MentionInputRef & TextInput, MentionInputProps>(
 
     React.useImperativeHandle(
       ref,
-      (): MentionInputRef & TextInput => {
+      (): MentionInputRef => {
         return {
           setMentions(type, suggest) {
             const handler = onSuggestionPress(type);
             handler(suggest);
           },
-          ...textInput.current,
-        } as MentionInputRef & TextInput;
+        } as MentionInputRef;
       },
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [parts, plainText, selection, partTypes]

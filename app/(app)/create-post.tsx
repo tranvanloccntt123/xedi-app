@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MentionInput } from "@/src/components/ControlledMentions";
 import { HStack } from "@/src/components/ui/hstack";
 import ChevronLeftIcon from "@/src/components/icons/ChevronLeftIcon";
+import FixedRouteIcon from "@/src/components/icons/FixedRouteIcon";
 
 export default function CreatePost() {
   const [postType, setPostType] = useState<"ride" | "delivery">("ride");
@@ -82,9 +83,13 @@ export default function CreatePost() {
             </Button>
           </HStack>
           <VStack space="md" className="bg-white flex-1 rounded-2xl p-4">
-            <Pressable onPress={() => ref.current?.focus()}>
+            <Pressable style={{ flex: 1 }} onPress={() => ref.current?.focus()}>
               <ScrollView showsVerticalScrollIndicator={Platform.OS === "web"}>
-                <MentionInput ref={ref} value={content} onChange={setContent} />
+                <MentionInput
+                  inputRef={ref}
+                  value={content}
+                  onChange={setContent}
+                />
                 {/* <FormControl>
                 <Text>Post Type</Text>
                 <Select
@@ -171,6 +176,18 @@ export default function CreatePost() {
               </ScrollView>
             </Pressable>
           </VStack>
+          <HStack space="lg" className="mt-4">
+            <Button variant="link">
+              <HStack space="sm" className="items-center">
+                <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
+                  <FixedRouteIcon size={18} color="#000000" />
+                </Box>
+                <ButtonText className="text-black">
+                  Tạo tuyến cố định
+                </ButtonText>
+              </HStack>
+            </Button>
+          </HStack>
         </Box>
       </SafeAreaView>
     </Box>

@@ -51,7 +51,7 @@ export default function TripRequestList() {
 
   const renderItem = useCallback(
     ({ item, index }: { item: ITripRequest; index: number }) => {
-      const month = moment(item.departureTime).format("MM/YYYY");
+      const month = moment(item?.departureTime).format("MM/YYYY");
       const upMonth =
         index &&
         moment(pendingRequests[index - 1]?.departureTime).format("MM/YYYY");
@@ -73,7 +73,9 @@ export default function TripRequestList() {
                 action={item.type === "Taxi" ? "success" : "warning"}
                 className="text-xs rounded-md"
               >
-                {item.type === "Taxi" ? "Đón trả khách" : "Giao hàng"}
+                <Text>
+                  {item.type === "Taxi" ? "Đón trả khách" : "Giao hàng"}
+                </Text>
               </Badge>
             </HStack>
             <VStack>
@@ -141,4 +143,3 @@ export default function TripRequestList() {
     </Box>
   );
 }
-

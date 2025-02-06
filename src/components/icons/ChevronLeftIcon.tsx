@@ -1,14 +1,14 @@
 import React from "react";
 import { Path, Svg } from "react-native-svg";
 
-const ChevronRightIcon: React.FC<{
+const ChevronLeftIcon: React.FC<{
   size: number;
   color: string;
 }> = ({ color, size }) => {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M9 5L14.15 10C14.4237 10.2563 14.6419 10.5659 14.791 10.9099C14.9402 11.2539 15.0171 11.625 15.0171 12C15.0171 12.375 14.9402 12.7458 14.791 13.0898C14.6419 13.4339 14.4237 13.7437 14.15 14L9 19"
+        d="M15 5L9.85 10C9.5763 10.2563 9.35812 10.5659 9.20898 10.9099C9.05984 11.2539 8.98291 11.625 8.98291 12C8.98291 12.375 9.05984 12.7458 9.20898 13.0898C9.35812 13.4339 9.5763 13.7437 9.85 14L15 19"
         stroke={color}
         stroke-width="1.5"
         stroke-linecap="round"
@@ -18,4 +18,4 @@ const ChevronRightIcon: React.FC<{
   );
 };
 
-export default ChevronRightIcon;
+export default ChevronLeftIcon;

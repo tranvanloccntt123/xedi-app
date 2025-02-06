@@ -6,19 +6,20 @@ import { Heading } from "@/src/components/ui/heading";
 import { VStack } from "@/src/components/ui/vstack";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/src/store/store";
-import { FlatList, RefreshControl } from "react-native";
+import { FlatList, Platform, RefreshControl } from "react-native";
 import { Text } from "@/src/components/ui/text";
 import NewsFeedItem from "@/src/components/NewsFeedItem";
 import type { INewsFeedItem } from "@/src/types";
 import { mockNewsFeed } from "@/src/mockData/newsFeed";
-import { Button, ButtonText } from "@/src/components/ui/button";
+import { Button } from "@/src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@/src/components/ui/hstack";
-import AddIcon from "@/src/components/icons/AddIcon";
 import AddIconInLine from "@/src/components/icons/AddIconInline";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
   const user = useSelector((state: RootState) => state.auth.user);
+  const { top } = useSafeAreaInsets();
   const [refreshing, setRefreshing] = React.useState(false);
   const [newsFeed, setNewsFeed] = React.useState(mockNewsFeed);
   const router = useRouter();
@@ -37,11 +38,12 @@ export default function Home() {
   );
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-gray-100" style={{ paddingTop: top }}>
       <FlatList
         data={newsFeed}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={Platform.OS === "web"}
         ListHeaderComponent={
           <HStack space="md" className="p-4">
             <VStack className="flex-1" space="md">

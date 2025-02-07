@@ -1,4 +1,4 @@
-package com.anonymous.xediapp
+package com.tei.xediapp
 
 import android.app.Application
 import android.content.res.Configuration

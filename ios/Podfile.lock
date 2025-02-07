@@ -254,7 +254,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - ExpoSecureStore (12.8.1):
+  - ExpoSecureStore (14.0.1):
     - ExpoModulesCore
   - ExpoSplashScreen (0.29.19):
     - ExpoModulesCore
@@ -269,9 +269,9 @@ PODS:
   - FBLazyVector (0.76.6)
   - fmt (9.1.0)
   - glog (0.3.5)
-  - hermes-engine (0.76.3):
-    - hermes-engine/Pre-built (= 0.76.3)
-  - hermes-engine/Pre-built (0.76.3)
+  - hermes-engine (0.76.6):
+    - hermes-engine/Pre-built (= 0.76.6)
+  - hermes-engine/Pre-built (0.76.6)
   - lottie-ios (4.5.0)
   - lottie-react-native (7.1.0):
     - DoubleConversion
@@ -2281,7 +2281,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 783e68647b969b210a786047c3daa7b753dcac1f
   ExpoLinking: a8332a219379ba80f8e612d5a5de4a3da446886e
   ExpoModulesCore: 7ca0054f09a5205c1dac65fa98c2430472db50e6
-  ExpoSecureStore: c84ae37d1c36f38524d289c67c3a2e3fc56f1108
+  ExpoSecureStore: d006eea5e316283099d46f80a6b10055b89a6008
   ExpoSplashScreen: ef5749777f4ad078141f7d74fcb133eece17086e
   ExpoSymbols: 81d7f433d7a7b20658029eae524a4fa93627159e
   ExpoSystemUI: 2d729aea8219f03af1b1996c1d14488a01fea94a
@@ -2290,7 +2290,7 @@ SPEC CHECKSUMS:
   FBLazyVector: be509404b5de73a64a74284edcaf73a5d1e128b1
   fmt: 10c6e61f4be25dc963c36bd73fc7b1705fe975be
   glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
-  hermes-engine: 0555a84ea495e8e3b4bde71b597cd87fbb382888
+  hermes-engine: 1949ca944b195a8bde7cbf6316b9068e19cf53c6
   lottie-ios: a881093fab623c467d3bce374367755c272bdd59
   lottie-react-native: e23d9bcc85c8730e79e96bdf589a1996d7d388a9
   RCT-Folly: bf5c0376ffe4dd2cf438dcf86db385df9fdce648

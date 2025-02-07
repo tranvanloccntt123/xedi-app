@@ -11,8 +11,11 @@ import { MentionInput } from "@/src/components/ControlledMentions";
 import { HStack } from "@/src/components/ui/hstack";
 import ChevronLeftIcon from "@/src/components/icons/ChevronLeftIcon";
 import FixedRouteIcon from "@/src/components/icons/FixedRouteIcon";
+import AddFixedRouteModal from "@/src/components/AddFixedRouteModal";
 
 export default function CreatePost() {
+  const [fixedRouteModalVisible, setFixedRouteModalVisible] = useState(false);
+  //TODO
   const [postType, setPostType] = useState<"ride" | "delivery">("ride");
   const [startLocation, setStartLocation] = useState({
     display_name: "",
@@ -177,7 +180,10 @@ export default function CreatePost() {
             </Pressable>
           </VStack>
           <HStack space="lg" className="mt-4">
-            <Button variant="link">
+            <Button
+              variant="link"
+              onPress={() => setFixedRouteModalVisible(true)}
+            >
               <HStack space="sm" className="items-center">
                 <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
                   <FixedRouteIcon size={18} color="#000000" />
@@ -190,6 +196,10 @@ export default function CreatePost() {
           </HStack>
         </Box>
       </SafeAreaView>
+      <AddFixedRouteModal
+        visible={fixedRouteModalVisible}
+        onClose={() => setFixedRouteModalVisible(false)}
+      />
     </Box>
   );
 }

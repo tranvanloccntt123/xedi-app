@@ -18,11 +18,17 @@ export interface IChatRoom {
   updatedAt: Date;
 }
 
+export interface InputLocation  {
+  display_name: string;
+  lat: number;
+  lon: number;
+}
+
 export interface IFixedRoute {
   id: number;
   user_id: string;
-  startLocation: string;
-  endLocation: string;
+  startLocation: InputLocation;
+  endLocation: InputLocation;
   departureTime: string;
   totalSeats: number;
   availableSeats: number;

@@ -20,8 +20,24 @@ import { store, persistor } from "../src/store/store";
 import { useSelector } from "react-redux";
 import type { RootState } from "../src/store/store";
 import { supabase } from "@/src/lib/supabase";
-import type { IUser } from "@/src/types";
+
+import { Heading } from "@/src/components/ui/heading";
+import { Image } from "@/src/components/ui/image";
+import {
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+} from "@/src/components/ui/modal";
+import { Text } from "@/src/components/ui/text";
+import { Button, ButtonText } from "@/src/components/ui/button";
+import NetworkLogger from "react-native-network-logger";
+import { Box } from "@/src/components/ui/box";
+import { Platform } from "react-native";
+import DebugButton from "@/src/components/DebugButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function AuthWrapper() {
   const router = useRouter();
@@ -29,6 +45,7 @@ function AuthWrapper() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)";
@@ -66,7 +83,45 @@ function AuthWrapper() {
     };
   }, [dispatch]);
 
-  return <Slot />;
+  return (
+    <Box className="flex-1">
+      <Slot />
+      {Platform.OS !== "web" && (
+        <Modal
+          isOpen={showModal}
+          onClose={() => {
+            setShowModal(false);
+          }}
+        >
+          <ModalBackdrop />
+          <ModalContent className="flex-1 w-full">
+            <SafeAreaView style={{ flex: 1 }}>
+              <ModalBody className="mb-5">
+                <Heading size="md" className="text-typography-950 text-center">
+                  Welcome to the Network logger
+                </Heading>
+                <NetworkLogger theme={"light"} />
+              </ModalBody>
+              <ModalFooter className="w-full">
+                <Button
+                  onPress={() => {
+                    setShowModal(false);
+                  }}
+                  size="sm"
+                  className="flex-grow"
+                >
+                  <ButtonText>Back</ButtonText>
+                </Button>
+              </ModalFooter>
+            </SafeAreaView>
+          </ModalContent>
+        </Modal>
+      )}
+      {Platform.OS !== "web" && (
+        <DebugButton onPress={() => setShowModal(true)} />
+      )}
+    </Box>
+  );
 }
 
 export default function RootLayout() {
@@ -83,4 +138,3 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
-

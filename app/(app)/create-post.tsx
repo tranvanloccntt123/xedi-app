@@ -17,7 +17,6 @@ import { xediSupabase } from "@/src/lib/supabase";
 export default function CreatePost() {
   const [fixedRouteModalVisible, setFixedRouteModalVisible] = useState(false);
   //TODO
-  const [postType, setPostType] = useState<"ride" | "delivery">("ride");
   const [content, setContent] = useState<string>("");
   const router = useRouter();
   const ref = useRef(null);

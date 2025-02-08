@@ -24,6 +24,13 @@ import DateTimePicker from "./DateTime";
 import { VStack } from "./ui/vstack";
 import { xediSupabase } from "../lib/supabase";
 import { formatMoney, unformatMoney } from "../utils/formatMoney";
+import {
+  formValidate,
+  formValidatePerField,
+  formValidateSuccess,
+} from "../utils/validator";
+import { fixedRouteValidator, locationValidator } from "../constants/validator";
+import { Box } from "./ui/box";
 
 enum LocationFor {
   START_LOCATION,
@@ -54,6 +61,48 @@ const AddFixedRouteModal: React.FC<{
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const onCreateFixedRoute = async () => {
+    const _errors = {};
+    const validateStartLocation = formValidatePerField(
+      locationValidator,
+      startLocation
+    );
+
+    if (!formValidateSuccess(validateStartLocation)) {
+      _errors["startLocation"] = validateStartLocation["display_name"].message;
+    }
+
+    const validateEndLocation = formValidatePerField(
+      locationValidator,
+      endLocation
+    );
+
+    if (!formValidateSuccess(validateEndLocation)) {
+      _errors["endLocation"] = validateEndLocation["display_name"].message;
+    }
+
+    const formData = {
+      departureTime: departureTime.toISOString(),
+      totalSeats,
+      price,
+    };
+    const validateForm = formValidatePerField(
+      fixedRouteValidator,
+      formData as never
+    );
+
+    if (!formValidateSuccess(validateForm)) {
+      Object.keys(validateForm).forEach((key) => {
+        if (!validateForm[key].status) {
+          _errors[key] = validateForm[key].message;
+        }
+      });
+    }
+
+    if (Object.keys(_errors).length !== 0) {
+      setErrors(_errors);
+      return;
+    }
+
     xediSupabase.tables.fixedRoutes.add([
       {
         startLocation,
@@ -84,28 +133,41 @@ const AddFixedRouteModal: React.FC<{
           </ModalHeader>
           <ModalBody className="mb-4">
             <VStack space="md">
-              <Button
-                onPress={() => {
-                  setLocationModal(true);
-                  setLocationFor.current = LocationFor.START_LOCATION;
-                }}
-              >
-                <ButtonText>
-                  {startLocation.display_name || "Điểm khởi hành"}
-                </ButtonText>
-              </Button>
-
-              <Button
-                className="bg-typography-900"
-                onPress={() => {
-                  setLocationModal(true);
-                  setLocationFor.current = LocationFor.END_LOCATION;
-                }}
-              >
-                <ButtonText>
-                  {endLocation.display_name || "Điểm đến"}
-                </ButtonText>
-              </Button>
+              <Box>
+                <Button
+                  onPress={() => {
+                    setLocationModal(true);
+                    setLocationFor.current = LocationFor.START_LOCATION;
+                  }}
+                >
+                  <ButtonText>
+                    {startLocation.display_name || "Điểm khởi hành"}
+                  </ButtonText>
+                </Button>
+                {!!errors.startLocation && (
+                  <Text className="text-red-500 text-sm mt-1">
+                    {errors.startLocation}
+                  </Text>
+                )}
+              </Box>
+              <Box>
+                <Button
+                  className="bg-typography-900"
+                  onPress={() => {
+                    setLocationModal(true);
+                    setLocationFor.current = LocationFor.END_LOCATION;
+                  }}
+                >
+                  <ButtonText>
+                    {endLocation.display_name || "Điểm đến"}
+                  </ButtonText>
+                </Button>
+                {!!errors.endLocation && (
+                  <Text className="text-red-500 text-sm mt-1">
+                    {errors.endLocation}
+                  </Text>
+                )}
+              </Box>
 
               <FormControl isInvalid={!!errors.departureTime}>
                 <Text>Khởi hành lúc</Text>
@@ -121,6 +183,11 @@ const AddFixedRouteModal: React.FC<{
                     {errors.departureTime}
                   </FormControlErrorText>
                 </FormControlError>
+                {!!errors.departureTime && (
+                  <Text className="text-red-500 text-sm mt-1">
+                    {errors.departureTime}
+                  </Text>
+                )}
               </FormControl>
 
               <FormControl isInvalid={!!errors.price}>

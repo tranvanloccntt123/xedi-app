@@ -1,4 +1,4 @@
-import { IFixedRoute, IUser } from "../types";
+import { IFixedRoute, InputLocation, IUser } from "../types";
 
 export const authValidator: ValidatorObject<keyof IUser> = {
   phone: {
@@ -92,8 +92,22 @@ export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
       value(total) {
         return /^[1-9]+[0-9]*/g.test(total.trim());
       },
-      message: "Số ghế phải nhập số."
+      message: "Số ghế phải nhập số.",
     },
   },
+  price: {
+    required: {
+      message: "Giá không được để trống."
+    }
+  }
 } as ValidatorObject<keyof IFixedRoute>;
 
+export const locationValidator: ValidatorObject<keyof InputLocation> = {
+  display_name: {
+    required: {
+      message: "Bạn cần thêm địa điểm",
+    },
+  },
+  lat: {},
+  lon: {},
+};

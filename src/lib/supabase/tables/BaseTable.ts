@@ -85,6 +85,17 @@ export class BaseTable<Data = any, Source = any> {
     }
   }
 
+  async addWithUserId(data: Array<Source>): Promise<SupabaseTableInsert<Data>> {
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      return this.supabase.from(this.tableName).insert(data.map(v => ({...v, user_id: userId}))).select();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async update(data: Source) {
     try {
       this.validateSupbase();

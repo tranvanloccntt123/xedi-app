@@ -13,16 +13,30 @@ import ChevronLeftIcon from "@/src/components/icons/ChevronLeftIcon";
 import FixedRouteIcon from "@/src/components/icons/FixedRouteIcon";
 import AddFixedRouteModal from "@/src/components/AddFixedRouteModal";
 import { xediSupabase } from "@/src/lib/supabase";
+import { IFixedRoute } from "@/src/types";
+import FixedRouteItem from "@/src/components/FixedRouteItem";
+
+const ROUNDED = 15;
 
 export default function CreatePost() {
   const [fixedRouteModalVisible, setFixedRouteModalVisible] = useState(false);
   //TODO
   const [content, setContent] = useState<string>("");
+  const [fixedRoutes, setFixedRoutes] = useState<IFixedRoute[]>([]);
   const router = useRouter();
   const ref = useRef(null);
 
   const handleCreatePost = async () => {
-    const {data} = await xediSupabase.tables.feed.addWithUserId([{content}]);
+    const { data } = await xediSupabase.tables.feed.addWithUserId([
+      { content },
+    ]);
+    if (data?.[0]) {
+      fixedRoutes.forEach(async (fixedRoute) => {
+        xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {feed_id: data[0].id})
+      });
+      router.back();
+      return;
+    }
   };
 
   return (
@@ -44,16 +58,47 @@ export default function CreatePost() {
               <ButtonText>Tạo</ButtonText>
             </Button>
           </HStack>
-          <VStack space="md" className="bg-white flex-1 rounded-2xl p-4">
-            <Pressable style={{ flex: 1 }} onPress={() => ref.current?.focus()}>
-              <ScrollView showsVerticalScrollIndicator={Platform.OS === "web"}>
+          <VStack space="md" className="flex-1">
+            <VStack
+              space="md"
+              className="bg-white flex-1"
+              style={{ borderRadius: ROUNDED }}
+            >
+              <Pressable
+                style={{ flex: 1 }}
+                onPress={() => ref.current?.focus()}
+              >
                 <MentionInput
                   inputRef={ref}
                   value={content}
                   onChange={setContent}
+                  containerStyle={{
+                    flex: 1,
+                  }}
+                  style={{
+                    height: "100%",
+                    borderWidth: 0,
+                    borderColor: "white",
+                    borderRadius: ROUNDED,
+                    padding: ROUNDED,
+                  }}
+                  textAlignVertical="top"
                 />
-              </ScrollView>
-            </Pressable>
+              </Pressable>
+            </VStack>
+            {!!fixedRoutes.length && (
+              <Box>
+                <ScrollView horizontal>
+                  <HStack space="md">
+                    {fixedRoutes.map((fixedRoute) => (
+                      <Box key={fixedRoute.id}>
+                        <FixedRouteItem fixedRoute={fixedRoute} disabled />
+                      </Box>
+                    ))}
+                  </HStack>
+                </ScrollView>
+              </Box>
+            )}
           </VStack>
           <HStack space="lg" className="mt-4">
             <Button
@@ -75,6 +120,9 @@ export default function CreatePost() {
       <AddFixedRouteModal
         visible={fixedRouteModalVisible}
         onClose={() => setFixedRouteModalVisible(false)}
+        onFixedRouteCreated={(fixedRoute) =>
+          setFixedRoutes((old) => [...old, fixedRoute])
+        }
       />
     </Box>
   );

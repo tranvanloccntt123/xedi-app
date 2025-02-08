@@ -31,6 +31,7 @@ import {
 } from "../utils/validator";
 import { fixedRouteValidator, locationValidator } from "../constants/validator";
 import { Box } from "./ui/box";
+import { IFixedRoute } from "../types";
 
 enum LocationFor {
   START_LOCATION,
@@ -40,7 +41,8 @@ enum LocationFor {
 const AddFixedRouteModal: React.FC<{
   visible: boolean;
   onClose?: () => any;
-}> = ({ visible, onClose }) => {
+  onFixedRouteCreated?: (fixedRoute: IFixedRoute) => any;
+}> = ({ visible, onClose, onFixedRouteCreated }) => {
   const setLocationFor = React.useRef(LocationFor.START_LOCATION);
   const [locationModal, setLocationModal] = React.useState(false);
 
@@ -100,20 +102,28 @@ const AddFixedRouteModal: React.FC<{
 
     if (Object.keys(_errors).length !== 0) {
       setErrors(_errors);
+      console.log(_errors);
       return;
     }
 
-    xediSupabase.tables.fixedRoutes.add([
-      {
-        startLocation,
-        endLocation,
-        departureTime,
-        description,
-        totalSeats: parseInt(totalSeats),
-        availableSeats: parseInt(totalSeats),
-        price: parseFloat(price),
-      },
-    ]);
+    try {
+      const { data } = await xediSupabase.tables.fixedRoutes.addWithUserId([
+        {
+          startLocation,
+          endLocation,
+          departureTime,
+          description,
+          totalSeats: parseInt(totalSeats),
+          availableSeats: parseInt(totalSeats),
+          price: parseFloat(price),
+        },
+      ]);
+      if (data?.[0]) {
+        onFixedRouteCreated?.(data[0]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
     onClose();
   };
 
@@ -162,14 +172,9 @@ const AddFixedRouteModal: React.FC<{
                     {endLocation.display_name || "Điểm đến"}
                   </ButtonText>
                 </Button>
-                {!!errors.endLocation && (
-                  <Text className="text-red-500 text-sm mt-1">
-                    {errors.endLocation}
-                  </Text>
-                )}
               </Box>
 
-              <FormControl isInvalid={!!errors.departureTime}>
+              <Box>
                 <Text>Khởi hành lúc</Text>
                 <DateTimePicker
                   date={departureTime}
@@ -178,19 +183,14 @@ const AddFixedRouteModal: React.FC<{
                     setErrors({ ...errors, departureTime: "" });
                   }}
                 />
-                <FormControlError>
-                  <FormControlErrorText>
-                    {errors.departureTime}
-                  </FormControlErrorText>
-                </FormControlError>
                 {!!errors.departureTime && (
                   <Text className="text-red-500 text-sm mt-1">
                     {errors.departureTime}
                   </Text>
                 )}
-              </FormControl>
+              </Box>
 
-              <FormControl isInvalid={!!errors.price}>
+              <Box>
                 <Text>Giá (VND)</Text>
                 <Input>
                   <InputField
@@ -203,22 +203,42 @@ const AddFixedRouteModal: React.FC<{
                       setErrors({ ...errors, price: "" });
                     }}
                     keyboardType="numeric"
+                    placeholder="Nhập giá tiền"
                   />
                 </Input>
-                <FormControlError>
-                  <FormControlErrorText>{errors.price}</FormControlErrorText>
-                </FormControlError>
-              </FormControl>
+                {!!errors.price && (
+                  <Text className="text-red-500 text-sm mt-1">
+                    {errors.price}
+                  </Text>
+                )}
+              </Box>
+
+              <Box>
+                <Text>Số ghế trống</Text>
+                <Input>
+                  <InputField
+                    value={totalSeats}
+                    onChangeText={setTotalSeats}
+                    keyboardType="numeric"
+                    placeholder="Nhập số ghế"
+                  />
+                </Input>
+                {!!errors.totalSeats && (
+                  <Text className="text-red-500 text-sm mt-1">
+                    {errors.totalSeats}
+                  </Text>
+                )}
+              </Box>
 
               <FormControl>
                 <Text>Mô tả thêm về hành trình</Text>
-                <Input>
+                <Input className="h-[100px]">
                   <InputField
                     placeholder="Nhập mô tả"
                     value={description}
                     onChangeText={setDescription}
                     multiline
-                    numberOfLines={4}
+                    textAlignVertical="top"
                   />
                 </Input>
               </FormControl>

@@ -35,6 +35,11 @@ body {
   background-color: #fff;
 }
 
+textarea:focus {
+            outline: none;
+            border-color: transparent;
+        }
+
 @font-face {
   src: url(node_modules/@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/Ionicons.ttf);
   font-family: "Ionicons";

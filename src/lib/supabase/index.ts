@@ -12,7 +12,10 @@ class XediSupabase {
   constructor() {
     this.tables = new XediTables(supabase);
   }
+
+  async getUser() {
+    return supabase.auth.getUser();
+  }
 }
 
 export const xediSupabase = new XediSupabase();
-

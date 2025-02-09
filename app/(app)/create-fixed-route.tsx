@@ -2,7 +2,7 @@ import { formatMoney, unformatMoney } from "@/src/utils/formatMoney"
 
 const APP_STRUCT = "CREATE_FIXED_ROUTE_SCREEN"
 
-import React, { useState } from "react"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 import { Box } from "@/src/components/ui/box"
 import { VStack } from "@/src/components/ui/vstack"
@@ -11,7 +11,7 @@ import { Input } from "@/src/components/ui/input"
 import { InputField } from "@/src/components/ui/input"
 import { Button } from "@/src/components/ui/button"
 import { ButtonText } from "@/src/components/ui/button"
-import { FormControl, FormControlLabel, FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
+import { FormControl, FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
 import { useDispatch, useSelector } from "react-redux"
 import { addFixedRoute } from "@/src/store/fixedRoutesSlice"
 import type { RootState } from "@/src/store/store"
@@ -49,7 +49,7 @@ export default function CreateFixedRoute() {
 
     if (formValidateSuccess(validateForm) && user) {
       const newRoute: IFixedRoute = {
-        id: parseInt(Math.random().toString()),
+        id: Number.parseInt(Math.random().toString()),
         user_id: user.id || "",
         startLocation,
         endLocation,
@@ -59,7 +59,7 @@ export default function CreateFixedRoute() {
         price: unformatMoney(price),
         created_at: new Date(),
       }
-      await xediSupabase.tables.fixedRoutes.addFixedRoutes([newRoute]);
+      await xediSupabase.tables.fixedRoutes.addFixedRoutes([newRoute])
       dispatch(addFixedRoute(newRoute))
       router.back()
     }
@@ -79,7 +79,7 @@ export default function CreateFixedRoute() {
           </Heading>
           <VStack space="md">
             <FormControl isInvalid={!!errors.startLocation}>
-              <Text>Điểm đi</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Điểm đi</Text>
               <Input>
                 <InputField
                   placeholder="Nhập điểm đi"
@@ -96,7 +96,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.endLocation}>
-              <Text>Điểm đến</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Điểm đến</Text>
               <Input>
                 <InputField
                   placeholder="Nhập điểm đến"
@@ -113,7 +113,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.departureTime}>
-              <Text>Thời gian khởi hành</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Thời gian khởi hành</Text>
               <DateTimePicker date={departureTime} onChangeDate={onChangeDepartureTime} />
               <FormControlError>
                 <FormControlErrorText>{errors.departureTime}</FormControlErrorText>
@@ -121,7 +121,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.totalSeats}>
-              <Text>Tổng số ghế</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Tổng số ghế</Text>
               <Input>
                 <InputField
                   placeholder="Nhập tổng số ghế"
@@ -139,7 +139,7 @@ export default function CreateFixedRoute() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.price}>
-              <Text>Giá</Text>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Giá</Text>
               <Input>
                 <InputField
                   placeholder="Nhập giá"

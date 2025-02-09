@@ -8,8 +8,27 @@ import {
   BottomSheetItemText,
   BottomSheetBackdrop,
 } from "@/src/components/ui/bottom-sheet";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { IFixedRoute, IUser } from "../types";
 
 const FeedBottomSheet: React.FC<object> = () => {
+  const { currentFixedRoute, user } = useSelector(
+    (
+      state: RootState
+    ): {
+      user: IUser | null;
+      currentFixedRoute: IFixedRoute | null;
+    } => ({
+      currentFixedRoute: state.fixedRoutes.currentFixedRoute,
+      user: state.user.currentUser,
+    })
+  );
+
+  const isAuthor = React.useMemo(
+    () => user && currentFixedRoute && user.id === currentFixedRoute.user_id,
+    [user, currentFixedRoute]
+  );
   return (
     <BottomSheetPortal
       snapPoints={["25%", "50%"]}

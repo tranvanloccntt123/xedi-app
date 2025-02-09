@@ -18,7 +18,6 @@ import AddIconInLine from "@/src/components/icons/AddIconInline";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { xediSupabase } from "@/src/lib/supabase";
 import {
-  BottomSheetTrigger,
   BottomSheetPortal,
   BottomSheetDragIndicator,
   BottomSheetContent,
@@ -27,6 +26,7 @@ import {
   BottomSheet,
   BottomSheetBackdrop,
 } from "@/src/components/ui/bottom-sheet";
+import FeedBottomSheet from "@/src/components/FeedBottomSheet";
 
 export default function Home() {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -94,23 +94,8 @@ export default function Home() {
           }
         />
       </Box>
-      <BottomSheetPortal
-        snapPoints={["25%", "50%"]}
-        backdropComponent={BottomSheetBackdrop}
-        handleComponent={BottomSheetDragIndicator}
-      >
-        <BottomSheetContent>
-          <BottomSheetItem>
-            <BottomSheetItemText>Item 1</BottomSheetItemText>
-          </BottomSheetItem>
-          <BottomSheetItem>
-            <BottomSheetItemText>Item 2</BottomSheetItemText>
-          </BottomSheetItem>
-          <BottomSheetItem>
-            <BottomSheetItemText>Item 3</BottomSheetItemText>
-          </BottomSheetItem>
-        </BottomSheetContent>
-      </BottomSheetPortal>
+      <FeedBottomSheet />
     </BottomSheet>
   );
 }
+

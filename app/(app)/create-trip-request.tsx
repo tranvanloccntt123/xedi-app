@@ -1,6 +1,6 @@
 const APP_STRUCT = "CREATE_TRIP_REQUEST_SCREEN"
 
-import React, { useState } from "react"
+import { useState } from "react"
 import { ScrollView } from "react-native"
 import { Box } from "@/src/components/ui/box"
 import { VStack } from "@/src/components/ui/vstack"
@@ -9,7 +9,8 @@ import { Input } from "@/src/components/ui/input"
 import { InputField } from "@/src/components/ui/input"
 import { Button } from "@/src/components/ui/button"
 import { ButtonText } from "@/src/components/ui/button"
-import { FormControl, FormControlLabel, FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
+import { FormControl, FormControlError, FormControlErrorText } from "@/src/components/ui/form-control"
+import { Text } from "@/src/components/ui/text"
 import { useDispatch, useSelector } from "react-redux"
 import { addTripRequest } from "@/src/store/tripRequestsSlice"
 import type { RootState } from "@/src/store/store"
@@ -73,10 +74,10 @@ export default function CreateTripRequest() {
           </Heading>
           <VStack space="md">
             <FormControl isInvalid={!!errors.startLocation}>
-              <FormControlLabel>Điểm đi</FormControlLabel>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Điểm đi</Text>
               <Input>
                 <InputField
-                  placeholder="Nhập đi���m đi"
+                  placeholder="Nhập điểm đi"
                   value={startLocation}
                   onChangeText={(value) => {
                     setStartLocation(value)
@@ -90,7 +91,7 @@ export default function CreateTripRequest() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.endLocation}>
-              <FormControlLabel>Điểm đến</FormControlLabel>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Điểm đến</Text>
               <Input>
                 <InputField
                   placeholder="Nhập điểm đến"
@@ -107,7 +108,7 @@ export default function CreateTripRequest() {
             </FormControl>
 
             <FormControl isInvalid={!!errors.departureTime}>
-              <FormControlLabel>Thời gian khởi hành</FormControlLabel>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Thời gian khởi hành</Text>
               <DateTimePicker
                 date={departureTime}
                 onChangeDate={(date) => {
@@ -121,7 +122,7 @@ export default function CreateTripRequest() {
             </FormControl>
 
             <FormControl>
-              <FormControlLabel>Loại chuyến đi</FormControlLabel>
+              <Text className="mb-2 text-sm font-medium text-gray-700">Loại chuyến đi</Text>
               <Select selectedValue={type} onValueChange={(value) => setType(value as "Delivery" | "Taxi")}>
                 <SelectTrigger>
                   <SelectInput placeholder="Chọn loại chuyến đi" />

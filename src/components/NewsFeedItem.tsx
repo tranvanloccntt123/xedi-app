@@ -52,3 +52,4 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
 };
 
 export default NewsFeedItem;
+

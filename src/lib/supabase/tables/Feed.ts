@@ -23,7 +23,6 @@ export default class Feed extends BaseTable<IFeedSupbase> {
         created_at,
         ${Tables.FIXED_ROUTES} ( 
           id, 
-          user_id, 
           startLocation, 
           endLocation, 
           departureTime, 
@@ -31,7 +30,8 @@ export default class Feed extends BaseTable<IFeedSupbase> {
           availableSeats,
           price,
           created_at 
-        )
+        ),
+        ${Tables.USERS} (*)
       `);
       if (data?.id) query = query.gte("id", data?.id);
 

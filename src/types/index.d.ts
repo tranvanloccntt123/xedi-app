@@ -96,20 +96,9 @@ export interface IVehicle {
 
 export interface INewsFeedItem {
   id: string;
-  author: {
-    id: string;
-    name: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
-  tripInfo: {
-    type: "fixedRoute" | "tripRequest";
-    data: IFixedRoute | ITripRequest;
-  };
-  location: {
-    latitude: number;
-    longitude: number;
-  };
+  users: IUser;
+  created_at: Date;
+  fixed_routes: IFixedRoute[];
   content: string;
 }
 

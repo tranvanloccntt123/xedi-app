@@ -8,14 +8,16 @@ import {
   BottomSheetItemText,
   BottomSheetBackdrop,
 } from "@/src/components/ui/bottom-sheet";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../store/store";
 import type { INewsFeedItem, IUser } from "../types";
 import { Box } from "./ui/box";
 import { Text } from "./ui/text";
 import { xediSupabase } from "../lib/supabase";
+import { deleteFeedItem } from "../store/feedSlice";
 
 const FeedBottomSheet: React.FC<object> = () => {
+  const dispatch = useDispatch();
   const { currentNewsFeedItem, user } = useSelector(
     (
       state: RootState
@@ -35,7 +37,10 @@ const FeedBottomSheet: React.FC<object> = () => {
   );
 
   const deleteNewFeed = async () => {
-    await xediSupabase.tables.feed.deleteById(currentNewsFeedItem.id);
+    if (currentNewsFeedItem) {
+      await xediSupabase.tables.feed.deleteById(currentNewsFeedItem.id);
+      dispatch(deleteFeedItem(currentNewsFeedItem.id));
+    }
   };
 
   return (
@@ -54,7 +59,7 @@ const FeedBottomSheet: React.FC<object> = () => {
           </BottomSheetItem>
         </Box>
         {isAuthor && (
-          <BottomSheetItem onPress={() => deleteNewFeed()}>
+          <BottomSheetItem onPress={deleteNewFeed}>
             <Text className="text-error-300">Xoá bài đăng</Text>
           </BottomSheetItem>
         )}

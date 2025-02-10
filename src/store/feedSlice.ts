@@ -4,11 +4,13 @@ import type { INewsFeedItem } from "@/src/types";
 interface FeedState {
   items: INewsFeedItem[];
   currentNewsFeedItem: INewsFeedItem | null;
+  deletedItems: string[]; // New state to store deleted item IDs
 }
 
 const initialState: FeedState = {
   items: [],
   currentNewsFeedItem: null,
+  deletedItems: [], // Initialize as an empty array
 };
 
 const feedSlice = createSlice({
@@ -30,10 +32,12 @@ const feedSlice = createSlice({
       }
     },
     deleteFeedItem: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      state.deletedItems.push(action.payload); // Mark the item as deleted
+      // We'll keep the item in the items array for animation purposes
     },
     clearFeedItems: (state) => {
       state.items = process.env.NODE_ENV === "development" ? state.items : [];
+      state.deletedItems = [];
     },
     setCurrentNewsFeedItem: (
       state,

@@ -7,7 +7,7 @@ import { VStack } from "./ui/vstack";
 import { HStack } from "./ui/hstack";
 import { Text } from "./ui/text";
 import FixedRouteItem from "./FixedRouteItem";
-import { Platform, ScrollView } from "react-native";
+import { Platform, Pressable, ScrollView } from "react-native";
 import MoreIcon from "./icons/MoreIcon";
 import { BottomSheetTrigger } from "./ui/bottom-sheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,8 @@ import Animated, {
   withTiming,
   interpolate,
 } from "react-native-reanimated";
+import { MentionInput } from "./ControlledMentions";
+import { router } from "expo-router";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -54,8 +56,8 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-2">
-        <Box className="bg-white p-4 rounded-lg">
+      <VStack space="sm" className="mb-2 bg-white">
+        <Box className="p-4 rounded-lg">
           <VStack>
             <HStack className="justify-between items-center">
               <Text className="font-bold">{item.users.name}</Text>
@@ -66,21 +68,31 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
             <Text className="text-gray-500 text-xs mb-4">
               {moment(item.created_at).fromNow()}
             </Text>
-            <Text>{item.content}</Text>
+            <MentionInput
+              editable={false}
+              value={item.content}
+              onChange={() => {}}
+            />
           </VStack>
         </Box>
         {!!item?.fixed_routes?.length && (
           <ScrollView
             horizontal
+            bounces={false}
             showsHorizontalScrollIndicator={Platform.OS === "web"}
           >
-            <HStack space="md" className="mb-4">
+            <HStack space="md" className="mb-4 px-2">
               {item.fixed_routes.map((fixedRoute) => (
-                <FixedRouteItem
-                  fixedRoute={fixedRoute}
+                <Pressable
                   key={fixedRoute.id}
-                  className="mx-0"
-                />
+                  onPress={() => router.navigate(`/fixed/${fixedRoute.id}/detail`)}
+                >
+                  <FixedRouteItem
+                    fixedRoute={fixedRoute}
+                    className="mx-0 bg-gray-50 rounded-md"
+                    disabled
+                  />
+                </Pressable>
               ))}
             </HStack>
           </ScrollView>

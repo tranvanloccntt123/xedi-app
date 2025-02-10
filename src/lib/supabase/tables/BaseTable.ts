@@ -141,6 +141,17 @@ export class BaseTable<Data = any, Source = any> {
       this.validateSupbase();
       return this.supabase.from(this.tableName).delete().eq("id", id);
     } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
+  async deleteByField(field: string, data: any) {
+    try {
+      this.validateSupbase();
+      return this.supabase.from(this.tableName).delete().eq(field, data);
+    } catch (e) {
+      console.log(e);
       throw e;
     }
   }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { ActivityIndicator } from "react-native"
 import { Box } from "@/src/components/ui/box"
 import { Input } from "@/src/components/ui/input"
@@ -45,7 +45,7 @@ export default function LocationSearch({ onSelectLocation }: LocationSearchProps
   return (
     <Box>
       <Input>
-        <InputField placeholder="Search for a location" value={query} onChangeText={searchLocation} />
+        <InputField placeholder="Tìm kiếm" value={query} onChangeText={searchLocation} />
       </Input>
       {isLoading && <ActivityIndicator style={{ marginTop: 10 }} />}
       <VStack space="sm" className="mt-2">

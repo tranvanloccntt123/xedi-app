@@ -105,6 +105,7 @@ export default function FixedRouteDetail() {
                   className="mx-0"
                   fixedRoute={fixedRoute}
                   disabled
+                  isHiddenPrice
                 />
               )}
               <Box className="p-4 bg-white rounded-md">

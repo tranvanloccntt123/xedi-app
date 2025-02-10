@@ -2,7 +2,7 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteFixedRoute } from "@/src/store/fixedRoutesSlice";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
@@ -12,7 +12,7 @@ import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { Image, ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRouteItem";
-import { IFixedRoute } from "@/src/types";
+import type { IFixedRoute } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import LottieView from "lottie-react-native";
 import Lottie from "@/src/lottie";
@@ -20,6 +20,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";
 import { Divider } from "@/src/components/ui/divider";
+import { Input, InputField } from "@/src/components/ui/input";
+import {
+  Textarea as TextArea,
+  TextareaInput as TextAreaInput,
+} from "@/src/components/ui/textarea";
+import type { RootState } from "@/src/store/store";
 
 const styles = StyleSheet.create({
   logo: {
@@ -43,6 +49,12 @@ export default function FixedRouteDetail() {
 
   const [error, setError] = useState(false);
 
+  const [note, setNote] = useState("");
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
   React.useEffect(() => {
     const fetch = async () => {
       if (isLoading) return;
@@ -58,7 +70,7 @@ export default function FixedRouteDetail() {
       setIsLoading(false);
     };
     fetch();
-  }, [id]);
+  }, [id]); // Added isLoading to dependencies
 
   if (isLoading) {
     return (
@@ -91,6 +103,34 @@ export default function FixedRouteDetail() {
   const handleDelete = () => {
     dispatch(deleteFixedRoute(fixedRoute.id));
     router.back();
+  };
+
+  const handleOrder = async () => {
+    if (!user || !fixedRoute) return;
+
+    try {
+      const { data, error } = await xediSupabase.tables.fixedRouteOrders.add([
+        {
+          fixed_route_id: fixedRoute.id,
+          user_id: user.id,
+          name,
+          phone_number: phoneNumber,
+          note,
+        },
+      ]);
+
+      if (error) throw error;
+
+      // Show success message and reset form
+      // You might want to use a toast or alert here
+      console.log("Order placed successfully");
+      setName("");
+      setPhoneNumber("");
+      setNote("");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      // Show error message
+    }
   };
 
   return (
@@ -128,38 +168,63 @@ export default function FixedRouteDetail() {
                   </HStack>
                 </VStack>
               </Box>
-              {/* <VStack space="md" className="mx-2">
-              <Button
-                onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
-              >
-                <ButtonText>Chỉnh sửa tuyến đường</ButtonText>
-              </Button>
-              <Button variant="outline" onPress={handleDelete}>
-                <ButtonText>Xóa tuyến đường</ButtonText>
-              </Button>
-            </VStack> */}
             </VStack>
           </Box>
+          {user?.role === "customer" ? (
+            <VStack space="md" className="bg-white p-4 rounded-sm">
+              <Input>
+                <InputField
+                  placeholder="Tên"
+                  value={name}
+                  onChangeText={setName}
+                />
+              </Input>
+              <Input>
+                <InputField
+                  placeholder="Số điện thoại"
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  keyboardType="phone-pad"
+                />
+              </Input>
+              <TextArea>
+                <TextAreaInput
+                  placeholder="Ghi chú"
+                  value={note}
+                  onChangeText={setNote}
+                />
+              </TextArea>
+              <Button
+                className="rounded-md"
+                size="xl"
+                onPress={() => handleOrder()}
+              >
+                <ButtonText>Đặt chuyến</ButtonText>
+              </Button>
+            </VStack>
+          ) : (
+            <HStack space="md" className="bg-white p-4 rounded-sm">
+              <Button
+                className="flex-1 rounded-md"
+                size="xl"
+                variant="outline"
+                onPress={() => router.back()}
+              >
+                <ButtonText className="text-typography-500">
+                  Quay lại
+                </ButtonText>
+              </Button>
+              <Button
+                className="flex-1 rounded-md"
+                size="xl"
+                onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
+              >
+                <ButtonText>Chỉnh sửa</ButtonText>
+              </Button>
+            </HStack>
+          )}
         </ScrollView>
-        <HStack space="md" className="bg-white p-4 rounded-sm">
-          <Button
-            className="flex-1 rounded-md"
-            size="xl"
-            variant="outline"
-            onPress={() => router.back()}
-          >
-            <ButtonText className="text-typography-500">Quay lại</ButtonText>
-          </Button>
-          <Button
-            className="flex-1 rounded-md"
-            size="xl"
-            onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
-          >
-            <ButtonText>Đặt</ButtonText>
-          </Button>
-        </HStack>
       </SafeAreaView>
     </Box>
   );
 }
-

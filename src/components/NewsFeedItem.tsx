@@ -9,19 +9,27 @@ import FixedRouteItem from "./FixedRouteItem";
 import { Platform, ScrollView } from "react-native";
 import MoreIcon from "./icons/MoreIcon";
 import { BottomSheetTrigger } from "./ui/bottom-sheet";
+import { useDispatch } from "react-redux";
+import { setCurrentNewsFeedItem } from "@/src/store/feedSlice";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
 }
 
 const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const handleMoreClick = () => {
+    dispatch(setCurrentNewsFeedItem(item));
+  };
+
   return (
     <VStack space="sm" className="mb-1">
       <Box className="bg-white p-4 rounded-lg shadow-sm">
         <VStack>
           <HStack className="justify-between items-center">
             <Text className="font-bold">{item.users.name}</Text>
-            <BottomSheetTrigger>
+            <BottomSheetTrigger onPress={handleMoreClick}>
               <MoreIcon color="#000000" size={24} />
             </BottomSheetTrigger>
           </HStack>
@@ -52,4 +60,3 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
 };
 
 export default NewsFeedItem;
-

@@ -90,7 +90,10 @@ export class BaseTable<Data = any, Source = any> {
       this.validateSupbase();
       const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
       if (!userId) throw "User is empty";
-      return this.supabase.from(this.tableName).insert(data.map(v => ({...v, user_id: userId}))).select();
+      return this.supabase
+        .from(this.tableName)
+        .insert(data.map((v) => ({ ...v, user_id: userId })))
+        .select();
     } catch (e) {
       throw e;
     }
@@ -132,5 +135,13 @@ export class BaseTable<Data = any, Source = any> {
       throw e;
     }
   }
-}
 
+  async deleteById(id: any) {
+    try {
+      this.validateSupbase();
+      return this.supabase.from(this.tableName).delete().eq("id", id);
+    } catch (e) {
+      throw e;
+    }
+  }
+}

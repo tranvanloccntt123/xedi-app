@@ -6,6 +6,7 @@ import authReducer from "./authSlice"
 import userReducer from "./userSlice"
 import fixedRoutesReducer from "./fixedRoutesSlice"
 import tripRequestsReducer from "./tripRequestsSlice"
+import feedReducer from "./feedSlice"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 const persistConfig = {
@@ -19,6 +20,7 @@ const combinedReducer = combineReducers({
   user: userReducer,
   fixedRoutes: fixedRoutesReducer,
   tripRequests: tripRequestsReducer,
+  feed: feedReducer,
 })
 
 const rootReducer = (state: RootState | undefined, action: AnyAction) => {

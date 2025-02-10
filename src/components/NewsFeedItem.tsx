@@ -75,28 +75,47 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
             />
           </VStack>
         </Box>
-        {!!item?.fixed_routes?.length && (
-          <ScrollView
-            horizontal
-            bounces={false}
-            showsHorizontalScrollIndicator={Platform.OS === "web"}
-          >
-            <HStack space="md" className="mb-4 px-2">
-              {item.fixed_routes.map((fixedRoute) => (
-                <Pressable
-                  key={fixedRoute.id}
-                  onPress={() => router.navigate(`/fixed/${fixedRoute.id}/detail`)}
-                >
-                  <FixedRouteItem
-                    fixedRoute={fixedRoute}
-                    className="mx-0 bg-gray-50 rounded-md"
-                    disabled
-                  />
-                </Pressable>
-              ))}
-            </HStack>
-          </ScrollView>
-        )}
+        {!!item?.fixed_routes?.length &&
+          (item.fixed_routes.length === 1 ? (
+            <Box className="mb-4 px-2">
+              <Pressable
+                key={item.fixed_routes[0].id}
+                onPress={() =>
+                  router.navigate(`/fixed/${item.fixed_routes[0].id}/detail`)
+                }
+                style={{ width: "100%" }}
+              >
+                <FixedRouteItem
+                  fixedRoute={item.fixed_routes[0]}
+                  className="mx-0 bg-gray-50 rounded-md w-full"
+                  disabled
+                />
+              </Pressable>
+            </Box>
+          ) : (
+            <ScrollView
+              horizontal
+              bounces={false}
+              showsHorizontalScrollIndicator={Platform.OS === "web"}
+            >
+              <HStack space="md" className="mb-4 px-2">
+                {item.fixed_routes.map((fixedRoute) => (
+                  <Pressable
+                    key={fixedRoute.id}
+                    onPress={() =>
+                      router.navigate(`/fixed/${fixedRoute.id}/detail`)
+                    }
+                  >
+                    <FixedRouteItem
+                      fixedRoute={fixedRoute}
+                      className="mx-0 bg-gray-50 rounded-md w-[280px]"
+                      disabled
+                    />
+                  </Pressable>
+                ))}
+              </HStack>
+            </ScrollView>
+          ))}
       </VStack>
     </Animated.View>
   );

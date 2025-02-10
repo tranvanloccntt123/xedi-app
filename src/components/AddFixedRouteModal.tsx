@@ -32,6 +32,13 @@ import {
 import { fixedRouteValidator, locationValidator } from "../constants/validator";
 import { Box } from "./ui/box";
 import { IFixedRoute } from "../types";
+import {
+  Checkbox,
+  CheckboxIndicator,
+  CheckboxLabel,
+  CheckboxIcon,
+} from "@/src/components/ui/checkbox";
+import { CheckIcon } from "@/src/components/ui/icon";
 
 enum LocationFor {
   START_LOCATION,
@@ -61,7 +68,7 @@ const AddFixedRouteModal: React.FC<{
   const [departureTime, setDepartureTime] = React.useState(new Date());
   const [description, setDescription] = React.useState("");
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-
+  const [isFlexDepartureTime, setIsFlexDepartureTime] = React.useState(false);
   const onCreateFixedRoute = async () => {
     const _errors = {};
     const validateStartLocation = formValidatePerField(
@@ -83,10 +90,14 @@ const AddFixedRouteModal: React.FC<{
     }
 
     const formData = {
-      departureTime: departureTime.toISOString(),
       totalSeats,
       price,
     };
+
+    if (!isFlexDepartureTime) {
+      formData["departureTime"] = departureTime.toISOString();
+    }
+
     const validateForm = formValidatePerField(
       fixedRouteValidator,
       formData as never
@@ -111,7 +122,7 @@ const AddFixedRouteModal: React.FC<{
         {
           startLocation,
           endLocation,
-          departureTime,
+          departureTime: isFlexDepartureTime ? undefined : departureTime,
           description,
           totalSeats: parseInt(totalSeats),
           availableSeats: parseInt(totalSeats),
@@ -175,8 +186,15 @@ const AddFixedRouteModal: React.FC<{
               </Box>
 
               <Box>
-                <Text>Khởi hành lúc</Text>
+                <Text
+                  className={`${
+                    isFlexDepartureTime ? "text-typography-300" : "text-black"
+                  }`}
+                >
+                  Khởi hành lúc
+                </Text>
                 <DateTimePicker
+                  isDisabled={isFlexDepartureTime}
                   date={departureTime}
                   onChangeDate={(date) => {
                     setDepartureTime(date);
@@ -189,6 +207,18 @@ const AddFixedRouteModal: React.FC<{
                   </Text>
                 )}
               </Box>
+              <Checkbox
+                value={"isFlex"}
+                size="md"
+                isInvalid={false}
+                isDisabled={false}
+                onChange={setIsFlexDepartureTime}
+              >
+                <CheckboxIndicator>
+                  <CheckboxIcon as={CheckIcon} />
+                </CheckboxIndicator>
+                <CheckboxLabel>Thời gian linh động</CheckboxLabel>
+              </Checkbox>
 
               <Box>
                 <Text>Giá (VND)</Text>
@@ -308,4 +338,3 @@ const AddFixedRouteModal: React.FC<{
 };
 
 export default AddFixedRouteModal;
-

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Platform, Pressable, ScrollView } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";
@@ -32,7 +32,9 @@ export default function CreatePost() {
     ]);
     if (data?.[0]) {
       fixedRoutes.forEach(async (fixedRoute) => {
-        xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {feed_id: data[0].id})
+        xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
+          feed_id: data[0].id,
+        });
       });
       router.back();
       return;
@@ -92,7 +94,11 @@ export default function CreatePost() {
                   <HStack space="md">
                     {fixedRoutes.map((fixedRoute) => (
                       <Box key={fixedRoute.id}>
-                        <FixedRouteItem fixedRoute={fixedRoute} disabled />
+                        <FixedRouteItem
+                          fixedRoute={fixedRoute}
+                          className="w-[280px]"
+                          disabled
+                        />
                       </Box>
                     ))}
                   </HStack>
@@ -127,4 +133,3 @@ export default function CreatePost() {
     </Box>
   );
 }
-

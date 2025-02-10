@@ -7,6 +7,7 @@ const DateTime: React.FC<XediDatePicker> = ({
   date,
   onChangeDate,
   placeholder,
+  isDisabled,
 }) => {
   const [initDate, setInitDate] = React.useState(date || new Date());
   const [value, setValue] = React.useState(
@@ -24,13 +25,18 @@ const DateTime: React.FC<XediDatePicker> = ({
   return (
     <>
       <Button
+        disabled={isDisabled}
         variant="outline"
         className="border-typography-300 justify-start px-2"
         onPress={() => setModalVisible(true)}
       >
         <ButtonText
           className={`text-start font-normal ${
-            value ? "text-black" : "text-typography-300"
+            isDisabled
+              ? "text-typography-300"
+              : value
+              ? "text-black"
+              : "text-typography-300"
           }`}
         >
           {value ? value : placeholder || "Choose your date"}

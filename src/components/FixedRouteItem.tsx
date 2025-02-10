@@ -9,10 +9,6 @@ import moment from "moment";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";
-import { useDispatch } from "react-redux";
-import { setCurrentFixedRoute } from "@/src/store/fixedRoutesSlice";
-import { BottomSheetTrigger } from "./ui/bottom-sheet";
-import MoreIcon from "@expo/vector-icons/MaterialCommunityIcons";
 
 const APP_STRUCT = "FIXED_ROUTES_ITEM";
 
@@ -22,21 +18,22 @@ const FixedRouteItem: React.FC<{
   className?: string;
   isHiddenPrice?: boolean;
 }> = ({ fixedRoute: item, disabled, className, isHiddenPrice }) => {
-  const dispatch = useDispatch();
-
-  const handleMoreClick = () => {
-    dispatch(setCurrentFixedRoute(item));
-  };
-
   return (
     <VStack space="xs" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
       <HStack className="justify-between items-center">
-        <Text className="text-xs font-bold">
-          {moment(item.departureTime).format("HH:mm")}
-        </Text>
-        <BottomSheetTrigger onPress={handleMoreClick}>
-          <MoreIcon color="#000000" size={24} />
-        </BottomSheetTrigger>
+        {!!item.departureTime && (
+          <Text className="text-xs font-bold">
+            {moment(item.departureTime).format("HH:mm")}
+          </Text>
+        )}
+        {!item.departureTime && (
+          <Text className="text-xs font-bold">Thời gian linh động</Text>
+        )}
+        {!!item.departureTime && (
+          <Text className="text-xs font-bold">
+            {moment(item.departureTime).format("DD/MM/YYYY")}
+          </Text>
+        )}
       </HStack>
       <VStack>
         <HStack className="items-center">

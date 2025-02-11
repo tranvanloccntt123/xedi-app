@@ -10,7 +10,6 @@ import { FlatList, Platform, RefreshControl } from "react-native";
 import { Text } from "@/src/components/ui/text";
 import NewsFeedItem from "@/src/components/NewsFeedItem";
 import type { INewsFeedItem } from "@/src/types";
-import { mockNewsFeed } from "@/src/mockData/newsFeed";
 import { Button } from "@/src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@/src/components/ui/hstack";
@@ -18,13 +17,7 @@ import AddIconInLine from "@/src/components/icons/AddIconInline";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { xediSupabase } from "@/src/lib/supabase";
 import {
-  BottomSheetPortal,
-  BottomSheetDragIndicator,
-  BottomSheetContent,
-  BottomSheetItem,
-  BottomSheetItemText,
   BottomSheet,
-  BottomSheetBackdrop,
 } from "@/src/components/ui/bottom-sheet";
 import FeedBottomSheet from "@/src/components/FeedBottomSheet";
 

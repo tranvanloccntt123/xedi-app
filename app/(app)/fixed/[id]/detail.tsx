@@ -12,7 +12,7 @@ import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { Image, ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRouteItem";
-import type { IFixedRoute } from "@/src/types";
+import type { IFixedRoute, IUser } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import LottieView from "lottie-react-native";
 import Lottie from "@/src/lottie";
@@ -20,12 +20,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";
 import { Divider } from "@/src/components/ui/divider";
-import { Input, InputField } from "@/src/components/ui/input";
-import {
-  Textarea as TextArea,
-  TextareaInput as TextAreaInput,
-} from "@/src/components/ui/textarea";
 import type { RootState } from "@/src/store/store";
+import { BottomSheetTrigger } from "@/src/components/ui/bottom-sheet";
+import FixedRouteOrders from "@/src/lib/supabase/tables/FixedRouteOrder";
+import FixedRouteOrder from "@/src/components/FixedRouteOrder";
 
 const styles = StyleSheet.create({
   logo: {
@@ -41,7 +39,6 @@ const styles = StyleSheet.create({
 export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [fixedRoute, setFixedRoute] = useState<IFixedRoute>();
 
@@ -49,11 +46,9 @@ export default function FixedRouteDetail() {
 
   const [error, setError] = useState(false);
 
-  const [note, setNote] = useState("");
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [fixedRouteOrderVisible, setFixedRouteOrderVisible] = useState(false);
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user: IUser = useSelector((state: RootState) => state.auth.user);
 
   React.useEffect(() => {
     const fetch = async () => {
@@ -100,39 +95,6 @@ export default function FixedRouteDetail() {
     );
   }
 
-  const handleDelete = () => {
-    dispatch(deleteFixedRoute(fixedRoute.id));
-    router.back();
-  };
-
-  const handleOrder = async () => {
-    if (!user || !fixedRoute) return;
-
-    try {
-      const { data, error } = await xediSupabase.tables.fixedRouteOrders.add([
-        {
-          fixed_route_id: fixedRoute.id,
-          user_id: user.id,
-          name,
-          phone_number: phoneNumber,
-          note,
-        },
-      ]);
-
-      if (error) throw error;
-
-      // Show success message and reset form
-      // You might want to use a toast or alert here
-      console.log("Order placed successfully");
-      setName("");
-      setPhoneNumber("");
-      setNote("");
-    } catch (error) {
-      console.error("Error placing order:", error);
-      // Show error message
-    }
-  };
-
   return (
     <Box className="flex-1 bg-gray-100">
       <SafeAreaView style={styles.container}>
@@ -170,61 +132,47 @@ export default function FixedRouteDetail() {
               </Box>
             </VStack>
           </Box>
-          {user?.role === "customer" ? (
-            <VStack space="md" className="bg-white p-4 rounded-sm">
-              <Input>
-                <InputField
-                  placeholder="Tên"
-                  value={name}
-                  onChangeText={setName}
-                />
-              </Input>
-              <Input>
-                <InputField
-                  placeholder="Số điện thoại"
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  keyboardType="phone-pad"
-                />
-              </Input>
-              <TextArea>
-                <TextAreaInput
-                  placeholder="Ghi chú"
-                  value={note}
-                  onChangeText={setNote}
-                />
-              </TextArea>
-              <Button
-                className="rounded-md"
-                size="xl"
-                onPress={() => handleOrder()}
-              >
-                <ButtonText>Đặt chuyến</ButtonText>
-              </Button>
-            </VStack>
-          ) : (
-            <HStack space="md" className="bg-white p-4 rounded-sm">
-              <Button
-                className="flex-1 rounded-md"
-                size="xl"
-                variant="outline"
-                onPress={() => router.back()}
-              >
-                <ButtonText className="text-typography-500">
-                  Quay lại
-                </ButtonText>
-              </Button>
-              <Button
-                className="flex-1 rounded-md"
-                size="xl"
-                onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
-              >
-                <ButtonText>Chỉnh sửa</ButtonText>
-              </Button>
-            </HStack>
-          )}
         </ScrollView>
+        <HStack space="md" className="w-full bg-white p-4 rounded-sm">
+          <Box className="w-[50%]">
+            <Button
+              className="w-full h-[45px] rounded-md"
+              size="xl"
+              variant="outline"
+              onPress={() => router.back()}
+            >
+              <ButtonText className="text-typography-500">Quay lại</ButtonText>
+            </Button>
+          </Box>
+          {user.role === "customer" && (
+            <Box className="w-[50%]">
+              <Button
+                onPress={() => setFixedRouteOrderVisible(true)}
+                className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
+              >
+                <Text className="text-white font-md">Đặt chuyến</Text>
+              </Button>
+            </Box>
+          )}
+          {user?.id === fixedRoute?.user_id && (
+            <Button
+              className="flex-1 rounded-md"
+              size="xl"
+              onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
+            >
+              <ButtonText>Chỉnh sửa</ButtonText>
+            </Button>
+          )}
+        </HStack>
       </SafeAreaView>
+      {user?.role === "customer" && (
+        <FixedRouteOrder
+          visible={fixedRouteOrderVisible}
+          onClose={() => setFixedRouteOrderVisible(false)}
+          user={user}
+          fixedRoute={fixedRoute}
+        />
+      )}
     </Box>
   );
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDXAD_-Z4nB5Lu9CebpImzFxiWsafuL-5A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1030888293222</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tei.xediapp</string>
+	<key>PROJECT_ID</key>
+	<string>xedi-66660</string>
+	<key>STORAGE_BUCKET</key>
+	<string>xedi-66660.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1030888293222:ios:3f95a91d2df2763fbc3ea7</string>
+</dict>
+</plist>

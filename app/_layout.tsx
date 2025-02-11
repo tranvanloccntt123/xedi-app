@@ -19,7 +19,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../src/store/store";
 import { useSelector } from "react-redux";
 import type { RootState } from "../src/store/store";
-import { supabase } from "@/src/lib/supabase";
+import { supabase, xediSupabase } from "@/src/lib/supabase";
 
 import { Heading } from "@/src/components/ui/heading";
 import { Image } from "@/src/components/ui/image";
@@ -38,6 +38,7 @@ import { Platform } from "react-native";
 import DebugButton from "@/src/components/DebugButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { registerNotification } from "@/src/firebase/messaging";
 
 function AuthWrapper() {
   const router = useRouter();
@@ -56,6 +57,28 @@ function AuthWrapper() {
       router.replace("/");
     }
   }, [isAuthenticated, segments, router]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      registerNotification()
+        .then(async (token) => {
+          const userId = (await xediSupabase.getUser())?.data?.user?.id;
+          const { data } = await xediSupabase.tables.profiles.selectById(
+            userId
+          );
+          if (!data.length) {
+            xediSupabase.tables.profiles.add([
+              { id: userId, fcm_token: token },
+            ]);
+          } else {
+            xediSupabase.tables.profiles.updateById(userId, {
+              fcm_token: token,
+            });
+          }
+        })
+        .catch((e) => console.warn(e));
+    }
+  }, [isAuthenticated]);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -81,7 +104,7 @@ function AuthWrapper() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <Box className="flex-1">

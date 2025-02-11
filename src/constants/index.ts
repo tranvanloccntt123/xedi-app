@@ -4,4 +4,5 @@ export const Tables = {
   FEED: "feed",
   USERS: "users",
   FIXED_ROUTE_ORDERS: "fixed_route_orders",
+  PROFILES: "profiles",
 };

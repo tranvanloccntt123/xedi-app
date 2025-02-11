@@ -25,7 +25,7 @@ yarn-error.*
 
 # local env files
 .env*.local
-.env
+.env.*
 xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json
 *.env.development
 

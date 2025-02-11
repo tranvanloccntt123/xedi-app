@@ -7,4 +7,25 @@ export default class FixedRouteOrders extends BaseTable<IFixedRouteOrder> {
   constructor(_supabase: SupabaseClient) {
     super(_supabase, Tables.FIXED_ROUTE_ORDERS);
   }
+  async acceptFixedRouteOrder(id: string) {
+    const { data, error } = await this.supabase.functions.invoke(
+      "driver-accept-fixed-route-request",
+      {
+        body: JSON.stringify({ id }),
+      }
+    );
+    return { data, error };
+  }
+  async selectOrderByStatus(fixed_route_id: string, status: number = 0) {
+    try {
+      this.validateSupbase();
+      return this.supabase
+        .from(this.tableName)
+        .select(`*, ${Tables.USERS}(*)`)
+        .eq("fixed_route_id", fixed_route_id)
+        .eq("status", status);
+    } catch (e) {
+      throw e;
+    }
+  }
 }

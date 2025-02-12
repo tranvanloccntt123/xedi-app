@@ -2,28 +2,27 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React, { useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteFixedRoute } from "@/src/store/fixedRoutesSlice";
+import { useSelector } from "react-redux";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";
 import { Text } from "@/src/components/ui/text";
-import { Button } from "@/src/components/ui/button";
+import { Button, ButtonIcon } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
-import { Image, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRouteItem";
 import type { IFixedRoute, IUser } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
-import LottieView from "lottie-react-native";
-import Lottie from "@/src/lottie";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";
 import { Divider } from "@/src/components/ui/divider";
 import type { RootState } from "@/src/store/store";
-import { BottomSheetTrigger } from "@/src/components/ui/bottom-sheet";
-import FixedRouteOrders from "@/src/lib/supabase/tables/FixedRouteOrder";
 import FixedRouteOrder from "@/src/components/FixedRouteOrder";
+import FixedRouteRequestList from "@/src/components/FixedRouteRequestList";
+import AppLoading from "@/src/components/AppLoading";
+import Header from "@/src/components/Header";
+import { EditIcon } from "@/src/components/ui/icon";
 
 const styles = StyleSheet.create({
   logo: {
@@ -43,6 +42,8 @@ export default function FixedRouteDetail() {
   const [fixedRoute, setFixedRoute] = useState<IFixedRoute>();
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [error, setError] = useState(false);
 
@@ -67,112 +68,94 @@ export default function FixedRouteDetail() {
     fetch();
   }, [id]); // Added isLoading to dependencies
 
-  if (isLoading) {
-    return (
-      <Box className="flex-1 justify-center items-center">
-        <Box className="w-[200px] h-[200px]">
-          <LottieView
-            source={Lottie.FIND_LOCATION}
-            colorFilters={[]}
-            style={{ width: "100%", height: "100%" }}
-            autoPlay
-            loop
-          />
-        </Box>
-        <Image
-          source={require("../../../../assets/images/logo.png")}
-          style={styles.logo}
-        />
-      </Box>
-    );
-  }
-
-  if (error && !isLoading) {
-    return (
-      <Box className="flex-1 justify-center items-center">
-        <Text>Không tìm thấy tuyến đường</Text>
-      </Box>
-    );
-  }
+  const isAuthor = React.useMemo(
+    () => user && fixedRoute && user.id === fixedRoute.user_id,
+    [user, fixedRoute]
+  );
 
   return (
-    <Box className="flex-1 bg-gray-100">
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.container}>
-          <Box className="flex-1 p-4 bg-gray-100">
-            <VStack space="md">
-              <Heading size="xl">Chi tiết hành trình</Heading>
-              {!!fixedRoute && (
-                <FixedRouteItem
-                  className="mx-0"
-                  fixedRoute={fixedRoute}
-                  disabled
-                  isHiddenPrice
+    <AppLoading isLoading={isLoading}>
+      <Box className="flex-1 bg-gray-100">
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={styles.container}>
+            <Box className="flex-1 p-4 bg-gray-100">
+              <VStack space="md">
+                <Header
+                  title="Chi tiết hành trình"
+                  rightComponent={
+                    <Button variant="link">
+                      <ButtonIcon as={EditIcon} stroke={"#000000"} />
+                    </Button>
+                  }
                 />
-              )}
-              <Box className="p-4 bg-white rounded-md">
-                <VStack space="md">
-                  <Heading size="md">Thanh toán</Heading>
-                  <HStack space="md">
-                    <Text className="flex-1">Cước phí</Text>
-                    <Text className="flex-1 text-right text-lg font-[600] text-black">
-                      {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
-                    </Text>
-                  </HStack>
-                  <Divider />
-                  <HStack>
-                    <Heading size="sm" className="flex-1">
-                      Trả qua tiền mặt
-                    </Heading>
-                    <Text className="flex-1 text-right text-lg font-[600] text-black">
-                      {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
-                    </Text>
-                  </HStack>
-                </VStack>
-              </Box>
-            </VStack>
-          </Box>
-        </ScrollView>
-        <HStack space="md" className="w-full bg-white p-4 rounded-sm">
-          <Box className="w-[50%]">
-            <Button
-              className="w-full h-[45px] rounded-md"
-              size="xl"
-              variant="outline"
-              onPress={() => router.back()}
-            >
-              <ButtonText className="text-typography-500">Quay lại</ButtonText>
-            </Button>
-          </Box>
-          {user.role === "customer" && (
-            <Box className="w-[50%]">
-              <Button
-                onPress={() => setFixedRouteOrderVisible(true)}
-                className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
-              >
-                <Text className="text-white font-md">Đặt chuyến</Text>
-              </Button>
+                {!!fixedRoute && (
+                  <FixedRouteItem
+                    className="mx-0"
+                    fixedRoute={fixedRoute}
+                    disabled
+                    isHiddenPrice
+                  />
+                )}
+                <Box className="p-4 bg-white rounded-md mb-4">
+                  <VStack space="md">
+                    <Heading size="md">Thanh toán</Heading>
+                    <HStack space="md">
+                      <Text className="flex-1">Cước phí</Text>
+                      <Text className="flex-1 text-right text-lg font-[600] text-black">
+                        {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
+                      </Text>
+                    </HStack>
+                    <Divider />
+                    <HStack>
+                      <Heading size="sm" className="flex-1">
+                        Trả qua tiền mặt
+                      </Heading>
+                      <Text className="flex-1 text-right text-lg font-[600] text-black">
+                        {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </Box>
+                <FixedRouteRequestList
+                  isRefreshing={isRefreshing}
+                  fixedRoute={fixedRoute}
+                />
+              </VStack>
             </Box>
-          )}
-          {user?.id === fixedRoute?.user_id && (
-            <Button
-              className="flex-1 rounded-md"
-              size="xl"
-              onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
-            >
-              <ButtonText>Chỉnh sửa</ButtonText>
-            </Button>
-          )}
-        </HStack>
-      </SafeAreaView>
-      {user?.role === "customer" && (
-        <FixedRouteOrder
-          visible={fixedRouteOrderVisible}
-          onClose={() => setFixedRouteOrderVisible(false)}
-          user={user}
-          fixedRoute={fixedRoute}
-        />
-      )}
-    </Box>
+          </ScrollView>
+          <HStack space="md" className="w-full bg-white p-4 rounded-sm">
+            {user.role === "customer" && (
+              <Box className="w-[100%]">
+                <Button
+                  onPress={() => setFixedRouteOrderVisible(true)}
+                  className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
+                >
+                  <Text className="text-white font-md">Đặt chuyến</Text>
+                </Button>
+              </Box>
+            )}
+            {user?.id === fixedRoute?.user_id && (
+              <Box className="w-[100%]">
+                <Button
+                  className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
+                  size="xl"
+                  onPress={() => router.push(`/fixed/${fixedRoute.id}/edit`)}
+                >
+                  <ButtonText>Hoàn thành</ButtonText>
+                </Button>
+              </Box>
+            )}
+          </HStack>
+        </SafeAreaView>
+        {user?.role === "customer" && (
+          <FixedRouteOrder
+            visible={fixedRouteOrderVisible}
+            onClose={() => setFixedRouteOrderVisible(false)}
+            user={user}
+            fixedRoute={fixedRoute}
+          />
+        )}
+      </Box>
+    </AppLoading>
   );
 }

@@ -5,8 +5,6 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { JWT } from 'npm:google-auth-library@9'
-import serviceAccount from '../xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json' with { type: 'json' }
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
@@ -23,10 +21,28 @@ Deno.serve(async (req) => {
     .eq("id", id)
     .single();
 
-  if (data) {
+  if (!data) {
     return new Response(
       JSON.stringify({
-        message: "Order not found",
+        message: "Không tìm thấy yêu cầu " + id,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+      }
+    );
+  }
+
+  const { data: fixedRoute } = await supabase
+    .from("fixed_routes")
+    .select("*")
+    .eq("id", data.fixed_route_id)
+    .single();
+
+  if (!fixedRoute) {
+    return new Response(
+      JSON.stringify({
+        message: "Không tìm thấy mã hành trình " + id,
       }),
       {
         headers: { "Content-Type": "application/json" },
@@ -37,76 +53,35 @@ Deno.serve(async (req) => {
 
   await supabase
     .from("fixed_route_orders")
-    .update({status: 1})
+    .update({ status: 1 })
     .eq("id", id)
     .select();
 
   const { user_id } = data;
 
-  const { data: profileData } = await supabase
-    .from("profiles")
-    .select("fcm_token")
-    .eq("id", user_id)
-    .single();
-
-    const fcmToken = profileData!.fcm_token as string
-
-    const accessToken = await getAccessToken({
-      clientEmail: serviceAccount.client_email,
-      privateKey: serviceAccount.private_key,
-    })
-  
-    const res = await fetch(
-      `https://fcm.googleapis.com/v1/projects/${serviceAccount.project_id}/messages:send`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
+  const { data: notification_data, error: notification_error } =
+    await supabase.functions.invoke("push", {
+      body: JSON.stringify({
+        type: "FIXED_ROUTE_ORDER_UPDATE",
+        schema: "public",
+        record: {
+          user_id: user_id,
+          body: `Tài xế đã xác nhận yêu cầu từ ${data.phone_number}, chúc bạn có hành trình vui vẻ!.`,
+          title: "Xác nhận yêu cầu thành công",
         },
-        body: JSON.stringify({
-          message: {
-            token: fcmToken,
-            notification: {
-              title: `Xedi - thông báo`,
-              body: 'Tài xế đã xác nhận chuyến đi, chúc bạn có một chuyến đi vui vẻ!',
-            },
-          },
-        }),
-      }
-    )
-  
-    const resData = await res.json()
-    if (res.status < 200 || 299 < res.status) {
-      throw resData
+      } as WebhookPayload),
+    });
+
+  return new Response(
+    JSON.stringify({
+      message: "Xác nhận yêu cầu thành công",
+      notification: {
+        data: notification_data,
+        error: notification_error,
+      },
+    }),
+    {
+      headers: { "Content-Type": "application/json" },
     }
-
-  return new Response(JSON.stringify({
-    message: 'Xác nhận yêu cầu thành công'
-  }), {
-    headers: { "Content-Type": "application/json" },
-  });
+  );
 });
-
-const getAccessToken = ({
-  clientEmail,
-  privateKey,
-}: {
-  clientEmail: string
-  privateKey: string
-}): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const jwtClient = new JWT({
-      email: clientEmail,
-      key: privateKey,
-      scopes: ['https://www.googleapis.com/auth/firebase.messaging'],
-    })
-    jwtClient.authorize((err, tokens) => {
-      if (err) {
-        reject(err)
-        return
-      }
-      resolve(tokens!.access_token!)
-    })
-  })
-}

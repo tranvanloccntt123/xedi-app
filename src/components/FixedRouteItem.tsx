@@ -22,15 +22,15 @@ const FixedRouteItem: React.FC<{
     <VStack space="xs" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
       <HStack className="justify-between items-center">
         {!!item.departureTime && (
-          <Text className="text-xs font-bold">
+          <Text className="text-sm font-bold">
             {moment(item.departureTime).format("HH:mm")}
           </Text>
         )}
         {!item.departureTime && (
-          <Text className="text-xs font-bold">Thời gian linh động</Text>
+          <Text className="text-sm font-bold">Thời gian linh động</Text>
         )}
         {!!item.departureTime && (
-          <Text className="text-xs font-bold">
+          <Text className="text-sm font-bold">
             {moment(item.departureTime).format("DD/MM/YYYY")}
           </Text>
         )}
@@ -40,7 +40,7 @@ const FixedRouteItem: React.FC<{
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
             <Box className="rounded-full w-full h-full bg-error-500" />
           </Box>
-          <Text className="font-black font-normal text-sm">
+          <Text className="font-black font-normal text-lg">
             {item.startLocation.display_name}
           </Text>
         </HStack>
@@ -54,13 +54,13 @@ const FixedRouteItem: React.FC<{
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
             <Box className="rounded-full w-full h-full bg-error-100" />
           </Box>
-          <Text className="font-black font-normal text-sm">
+          <Text className="font-black font-normal text-lg">
             {item.endLocation.display_name}
           </Text>
         </HStack>
       </VStack>
       {!isHiddenPrice && (
-        <Text className="text-sm text-gray-600">
+        <Text className="text-md text-gray-600">
           Giá: {formatMoney(item.price)} VND
         </Text>
       )}

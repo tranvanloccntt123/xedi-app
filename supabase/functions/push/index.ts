@@ -2,19 +2,6 @@ import { createClient } from 'npm:@supabase/supabase-js@2'
 import { JWT } from 'npm:google-auth-library@9'
 import serviceAccount from '../xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json' with { type: 'json' }
 
-interface Notification {
-  id: string
-  user_id: string
-  body: string
-}
-
-interface WebhookPayload {
-  type: 'INSERT'
-  table: string
-  record: Notification
-  schema: 'public'
-}
-
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
@@ -48,7 +35,7 @@ Deno.serve(async (req) => {
         message: {
           token: fcmToken,
           notification: {
-            title: `Notification from Supabase`,
+            title: `Xedi - ${ payload.record.title || 'Thông báo'}`,
             body: payload.record.body,
           },
         },

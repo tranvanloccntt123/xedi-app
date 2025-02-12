@@ -16,14 +16,13 @@ export default class FixedRouteOrders extends BaseTable<IFixedRouteOrder> {
     );
     return { data, error };
   }
-  async selectOrderByStatus(fixed_route_id: string, status: number = 0) {
+  async selectOrderByStatus(fixed_route_id: any) {
     try {
       this.validateSupbase();
       return this.supabase
         .from(this.tableName)
         .select(`*, ${Tables.USERS}(*)`)
-        .eq("fixed_route_id", fixed_route_id)
-        .eq("status", status);
+        .eq("fixed_route_id", fixed_route_id);
     } catch (e) {
       throw e;
     }

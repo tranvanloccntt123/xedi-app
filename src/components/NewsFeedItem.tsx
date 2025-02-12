@@ -60,7 +60,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
         <Box className="p-4 rounded-lg">
           <VStack>
             <HStack className="justify-between items-center">
-              <Text className="font-bold">{item.users.name}</Text>
+              <Text className="font-bold text-lg">{item.users.name}</Text>
               <BottomSheetTrigger onPress={handleMoreClick}>
                 <MoreIcon color="#000000" size={24} />
               </BottomSheetTrigger>

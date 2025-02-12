@@ -48,7 +48,10 @@ Deno.serve(async (req) => {
     throw resData
   }
 
-  return new Response(JSON.stringify(resData), {
+  return new Response(JSON.stringify({
+    title: `Xedi - ${ payload.record.title || 'Thông báo'}`,
+    body: payload.record.body,
+  }), {
     headers: { 'Content-Type': 'application/json' },
   })
 })

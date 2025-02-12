@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
   const { id } = await req.json();
 
   const { data } = await supabase
-    .from("fixed_route_orders")
+    .from("fixed_routes")
     .select("*")
     .eq("id", id)
     .single();
@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
   if (!data) {
     return new Response(
       JSON.stringify({
-        message: "Không tìm thấy yêu cầu " + id,
+        message: "Không tìm thấy hành trình " + id,
       }),
       {
         headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
   if (!fixedRoute) {
     return new Response(
       JSON.stringify({
-        message: "Không tìm thấy hành trình " + id,
+        message: "Không tìm thấy mã hành trình " + id,
       }),
       {
         headers: { "Content-Type": "application/json" },
@@ -60,16 +60,16 @@ Deno.serve(async (req) => {
   const { user_id } = data;
 
   const { data: notification_data, error: notification_error } =
-    await supabase.functions.invoke("push-multi-notifications", {
+    await supabase.functions.invoke("push", {
       body: JSON.stringify({
         type: "FIXED_ROUTE_ORDER_UPDATE",
         schema: "public",
         record: {
-          user_ids: [user_id],
+          user_id: user_id,
           body: `Tài xế đã xác nhận yêu cầu từ ${data.phone_number}, chúc bạn có hành trình vui vẻ!.`,
           title: "Xác nhận yêu cầu thành công",
         },
-      } as WebhookMultiNotificationPayload),
+      } as WebhookPayload),
     });
 
   return new Response(

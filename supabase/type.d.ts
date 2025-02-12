@@ -11,3 +11,15 @@ interface Notification {
   body: string;
   title?: string;
 }
+
+interface MultiNotification {
+  user_ids: string[];
+  body: string;
+  title?: string;
+}
+
+interface WebhookMultiNotificationPayload {
+  type: NOTIFICATION_TYPE;
+  record: MultiNotification;
+  schema: "public";
+}

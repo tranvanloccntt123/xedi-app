@@ -1,0 +1,17 @@
+{
+  "platforms": [
+    "apple",
+    "android",
+    "web"
+  ],
+  "apple": {
+    "modules": [
+      "ExpoOsmModule"
+    ]
+  },
+  "android": {
+    "modules": [
+      "tei.modules.osm.ExpoOsmModule"
+    ]
+  }
+}

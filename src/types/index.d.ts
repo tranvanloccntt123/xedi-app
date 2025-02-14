@@ -47,18 +47,13 @@ export interface IRating {
 }
 
 export interface ITripRequest {
-  id: string;
-  customerId: string;
-  startLocation: string;
-  endLocation: string;
+  id: number;
+  user_id: string;
+  startLocation: InputLocation;
+  endLocation: InputLocation;
   departureTime: Date;
-  status: "pending" | "accepted" | "completed" | "cancelled";
-  requestTime: Date;
-  updatedAt: Date;
-  riderRequests: string[]; // Array of rider IDs who have requested this trip
+  status: number;
   type: "Delivery" | "Taxi";
-  metadata?: Record<string, string | number>;
-  notes?: string;
 }
 
 export interface ITripRequestForFixedRoute {

@@ -36,7 +36,9 @@ const FixedRouteOrderItem: React.FC<{
       <HStack space="md" className="justify-between">
         <HStack space="md" className="items-center">
           <Text className="text-lg font-bold">{data.name}</Text>
-          <Text className="text-md">{data.phone_number}</Text>
+          <Text className="text-md">
+            {data.status === 1 && data.phone_number}
+          </Text>
         </HStack>
         <Box
           className={`px-3 py-1 rounded-full ${
@@ -82,13 +84,6 @@ const FixedRouteRequestList: React.FC<{
 
   const loadData = async () => {
     if (!isAuthor) {
-      try {
-        const { data } =
-          await xediSupabase.tables.fixedRouteOrders.selectByUserIdAfterId({
-            pageNums: 100,
-          });
-        setFixedRouteRequest(data as never);
-      } catch (e) {}
       return;
     }
     const { data, error } =

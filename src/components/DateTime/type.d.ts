@@ -3,4 +3,5 @@ type XediDatePicker = {
   onChangeDate: (date: Date) => any;
   placeholder?: string;
   isDisabled?: boolean;
+  variant?: any;
 };

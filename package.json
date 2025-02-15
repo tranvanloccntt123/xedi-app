@@ -108,8 +108,7 @@
     "string.prototype.matchall": "^4.0.12",
     "tailwindcss": "^3.4.16",
     "uuid": "^11.0.5",
-    "expo-location": "~18.0.6",
-    "expo-osm": "file:expo-osm"
+    "expo-location": "~18.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

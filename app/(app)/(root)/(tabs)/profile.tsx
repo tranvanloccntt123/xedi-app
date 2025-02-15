@@ -1,25 +1,27 @@
-import { logout, clearAuthData } from "@/src/store/authSlice"
-import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice"
-import { clearTripRequests } from "@/src/store/tripRequestsSlice"
-import { supabase } from "@/src/lib/supabase"
-import { clearUser } from "@/src/store/userSlice"
+import { logout, clearAuthData } from "@/src/store/authSlice";
+import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice";
+import { clearTripRequests } from "@/src/store/tripRequestsSlice";
+import { supabase } from "@/src/lib/supabase";
+import { clearUser } from "@/src/store/userSlice";
 
-const APP_STRUCT = "PROFILE_SCREEN"
+const APP_STRUCT = "PROFILE_SCREEN";
 
-import React from "react"
-import { Box } from "@/src/components/ui/box"
-import { VStack } from "@/src/components/ui/vstack"
-import { HStack } from "@/src/components/ui/hstack"
-import { Text } from "@/src/components/ui/text"
-import { Heading } from "@/src/components/ui/heading"
-import { Divider } from "@/src/components/ui/divider"
-import { Button } from "@/src/components/ui/button"
-import { ButtonText } from "@/src/components/ui/button"
-import { useSelector, useDispatch } from "react-redux"
-import type { RootState } from "@/src/store/store"
-import { useRouter } from "expo-router"
-import { Pressable, ScrollView } from "react-native"
-import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon"
+import React from "react";
+import { Box } from "@/src/components/ui/box";
+import { VStack } from "@/src/components/ui/vstack";
+import { HStack } from "@/src/components/ui/hstack";
+import { Text } from "@/src/components/ui/text";
+import { Heading } from "@/src/components/ui/heading";
+import { Divider } from "@/src/components/ui/divider";
+import { Button } from "@/src/components/ui/button";
+import { ButtonText } from "@/src/components/ui/button";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "@/src/store/store";
+import { useRouter } from "expo-router";
+import { Pressable, ScrollView } from "react-native";
+import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -31,31 +33,41 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
       <ChevronRightIcon size={24} color="gray" />
     </HStack>
   </Pressable>
-)
+);
 
 export default function Profile() {
-  const router = useRouter()
-  const user = useSelector((state: RootState) => state.auth.user)
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const { top } = useSafeAreaInsets();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut()
-      dispatch(logout())
-      dispatch(clearFixedRoutes())
-      dispatch(clearTripRequests())
-      dispatch(clearAuthData())
-      dispatch(clearUser())
-      router.replace("/sign-in")
+      await supabase.auth.signOut();
+      dispatch(logout());
+      dispatch(clearFixedRoutes());
+      dispatch(clearTripRequests());
+      dispatch(clearAuthData());
+      dispatch(clearUser());
+      router.replace("/sign-in");
     } catch (error) {
-      console.error("Error signing out:", error)
+      console.error("Error signing out:", error);
     }
-  }
+  };
 
   return (
     <ScrollView>
-      <Box className="bg-blue-500 p-4">
-        <HStack space="md" className="items-center justify-between">
+      <Box className="bg-primary-500 p-4">
+        <HStack
+          space="md"
+          className="items-center"
+          style={{ paddingTop: top }}
+        >
+          <Avatar>
+            <AvatarFallbackText>
+              {user?.name}
+            </AvatarFallbackText>
+          </Avatar>
           <VStack>
             <Heading size="lg" className="text-white">
               {user?.name}
@@ -116,11 +128,15 @@ export default function Profile() {
           }}
         />
 
-        <Button size="lg" variant="outline" className="mt-4" onPress={handleLogout}>
+        <Button
+          size="lg"
+          variant="outline"
+          className="mt-4"
+          onPress={handleLogout}
+        >
           <ButtonText>Đăng xuất</ButtonText>
         </Button>
       </VStack>
     </ScrollView>
-  )
+  );
 }
-

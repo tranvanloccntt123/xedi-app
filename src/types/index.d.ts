@@ -118,3 +118,17 @@ export interface IFixedRouteOrder {
   */
   status: 0 | 1;
 }
+
+export interface INotification {
+  id: number;
+  body: string;
+  users?: IUser;
+  created_at: string;
+}
+
+export interface IUserCoin {
+  id: number;
+  created_at: string;
+  coins: number;
+  user_id: string;
+}

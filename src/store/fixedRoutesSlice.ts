@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { IFixedRoute } from "@/src/types"
 
-interface FixedRoutesState {
+export interface FixedRoutesState {
   routes: IFixedRoute[]
   currentFixedRoute: IFixedRoute | null
 }

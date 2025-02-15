@@ -21,6 +21,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { MentionInput } from "./ControlledMentions";
 import { router } from "expo-router";
+import { Avatar, AvatarFallbackText } from "./ui/avatar";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -56,11 +57,16 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-2 bg-white">
+      <VStack space="sm" className="mb-2 bg-white rounded-2xl">
         <Box className="p-4 rounded-lg">
           <VStack>
-            <HStack className="justify-between items-center">
-              <Text className="font-bold text-lg">{item.users.name}</Text>
+            <HStack className="justify-between items-center mb-2">
+              <HStack space="md" className="justify-center items-center">
+                <Avatar size="sm">
+                  <AvatarFallbackText>{item.users.name}</AvatarFallbackText>
+                </Avatar>
+                <Text className="font-bold text-lg">{item.users.name}</Text>
+              </HStack>
               <BottomSheetTrigger onPress={handleMoreClick}>
                 <MoreIcon color="#000000" size={24} />
               </BottomSheetTrigger>

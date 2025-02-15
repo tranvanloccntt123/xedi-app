@@ -5,4 +5,6 @@ export const Tables = {
   USERS: "users",
   FIXED_ROUTE_ORDERS: "fixed_route_orders",
   PROFILES: "profiles",
+  NOTIFICATIONS: "notifications",
+  USER_COINS: 'user_coins'
 };

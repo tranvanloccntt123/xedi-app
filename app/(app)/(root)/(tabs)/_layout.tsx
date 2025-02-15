@@ -6,6 +6,7 @@ import HomeIcon from "@/src/components/icons/HomeIcon"
 import MotoIcon from "@/src/components/icons/MotoIcon"
 import ProfileIcon from "@/src/components/icons/ProfileIcon"
 import HiIcon from "@/src/components/icons/HiIcon"
+import NotificationIcon from "@/src/components/icons/Notifications"
 
 export default function TabsLayout() {
   return (
@@ -25,10 +26,10 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="trip-requests"
+        name="history"
         options={{
-          title: "Yêu cầu",
-          tabBarIcon: ({ color, size }) => <HiIcon size={size} color={color} />,
+          title: "Hoạt động",
+          tabBarIcon: ({ color, size }) => <NotificationIcon size={size} color={color} />,
         }}
       />
       <Tabs.Screen

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { INewsFeedItem } from "@/src/types";
 
-interface FeedState {
+export interface FeedState {
   items: INewsFeedItem[];
   currentNewsFeedItem: INewsFeedItem | null;
   deletedItems: string[]; // New state to store deleted item IDs

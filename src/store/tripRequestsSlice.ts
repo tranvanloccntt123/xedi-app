@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { ITripRequest } from "@/src/types"
 
-interface TripRequestsState {
+export interface TripRequestsState {
   requests: ITripRequest[]
 }
 

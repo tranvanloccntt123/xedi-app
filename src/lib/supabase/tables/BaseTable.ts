@@ -12,7 +12,7 @@ type SupabaseTableInsert<T = any> = {
 };
 
 type SupbaseParams = {
-  select?: string;
+  select?: any;
   pageNums?: number;
   id?: number;
 };
@@ -39,7 +39,9 @@ export class BaseTable<Data = any, Source = any> {
       this.validateSupbase();
       const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
       if (!userId) throw "User is empty";
-      let query = this.supabase.from(this.tableName).select("*");
+      let query = this.supabase
+        .from(this.tableName)
+        .select((data.select || "*") as "*");
       if (data?.id) query = query.gte("id", data?.id);
 
       return query

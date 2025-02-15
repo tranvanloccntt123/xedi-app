@@ -2,7 +2,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { IUser, UserState } from "@/src/types"
 import { fetchUserInfo, updateUserInfo } from "./userThunks"
 
-const initialState: UserState = {
+export const initialState: UserState = {
   currentUser: null,
   loading: false,
   error: null,

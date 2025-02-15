@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { InputLocation, IFixedRoute } from "@/src/types";
 
-interface PostState {
+export interface PostState {
   content: string;
   startLocation?: InputLocation;
   endLocation?: InputLocation;

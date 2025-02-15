@@ -4,6 +4,8 @@ import Feed from "./Feed";
 import Users from "./Users";
 import FixedRouteOrders from "./FixedRouteOrder";
 import Profiles from "./Profiles";
+import Notifications from "./Notifications";
+import UserCoins from "./UserCoins";
 
 export class XediTables {
   fixedRoutes: FixedRoutes;
@@ -11,11 +13,15 @@ export class XediTables {
   users: Users;
   fixedRouteOrders: FixedRouteOrders;
   profiles: Profiles;
+  notifications: Notifications;
+  userCoins: UserCoins;
   constructor(supabase: SupabaseClient) {
     this.fixedRoutes = new FixedRoutes(supabase);
     this.feed = new Feed(supabase);
     this.users = new Users(supabase);
     this.fixedRouteOrders = new FixedRouteOrders(supabase);
     this.profiles = new Profiles(supabase);
+    this.notifications = new Notifications(supabase);
+    this.userCoins = new UserCoins(supabase);
   }
 }

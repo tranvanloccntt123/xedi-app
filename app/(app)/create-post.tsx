@@ -25,8 +25,9 @@ import {
   resetPost,
   setDepartureTime,
 } from "@/src/store/postSlice";
-import { Text } from "@/src/components/ui/text";
 import DateTime from "@/src/components/DateTime";
+import ErrorModal from "@/src/components/ErrorModal";
+import CreatePostButton from "@/src/components/CreatePost";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -41,6 +42,10 @@ export default function CreatePost() {
   const { content, fixedRoutes, startLocation, endLocation, departureTime } =
     useSelector((state: RootState) => state.post);
 
+  const [isError, setIsError] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     // Reset the post slice when the component mounts
     dispatch(resetPost());
@@ -48,23 +53,6 @@ export default function CreatePost() {
 
   const router = useRouter();
   const ref = useRef(null);
-
-  const handleCreatePost = async () => {
-    const { data } = await xediSupabase.tables.feed.addWithUserId([
-      { content },
-    ]);
-    if (data?.[0]) {
-      if (fixedRoutes) {
-        fixedRoutes.forEach(async (fixedRoute) => {
-          xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
-            feed_id: data[0].id,
-          });
-        });
-      }
-      router.back();
-      return;
-    }
-  };
 
   return (
     <Box className="flex-1 bg-gray-100">
@@ -77,16 +65,13 @@ export default function CreatePost() {
             <Heading size="xl" className="flex-1">
               Tạo bài đăng
             </Heading>
-            <Button
-              className={`rounded-full ${
-                content ? "bg-primary-400" : "bg-primary-400/[.5]"
-              }`}
-              size="lg"
-              onPress={handleCreatePost}
-              disabled={!content}
-            >
-              <ButtonText>Tạo</ButtonText>
-            </Button>
+            <CreatePostButton
+              onError={(message) => {
+                setIsError(true);
+                setErrorMessage(message);
+              }}
+              onCreatePostSuccess={() => router.back()}
+            />
           </HStack>
           <VStack space="md" className="flex-1">
             <VStack
@@ -213,6 +198,12 @@ export default function CreatePost() {
           onFixedRouteCreated={(fixedRoute) => setFixedRoutes(fixedRoute)}
         />
       </OnlyDriver>
+      <ErrorModal
+        showModal={isError}
+        setShowModal={setIsError}
+        title="Tạo hành trình"
+        message={errorMessage}
+      />
     </Box>
   );
 }

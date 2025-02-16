@@ -13,7 +13,7 @@ export default class Users extends BaseTable<IUser> {
   async updateUser(data: IUser) {
     return this.updateByUserId(data);
   }
-  async info(){
+  async info() {
     try {
       this.validateSupbase();
       const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
@@ -23,5 +23,18 @@ export default class Users extends BaseTable<IUser> {
       throw e;
     }
   }
+  async updateLocation(lat: number, lon: number) {
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      return this.supabase
+        .from(this.tableName)
+        .update({ lat, lon })
+        .eq("id", userId)
+        .select();
+    } catch (e) {
+      throw e;
+    }
+  }
 }
-

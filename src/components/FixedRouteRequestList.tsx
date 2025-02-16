@@ -84,6 +84,13 @@ const FixedRouteRequestList: React.FC<{
 
   const loadData = async () => {
     if (!isAuthor) {
+      const { data, error } =
+        await xediSupabase.tables.fixedRouteOrders.selectOrderByStatus(
+          fixedRoute.id,
+          user.id
+        );
+      if (error) return;
+      setFixedRouteRequest(data as never);
       return;
     }
     const { data, error } =

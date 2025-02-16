@@ -6,5 +6,6 @@ export const Tables = {
   FIXED_ROUTE_ORDERS: "fixed_route_orders",
   PROFILES: "profiles",
   NOTIFICATIONS: "notifications",
-  USER_COINS: 'user_coins'
+  USER_COINS: "user_coins",
+  TRIP_REQUESTS: "trip_requests",
 };

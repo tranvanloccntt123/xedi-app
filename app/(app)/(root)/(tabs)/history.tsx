@@ -59,7 +59,7 @@ export default function History() {
             <Box>
               {(index === 0 ||
                 moment(item?.created_at).format("DD/MM/YYYY") !=
-                  moment(data[index + 1]?.created_at).format("DD/MM/YYYY")) && (
+                  moment(data[index - 1]?.created_at).format("DD/MM/YYYY")) && (
                 <Text className="mb-2 px-2 text-sm text-gray-500">{moment(item?.created_at).format("DD/MM/YYYY")}</Text>
               )}
               <HStack

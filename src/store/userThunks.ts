@@ -40,6 +40,29 @@ export const fetchUserCoins = createAsyncThunk<IUserCoin, void>(
   }
 );
 
+export const sendUserLocation = createAsyncThunk<
+  { lat: number; lon: number },
+  { lat: number; lon: number }
+>(
+  "user/fetchUserCoins",
+  async (data: { lat: number; lon: number }, { rejectWithValue }) => {
+    try {
+      const { data: dataUpdated, error } =
+        await xediSupabase.tables.users.updateLocation(data.lat, data.lon);
+      if (error) {
+        throw new Error(error.message);
+      }
+      if (dataUpdated?.[0]) {
+        return dataUpdated[0] as { lat: number; lon: number };
+      } else {
+        throw new Error("User not found");
+      }
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 export const updateUserInfo = createAsyncThunk<IUser, Partial<IUser>>(
   "user/updateUserInfo",
   async (userData, { rejectWithValue }) => {

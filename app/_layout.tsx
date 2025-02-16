@@ -3,7 +3,7 @@ import { setUser, clearUser } from "@/src/store/userSlice";
 import { setAuthenticated, logout, clearAuthData } from "@/src/store/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice";
 import { clearTripRequests } from "@/src/store/tripRequestsSlice";
-import { fetchUserInfo } from "@/src/store/userThunks";
+import { fetchUserCoins, fetchUserInfo } from "@/src/store/userThunks";
 
 const APP_STRUCT = "ROOT_LAYOUT";
 
@@ -88,6 +88,7 @@ function AuthWrapper() {
           console.log("User signed in:", session?.user);
           if (session?.user) {
             dispatch(fetchUserInfo());
+            dispatch(fetchUserCoins());
             dispatch(setAuthenticated(true));
           }
         } else if (event === "SIGNED_OUT") {

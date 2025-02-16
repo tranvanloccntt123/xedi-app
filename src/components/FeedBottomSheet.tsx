@@ -42,6 +42,10 @@ const FeedBottomSheet: React.FC<object> = () => {
         "feed_id",
         currentNewsFeedItem.id
       );
+      await xediSupabase.tables.tripRequest.deleteByField(
+        "feed_id",
+        currentNewsFeedItem.id
+      );
       await xediSupabase.tables.feed.deleteById(currentNewsFeedItem.id);
       dispatch(deleteFeedItem(currentNewsFeedItem.id));
     }

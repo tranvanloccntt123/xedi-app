@@ -31,7 +31,8 @@ export default class Feed extends BaseTable<IFeedSupbase> {
           price,
           created_at 
         ),
-        ${Tables.USERS} (*)
+        ${Tables.USERS} (*),
+        ${Tables.TRIP_REQUESTS} (*)
       `);
       if (data?.id) query = query.gte("id", data?.id);
 

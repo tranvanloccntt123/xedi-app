@@ -20,8 +20,10 @@ import {
   BottomSheet,
 } from "@/src/components/ui/bottom-sheet";
 import FeedBottomSheet from "@/src/components/FeedBottomSheet";
+import useLocation from "@/hooks/useLocation";
 
 export default function Home() {
+  useLocation({});
   const user = useSelector((state: RootState) => state.auth.user);
   const { top } = useSafeAreaInsets();
   const [refreshing, setRefreshing] = React.useState(false);

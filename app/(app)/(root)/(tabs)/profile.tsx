@@ -22,6 +22,7 @@ import { Pressable, ScrollView } from "react-native";
 import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
+import CoinsIcon from "@/src/components/icons/CoinsIcon";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -37,7 +38,7 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
 
 export default function Profile() {
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { user, coins } = useSelector((state: RootState) => state.auth);
   const { top } = useSafeAreaInsets();
   const dispatch = useDispatch();
 
@@ -60,19 +61,27 @@ export default function Profile() {
       <Box className="bg-primary-500 p-4">
         <HStack
           space="md"
-          className="items-center"
+          className="items-center justify-between"
           style={{ paddingTop: top }}
         >
-          <Avatar>
-            <AvatarFallbackText>
-              {user?.name}
-            </AvatarFallbackText>
-          </Avatar>
+          <HStack space="md">
+            <Avatar>
+              <AvatarFallbackText>{user?.name}</AvatarFallbackText>
+            </Avatar>
+            <VStack>
+              <Heading size="lg" className="text-white">
+                {user?.name}
+              </Heading>
+              <Text className="text-white">{user?.phone}</Text>
+            </VStack>
+          </HStack>
           <VStack>
-            <Heading size="lg" className="text-white">
-              {user?.name}
-            </Heading>
-            <Text className="text-white">{user?.phone}</Text>
+            <Button>
+              <HStack space="sm">
+                <CoinsIcon size={24} />
+                <Text className="text-white">{coins?.coins || 0}</Text>
+              </HStack>
+            </Button>
           </VStack>
         </HStack>
       </Box>

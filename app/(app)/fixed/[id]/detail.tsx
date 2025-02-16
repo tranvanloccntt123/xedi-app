@@ -83,9 +83,11 @@ export default function FixedRouteDetail() {
                 <Header
                   title="Chi tiết hành trình"
                   rightComponent={
-                    <Button variant="link">
-                      <ButtonIcon as={EditIcon} stroke={"#000000"} />
-                    </Button>
+                    isAuthor && (
+                      <Button variant="link">
+                        <ButtonIcon as={EditIcon} stroke={"#000000"} />
+                      </Button>
+                    )
                   }
                 />
                 {!!fixedRoute && (

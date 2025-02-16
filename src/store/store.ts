@@ -19,6 +19,7 @@ import feedReducer, { FeedState } from "./feedSlice";
 import postReducer, { PostState } from "./postSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserState } from "../types";
+import locationReducer, { LocationState } from "./locationSlice";
 
 const persistConfig = {
   key: "root",
@@ -33,6 +34,7 @@ const combinedReducer = combineReducers({
   tripRequests: tripRequestsReducer,
   feed: feedReducer,
   post: postReducer,
+  location: locationReducer,
 });
 
 const rootReducer = (state: RootState | undefined, action: AnyAction) => {
@@ -66,5 +68,6 @@ export type RootState = {
   tripRequests: TripRequestsState;
   feed: FeedState;
   post: PostState;
+  location: LocationState;
 };
 export type AppDispatch = typeof store.dispatch;

@@ -9,6 +9,7 @@ import { VStack } from "@/src/components/ui/vstack";
 import { Text } from "@/src/components/ui/text";
 import { Pressable } from "@/src/components/ui/pressable";
 import { InputLocation } from "../types";
+import useDebounce from "@/hooks/useDebounce";
 
 interface LocationSearchProps {
   onSelectLocation: (location: InputLocation) => void;
@@ -24,27 +25,30 @@ export default function LocationSearch({
   const [results, setResults] = useState<InputLocation[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const searchLocation = async (text: string) => {
-    setQuery(text);
-    if (text.length > 2) {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-            text
-          )},Việt Nam`
-        );
-        const data = await response.json();
-        setResults(data);
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      } finally {
-        setIsLoading(false);
+  const debounce = useDebounce({ time: 500 });
+
+  React.useEffect(() => {
+    debounce(async () => {
+      if (query.length > 2) {
+        setIsLoading(true);
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              query
+            )},Việt Nam`
+          );
+          const data = await response.json();
+          setResults(data);
+        } catch (error) {
+          console.error("Error fetching locations:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setResults([]);
       }
-    } else {
-      setResults([]);
-    }
-  };
+    });
+  }, [query]);
 
   return (
     <Box>
@@ -52,7 +56,7 @@ export default function LocationSearch({
         <InputField
           placeholder="Tìm kiếm"
           value={query}
-          onChangeText={searchLocation}
+          onChangeText={setQuery}
         />
       </Input>
       {isLoading && <ActivityIndicator style={{ marginTop: 10 }} />}

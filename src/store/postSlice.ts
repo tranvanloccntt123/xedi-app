@@ -5,7 +5,7 @@ export interface PostState {
   content: string;
   startLocation?: InputLocation;
   endLocation?: InputLocation;
-  fixedRoute?: IFixedRoute[];
+  fixedRoutes?: IFixedRoute[];
   departureTime?: Date
 }
 
@@ -13,7 +13,7 @@ const initialState: PostState = {
   content: "",
   startLocation: undefined,
   endLocation: undefined,
-  fixedRoute: undefined,
+  fixedRoutes: undefined,
   departureTime: undefined,
 };
 
@@ -38,7 +38,7 @@ const postSlice = createSlice({
       state.endLocation = action.payload;
     },
     setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
-      state.fixedRoute = [...(state.fixedRoute || []), action.payload];
+      state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
     },
     setDepartureTime: (state, action: PayloadAction<Date | undefined>) => {
       state.departureTime = action.payload

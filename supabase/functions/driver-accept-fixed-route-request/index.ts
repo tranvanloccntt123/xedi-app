@@ -51,11 +51,24 @@ Deno.serve(async (req) => {
     );
   }
 
-  await supabase
+  const { error } = await supabase
     .from("fixed_route_orders")
     .update({ status: 1 })
     .eq("id", id)
     .select();
+
+  if (error) {
+    return new Response(
+      JSON.stringify({
+        message: "Cập nhật yêu cầu " + id,
+        error,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+      }
+    );
+  }
 
   const { user_id } = data;
 

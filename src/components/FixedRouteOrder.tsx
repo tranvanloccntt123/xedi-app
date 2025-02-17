@@ -16,24 +16,75 @@ import {
   Textarea as TextArea,
   TextareaInput as TextAreaInput,
 } from "@/src/components/ui/textarea";
-import { IFixedRoute, IUser } from "../types";
+import { FixedRouteOrderForm, IFixedRoute, IUser } from "../types";
 import { xediSupabase } from "../lib/supabase";
 import { Heading } from "./ui/heading";
+import { formValidatePerField, formValidateSuccess } from "../utils/validator";
+import { fixedRouteOrderValidator } from "../constants/validator";
+import { Text } from "./ui/text";
+import { Box } from "./ui/box";
+/*
+
+    try {
+      const validateForm = formValidatePerField(authValidator, {
+        phone,
+        password,
+      })
+      setError({
+        phone: validateForm.phone?.message || "",
+        password: validateForm.password?.message || "",
+      })
+      if (!formValidateSuccess(validateForm)) {
+        return
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: `${phone}${pattern}`,
+        password,
+      })
+
+      if (error) {
+        setErrorMessage(error.message)
+      }
+    } catch (e) {
+      console.error(e)
+      setErrorMessage("An unexpected error occurred")
+    }
+*/
 
 const FixedRouteOrder: React.FC<{
   user: IUser;
   fixedRoute: IFixedRoute;
   visible: boolean;
   onClose: () => any;
-}> = ({ user, fixedRoute, visible, onClose }) => {
+  onSuccess: () => any;
+}> = ({ user, fixedRoute, visible, onClose, onSuccess }) => {
   const [note, setNote] = React.useState("");
   const [name, setName] = React.useState("");
+  const [error, setError] = React.useState<FixedRouteOrderForm>({
+    name: "",
+    phone: "",
+  });
   const [phoneNumber, setPhoneNumber] = React.useState("");
 
   const handleOrder = async () => {
     if (!user || !fixedRoute) return;
 
     try {
+      const validateForm = formValidatePerField(fixedRouteOrderValidator, {
+        name,
+        phone: phoneNumber,
+      });
+
+      setError({
+        phone: validateForm.phone?.message || "",
+        name: validateForm.name?.message || "",
+      });
+
+      if (!formValidateSuccess(validateForm)) {
+        return;
+      }
+
       const { data, error } = await xediSupabase.tables.fixedRouteOrders.add([
         {
           fixed_route_id: fixedRoute.id,
@@ -52,6 +103,8 @@ const FixedRouteOrder: React.FC<{
       setName("");
       setPhoneNumber("");
       setNote("");
+      onSuccess?.();
+      onClose?.();
     } catch (error) {
       console.error("Error placing order:", error);
       // Show error message
@@ -67,21 +120,31 @@ const FixedRouteOrder: React.FC<{
         </ModalHeader>
         <ModalBody>
           <VStack space="md" className="rounded-sm">
-            <Input>
-              <InputField
-                placeholder="Tên"
-                value={name}
-                onChangeText={setName}
-              />
-            </Input>
-            <Input>
-              <InputField
-                placeholder="Số điện thoại"
-                value={phoneNumber}
-                onChangeText={setPhoneNumber}
-                keyboardType="phone-pad"
-              />
-            </Input>
+            <Box>
+              <Input>
+                <InputField
+                  placeholder="Tên"
+                  value={name}
+                  onChangeText={setName}
+                />
+              </Input>
+              {!!error.name && (
+                <Text className="text-red-500 text-sm mt-1">{error.name}</Text>
+              )}
+            </Box>
+            <Box>
+              <Input>
+                <InputField
+                  placeholder="Số điện thoại"
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  keyboardType="phone-pad"
+                />
+              </Input>
+              {!!error.phone && (
+                <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
+              )}
+            </Box>
             <TextArea>
               <TextAreaInput
                 placeholder="Ghi chú"

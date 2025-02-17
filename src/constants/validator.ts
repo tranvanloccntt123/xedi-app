@@ -1,4 +1,9 @@
-import { IFixedRoute, InputLocation, IUser } from "../types";
+import {
+  FixedRouteOrderForm,
+  IFixedRoute,
+  InputLocation,
+  IUser,
+} from "../types";
 
 export const authValidator: ValidatorObject<keyof IUser> = {
   phone: {
@@ -16,13 +21,13 @@ export const authValidator: ValidatorObject<keyof IUser> = {
     required: {
       message: "Tên không được để trống",
     },
-    regex: {
-      value: function (value: string): boolean {
-        const regex = /[^a-zA-Z\s]+/g;
-        return !value.trim().match(regex)?.length;
-      },
-      message: "Tên không được chứa số và kí tự đặc biệt.",
-    },
+    // regex: {
+    //   value: function (value: string): boolean {
+    //     const regex = /[^a-zA-Z\s]+/g;
+    //     return !value.trim().match(regex)?.length;
+    //   },
+    //   message: "Tên không được chứa số và kí tự đặc biệt.",
+    // },
   },
   password: {
     required: {
@@ -97,9 +102,9 @@ export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
   },
   price: {
     required: {
-      message: "Giá không được để trống."
-    }
-  }
+      message: "Giá không được để trống.",
+    },
+  },
 } as ValidatorObject<keyof IFixedRoute>;
 
 export const locationValidator: ValidatorObject<keyof InputLocation> = {
@@ -110,4 +115,33 @@ export const locationValidator: ValidatorObject<keyof InputLocation> = {
   },
   lat: {},
   lon: {},
+};
+
+export const fixedRouteOrderValidator: ValidatorObject<
+  keyof FixedRouteOrderForm
+> = {
+  phone: {
+    required: {
+      message: "Số điện thoại không được để trống.",
+    },
+    regex: {
+      value: function (value: string): boolean {
+        return /^(0|\+84)(\s?[3-9]){1}(\d\s?){8}/.test(value.trim());
+      },
+      message: "Số điện thoại không hợp lệ.",
+    },
+  },
+  name: {
+    required: {
+      message: "Tên không được để trống",
+    },
+    // regex: {
+    //   value: function (value: string): boolean {
+    //     const regex = /[^a-zA-Z\s]+/g;
+    //     return !value.trim().match(regex)?.length;
+    //   },
+    //   message: "Tên không được chứa số và kí tự đặc biệt.",
+    // },
+  },
+  note: {},
 };

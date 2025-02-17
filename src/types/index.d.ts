@@ -24,6 +24,12 @@ export interface InputLocation {
   lon: number;
 }
 
+export interface FixedRouteOrderForm {
+  name: string;
+  phone: string;
+  note?: string;
+}
+
 export interface IFixedRoute {
   id: number;
   user_id: string;

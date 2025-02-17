@@ -51,22 +51,31 @@ export default function FixedRouteDetail() {
 
   const user: IUser = useSelector((state: RootState) => state.auth.user);
 
+  const fetch = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    const { data, error } = await xediSupabase.tables.fixedRoutes.selectById(
+      id
+    );
+    if (data?.[0] && !error) {
+      setFixedRoute(data[0]);
+    } else {
+      setError(true);
+    }
+    setIsLoading(false);
+  };
+
   React.useEffect(() => {
-    const fetch = async () => {
-      if (isLoading) return;
-      setIsLoading(true);
-      const { data, error } = await xediSupabase.tables.fixedRoutes.selectById(
-        id
-      );
-      if (data?.[0] && !error) {
-        setFixedRoute(data[0]);
-      } else {
-        setError(true);
-      }
-      setIsLoading(false);
-    };
     fetch();
   }, [id]); // Added isLoading to dependencies
+
+  const onRefresh = React.useCallback(() => {
+    setIsRefreshing(true);
+    setTimeout(async () => {
+      fetch(); // Just reverse the order for demo purposes
+      setIsRefreshing(false);
+    }, 2000);
+  }, []);
 
   const isAuthor = React.useMemo(
     () => user && fixedRoute && user.id === fixedRoute.user_id,
@@ -121,22 +130,13 @@ export default function FixedRouteDetail() {
                 <FixedRouteRequestList
                   isRefreshing={isRefreshing}
                   fixedRoute={fixedRoute}
+                  onFixedRouteOrder={() => setFixedRouteOrderVisible(true)}
                 />
               </VStack>
             </Box>
           </ScrollView>
-          <HStack space="md" className="w-full bg-white p-4 rounded-sm">
-            {user.role === "customer" && (
-              <Box className="w-[100%]">
-                <Button
-                  onPress={() => setFixedRouteOrderVisible(true)}
-                  className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
-                >
-                  <Text className="text-white font-md">Đặt chuyến</Text>
-                </Button>
-              </Box>
-            )}
-            {user?.id === fixedRoute?.user_id && (
+          {user?.id === fixedRoute?.user_id && (
+            <HStack space="md" className="w-full bg-white p-4 rounded-sm">
               <Box className="w-[100%]">
                 <Button
                   className="w-full h-[45px] bg-primary-500 rounded-md items-center justify-center"
@@ -146,8 +146,8 @@ export default function FixedRouteDetail() {
                   <ButtonText>Hoàn thành</ButtonText>
                 </Button>
               </Box>
-            )}
-          </HStack>
+            </HStack>
+          )}
         </SafeAreaView>
         {user?.role === "customer" && (
           <FixedRouteOrder
@@ -155,6 +155,7 @@ export default function FixedRouteDetail() {
             onClose={() => setFixedRouteOrderVisible(false)}
             user={user}
             fixedRoute={fixedRoute}
+            onSuccess={onRefresh}
           />
         )}
       </Box>

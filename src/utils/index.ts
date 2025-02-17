@@ -1,14 +1,21 @@
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { RootState, store } from "../store/store";
 
-export const findUser = (phone: string, password: string) => {
-  const { getState } = store as EnhancedStore<RootState>;
-  const { user } = getState();
-  if (__DEV__) {
-    console.log(user);
-  }
-  return Object.values(user.users).find(
-    (u) => u.phone === phone && u.password === password
-  );
-};
+export function hidePhoneNumber(phoneNumber: string): string {
+  // Remove any non-digit characters from the phone number
+  const cleanNumber = phoneNumber.replace(/\D/g, "")
 
+  // Get the length of the number
+  const length = cleanNumber.length
+
+  // If the number is 3 digits or less, return it as is
+  if (length <= 3) {
+    return cleanNumber
+  }
+
+  // Create a mask of asterisks for all but the last 3 digits
+  const mask = "*".repeat(length - 3)
+
+  // Combine the mask with the last 3 digits
+  return mask + cleanNumber.slice(-3)
+}

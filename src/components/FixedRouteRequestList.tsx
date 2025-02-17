@@ -8,28 +8,44 @@ import { Text } from "./ui/text";
 import { HStack } from "./ui/hstack";
 import { Heading } from "./ui/heading";
 import { Box } from "./ui/box";
-import { Button, ButtonText } from "./ui/button";
+import { Button, ButtonSpinner, ButtonText } from "./ui/button";
+import { hidePhoneNumber } from "../utils";
 
 const FixedRouteOrderItem: React.FC<{
   fixedRouteOrder: IFixedRouteOrder;
   isDisabled: boolean;
 }> = ({ fixedRouteOrder, isDisabled }) => {
+  const user: IUser = useSelector((state: RootState) => state.auth.user);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [data, setData] = React.useState<IFixedRouteOrder>(fixedRouteOrder);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const handlerAccept = async () => {
     if (isLoading) return;
+    setErrorMessage("");
     setIsLoading(true);
-    await xediSupabase.tables.fixedRouteOrders.acceptFixedRouteOrder(
-      fixedRouteOrder.id
-    );
+    const { data: acceptData, error } =
+      await xediSupabase.tables.fixedRouteOrders.acceptFixedRouteOrder(
+        fixedRouteOrder.id
+      );
     const { data } = await xediSupabase.tables.fixedRouteOrders.selectById(
       fixedRouteOrder.id
     );
-    if (data?.length) {
+    if (!error && data?.length) {
       setData({ ...data[0] });
+    }
+    if (error) {
+      const contextError = await error.context.json();
+      if (contextError.error?.message.toLowerCase() === "accept not allowed") {
+        setErrorMessage("Bạn không đủ coin để lấy thông tin khách hàng!");
+      }
     }
     setIsLoading(false);
   };
+
+  const isRequestAuthor = React.useMemo(
+    () => user.id === fixedRouteOrder.user_id,
+    []
+  );
 
   return (
     <VStack space="sm" key={data.id} className="bg-white rounded-md p-2">
@@ -37,7 +53,9 @@ const FixedRouteOrderItem: React.FC<{
         <HStack space="md" className="items-center">
           <Text className="text-lg font-bold">{data.name}</Text>
           <Text className="text-md">
-            {data.status === 1 && data.phone_number}
+            {data.status === 1 || isRequestAuthor
+              ? data.phone_number
+              : hidePhoneNumber(data.phone_number)}
           </Text>
         </HStack>
         <Box
@@ -54,6 +72,11 @@ const FixedRouteOrderItem: React.FC<{
           </Text>
         </Box>
       </HStack>
+      {data.status === 0 && !isDisabled && (
+        <Text className="text-warning-500 text-sm">
+          * Bạn cần xác nhận để lấy thông tin khách hàng
+        </Text>
+      )}
       {!!data.note && (
         <Box className="border-1 rounded-md bg-gray-100 p-2 h-[120px]">
           <Text>{data.note}</Text>
@@ -65,7 +88,16 @@ const FixedRouteOrderItem: React.FC<{
           disabled={isLoading}
           className="rounded-md bg-primary-500"
         >
-          <ButtonText>Xác nhận</ButtonText>
+          {!isLoading && <ButtonText>Xác nhận</ButtonText>}
+          {isLoading && <ButtonSpinner color={"#ffffff"} />}
+        </Button>
+      )}
+      {!!errorMessage && (
+        <Text className="text-error-500 text-sm">{errorMessage}</Text>
+      )}
+      {isRequestAuthor && fixedRouteOrder.status === 0 && (
+        <Button className="bg-error-500 rounded-full">
+          <Text className="text-white">Huỷ</Text>
         </Button>
       )}
     </VStack>
@@ -75,7 +107,8 @@ const FixedRouteOrderItem: React.FC<{
 const FixedRouteRequestList: React.FC<{
   fixedRoute: IFixedRoute;
   isRefreshing: boolean;
-}> = ({ fixedRoute, isRefreshing }) => {
+  onFixedRouteOrder: () => any;
+}> = ({ fixedRoute, isRefreshing, onFixedRouteOrder }) => {
   const user: IUser = useSelector((state: RootState) => state.auth.user);
   const isAuthor = React.useMemo(() => user.id === fixedRoute?.user_id, []);
   const [listFixedRouteRequest, setFixedRouteRequest] = React.useState<
@@ -119,11 +152,24 @@ const FixedRouteRequestList: React.FC<{
   return (
     <VStack space="md">
       {!!listFixedRouteRequest.length && (
-        <Heading>
-          {isAuthor
-            ? "Danh sách yêu cầu được gửi đến"
-            : "Danh sách yêu cầu của bạn"}
-        </Heading>
+        <HStack>
+          <Heading className="flex-1">
+            {isAuthor
+              ? "Danh sách yêu cầu được gửi đến"
+              : "Danh sách yêu cầu của bạn"}
+          </Heading>
+          {!isAuthor && user.role === "customer" && (
+            <Button
+              onPress={onFixedRouteOrder}
+              disabled={!!listFixedRouteRequest.length}
+              className={`rounded-full ${
+                !!listFixedRouteRequest.length && "opacity-[50%]"
+              }`}
+            >
+              <Text className="text-white">Đặt</Text>
+            </Button>
+          )}
+        </HStack>
       )}
       {listFixedRouteRequest.map((v) => (
         <FixedRouteOrderItem

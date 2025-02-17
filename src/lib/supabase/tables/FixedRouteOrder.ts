@@ -22,6 +22,7 @@ export default class FixedRouteOrders extends BaseTable<IFixedRouteOrder> {
       let query = this.supabase
         .from(this.tableName)
         .select(`*, ${Tables.USERS}(*)`)
+        .order("user_id", { ascending: true })
         .eq("fixed_route_id", fixed_route_id);
       if (userId) {
         query = query.eq("user_id", userId);

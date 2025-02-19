@@ -64,6 +64,17 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
+      ],
+      [
+        "@maplibre/maplibre-react-native",
+        {
+          "android": {
+            "nativeVersion": "11.8.1"
+          },
+          "ios": {
+            "nativeVersion": "11.8.1"
+          }
+        }
       ]
     ]
   }

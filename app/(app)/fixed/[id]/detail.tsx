@@ -23,6 +23,15 @@ import FixedRouteRequestList from "@/src/components/FixedRouteRequestList";
 import AppLoading from "@/src/components/AppLoading";
 import Header from "@/src/components/Header";
 import { EditIcon } from "@/src/components/ui/icon";
+import {
+  Camera,
+  MapView,
+  setAccessToken,
+  RasterSource,
+  RasterLayer,
+} from "@maplibre/maplibre-react-native";
+
+setAccessToken(null); // MapLibre doesn't require an access token
 
 const styles = StyleSheet.create({
   logo: {
@@ -32,6 +41,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  map: {
+    width: "100%",
+    height: 500,
   },
 });
 
@@ -127,6 +140,27 @@ export default function FixedRouteDetail() {
                     </HStack>
                   </VStack>
                 </Box>
+                <MapView style={styles.map}>
+                  <Camera
+                    defaultSettings={{
+                      centerCoordinate: [0, 0],
+                      zoomLevel: 2,
+                    }}
+                  />
+                  <RasterSource
+                    id="openStreetMapSource"
+                    tileUrlTemplates={[
+                      "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    ]}
+                    minZoomLevel={0}
+                    maxZoomLevel={19}
+                  >
+                    <RasterLayer
+                      id="openStreetMapLayer"
+                      sourceID="openStreetMapSource"
+                    />
+                  </RasterSource>
+                </MapView>
                 <FixedRouteRequestList
                   isRefreshing={isRefreshing}
                   fixedRoute={fixedRoute}

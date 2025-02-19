@@ -1,4 +1,4 @@
-import { setGranted } from "@/src/store/locationSlice";
+import { setGranted, setLocation } from "@/src/store/locationSlice";
 import { RootState } from "@/src/store/store";
 import * as Location from "expo-location";
 import { useEffect, useRef } from "react";
@@ -22,7 +22,14 @@ const useLocation = ({ isWatchLocation }: { isWatchLocation?: boolean }) => {
         accuracy: Location.Accuracy.High,
         distanceInterval: 5,
       },
-      () => {}
+      (location) => {
+        dispatch(
+          setLocation({
+            lat: location.coords.latitude,
+            lon: location.coords.longitude,
+          })
+        );
+      }
     );
     subscriptionRef.current = s;
   };

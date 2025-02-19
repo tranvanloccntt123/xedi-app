@@ -96,9 +96,7 @@ export default function Profile() {
         <ProfileSection
           title="Địa điểm đã lưu"
           subtitle="Quản lý các địa điểm yêu thích của bạn"
-          onPress={() => {
-            /* Navigate to saved places screen */
-          }}
+          onPress={() => router.push("/add-location")}
         />
 
         <Divider className="my-2" />

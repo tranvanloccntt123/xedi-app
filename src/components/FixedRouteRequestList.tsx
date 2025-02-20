@@ -2,7 +2,7 @@ import React from "react";
 import { IFixedRoute, IFixedRouteOrder, IUser } from "../types";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { xediSupabase } from "../lib/supabase";
+import { supabase, xediSupabase } from "../lib/supabase";
 import { VStack } from "./ui/vstack";
 import { Text } from "./ui/text";
 import { HStack } from "./ui/hstack";
@@ -139,7 +139,10 @@ const FixedRouteOrderItem: React.FC<{
           <Text className="text-error-500 text-sm">{errorMessage}</Text>
         )}
         {isRequestAuthor && fixedRouteOrder.status === 0 && (
-          <Button onPress={handlerDelete} className="bg-error-500 h-[45px] rounded-full">
+          <Button
+            onPress={handlerDelete}
+            className="bg-error-500 h-[45px] rounded-full"
+          >
             <Text className="text-white text-lg font-bold">Huỷ</Text>
           </Button>
         )}
@@ -179,6 +182,22 @@ const FixedRouteRequestList: React.FC<{
     if (error) return;
     setFixedRouteRequest(data as never);
   };
+
+  React.useEffect(() => {
+    if (listFixedRouteRequest.length) {
+      supabase.functions.invoke("push-multi-notifications", {
+        body: JSON.stringify({
+          type: "FIXED_ROUTE_ORDER_UPDATE",
+          schema: "public",
+          record: {
+            user_ids: listFixedRouteRequest.map((v) => v.user_id),
+            body: `Tài xế đã xác nhận yêu cầu từ`,
+            title: "Xác nhận yêu cầu thành công",
+          },
+        } as WebhookMultiNotificationPayload),
+      });
+    }
+  }, [listFixedRouteRequest]);
 
   React.useEffect(() => {
     if (user?.id || isRefreshing || focused) {

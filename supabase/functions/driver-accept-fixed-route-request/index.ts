@@ -74,17 +74,32 @@ Deno.serve(async (req) => {
   const { user_id } = data;
 
   const { data: notification_data, error: notification_error } =
-    await supabase.functions.invoke("push-multi-notifications", {
+    await supabase.functions.invoke("push", {
       body: JSON.stringify({
         type: "FIXED_ROUTE_ORDER_UPDATE",
         schema: "public",
         record: {
-          user_ids: [user_id],
+          user_id: user_id,
           body: `Tài xế đã xác nhận yêu cầu từ ${data.phone_number}, chúc bạn có hành trình vui vẻ!.`,
           title: "Xác nhận yêu cầu thành công",
         },
-      } as WebhookMultiNotificationPayload),
+      } as WebhookPayload),
     });
+
+  if (notification_error) {
+      return new Response(
+    JSON.stringify({
+      message: "Xác nhận yêu cầu thành công",
+      notification: {
+        data: notification_data,
+        error: notification_error,
+      },
+    }),
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  }
 
   return new Response(
     JSON.stringify({

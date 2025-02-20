@@ -4,16 +4,14 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { initializeApp, credential } from "https://esm.sh/firebase-admin@13.1.0/app";
-import { getMessaging } from "https://esm.sh/firebase-admin@13.1.0/messaging";
+import { initializeApp, cert } from "npm:firebase-admin/app";
+import {getMessaging} from 'npm:firebase-admin/messaging';
 import serviceAccount from '../xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json' with { type: 'json' }
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const app = initializeApp({
-  credential: credential.cert(serviceAccount)
+  credential: cert(serviceAccount)
 });
-
-const messaging = getMessaging(app);
 
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
@@ -33,10 +31,11 @@ Deno.serve(async (req) => {
     notification: {
       title: `Xedi - ${ payload.record.title || 'Thông báo'}`,
       body: payload.record.body,
-    }
+    },
+    tokens: data.map(v => v.fcm_token),
   };
 
-  data?.length && messaging.sendToDevice(data.map(v => v.fcm_token), payloadMessage)
+  data?.length && getMessaging().sendEachForMulticast(payloadMessage);
 
   return new Response(
     JSON.stringify({

@@ -31,7 +31,7 @@ import {
 } from "../utils/validator";
 import { fixedRouteValidator, locationValidator } from "../constants/validator";
 import { Box } from "./ui/box";
-import { IFixedRoute } from "../types";
+import { IFixedRoute, InputLocation } from "../types";
 import {
   Checkbox,
   CheckboxIndicator,
@@ -53,15 +53,15 @@ const AddFixedRouteModal: React.FC<{
   const setLocationFor = React.useRef(LocationFor.START_LOCATION);
   const [locationModal, setLocationModal] = React.useState(false);
 
-  const [startLocation, setStartLocation] = React.useState({
+  const [startLocation, setStartLocation] = React.useState<InputLocation>({
     display_name: "",
-    lat: "",
-    lon: "",
+    lat: 0,
+    lon: 0,
   });
-  const [endLocation, setEndLocation] = React.useState({
+  const [endLocation, setEndLocation] = React.useState<InputLocation>({
     display_name: "",
-    lat: "",
-    lon: "",
+    lat: 0,
+    lon: 0,
   });
   const [price, setPrice] = React.useState("");
   const [totalSeats, setTotalSeats] = React.useState("");
@@ -73,7 +73,7 @@ const AddFixedRouteModal: React.FC<{
     const _errors = {};
     const validateStartLocation = formValidatePerField(
       locationValidator,
-      startLocation
+      startLocation as never
     );
 
     if (!formValidateSuccess(validateStartLocation)) {
@@ -82,7 +82,7 @@ const AddFixedRouteModal: React.FC<{
 
     const validateEndLocation = formValidatePerField(
       locationValidator,
-      endLocation
+      endLocation as never
     );
 
     if (!formValidateSuccess(validateEndLocation)) {

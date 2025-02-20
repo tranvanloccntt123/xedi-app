@@ -4,6 +4,8 @@ import React from "react";
 import AppMapView from "@/src/components/AppMapView";
 import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import ReverseLocationBottomSheet from "@/src/components/ReverseLocationBottomSheet";
+import Header from "@/src/components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AddLocation() {
   useLocation({ isWatchLocation: true });
@@ -13,12 +15,15 @@ export default function AddLocation() {
     lon: number;
   }>();
 
-  console.log(coordinate);
-
   return (
     <BottomSheet>
       <Box className="flex-1">
-        <AppMapView isOpenTrigger={true} onPress={(c) => setCoordinate(c)} />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Box className="px-4 pt-4">
+            <Header title="Thêm điểm đón" />
+          </Box>
+          <AppMapView isOpenTrigger={true} onPress={(c) => setCoordinate(c)} />
+        </SafeAreaView>
         <ReverseLocationBottomSheet coordinate={coordinate} />
       </Box>
     </BottomSheet>

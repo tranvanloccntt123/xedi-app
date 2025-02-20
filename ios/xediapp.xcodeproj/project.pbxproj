@@ -158,12 +158,16 @@
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
 				DD105C6B33E799ADF74706DF /* [CP] Embed Pods Frameworks */,
 				4BB1F63C950E4777E03C909C /* [CP-User] [RNFB] Core Configuration */,
+				2B19766EE71A445090C96B1A /* Remove signature files (Xcode workaround) */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = xediapp;
+			packageProductDependencies = (
+				366CD69DB8B3BFD8232075E9 /* MapLibre */,
+			);
 			productName = xediapp;
 			productReference = 13B07F961A680F5B00A75B9A /* xediapp.app */;
 			productType = "com.apple.product-type.application";
@@ -190,6 +194,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				111835D821EDCEA4320CC9D3 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -366,6 +373,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-xediapp/Pods-xediapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		2B19766EE71A445090C96B1A /* Remove signature files (Xcode workaround) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			name = "Remove signature files (Xcode workaround)";
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			shellPath = /bin/sh;
+			shellScript = "
+          echo \"Remove signature files (Xcode workaround)\";
+          rm -rf \"$CONFIGURATION_BUILD_DIR/MapLibre.xcframework-ios.signature\";
+        ";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -407,7 +431,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tei.xediapp;
-				PRODUCT_NAME = xediapp;
+				PRODUCT_NAME = "xediapp";
 				SWIFT_OBJC_BRIDGING_HEADER = "xediapp/xediapp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -435,11 +459,12 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tei.xediapp;
-				PRODUCT_NAME = xediapp;
+				PRODUCT_NAME = "xediapp";
 				SWIFT_OBJC_BRIDGING_HEADER = "xediapp/xediapp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64";
 			};
 			name = Release;
 		};
@@ -605,6 +630,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		111835D821EDCEA4320CC9D3 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maplibre/maplibre-gl-native-distribution";
+			requirement = {
+				kind = exactVersion;
+				version = 6.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		366CD69DB8B3BFD8232075E9 /* MapLibre */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 111835D821EDCEA4320CC9D3 /* XCRemoteSwiftPackageReference "maplibre-gl-native-distribution" */;
+			productName = MapLibre;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

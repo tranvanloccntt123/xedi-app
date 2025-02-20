@@ -28,6 +28,7 @@ export interface FixedRouteOrderForm {
   name: string;
   phone: string;
   note?: string;
+  location?: InputLocation;
 }
 
 export interface IFixedRoute {
@@ -40,6 +41,7 @@ export interface IFixedRoute {
   availableSeats: number;
   price: number;
   created_at: Date;
+  status: number;
 }
 
 export interface IRating {
@@ -117,6 +119,7 @@ export interface IFixedRouteOrder {
   phone_number: string;
   note?: string;
   created_at: Date;
+  location: InputLocation;
   /*
     Status:
     - 0: Request
@@ -137,4 +140,33 @@ export interface IUserCoin {
   created_at: string;
   coins: number;
   user_id: string;
+}
+
+export interface PhotonReverseResponse {
+  features: [
+    {
+      geometry: {
+        coordinates: number[];
+        type: "Point";
+      };
+      type: "Feature";
+      properties: {
+        osm_id: number;
+        extent: number;
+        country: string;
+        city: string;
+        countrycode: string;
+        postcode: string;
+        locality: string;
+        type: string;
+        osm_type: string;
+        osm_key: string;
+        street: string;
+        district: string;
+        osm_value: string;
+        name: string;
+      };
+    }
+  ];
+  type: string;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
 import type { IFixedRoute } from "@/src/types";
@@ -9,6 +9,10 @@ import moment from "moment";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";
+import HiIcon from "./icons/HiIcon";
+import FixedRouteIcon from "./icons/FixedRouteIcon";
+import { splitLocation } from "../utils";
+import { Divider } from "./ui/divider";
 
 const APP_STRUCT = "FIXED_ROUTES_ITEM";
 
@@ -18,8 +22,16 @@ const FixedRouteItem: React.FC<{
   className?: string;
   isHiddenPrice?: boolean;
 }> = ({ fixedRoute: item, disabled, className, isHiddenPrice }) => {
+  const { title: startTitle, subTitle: startSubTitle } = useMemo(
+    () => splitLocation(item.startLocation.display_name),
+    []
+  );
+  const { title: endTitle, subTitle: endSubTitle } = useMemo(
+    () => splitLocation(item.endLocation.display_name),
+    []
+  );
   return (
-    <VStack space="xs" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
+    <VStack space="md" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
       <HStack className="justify-between items-center">
         {!!item.departureTime && (
           <Text className="text-sm font-bold">
@@ -35,34 +47,37 @@ const FixedRouteItem: React.FC<{
           </Text>
         )}
       </HStack>
-      <VStack>
-        <HStack className="items-center">
+      <VStack space="lg">
+        <HStack space="md" className="items-center">
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
-            <Box className="rounded-full w-full h-full bg-error-500" />
+            <HiIcon size={24} color="#000000" />
           </Box>
-          <Text className="font-black font-normal text-lg">
-            {item.startLocation.display_name}
-          </Text>
+          <VStack>
+            <Text className="text-black font-bold text-lg">{startTitle}</Text>
+            {!!startSubTitle && (
+              <Text className="text-gray-500 text-md">{startSubTitle}</Text>
+            )}
+          </VStack>
         </HStack>
-        <Box className="w-[15px] h-[5px] justify-center items-center">
-          <Box className="rounded-full w-[3px] h-[3px] bg-primary-100" />
-        </Box>
-        <Box className="w-[15px] h-[5px] justify-center items-center">
-          <Box className="rounded-full w-[3px] h-[3px] bg-primary-100" />
-        </Box>
-        <HStack className="items-center">
+        <HStack space="md" className="items-center">
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
-            <Box className="rounded-full w-full h-full bg-error-100" />
+            <FixedRouteIcon size={24} color="#000000" />
           </Box>
-          <Text className="font-black font-normal text-lg">
-            {item.endLocation.display_name}
-          </Text>
+          <VStack>
+            <Text className="text-black font-bold text-lg">{endTitle}</Text>
+            {!!endSubTitle && (
+              <Text className="text-gray-500 text-md">{endSubTitle}</Text>
+            )}
+          </VStack>
         </HStack>
       </VStack>
       {!isHiddenPrice && (
-        <Text className="text-md text-gray-600">
-          Giá: {formatMoney(item.price)} VND
-        </Text>
+        <>
+          <Divider />
+          <Text className="text-lg text-gray-600">
+            Giá: {formatMoney(item.price)} VND
+          </Text>
+        </>
       )}
       {!disabled && (
         <HStack space="sm" className="justify-end mt-2">

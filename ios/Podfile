@@ -13,6 +13,9 @@ install! 'cocoapods',
 
 prepare_react_native_project!
 
+# @generated begin @maplibre/maplibre-react-native:global-variables - expo prebuild (DO NOT MODIFY) sync-b565d65e32592f6d53445761b2128462c90d138f
+$MLRN_NATIVE_VERSION = "11.8.1"
+# @generated end @maplibre/maplibre-react-native:global-variables
 target 'xediapp' do
   use_expo_modules!
 
@@ -45,12 +48,17 @@ target 'xediapp' do
   )
 
   post_install do |installer|
+# @generated begin @maplibre/maplibre-react-native:post-install - expo prebuild (DO NOT MODIFY) sync-6e76c80af0d70c0003d06822dd59b7c729fca472
+    $MLRN.post_install(installer)
+# @generated end @maplibre/maplibre-react-native:post-install
     react_native_post_install(
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
       :ccache_enabled => podfile_properties['apple.ccacheEnabled'] == 'true',
     )
+
+    $MLRN.post_install(installer)
 
     # This is necessary for Xcode 14, because it signs resource bundles by default
     # when building for devices.

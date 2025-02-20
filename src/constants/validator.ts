@@ -144,4 +144,5 @@ export const fixedRouteOrderValidator: ValidatorObject<
     // },
   },
   note: {},
+  location: {}
 };

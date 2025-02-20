@@ -24,14 +24,18 @@ const AppMapView: React.FC<{
 
   const onMapPress = (event) => {
     const { geometry } = event;
-    console.log(geometry);
-    geometry.coordinates?.length && onPress?.({ lat: geometry.coordinates[1], lon: geometry.coordinates[0] });
+    geometry.coordinates?.length &&
+      onPress?.({ lat: geometry.coordinates[1], lon: geometry.coordinates[0] });
     isOpenTrigger && handleOpen?.();
   };
   return (
     <AppLoading isLoading={[lat, lon].includes(null)}>
       {![lat, lon].includes(null) && (
-        <MapView style={{ flex: 1 }} onPress={onMapPress}>
+        <MapView
+          style={{ flex: 1 }}
+          onPress={onMapPress}
+          onRegionIsChanging={(f) => console.log(f.properties.zoomLevel)}
+        >
           <Camera
             defaultSettings={{
               centerCoordinate: [lon, lat],

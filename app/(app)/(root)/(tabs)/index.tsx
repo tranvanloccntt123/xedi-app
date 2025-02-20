@@ -83,7 +83,6 @@ export default function Home() {
               </Button>
             </HStack>
           }
-          contentContainerStyle={{ paddingHorizontal: 16 }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

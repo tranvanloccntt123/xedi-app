@@ -54,21 +54,25 @@ import { Box } from "./ui/box";
 
 const FixedRouteOrder: React.FC<{
   user: IUser;
-  fixedRoute: IFixedRoute;
+  fixedRouteId: any;
   visible: boolean;
   onClose: () => any;
-  onSuccess: () => any;
-}> = ({ user, fixedRoute, visible, onClose, onSuccess }) => {
+  onSuccess: (data?: {
+    name: string;
+    phoneNumber: string;
+    note: string;
+  }) => any;
+}> = ({ user, fixedRouteId, visible, onClose, onSuccess }) => {
   const [note, setNote] = React.useState("");
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(user.name);
   const [error, setError] = React.useState<FixedRouteOrderForm>({
     name: "",
     phone: "",
   });
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState(user.phone);
 
   const handleOrder = async () => {
-    if (!user || !fixedRoute) return;
+    if (!user || !fixedRouteId) return;
 
     try {
       const validateForm = formValidatePerField(fixedRouteOrderValidator, {
@@ -85,17 +89,17 @@ const FixedRouteOrder: React.FC<{
         return;
       }
 
-      const { data, error } = await xediSupabase.tables.fixedRouteOrders.add([
-        {
-          fixed_route_id: fixedRoute.id,
-          user_id: user.id,
-          name,
-          phone_number: phoneNumber,
-          note,
-        },
-      ]);
+      // const { data, error } = await xediSupabase.tables.fixedRouteOrders.add([
+      //   {
+      //     fixed_route_id: fixedRouteId,
+      //     user_id: user.id,
+      //     name,
+      //     phone_number: phoneNumber,
+      //     note,
+      //   },
+      // ]);
 
-      if (error) throw error;
+      // if (error) throw error;
 
       // Show success message and reset form
       // You might want to use a toast or alert here
@@ -103,7 +107,7 @@ const FixedRouteOrder: React.FC<{
       setName("");
       setPhoneNumber("");
       setNote("");
-      onSuccess?.();
+      onSuccess?.({ name, phoneNumber, note });
       onClose?.();
     } catch (error) {
       console.error("Error placing order:", error);
@@ -116,12 +120,12 @@ const FixedRouteOrder: React.FC<{
       <ModalBackdrop />
       <ModalContent>
         <ModalHeader className="mb-4">
-          <Heading>Yêu cầu chuyến đi</Heading>
+          <Heading>Thông tin liên lạc</Heading>
         </ModalHeader>
         <ModalBody>
           <VStack space="md" className="rounded-sm">
             <Box>
-              <Input>
+              <Input className="h-[45px]">
                 <InputField
                   placeholder="Tên"
                   value={name}
@@ -133,7 +137,7 @@ const FixedRouteOrder: React.FC<{
               )}
             </Box>
             <Box>
-              <Input>
+              <Input className="h-[45px]">
                 <InputField
                   placeholder="Số điện thoại"
                   value={phoneNumber}
@@ -158,7 +162,7 @@ const FixedRouteOrder: React.FC<{
               size="xl"
               onPress={() => handleOrder()}
             >
-              <ButtonText>Đặt chuyến</ButtonText>
+              <ButtonText>Xác nhận</ButtonText>
             </Button>
           </VStack>
         </ModalBody>

@@ -57,7 +57,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-2 bg-white rounded-2xl">
+      <VStack space="sm" className="mb-2 bg-white">
         <Box className="p-4 rounded-lg">
           <VStack>
             <HStack className="justify-between items-center mb-2">

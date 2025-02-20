@@ -37,6 +37,11 @@ Deno.serve(async (req) => {
 
   data?.length && getMessaging().sendEachForMulticast(payloadMessage);
 
+  await supabase.from('notifications').insert(payload.record.user_ids.map(v => ({
+    user_id: v,
+    body: payload.record.body
+  }))).select();
+
   return new Response(
     JSON.stringify({
       title: `Xedi - ${ payload.record.title || 'Thông báo'}`,

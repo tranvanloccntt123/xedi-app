@@ -1,21 +1,5 @@
+import { SupbaseParams, SupabaseTableFilter, SupabaseTableInsert } from "@/src/types";
 import { SupabaseClient } from "@supabase/supabase-js";
-
-type SupabaseTableFilter<T = any> = {
-  data: Array<T>;
-  status: number;
-  statusText: string;
-};
-
-type SupabaseTableInsert<T = any> = {
-  data: Array<T>;
-  error: any;
-};
-
-type SupbaseParams = {
-  select?: any;
-  pageNums?: number;
-  id?: number;
-};
 
 export class BaseTable<Data = any, Source = any> {
   supabase: SupabaseClient;

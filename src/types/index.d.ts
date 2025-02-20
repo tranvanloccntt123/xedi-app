@@ -170,3 +170,21 @@ export interface PhotonReverseResponse {
   ];
   type: string;
 }
+
+
+export type SupabaseTableFilter<T = any> = {
+  data: Array<T>;
+  status: number;
+  statusText: string;
+};
+
+export type SupabaseTableInsert<T = any> = {
+  data: Array<T>;
+  error: any;
+};
+
+export type SupbaseParams = {
+  select?: any;
+  pageNums?: number;
+  id?: number;
+};

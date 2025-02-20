@@ -72,7 +72,7 @@ export default function History() {
                   </AvatarFallbackText>
                 </Avatar>
                 <VStack>
-                  <Text className="text-bold text-lg">{item.body}</Text>
+                  <Text className="text-bold text-lg flex-1">{item.body}</Text>
                   <Text className="text-thin text-gray-500 text-xs">
                     {moment(item.created_at).format("hh:mm")}
                   </Text>

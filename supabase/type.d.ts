@@ -16,6 +16,7 @@ interface MultiNotification {
   user_ids: string[];
   body: string;
   title?: string;
+  fromId?: string;
 }
 
 interface WebhookMultiNotificationPayload {

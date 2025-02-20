@@ -14,9 +14,44 @@ const supabase = createClient(
 Deno.serve(async (req) => {
   const { id } = await req.json();
 
+  const { error } = await supabase
+    .from("fixed_routes")
+    .update({ status: 1 })
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    return new Response(
+      JSON.stringify({
+        message: "Lỗi khi khởi hành chuyến đi " + id,
+        error,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+        statusText: JSON.stringify(error),
+      }
+    );
+  }
+
+  if (error) {
+    return new Response(
+      JSON.stringify({
+        message: "Cập nhật yêu cầu " + id,
+        error,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+        status: 404,
+        statusText: JSON.stringify(error),
+      }
+    );
+  }
+
   const { data } = await supabase
     .from("fixed_route_orders")
-    .select("user_id")
+    .select("user_id, status")
+    .eq("status", 1)
     .eq("fixed_route_id", id);
 
   if (data?.length) {

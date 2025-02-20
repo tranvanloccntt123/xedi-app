@@ -184,22 +184,6 @@ const FixedRouteRequestList: React.FC<{
   };
 
   React.useEffect(() => {
-    if (listFixedRouteRequest.length) {
-      supabase.functions.invoke("push-multi-notifications", {
-        body: JSON.stringify({
-          type: "FIXED_ROUTE_ORDER_UPDATE",
-          schema: "public",
-          record: {
-            user_ids: listFixedRouteRequest.map((v) => v.user_id),
-            body: `Tài xế đã xác nhận yêu cầu từ`,
-            title: "Xác nhận yêu cầu thành công",
-          },
-        } as WebhookMultiNotificationPayload),
-      });
-    }
-  }, [listFixedRouteRequest]);
-
-  React.useEffect(() => {
     if (user?.id || isRefreshing || focused) {
       loadData();
     }

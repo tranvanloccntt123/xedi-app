@@ -60,8 +60,18 @@ export default function FixedRouteDetail() {
     }, 2000);
   }, []);
 
-  const handlerRunning = React.useCallback(() => {
+  const handlerRunning = React.useCallback(async () => {
+    if (!fixedRoute) return;
+    setIsLoading(true);
+    const { error } = await xediSupabase.tables.fixedRoutes.runningFixedRoute(
+      fixedRoute.id
+    );
+    if (error) {
+      setIsLoading(false);
+      return;
+    }
     setFixedRoute({ ...fixedRoute, status: 1 });
+    setIsLoading(false);
   }, [fixedRoute]);
 
   return (

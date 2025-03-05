@@ -30,20 +30,20 @@
       };
       # Runs when a workspace restarted
       onStart = {
-        forward-ports = ''
-          socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-        '';
-        connect-device = ''
-          adb -s localhost:5554 wait-for-device 
-        '';
-        android = ''
-          npm run android
-        '';
+        # forward-ports = ''
+        #   socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
+        # '';
+        # connect-device = ''
+        #   adb -s localhost:5554 wait-for-device 
+        # '';
+        # android = ''
+        #   npm run android
+        # '';
       };
     };
     # Enable previews and customize configuration
     previews = {
-      enable = true;
+      enable = false;
       previews = {
         web = {
           command = [ "npm" "run" "web" "--" "--port" "$PORT" ];

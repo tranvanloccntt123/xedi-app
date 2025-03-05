@@ -1,20 +1,18 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true,
+    "jsx": "react",
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "tailwind.config": [
-        "./tailwind.config.js"
       ]
-    }
+    },
+    "esModuleInterop": true,
+    "module": "esnext"
   },
+  "extends": "expo/tsconfig.base",
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "nativewind-env.d.ts"
   ]
 }

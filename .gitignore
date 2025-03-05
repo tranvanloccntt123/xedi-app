@@ -1,13 +1,7 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
-node_modules/
-
 # Expo
 .expo/
 dist/
 web-build/
-expo-env.d.ts
 
 # Native
 *.orig.*
@@ -31,8 +25,13 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env.*
+xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json
+*.env.development
 
 # typescript
 *.tsbuildinfo
 
-app-example
+# Node.js
+node_modules/
+

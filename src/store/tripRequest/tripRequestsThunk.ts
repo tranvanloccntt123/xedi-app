@@ -31,3 +31,27 @@ export const acceptDriverTripRequest = createAsyncThunk<
     }
   }
 );
+
+export const fetchDriverTripRequestAccepted = createAsyncThunk<
+  { tripRequestId: number; driverTripRequest?: IDriverTripRequest },
+  { tripRequestId: number }
+>(
+  "tripRequest/fetchDriverTripRequestAccepted",
+  async (data: { tripRequestId: number }, { rejectWithValue }) => {
+    try {
+      const { data: driverTripRequestData, error } =
+        await xediSupabase.tables.driverTripRequests.selectRequestOrderAccepted(
+          { tripRequestId: data.tripRequestId }
+        );
+      if (error) {
+        throw new Error(error.message);
+      }
+      return {
+        tripRequestId: data.tripRequestId,
+        driverTripRequest: driverTripRequestData[0],
+      };
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);

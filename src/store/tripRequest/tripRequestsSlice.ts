@@ -1,6 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { IDriverTripRequest, ITripRequest } from "@/src/types";
-import { acceptDriverTripRequest } from "./tripRequestsThunk";
+import {
+  acceptDriverTripRequest,
+  fetchDriverTripRequestAccepted,
+} from "./tripRequestsThunk";
 
 export interface TripRequestsState {
   requests: ITripRequest[];
@@ -42,13 +45,18 @@ const tripRequestsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(acceptDriverTripRequest.fulfilled, (state, action) => {
-      // const newSet = new Set(state.requestsDeleted);
-      // newSet.add(action.payload.id);
-      // state.requestsDeleted = newSet;
-      state.tripRequestAccepted[action.payload.tripRequestId] =
-        action.payload.driverTripRequest;
-    });
+    builder
+      .addCase(acceptDriverTripRequest.fulfilled, (state, action) => {
+        // const newSet = new Set(state.requestsDeleted);
+        // newSet.add(action.payload.id);
+        // state.requestsDeleted = newSet;
+        state.tripRequestAccepted[action.payload.tripRequestId] =
+          action.payload.driverTripRequest;
+      })
+      .addCase(fetchDriverTripRequestAccepted.fulfilled, (state, action) => {
+        state.tripRequestAccepted[action.payload.tripRequestId] =
+          action.payload.driverTripRequest;
+      });
   },
 });
 

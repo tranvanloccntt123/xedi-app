@@ -1,7 +1,7 @@
 const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { VStack } from "@/src/components/ui/vstack";
 import { TouchableOpacity } from "react-native";
 import { IDriverTripRequest } from "@/src/types";
@@ -13,6 +13,7 @@ import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import { BottomSheetContext } from "@/src/components/ui/bottom-sheet";
 import { setCurrentDriverTripRequest } from "@/src/store/tripRequest/tripRequestsSlice";
+import { RootState } from "@/src/store/store";
 
 const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,
@@ -20,6 +21,10 @@ const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   const dispatch = useDispatch();
 
   const { handleOpen } = React.useContext(BottomSheetContext);
+
+  const tripRequestAccepted = useSelector(
+    (state: RootState) => state.tripRequests.tripRequestAccepted[tripRequestId]
+  );
 
   const [requestList, setRequestList] = React.useState<IDriverTripRequest[]>(
     []

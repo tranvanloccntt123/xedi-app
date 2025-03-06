@@ -1,6 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { IUser, IUserCoin } from "../types";
-import { fetchUserCoins, fetchUserInfo, updateUserInfo } from "./userThunks";
+import type { IUser, IUserCoin } from "@/src/types";
+import {
+  fetchUserCoins,
+  fetchUserInfo,
+  updateUserInfo,
+} from "@/src/store/user/userThunks";
 
 export interface AuthState {
   isAuthenticated: boolean;

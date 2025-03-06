@@ -23,7 +23,7 @@ import {
   setFixedRoutes,
   resetPost,
   setDepartureTime,
-} from "@/src/store/postFormSlice";
+} from "@/src/store/post/postFormSlice";
 import DateTime from "@/src/components/DateTime";
 import ErrorModal from "@/src/components/ErrorModal";
 import CreatePostButton from "@/src/components/Feed/CreatePost";

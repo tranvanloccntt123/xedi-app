@@ -27,7 +27,7 @@ import { deepEqual } from "@/src/utils/deepEqual";
 import { Text } from "@/src/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/src/components/Header";
-import { updateUserInfo } from "@/src/store/userThunks";
+import { updateUserInfo } from "@/src/store/user/userThunks";
 
 export default function EditProfile() {
   const router = useRouter();

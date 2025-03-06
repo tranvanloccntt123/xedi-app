@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { RootState } from "./store";
-import { OrsDirections } from "../lib/osrm";
-import { InputLocation, SelectLocationType } from "../types";
+import { RootState } from "../store";
+import { OrsDirections } from "../../lib/osrm";
+import { InputLocation, SelectLocationType } from "../../types";
 
 export const setAndFetchRouteLocation = createAsyncThunk<
   {

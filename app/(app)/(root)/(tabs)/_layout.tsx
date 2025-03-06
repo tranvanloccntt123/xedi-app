@@ -7,7 +7,7 @@ import MotoIcon from "@/src/components/icons/MotoIcon";
 import ProfileIcon from "@/src/components/icons/ProfileIcon";
 import NotificationIcon from "@/src/components/icons/Notifications";
 import { useDispatch } from "react-redux";
-import { fetchUserCoins, fetchUserInfo } from "@/src/store/userThunks";
+import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
 
 export default function TabsLayout() {
   const dispatch = useDispatch();

@@ -12,7 +12,7 @@ import { xediSupabase } from "@/src/lib/supabase";
 import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import { BottomSheetContext } from "@/src/components/ui/bottom-sheet";
-import { setCurrentDriverTripRequest } from "@/src/store/tripRequestsSlice";
+import { setCurrentDriverTripRequest } from "@/src/store/tripRequest/tripRequestsSlice";
 
 const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,

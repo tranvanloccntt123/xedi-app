@@ -2,7 +2,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setStartLocation, setEndLocation } from "@/src/store/postFormSlice";
+import { setStartLocation, setEndLocation } from "@/src/store/post/postFormSlice";
 import LocationSearch from "@/src/components/Location/LocationSearch";
 import { Box } from "@/src/components/ui/box";
 import type { InputLocation } from "@/src/types";

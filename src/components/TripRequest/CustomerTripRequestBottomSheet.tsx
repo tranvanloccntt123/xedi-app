@@ -8,16 +8,27 @@ import {
   BottomSheetPortal,
 } from "@/src/components/ui/bottom-sheet";
 import { Text } from "../ui/text";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
+import { xediSupabase } from "@/src/lib/supabase";
+import { IDriverTripRequestStatus } from "@/src/types";
 
 const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({
   isAuthor,
 }) => {
-  const request = useSelector((state: RootState) => state.tripRequests.currentDriverTripRequest);
+  const request = useSelector(
+    (state: RootState) => state.tripRequests.currentDriverTripRequest
+  );
+  const dispatch = useDispatch();
   const handleAccept = async () => {
-    
-  }
+    if (request)
+      dispatch
+  };
+
+  const handleDelete = async () => {
+    if (request) xediSupabase.tables.driverTripRequests.deleteById(request.id);
+  };
+
   return (
     <BottomSheetPortal
       snapPoints={["20%"]}
@@ -25,11 +36,11 @@ const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({
       handleComponent={BottomSheetDragIndicator}
     >
       <BottomSheetContent style={{ justifyContent: "flex-end" }}>
-        <BottomSheetItem>
+        <BottomSheetItem onPress={handleAccept}>
           <BottomSheetItemText>Xác nhận yêu cầu</BottomSheetItemText>
         </BottomSheetItem>
         {isAuthor && (
-          <BottomSheetItem onPress={() => {}}>
+          <BottomSheetItem onPress={handleDelete}>
             <Text className="text-error-300">Từ chối yêu cầu</Text>
           </BottomSheetItem>
         )}

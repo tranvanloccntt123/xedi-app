@@ -11,7 +11,7 @@ import { Platform, Pressable, ScrollView } from "react-native";
 import MoreIcon from "../icons/MoreIcon";
 import { BottomSheetTrigger } from "../ui/bottom-sheet";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentNewsFeedItem } from "@/src/store/feedSlice";
+import { setCurrentNewsFeedItem } from "@/src/store/feed/feedSlice";
 import type { RootState } from "@/src/store/store";
 import Animated, {
   useSharedValue,

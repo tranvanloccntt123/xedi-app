@@ -2,28 +2,12 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet } from "react-native";
-import { IFixedRouteStatus, type IFixedRoute } from "@/src/types";
+import { IFixedRouteStatus, IFixedRoute } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import AppLoading from "@/src/components/View/AppLoading";
 import FixedRouteDetailPending from "@/src/components/FixedRoute/FixedRouteDetailPending";
 import FixedRouteDetailRunning from "@/src/components/FixedRoute/FixedRouteDetailRunning";
 import FixedRouteDetailFinished from "@/src/components/FixedRoute/FixedRouteDetailFinished";
-
-const styles = StyleSheet.create({
-  logo: {
-    width: 50,
-    height: 50,
-    resizeMode: "cover",
-  },
-  container: {
-    flex: 1,
-  },
-  map: {
-    width: "100%",
-    height: 500,
-  },
-});
 
 export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();

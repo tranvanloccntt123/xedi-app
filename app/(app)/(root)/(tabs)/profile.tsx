@@ -1,8 +1,8 @@
-import { logout, clearAuthData } from "@/src/store/authSlice";
-import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice";
-import { clearTripRequests } from "@/src/store/tripRequestsSlice";
+import { logout, clearAuthData } from "@/src/store/auth/authSlice";
+import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
+// import { clearTripRequests } from "@/src/store/tripRequest/tripRequestsSlice";
 import { supabase } from "@/src/lib/supabase";
-import { clearUser } from "@/src/store/userSlice";
+import { clearUser } from "@/src/store/user/userSlice";
 
 const APP_STRUCT = "PROFILE_SCREEN";
 
@@ -47,7 +47,7 @@ export default function Profile() {
       await supabase.auth.signOut();
       dispatch(logout());
       dispatch(clearFixedRoutes());
-      dispatch(clearTripRequests());
+      // dispatch(clearTripRequests());
       dispatch(clearAuthData());
       dispatch(clearUser());
       router.replace("/sign-in");

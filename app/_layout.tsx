@@ -1,9 +1,8 @@
 import { useDispatch } from "react-redux";
-import { clearUser } from "@/src/store/userSlice";
-import { setAuthenticated, logout, clearAuthData } from "@/src/store/authSlice";
-import { clearFixedRoutes } from "@/src/store/fixedRoutesSlice";
-import { clearTripRequests } from "@/src/store/tripRequestsSlice";
-import { fetchUserCoins, fetchUserInfo } from "@/src/store/userThunks";
+import { clearUser } from "@/src/store/user/userSlice";
+import { setAuthenticated, logout, clearAuthData } from "@/src/store/auth/authSlice";
+import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
+import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
 
 const APP_STRUCT = "ROOT_LAYOUT";
 
@@ -93,7 +92,6 @@ function AuthWrapper() {
           console.log("User signed out");
           dispatch(logout());
           dispatch(clearFixedRoutes());
-          dispatch(clearTripRequests());
           dispatch(clearAuthData());
           dispatch(clearUser());
         }

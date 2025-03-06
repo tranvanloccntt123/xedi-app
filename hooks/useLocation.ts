@@ -1,4 +1,4 @@
-import { setGranted, setLocation } from "@/src/store/locationSlice";
+import { setGranted, setLocation } from "@/src/store/location/locationSlice";
 import { RootState } from "@/src/store/store";
 import * as Location from "expo-location";
 import { useEffect, useRef } from "react";

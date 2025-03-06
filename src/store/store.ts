@@ -11,15 +11,19 @@ import {
   REHYDRATE,
 } from "redux-persist";
 
-import authReducer, { AuthState } from "./authSlice";
-import userReducer from "./userSlice";
-import fixedRoutesReducer, { FixedRoutesState } from "./fixedRoutesSlice";
-import tripRequestsReducer, { TripRequestsState } from "./tripRequestsSlice";
-import feedReducer, { FeedState } from "./feedSlice";
-import postFormReducer, { PostFormState } from "./postFormSlice";
+import authReducer, { AuthState } from "./auth/authSlice";
+import userReducer from "./user/userSlice";
+import fixedRoutesReducer, {
+  FixedRoutesState,
+} from "./fixedRoute/fixedRoutesSlice";
+import tripRequestsReducer, {
+  TripRequestsState,
+} from "./tripRequest/tripRequestsSlice";
+import feedReducer, { FeedState } from "./feed/feedSlice";
+import postFormReducer, { PostFormState } from "./post/postFormSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserState } from "../types";
-import locationReducer, { LocationState } from "./locationSlice";
+import locationReducer, { LocationState } from "./location/locationSlice";
 
 const persistConfig = {
   key: "root",

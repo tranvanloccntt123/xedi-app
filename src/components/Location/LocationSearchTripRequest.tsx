@@ -33,8 +33,8 @@ import {
   setStartLocation,
   setEndLocation,
   resetPost,
-} from "../../store/postFormSlice";
-import { setAndFetchRouteLocation } from "../../store/postFormThunks";
+} from "../../store/post/postFormSlice";
+import { setAndFetchRouteLocation } from "../../store/post/postFormThunks";
 import SwapIcon from "../icons/SwapIcon";
 import CloseIcon from "../icons/CloseIcon";
 import { Button, ButtonText } from "../ui/button";

@@ -47,9 +47,6 @@ const tripRequestsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(acceptDriverTripRequest.fulfilled, (state, action) => {
-        // const newSet = new Set(state.requestsDeleted);
-        // newSet.add(action.payload.id);
-        // state.requestsDeleted = newSet;
         state.tripRequestAccepted[action.payload.tripRequestId] =
           action.payload.driverTripRequest;
       })

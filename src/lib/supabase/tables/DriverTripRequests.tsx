@@ -20,13 +20,6 @@ export default class DriverTripRequests extends BaseTable<IDriverTripRequest> {
         .from(this.tableName)
         .select(`*, ${Tables.USERS}(*)` as "*");
 
-      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
-      if (!userId) throw "User is empty";
-
-      if (userId) {
-        query = query.eq("user_id", userId);
-      }
-
       return query
         .eq("trip_request_id", data.tripRequestId)
         .eq("status", IDriverTripRequestStatus.CUSTOMER_ACCEPT)
@@ -53,7 +46,7 @@ export default class DriverTripRequests extends BaseTable<IDriverTripRequest> {
 
       return query
         .eq("trip_request_id", data.tripRequestId)
-        .order("id", { ascending: true });
+        .order("price", { ascending: true });
     } catch (e) {
       throw e;
     }

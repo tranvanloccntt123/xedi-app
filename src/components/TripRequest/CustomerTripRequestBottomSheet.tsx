@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { xediSupabase } from "@/src/lib/supabase";
 import { IDriverTripRequestStatus } from "@/src/types";
+import { acceptDriverTripRequest } from "@/src/store/tripRequest/tripRequestsThunk";
 
 const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({
   isAuthor,
@@ -19,10 +20,18 @@ const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({
   const request = useSelector(
     (state: RootState) => state.tripRequests.currentDriverTripRequest
   );
+  const currentDriverTripRequest = useSelector(
+    (state: RootState) => state.tripRequests.currentDriverTripRequest
+  );
   const dispatch = useDispatch();
   const handleAccept = async () => {
     if (request)
-      dispatch
+      dispatch(
+        acceptDriverTripRequest({
+          driverTripRequestId: currentDriverTripRequest.id,
+          tripRequestId: currentDriverTripRequest.trip_request_id,
+        })
+      );
   };
 
   const handleDelete = async () => {

@@ -174,6 +174,7 @@ export type SupbaseParams = {
   select?: any;
   pageNums?: number;
   id?: number;
+  date?: string;
 };
 
 export type SelectLocationType = "start-location" | "end-location";

@@ -1,4 +1,8 @@
-import { SupbaseParams, SupabaseTableFilter, SupabaseTableInsert } from "@/src/types";
+import {
+  SupbaseParams,
+  SupabaseTableFilter,
+  SupabaseTableInsert,
+} from "@/src/types";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export class BaseTable<Data = any, Source = any> {
@@ -14,6 +18,25 @@ export class BaseTable<Data = any, Source = any> {
     if (!this.supabase) throw "Supabase is not initialy";
     if (!this.tableName) throw "Table not found";
     return true;
+  }
+
+  async selectByUserIdBeforeDate(data?: SupbaseParams) {
+    try {
+      this.validateSupbase();
+      const userId = (await this.supabase.auth.getUser())?.data?.user?.id;
+      if (!userId) throw "User is empty";
+      let query = this.supabase
+        .from(this.tableName)
+        .select((data?.select || "*") as "*");
+      if (data?.date) query = query.gte("created_at", data?.date);
+
+      return query
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .range(0, data?.pageNums || BaseTable.PAGE_NUMS);
+    } catch (e) {
+      throw e;
+    }
   }
 
   async selectByUserIdAfterId(

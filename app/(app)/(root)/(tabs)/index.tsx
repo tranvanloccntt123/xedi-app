@@ -9,7 +9,7 @@ import type { RootState } from "@/src/store/store";
 import { FlatList, Platform, Pressable, RefreshControl } from "react-native";
 import { Text } from "@/src/components/ui/text";
 import NewsFeedItem from "@/src/components/Feed/NewsFeedItem";
-import type { INewsFeedItem } from "@/src/types";
+import type { IFeedSupbase, INewsFeedItem } from "@/src/types";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@/src/components/ui/hstack";
@@ -22,36 +22,29 @@ import useLocation from "@/hooks/useLocation";
 import OnlyCustomer from "@/src/components/View/OnlyCustomer";
 import LocationIcon from "@/src/components/icons/LocationIcon";
 import AddIcon from "@/src/components/icons/AddIcon";
+import useQueryInfinity from "@/hooks/useQueryInfinity";
 
 export default function Home() {
   useLocation({});
   const user = useSelector((state: RootState) => state.auth.user);
   const { top } = useSafeAreaInsets();
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [newsFeed, setNewsFeed] = React.useState([]);
+  const {
+    data: newsFeed,
+    refresh,
+    isRefreshing,
+  } = useQueryInfinity<INewsFeedItem>({
+    initPage: undefined,
+    queryFn: async (lastPage) => {
+      const { data } = await xediSupabase.tables.feed.selectFeedAfterId({
+        date: lastPage,
+      });
+      return data as never;
+    },
+    getLastPageNumber: function (lastData) {
+      return lastData[lastData.length - 1].created_at;
+    },
+  });
   const router = useRouter();
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    setTimeout(async () => {
-      const { data } = await xediSupabase.tables.feed.selectFeedAfterId();
-      if (data) {
-        setNewsFeed(data);
-      } // Just reverse the order for demo purposes
-      setRefreshing(false);
-    }, 2000);
-  }, []);
-
-  React.useEffect(() => {
-    const test = async () => {
-      const { data } = await xediSupabase.tables.feed.selectFeedAfterId();
-      if (data) {
-        setNewsFeed(data);
-      }
-    };
-
-    test();
-  }, []);
 
   const renderItem = ({ item }: { item: INewsFeedItem }) => (
     <NewsFeedItem item={item} />
@@ -89,7 +82,11 @@ export default function Home() {
                   space="sm"
                   className="p-2 border-[1px] border-gray-200 bg-white mb-4 mx-2 rounded-xl"
                 >
-                  <Pressable onPress={() => router.navigate('/trip/create?type=end-location')}>
+                  <Pressable
+                    onPress={() =>
+                      router.navigate("/trip/create?type=end-location")
+                    }
+                  >
                     <HStack
                       space="md"
                       className="p-4 rounded-md items-center bg-gray-100"
@@ -111,7 +108,7 @@ export default function Home() {
             </VStack>
           }
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl refreshing={isRefreshing} onRefresh={refresh} />
           }
         />
       </Box>

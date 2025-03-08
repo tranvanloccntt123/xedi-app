@@ -6,7 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tei.xediapp",
@@ -14,7 +16,11 @@
         "aps-environment": "production"
       },
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to your Microphone."
       },
       "googleServicesFile": "./firebase/GoogleService-Info.plist"
     },
@@ -24,7 +30,13 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.tei.xediapp",
-      "googleServicesFile": "./firebase/google-services.json"
+      "googleServicesFile": "./firebase/google-services.json",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/images/logo.png",
@@ -65,7 +77,9 @@
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
-      ["@maplibre/maplibre-react-native"],
+      [
+        "@maplibre/maplibre-react-native"
+      ],
       [
         "react-native-vision-camera",
         {
@@ -74,6 +88,14 @@
           "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d0d3739c-f024-4eaa-8c30-03d3139a6cd9"
+      }
+    }
   }
 }

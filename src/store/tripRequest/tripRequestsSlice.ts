@@ -9,13 +9,13 @@ export interface TripRequestsState {
   requests: ITripRequest[];
   currentTripRequest: ITripRequest | null;
   currentDriverTripRequest: IDriverTripRequest | null;
-  requestsDeleted: Set<number>;
+  requestsDeleted: Record<number, boolean>;
   tripRequestAccepted: Record<number, IDriverTripRequest>;
 }
 
 const initialState: TripRequestsState = {
   requests: [],
-  requestsDeleted: new Set(),
+  requestsDeleted: {},
   tripRequestAccepted: {},
   currentTripRequest: null,
   currentDriverTripRequest: null,

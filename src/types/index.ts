@@ -62,6 +62,7 @@ export interface ITripRequest {
   departureTime: Date;
   status: number;
   type: "Delivery" | "Taxi";
+  created_at?: string;
 }
 
 export interface IUser {

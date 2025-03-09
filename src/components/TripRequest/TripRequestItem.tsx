@@ -73,7 +73,7 @@ const TripRequestItem: React.FC<{
           <Button
             size="xs"
             className="bg-blue-500 rounded-lg"
-            onPress={() => router.navigate(`/fixed/${item.id}/detail`)}
+            onPress={() => router.navigate(`/trip/${item.id}/detail`)}
           >
             <ButtonText className="text-white">Chi tiết</ButtonText>
           </Button>

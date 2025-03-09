@@ -3,12 +3,14 @@ import { Box } from "@/src/components/ui/box";
 import PagerView from "react-native-pager-view";
 import { HStack } from "../ui/hstack";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import TripRequestHistory from "./TripRequestHistory";
+import FixedRouteHistory from "./FixedRouteHistory";
 
 const HEAD_ROUNDED = 100;
 
@@ -75,6 +77,7 @@ const CustomerRide: React.FC<object> = () => {
           <Pressable
             onPress={() => {
               headerBtnAnim.value = 0;
+              pagerRef.current?.setPage(0);
             }}
           >
             <Animated.View style={[styles.headerBtn, requestBtnStyle]}>
@@ -86,6 +89,7 @@ const CustomerRide: React.FC<object> = () => {
           <Pressable
             onPress={() => {
               headerBtnAnim.value = 1;
+              pagerRef.current?.setPage(1);
             }}
           >
             <Animated.View style={[styles.headerBtn, fixedRouteBtnStyle]}>
@@ -96,10 +100,18 @@ const CustomerRide: React.FC<object> = () => {
           </Pressable>
         </HStack>
         <PagerView
+          scrollEnabled={false}
           ref={pagerRef}
           style={{ flex: 1 }}
           initialPage={0}
-        ></PagerView>
+        >
+          <View style={{ flex: 1 }} key={0}>
+            <TripRequestHistory />
+          </View>
+          <View style={{ flex: 1 }} key={0}>
+            <FixedRouteHistory />
+          </View>
+        </PagerView>
       </SafeAreaView>
     </Box>
   );

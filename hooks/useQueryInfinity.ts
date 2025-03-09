@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Query<TData = any, TPage = any> {
+export interface InfinityQuery<TData = any, TPage = any> {
   queryKey?: string;
   initPage?: TPage;
   queryFn: (lastPage: TPage) => Promise<TData[]>;
@@ -10,7 +10,7 @@ interface Query<TData = any, TPage = any> {
 }
 
 const useQueryInfinity = <TData = any, TPage = any>(
-  query: Query<TData, TPage>
+  query: InfinityQuery<TData, TPage>
 ) => {
   const [data, setData] = React.useState<TData[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -18,12 +18,12 @@ const useQueryInfinity = <TData = any, TPage = any>(
 
   const pageNum = React.useRef<TPage>(query.initPage);
 
-  const fetch = async () => {
+  const fetch = async (params?: { isRefresh: boolean }) => {
     if (isLoading) return;
     setIsLoading(true);
     try {
       const _data = await query.queryFn(pageNum.current);
-      const newData = data.concat();
+      const newData = params?.isRefresh ? [] : data.concat();
       newData.push(..._data);
       pageNum.current = query.getLastPageNumber(_data);
       setData(newData);
@@ -40,7 +40,7 @@ const useQueryInfinity = <TData = any, TPage = any>(
     setIsRefreshing(true);
     pageNum.current = query.initPage;
     setTimeout(async () => {
-      await fetch();
+      await fetch({ isRefresh: true });
       await query.refreshCallback?.();
       setIsRefreshing(false);
     }, query.refreshTimeout || 10);

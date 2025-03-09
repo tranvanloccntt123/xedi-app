@@ -5,11 +5,11 @@ import { Box } from "@/src/components/ui/box";
 import { Heading } from "@/src/components/ui/heading";
 import { VStack } from "@/src/components/ui/vstack";
 import { useSelector } from "react-redux";
-import type { RootState } from "@/src/store/store";
-import { FlatList, Platform, Pressable, RefreshControl } from "react-native";
+import { RootState } from "@/src/store/store";
+import { Pressable } from "react-native";
 import { Text } from "@/src/components/ui/text";
 import NewsFeedItem from "@/src/components/Feed/NewsFeedItem";
-import type { IFeedSupbase, INewsFeedItem } from "@/src/types";
+import { INewsFeedItem } from "@/src/types";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@/src/components/ui/hstack";
@@ -22,28 +22,13 @@ import useLocation from "@/hooks/useLocation";
 import OnlyCustomer from "@/src/components/View/OnlyCustomer";
 import LocationIcon from "@/src/components/icons/LocationIcon";
 import AddIcon from "@/src/components/icons/AddIcon";
-import useQueryInfinity from "@/hooks/useQueryInfinity";
+import InfinityList from "@/src/components/InfinityList";
 
 export default function Home() {
   useLocation({});
   const user = useSelector((state: RootState) => state.auth.user);
   const { top } = useSafeAreaInsets();
-  const {
-    data: newsFeed,
-    refresh,
-    isRefreshing,
-  } = useQueryInfinity<INewsFeedItem>({
-    initPage: undefined,
-    queryFn: async (lastPage) => {
-      const { data } = await xediSupabase.tables.feed.selectFeedAfterId({
-        date: lastPage,
-      });
-      return data as never;
-    },
-    getLastPageNumber: function (lastData) {
-      return lastData[lastData.length - 1].created_at;
-    },
-  });
+
   const router = useRouter();
 
   const renderItem = ({ item }: { item: INewsFeedItem }) => (
@@ -53,11 +38,17 @@ export default function Home() {
   return (
     <BottomSheet>
       <Box className="flex-1 bg-gray-100" style={{ paddingTop: top }}>
-        <FlatList
-          data={newsFeed}
+        <InfinityList
+          queryFn={async (lastPage) => {
+            const { data } = await xediSupabase.tables.feed.selectFeedAfterId({
+              date: lastPage,
+            });
+            return data as never;
+          }}
+          getLastPageNumber={(lastData: INewsFeedItem[]) => {
+            return lastData[lastData.length - 1].created_at;
+          }}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={Platform.OS === "web"}
           ListHeaderComponent={
             <VStack space="md">
               <HStack space="md" className="p-4">
@@ -106,9 +97,6 @@ export default function Home() {
                 </VStack>
               </OnlyCustomer>
             </VStack>
-          }
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={refresh} />
           }
         />
       </Box>

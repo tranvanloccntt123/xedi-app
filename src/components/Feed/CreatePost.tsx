@@ -14,7 +14,7 @@ const CreatePostButton: React.FC<{
   const { content, fixedRoutes, startLocation, endLocation, departureTime } =
     useSelector((state: RootState) => state.postForm);
 
-  const handlerCustomerPost = async () => {
+  const handlerCustomerPostWithTripRequest = async () => {
     if (!departureTime) {
       onError(
         "Bạn cần thêm thời điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
@@ -54,6 +54,19 @@ const CreatePostButton: React.FC<{
         })
       );
       onCreatePostSuccess();
+    }
+  };
+
+  const handlerCustomerPost = async () => {
+    if (!!departureTime || !!startLocation || !!endLocation) {
+      await handlerCustomerPostWithTripRequest();
+    } else {
+      const { data } = await xediSupabase.tables.feed.addWithUserId([
+        { content },
+      ]);
+      if (data?.[0]) {
+        onCreatePostSuccess();
+      }
     }
   };
 

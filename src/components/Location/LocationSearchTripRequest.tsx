@@ -28,10 +28,10 @@ import LocationIcon from "../icons/LocationIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {
-  setInputSelectionType,
-  setLocation,
-  setStartLocation,
-  setEndLocation,
+  setTripRequestInputSelectionType,
+  setTripRequestLocation,
+  setTripRequestStartLocation,
+  setTripRequestEndLocation,
   resetPost,
 } from "../../store/post/postFormSlice";
 import { setAndFetchRouteLocation } from "../../store/post/postFormThunks";
@@ -56,7 +56,7 @@ export default function LocationSearchTripRequest({
 }: LocationSearchProps) {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
   const { inputSelectionType, startLocation, endLocation, departureTime } =
-    useSelector((state: RootState) => state.postForm);
+    useSelector((state: RootState) => state.postForm.tripRequest);
   const dispatch = useDispatch();
   // Initialize query with default location if it exists
   const [queryStartLocation, setQueryStartLocation] = useState(
@@ -189,8 +189,8 @@ export default function LocationSearchTripRequest({
   const handlerSwap = () => {
     const tmpEndLocation = endLocation;
     const tmpStartLocation = startLocation;
-    dispatch(setStartLocation(tmpEndLocation));
-    dispatch(setEndLocation(tmpStartLocation));
+    dispatch(setTripRequestStartLocation(tmpEndLocation));
+    dispatch(setTripRequestEndLocation(tmpStartLocation));
   };
 
   return (
@@ -214,7 +214,9 @@ export default function LocationSearchTripRequest({
                   onChangeText={setQueryStartLocation}
                   onFocus={() => {
                     startLocationAnim.value = withTiming(1, { duration: 50 });
-                    dispatch(setInputSelectionType("start-location"));
+                    dispatch(
+                      setTripRequestInputSelectionType("start-location")
+                    );
                   }}
                   onBlur={() =>
                     (startLocationAnim.value = withTiming(0, { duration: 50 }))
@@ -225,7 +227,7 @@ export default function LocationSearchTripRequest({
                     <Pressable
                       onPress={() => {
                         setQueryStartLocation("");
-                        dispatch(setStartLocation());
+                        dispatch(setTripRequestStartLocation());
                       }}
                     >
                       <CloseIcon size={24} color="#000000" />
@@ -244,7 +246,7 @@ export default function LocationSearchTripRequest({
                   onChangeText={setQueryEndLocation}
                   onFocus={() => {
                     endLocationAnim.value = withTiming(1, { duration: 50 });
-                    dispatch(setInputSelectionType("end-location"));
+                    dispatch(setTripRequestInputSelectionType("end-location"));
                   }}
                   onBlur={() =>
                     (endLocationAnim.value = withTiming(0, { duration: 50 }))
@@ -255,7 +257,7 @@ export default function LocationSearchTripRequest({
                     <Pressable
                       onPress={() => {
                         setQueryEndLocation("");
-                        dispatch(setEndLocation());
+                        dispatch(setTripRequestEndLocation());
                       }}
                     >
                       <CloseIcon size={24} color="#000000" />
@@ -312,7 +314,7 @@ export default function LocationSearchTripRequest({
             <Pressable
               key={index}
               onPress={() => {
-                dispatch(setLocation(item));
+                dispatch(setTripRequestLocation(item));
               }}
               className="p-2 bg-white rounded-md"
             >

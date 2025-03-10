@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { InputLocation, SelectLocationType } from "@/src/types";
 import { useLocalSearchParams } from "expo-router";
-import { resetPost, setLocation } from "@/src/store/post/postFormSlice";
+import { resetPost, setTripRequestLocation } from "@/src/store/post/postFormSlice";
 import CreatePostPolyline from "@/src/components/Feed/CreatePostPolyline";
 import CreateTripBottomSheet from "@/src/components/TripRequest/CreateTripBottomSheet";
 import Animated from "react-native-reanimated";
@@ -46,7 +46,7 @@ const TripRequestBottomSheet: React.FC<{
   const dispatch = useDispatch();
 
   const handlerSelectLocation = (location: InputLocation) => {
-    dispatch(setLocation(location));
+    dispatch(setTripRequestLocation(location));
   };
 
   return (

@@ -6,24 +6,35 @@ import type {
 } from "@/src/types";
 import { setAndFetchRouteLocation } from "./postFormThunks";
 
-export interface PostFormState {
-  content: string;
+interface ITripRequestTmp {
   startLocation?: InputLocation;
   endLocation?: InputLocation;
-  fixedRoutes?: IFixedRoute[];
-  departureTime?: Date;
   inputSelectionType: SelectLocationType;
   routes: Route[];
+  departureTime?: Date;
+}
+
+interface IFixedRouteTmp extends ITripRequestTmp {
+  totalSeats?: number;
+  price?: number;
+}
+
+export interface PostFormState {
+  content: string;
+  fixedRoute: IFixedRouteTmp;
+  tripRequest: ITripRequestTmp;
 }
 
 const initialState: PostFormState = {
   content: "",
-  startLocation: undefined,
-  endLocation: undefined,
-  fixedRoutes: undefined,
-  departureTime: undefined,
-  inputSelectionType: "start-location",
-  routes: [],
+  fixedRoute: {
+    inputSelectionType: "start-location",
+    routes: [],
+  },
+  tripRequest: {
+    inputSelectionType: "start-location",
+    routes: [],
+  },
 };
 
 const postFormSlice = createSlice({
@@ -33,71 +44,86 @@ const postFormSlice = createSlice({
     setContent: (state, action: PayloadAction<string>) => {
       state.content = action.payload;
     },
-    setStartLocation: (
+    setTripRequestStartLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.startLocation = action.payload;
+      state.tripRequest.startLocation = action.payload;
     },
-    setEndLocation: (
+    setTripRequestEndLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.endLocation = action.payload;
+      state.tripRequest.endLocation = action.payload;
     },
     setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
-      state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
+      // state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
     },
-    setDepartureTime: (state, action: PayloadAction<Date | undefined>) => {
-      state.departureTime = action.payload;
+    setTripRequestDepartureTime: (
+      state,
+      action: PayloadAction<Date | undefined>
+    ) => {
+      state.tripRequest.departureTime = action.payload;
     },
     resetPost: (
       _,
       action: PayloadAction<{ inputSelectionType?: SelectLocationType }>
-    ) => ({ ...initialState, routes: [], ...action.payload }),
-    setInputSelectionType: (
+    ) => ({
+      ...initialState,
+      tripRequest: {
+        inputSelectionType: action.payload.inputSelectionType,
+        routes: [],
+      },
+      fixedRoute: {
+        inputSelectionType: action.payload.inputSelectionType,
+        routes: [],
+      },
+    }),
+    setTripRequestInputSelectionType: (
       state,
       action: PayloadAction<SelectLocationType | undefined>
     ) => {
-      state.inputSelectionType = action.payload || "start-location";
+      state.tripRequest.inputSelectionType = action.payload || "start-location";
     },
-    setLocation: (state, action: PayloadAction<InputLocation>) => {
+    setTripRequestLocation: (state, action: PayloadAction<InputLocation>) => {
       if (!action.payload) return;
-      if (state.inputSelectionType === "start-location") {
-        state.startLocation = action.payload;
-        if (!state.endLocation) {
-          state.inputSelectionType = "end-location";
+      if (state.tripRequest.inputSelectionType === "start-location") {
+        state.tripRequest.startLocation = action.payload;
+        if (!state.tripRequest.endLocation) {
+          state.tripRequest.inputSelectionType = "end-location";
         }
       } else {
-        state.endLocation = action.payload;
-        if (!state.startLocation) {
-          state.inputSelectionType = "start-location";
+        state.tripRequest.endLocation = action.payload;
+        if (!state.tripRequest.startLocation) {
+          state.tripRequest.inputSelectionType = "start-location";
         }
       }
     },
   },
   extraReducers: (builder) => {
     builder.addCase(setAndFetchRouteLocation.fulfilled, (state, action) => {
-      if (action.payload.routes) state.routes = action.payload.routes || [];
+      if (action.payload.routes)
+        state.tripRequest.routes = action.payload.routes || [];
       if (action.payload.inputSelectionType)
-        state.inputSelectionType = action.payload.inputSelectionType;
+        state.tripRequest.inputSelectionType =
+          action.payload.inputSelectionType;
       if (action.payload.startLocation)
-        state.startLocation = action.payload.startLocation;
+        state.tripRequest.startLocation = action.payload.startLocation;
       if (action.payload.endLocation)
-        state.endLocation = action.payload.endLocation;
+        state.tripRequest.endLocation = action.payload.endLocation;
     });
   },
 });
 
 export const {
   setContent,
-  setStartLocation,
-  setEndLocation,
+  setTripRequestStartLocation,
+  setTripRequestEndLocation,
   setFixedRoutes,
   resetPost,
-  setDepartureTime,
-  setInputSelectionType,
-  setLocation,
+  setTripRequestDepartureTime,
+  setTripRequestInputSelectionType,
+  setTripRequestLocation,
 } = postFormSlice.actions;
 
 export default postFormSlice.reducer;

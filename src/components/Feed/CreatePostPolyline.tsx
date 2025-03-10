@@ -6,7 +6,7 @@ import { decodePolyline } from "../../lib/osrm";
 
 const CreatePostPolyline: React.FC<object> = () => {
   const routes = useSelector(
-    (state: RootState) => state.postForm?.routes || []
+    (state: RootState) => state.postForm?.tripRequest.routes || []
   );
 
   const lines = React.useMemo(() => {

@@ -22,7 +22,7 @@ import {
   setContent,
   setFixedRoutes,
   resetPost,
-  setDepartureTime,
+  setTripRequestDepartureTime,
 } from "@/src/store/post/postFormSlice";
 import DateTime from "@/src/components/DateTime";
 import ErrorModal from "@/src/components/ErrorModal";
@@ -147,7 +147,7 @@ export default function CreatePost() {
                 <DateTime
                   date={departureTime}
                   onChangeDate={(date) => {
-                    dispatch(setDepartureTime(date));
+                    dispatch(setTripRequestDepartureTime(date));
                   }}
                   placeholder="Khởi hành lúc"
                   variant={"link"}

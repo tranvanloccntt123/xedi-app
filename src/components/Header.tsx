@@ -20,7 +20,7 @@ const Header: React.FC<{
           <ChevronLeftIcon size={24} color="#000000" />
         </Button>
       )}
-      <VStack space="sm">
+      <VStack space="sm" className="flex-1">
         <Heading size={subTitle ? "sm" : "xl"} className="flex-1">
           {title}
         </Heading>

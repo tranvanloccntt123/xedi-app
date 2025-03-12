@@ -46,6 +46,8 @@ import { xediSupabase } from "../../lib/supabase";
 interface LocationSearchProps {
   defaultLocation?: InputLocation;
   onQueryFullfiled?: () => any;
+  onConfirm?: () => any;
+  isShareHide?: boolean;
 }
 
 const BORDER_RADIUS = 16;
@@ -53,6 +55,8 @@ const BORDER_RADIUS = 16;
 export default function LocationSearchTripRequest({
   defaultLocation,
   onQueryFullfiled,
+  onConfirm,
+  isShareHide,
 }: LocationSearchProps) {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
   const { inputSelectionType, startLocation, endLocation, departureTime } =
@@ -277,35 +281,41 @@ export default function LocationSearchTripRequest({
           <HStack space="md" className="w-full">
             <Box className="flex-1">
               <Button
-                onPress={async () => {
-                  const { data: tripRequestData } =
-                    await xediSupabase.tables.tripRequest.add([
-                      {
-                        startLocation,
-                        endLocation,
-                        user_id: user.id,
-                        departureTime,
-                        type: "Taxi",
-                      },
-                    ]);
-                  dispatch(resetPost({}));
-                  router.back();
-                }}
+                onPress={
+                  onConfirm
+                    ? onConfirm
+                    : async () => {
+                        const { data: tripRequestData } =
+                          await xediSupabase.tables.tripRequest.add([
+                            {
+                              startLocation,
+                              endLocation,
+                              user_id: user.id,
+                              departureTime,
+                              type: "Taxi",
+                            },
+                          ]);
+                        dispatch(resetPost({}));
+                        router.back();
+                      }
+                }
                 className="mt-4 h-[45px]"
               >
                 <ButtonText>Xác nhận</ButtonText>
               </Button>
             </Box>
-            <Box>
-              <Button
-                onPress={() => router.navigate(`/post/create`)}
-                className="mt-4 h-[45px]"
-                variant="outline"
-              >
-                <ShareIcon color="#000000" size={24} />
-                <ButtonText className="text-black">Chia sẻ</ButtonText>
-              </Button>
-            </Box>
+            {!isShareHide && (
+              <Box>
+                <Button
+                  onPress={() => router.navigate(`/post/create`)}
+                  className="mt-4 h-[45px]"
+                  variant="outline"
+                >
+                  <ShareIcon color="#000000" size={24} />
+                  <ButtonText className="text-black">Chia sẻ</ButtonText>
+                </Button>
+              </Box>
+            )}
           </HStack>
         )}
         {isLoading && <ActivityIndicator style={{ marginTop: 10 }} />}

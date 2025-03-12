@@ -32,7 +32,9 @@ const CreateTripBottomSheet: React.FC<{
   };
   onCoordinateChange?: (_: InputLocation) => any;
   onPress?: (_: InputLocation) => any;
-}> = ({ coordinate, onCoordinateChange, onPress }) => {
+  onConfirm?: () => any;
+  isShareHide?: boolean;
+}> = ({ coordinate, onCoordinateChange, onPress, onConfirm, isShareHide }) => {
   const { setCoordinate, firstLoadData, data, title, subTitle, isLoading } =
     useReverseLocation();
 
@@ -139,6 +141,8 @@ const CreateTripBottomSheet: React.FC<{
         >
           <Box className="w-[75px] h-[3px] bg-gray-500 self-center mb-[12px] rounded-full" />
           <LocationSearchTripRequest
+            onConfirm={onConfirm}
+            isShareHide={isShareHide}
             onQueryFullfiled={() =>
               (top.value = withTiming(topPosition[1], { duration: 100 }))
             }

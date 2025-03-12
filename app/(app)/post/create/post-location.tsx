@@ -3,8 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setFixedRouteStartLocation,
-  setFixedRouteEndLocation,
+  setTripRequestStartLocation,
+  setTripRequestEndLocation,
 } from "@/src/store/post/postFormSlice";
 import LocationSearch from "@/src/components/Location/LocationSearch";
 import { Box } from "@/src/components/ui/box";
@@ -36,7 +36,7 @@ export default function CreatePostLocation() {
 
   // Get current locations from postSlice
   const { startLocation, endLocation } = useSelector(
-    (state: RootState) => state.postForm
+    (state: RootState) => state.postForm.tripRequest
   );
 
   // Determine which location to show as default
@@ -45,9 +45,9 @@ export default function CreatePostLocation() {
 
   const handleLocationSelect = (location: InputLocation) => {
     if (type === "startLocation") {
-      dispatch(setFixedRouteStartLocation(location));
+      dispatch(setTripRequestStartLocation(location));
     } else if (type === "endLocation") {
-      dispatch(setFixedRouteEndLocation(location));
+      dispatch(setTripRequestEndLocation(location));
     }
     router.back();
   };

@@ -11,23 +11,24 @@ const CreatePostButton: React.FC<{
 }> = ({ onCreatePostSuccess, onError }) => {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
-  const { content, fixedRoutes, startLocation, endLocation, departureTime } =
-    useSelector((state: RootState) => state.postForm);
+  const { content, tripRequest } = useSelector(
+    (state: RootState) => state.postForm
+  );
 
   const handlerCustomerPostWithTripRequest = async () => {
-    if (!departureTime) {
+    if (!tripRequest.departureTime) {
       onError(
         "Bạn cần thêm thời điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!startLocation) {
+    if (!tripRequest.startLocation) {
       onError(
         "Bạn cần thêm điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!endLocation) {
+    if (!tripRequest.endLocation) {
       onError(
         "Bạn cần thêm điểm đến hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
@@ -36,10 +37,10 @@ const CreatePostButton: React.FC<{
     const { data: tripRequestData } = await xediSupabase.tables.tripRequest.add(
       [
         {
-          startLocation,
-          endLocation,
+          startLocation: tripRequest.startLocation,
+          endLocation: tripRequest.endLocation,
           user_id: user.id,
-          departureTime,
+          departureTime: tripRequest.departureTime,
           type: "Taxi",
         },
       ]
@@ -58,7 +59,11 @@ const CreatePostButton: React.FC<{
   };
 
   const handlerCustomerPost = async () => {
-    if (!!departureTime || !!startLocation || !!endLocation) {
+    if (
+      !!tripRequest.departureTime ||
+      !!tripRequest.startLocation ||
+      !!tripRequest.endLocation
+    ) {
       await handlerCustomerPostWithTripRequest();
     } else {
       const { data } = await xediSupabase.tables.feed.addWithUserId([
@@ -74,17 +79,18 @@ const CreatePostButton: React.FC<{
     const { data } = await xediSupabase.tables.feed.addWithUserId([
       { content },
     ]);
-    if (data?.[0]) {
-      if (fixedRoutes) {
-        fixedRoutes.forEach(async (fixedRoute) => {
-          xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
-            feed_id: data[0].id,
-          });
-        });
-      }
-      onCreatePostSuccess();
-      return;
-    }
+    onCreatePostSuccess();
+    // if (data?.[0]) {
+    //   if (fixedRoutes) {
+    //     fixedRoutes.forEach(async (fixedRoute) => {
+    //       xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
+    //         feed_id: data[0].id,
+    //       });
+    //     });
+    //   }
+    //   onCreatePostSuccess();
+    //   return;
+    // }
   };
 
   return (

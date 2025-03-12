@@ -21,16 +21,13 @@ interface IFixedRouteTmp extends ITripRequestTmp {
 
 export interface PostFormState {
   content: string;
-  fixedRoute: IFixedRouteTmp;
+  fixedRoutes: IFixedRouteTmp[];
   tripRequest: ITripRequestTmp;
 }
 
 const initialState: PostFormState = {
   content: "",
-  fixedRoute: {
-    inputSelectionType: "start-location",
-    routes: [],
-  },
+  fixedRoutes: [],
   tripRequest: {
     inputSelectionType: "start-location",
     routes: [],

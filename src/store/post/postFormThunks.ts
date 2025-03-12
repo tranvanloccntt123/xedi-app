@@ -11,29 +11,26 @@ export const setAndFetchRouteLocation = createAsyncThunk<
     inputSelectionType?: SelectLocationType;
   },
   never
->(
-  "post/setAndFetchRouteLocation",
-  async (_, { rejectWithValue, getState }) => {
-    try {
-      const state = getState() as RootState;
-      const { startLocation, endLocation } = state.postForm;
+>("post/setAndFetchRouteLocation", async (_, { rejectWithValue, getState }) => {
+  try {
+    const state = getState() as RootState;
+    const { startLocation, endLocation } = state.postForm.tripRequest;
 
-      if (startLocation && endLocation) {
-        let res = await OrsDirections.calculate({
-          coordinates: [
-            [startLocation.lon, startLocation.lat],
-            [endLocation.lon, endLocation.lat],
-          ],
-          profile: "driving-car",
-        });
-        return {
-          routes: res.routes || [],
-        };
-      } else {
-        return rejectWithValue("Location don't allowed");
-      }
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
+    if (startLocation && endLocation) {
+      let res = await OrsDirections.calculate({
+        coordinates: [
+          [startLocation.lon, startLocation.lat],
+          [endLocation.lon, endLocation.lat],
+        ],
+        profile: "driving-car",
+      });
+      return {
+        routes: res.routes || [],
+      };
+    } else {
+      return rejectWithValue("Location don't allowed");
     }
+  } catch (error) {
+    return rejectWithValue((error as Error).message);
   }
-);
+});

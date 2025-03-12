@@ -5,7 +5,7 @@ import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MentionInput } from "@/src/components/ControlledMentions";
 import { HStack } from "@/src/components/ui/hstack";
@@ -35,12 +35,68 @@ const truncateText = (text: string, maxLength: number) => {
   return text.slice(0, maxLength) + "...";
 };
 
+const CustomerExpand: React.FC<object> = () => {
+  const { startLocation, endLocation, departureTime } = useSelector(
+    (state: RootState) => state.postForm.tripRequest
+  );
+  const dispatch = useDispatch();
+  return (
+    <OnlyCustomer>
+      <Box className="bg-white p-2 rounded-full">
+        <DateTime
+          date={departureTime}
+          onChangeDate={(date) => {
+            dispatch(setTripRequestDepartureTime(date));
+          }}
+          placeholder="Khởi hành lúc"
+          variant={"link"}
+        />
+      </Box>
+      <Button
+        variant="link"
+        className="justify-start"
+        onPress={() =>
+          router.push("/post/create/post-location?type=startLocation")
+        }
+      >
+        <HStack space="sm" className="items-center">
+          <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
+            <HiIcon size={18} color="#000000" />
+          </Box>
+          <ButtonText className="text-black">
+            {startLocation
+              ? truncateText(startLocation.display_name, 30)
+              : "Thêm điểm đón"}
+          </ButtonText>
+        </HStack>
+      </Button>
+      <Button
+        variant="link"
+        className="justify-start"
+        onPress={() =>
+          router.push("/post/create/post-location?type=endLocation")
+        }
+      >
+        <HStack space="sm" className="items-center">
+          <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
+            <FixedRouteIcon size={18} color="#000000" />
+          </Box>
+          <ButtonText className="text-black">
+            {endLocation
+              ? truncateText(endLocation.display_name, 30)
+              : "Thêm điểm đến"}
+          </ButtonText>
+        </HStack>
+      </Button>
+    </OnlyCustomer>
+  );
+};
+
 export default function CreatePost() {
   const dispatch = useDispatch();
   const [fixedRouteModalVisible, setFixedRouteModalVisible] = useState(false);
   //TODO
-  const { content, fixedRoutes, startLocation, endLocation, departureTime } =
-    useSelector((state: RootState) => state.postForm);
+  const { content } = useSelector((state: RootState) => state.postForm);
 
   const [isError, setIsError] = useState(false);
 
@@ -105,7 +161,7 @@ export default function CreatePost() {
                 />
               </Pressable>
             </VStack>
-            <OnlyDriver>
+            {/* <OnlyDriver>
               {!!fixedRoutes?.length && (
                 <Box>
                   <ScrollView horizontal>
@@ -123,7 +179,7 @@ export default function CreatePost() {
                   </ScrollView>
                 </Box>
               )}
-            </OnlyDriver>
+            </OnlyDriver> */}
           </VStack>
           <VStack space="lg" className="mt-4">
             <OnlyDriver>
@@ -142,60 +198,11 @@ export default function CreatePost() {
                 </HStack>
               </Button>
             </OnlyDriver>
-            <OnlyCustomer>
-              <Box className="bg-white p-2 rounded-full">
-                <DateTime
-                  date={departureTime}
-                  onChangeDate={(date) => {
-                    dispatch(setTripRequestDepartureTime(date));
-                  }}
-                  placeholder="Khởi hành lúc"
-                  variant={"link"}
-                />
-              </Box>
-              <Button
-                variant="link"
-                className="justify-start"
-                onPress={() =>
-                  router.push("/post/create/post-location?type=startLocation")
-                }
-              >
-                <HStack space="sm" className="items-center">
-                  <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
-                    <HiIcon size={18} color="#000000" />
-                  </Box>
-                  <ButtonText className="text-black">
-                    {startLocation
-                      ? truncateText(startLocation.display_name, 30)
-                      : "Thêm điểm đón"}
-                  </ButtonText>
-                </HStack>
-              </Button>
-              <Button
-                variant="link"
-                className="justify-start"
-                onPress={() =>
-                  router.push("/post/create/post-location?type=endLocation")
-                }
-              >
-                <HStack space="sm" className="items-center">
-                  <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
-                    <FixedRouteIcon size={18} color="#000000" />
-                  </Box>
-                  <ButtonText className="text-black">
-                    {endLocation
-                      ? truncateText(endLocation.display_name, 30)
-                      : "Thêm điểm đến"}
-                  </ButtonText>
-                </HStack>
-              </Button>
-            </OnlyCustomer>
+            <CustomerExpand />
             <Button
               variant="link"
               className="justify-start"
-              onPress={() =>
-                router.push("/post/create/image-selection")
-              }
+              onPress={() => router.push("/post/create/image-selection")}
             >
               <HStack space="sm" className="items-center">
                 <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">

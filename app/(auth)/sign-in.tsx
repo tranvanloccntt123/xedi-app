@@ -19,6 +19,7 @@ import {
 import { authValidator } from "@/src/constants/validator";
 import { supabase } from "@/src/lib/supabase";
 import { pattern } from "@/src/constants";
+import PasswordInput from "@/src/components/PasswordInput";
 
 export default function SignIn() {
   const [phone, setPhone] = useState("");
@@ -91,17 +92,11 @@ export default function SignIn() {
             <Text className="mb-2 text-md font-medium text-gray-700">
               Mật khẩu
             </Text>
-            <Input variant="outline" size="md" className="h-[45px]">
-              <InputField
-                placeholder="Nhập mật khẩu"
-                value={password}
-                onChangeText={(value) => {
-                  setPassword(value);
-                  setErrorMessage("");
-                }}
-                secureTextEntry
-              />
-            </Input>
+            <PasswordInput
+              password={password}
+              setPassword={setPassword}
+              setErrorPassword={setErrorMessage}
+            />
             {!!error.password && (
               <Text className="text-red-500 text-sm mt-1">
                 {error.password}

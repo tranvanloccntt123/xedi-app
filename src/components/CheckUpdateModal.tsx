@@ -32,7 +32,7 @@ const CheckUpdateModal: React.FC<object> = () => {
   }, [isUpdateAvailable]);
 
   return (
-    !showModal && (
+    showModal && (
       <Box className="absolute p-[20px] justify-center items-center top-0 right-0 left-0 bottom-0 bg-[#00000080]">
         <Animated.View style={styles.container}>
           <VStack space="lg">
@@ -49,7 +49,10 @@ const CheckUpdateModal: React.FC<object> = () => {
             {!isDownloading && (
               <HStack space="md">
                 <Box className="flex-1">
-                  <Button className="bg-gray-400 border-0">
+                  <Button
+                    onPress={() => setShowModal(false)}
+                    className="bg-gray-400 border-0"
+                  >
                     <ButtonText className="text-white">Đóng</ButtonText>
                   </Button>
                 </Box>
@@ -66,7 +69,12 @@ const CheckUpdateModal: React.FC<object> = () => {
               </HStack>
             )}
             {isUpdatePending && (
-              <Button onPress={() => Updates.reloadAsync()}>
+              <Button
+                onPress={() => {
+                  Updates.reloadAsync();
+                  setShowModal(false);
+                }}
+              >
                 <ButtonText>Khởi động lại ứng dụng</ButtonText>
               </Button>
             )}

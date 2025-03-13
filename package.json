@@ -116,7 +116,8 @@
     "string.prototype.matchall": "^4.0.12",
     "tailwindcss": "^3.4.16",
     "uuid": "^11.0.5",
-    "react-native-pager-view": "6.5.1"
+    "react-native-pager-view": "6.5.1",
+    "expo-updates": "~0.27.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

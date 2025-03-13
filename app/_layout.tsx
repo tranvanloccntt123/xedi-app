@@ -1,6 +1,10 @@
 import { useDispatch } from "react-redux";
 import { clearUser } from "@/src/store/user/userSlice";
-import { setAuthenticated, logout, clearAuthData } from "@/src/store/auth/authSlice";
+import {
+  setAuthenticated,
+  logout,
+  clearAuthData,
+} from "@/src/store/auth/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
 import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
 
@@ -36,6 +40,7 @@ import DebugButton from "@/src/components/DebugButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { registerNotification } from "@/src/firebase/messaging";
+import CheckUpdateModal from "@/src/components/CheckUpdateModal";
 
 function AuthWrapper() {
   const router = useRouter();
@@ -106,6 +111,7 @@ function AuthWrapper() {
   return (
     <Box className="flex-1">
       <Slot />
+      <CheckUpdateModal />
       {Platform.OS !== "web" && (
         <Modal
           isOpen={showModal}

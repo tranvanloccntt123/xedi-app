@@ -48,7 +48,6 @@ function AuthWrapper() {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
-  const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === "(auth)";
@@ -83,18 +82,17 @@ function AuthWrapper() {
   }, [isAuthenticated]);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (event === "SIGNED_IN") {
-          console.log("User signed in:", session?.user);
           if (session?.user) {
             dispatch(fetchUserInfo());
             dispatch(fetchUserCoins());
             dispatch(setAuthenticated(true));
           }
         } else if (event === "SIGNED_OUT") {
-          console.log("User signed out");
           dispatch(logout());
           dispatch(clearFixedRoutes());
           dispatch(clearAuthData());
@@ -110,41 +108,10 @@ function AuthWrapper() {
 
   return (
     <Box className="flex-1">
-      <Slot />
       <CheckUpdateModal />
+      <Slot />
       {Platform.OS !== "web" && (
-        <Modal
-          isOpen={showModal}
-          onClose={() => {
-            setShowModal(false);
-          }}
-        >
-          <ModalBackdrop />
-          <ModalContent className="flex-1 w-full">
-            <SafeAreaView style={{ flex: 1 }}>
-              <ModalBody className="mb-5">
-                <Heading size="md" className="text-typography-950 text-center">
-                  Welcome to the Network logger
-                </Heading>
-                <NetworkLogger theme={"light"} />
-              </ModalBody>
-              <ModalFooter className="w-full">
-                <Button
-                  onPress={() => {
-                    setShowModal(false);
-                  }}
-                  size="sm"
-                  className="flex-grow"
-                >
-                  <ButtonText>Back</ButtonText>
-                </Button>
-              </ModalFooter>
-            </SafeAreaView>
-          </ModalContent>
-        </Modal>
-      )}
-      {Platform.OS !== "web" && (
-        <DebugButton onPress={() => setShowModal(true)} />
+        <DebugButton onPress={() => router.navigate("(app)/network-debug")} />
       )}
     </Box>
   );

@@ -45,8 +45,10 @@ const DriverTripRequest: React.FC<{ tripRequestId: number }> = ({
   const [price, setPrice] = React.useState("");
   const [driverTripRequest, setDriverTripRequest] =
     React.useState<IDriverTripRequest>();
+  const [isFetching, setIsFetching] = React.useState(true);
 
   const fetch = async () => {
+    setIsFetching(true);
     try {
       const { data } =
         await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
@@ -60,6 +62,7 @@ const DriverTripRequest: React.FC<{ tripRequestId: number }> = ({
       console.log(e);
       setDriverTripRequest(undefined);
     }
+    setIsFetching(false);
   };
 
   React.useEffect(() => {
@@ -69,7 +72,7 @@ const DriverTripRequest: React.FC<{ tripRequestId: number }> = ({
   return (
     <VStack space="lg" className="bg-white rounded-lg p-4">
       <Heading>Tài xế báo giá</Heading>
-      {!!driverTripRequest && (
+      {!!driverTripRequest && !isFetching && (
         <VStack className="md">
           <HStack className="md">
             <Text className="text-lg text-gray-600 font-bold">
@@ -81,7 +84,7 @@ const DriverTripRequest: React.FC<{ tripRequestId: number }> = ({
           </HStack>
         </VStack>
       )}
-      {!driverTripRequest && (
+      {!driverTripRequest && !isFetching && (
         <VStack space="md">
           <FormControl>
             <Text className="mb-2 text-md font-medium text-gray-700">

@@ -2,11 +2,17 @@
   "expo": {
     "name": "xedi-app",
     "slug": "xedi-app",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": ["**/*"],
+    "updates": {
+      "url": "https://u.expo.dev/d0d3739c-f024-4eaa-8c30-03d3139a6cd9"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tei.xediapp",

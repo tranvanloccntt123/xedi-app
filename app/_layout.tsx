@@ -24,23 +24,16 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../src/store/store";
 import { supabase, xediSupabase } from "@/src/lib/supabase";
 
-import { Heading } from "@/src/components/ui/heading";
-import {
-  Modal,
-  ModalBackdrop,
-  ModalContent,
-  ModalBody,
-  ModalFooter,
-} from "@/src/components/ui/modal";
-import { Button, ButtonText } from "@/src/components/ui/button";
-import NetworkLogger from "react-native-network-logger";
 import { Box } from "@/src/components/ui/box";
 import { Platform } from "react-native";
 import DebugButton from "@/src/components/DebugButton";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { registerNotification } from "@/src/firebase/messaging";
 import CheckUpdateModal from "@/src/components/CheckUpdateModal";
+
+import { startNetworkLogging } from "react-native-network-logger";
+
+startNetworkLogging();
 
 function AuthWrapper() {
   const router = useRouter();

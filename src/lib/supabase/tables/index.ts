@@ -8,6 +8,7 @@ import Notifications from "./Notifications";
 import UserCoins from "./UserCoins";
 import TripRequests from "./TripRequests";
 import DriverTripRequests from "./DriverTripRequests";
+import MergeTripRequests from "./MergeTripRequests";
 
 export class XediTables {
   fixedRoutes: FixedRoutes;
@@ -19,6 +20,7 @@ export class XediTables {
   userCoins: UserCoins;
   tripRequest: TripRequests;
   driverTripRequests: DriverTripRequests;
+  mergeTripRequests: MergeTripRequests;
 
   constructor(supabase: SupabaseClient) {
     this.fixedRoutes = new FixedRoutes(supabase);
@@ -30,5 +32,6 @@ export class XediTables {
     this.userCoins = new UserCoins(supabase);
     this.tripRequest = new TripRequests(supabase);
     this.driverTripRequests = new DriverTripRequests(supabase);
+    this.mergeTripRequests = new MergeTripRequests(supabase);
   }
 }

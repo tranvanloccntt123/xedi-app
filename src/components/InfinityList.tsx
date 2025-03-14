@@ -49,6 +49,7 @@ const InfinityList: React.FC<InfinityListProps> = ({
       ListHeaderComponent={ListHeaderComponent as never}
       ListEmptyComponent={ListEmptyComponent as never}
       showsVerticalScrollIndicator={Platform.OS === "web"}
+      onEndReached={() => fetchNextPage()}
     />
   );
 };

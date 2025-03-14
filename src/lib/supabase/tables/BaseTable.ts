@@ -28,7 +28,7 @@ export class BaseTable<Data = any, Source = any> {
       let query = this.supabase
         .from(this.tableName)
         .select((data?.select || "*") as "*");
-      if (data?.date) query = query.gte("created_at", data?.date);
+      if (data?.date) query = query.lt("created_at", data?.date);
 
       return query
         .eq("user_id", userId)
@@ -49,7 +49,7 @@ export class BaseTable<Data = any, Source = any> {
       let query = this.supabase
         .from(this.tableName)
         .select((data?.select || "*") as "*");
-      if (data?.id) query = query.gte("id", data?.id);
+      if (data?.id) query = query.gt("id", data?.id);
 
       return query
         .eq("user_id", userId)
@@ -66,7 +66,7 @@ export class BaseTable<Data = any, Source = any> {
     try {
       this.validateSupbase();
       let query = this.supabase.from(this.tableName).select("*");
-      if (data?.id) query = query.gte("id", data?.id);
+      if (data?.id) query = query.gt("id", data?.id);
 
       return query
         .order("id", { ascending: true })

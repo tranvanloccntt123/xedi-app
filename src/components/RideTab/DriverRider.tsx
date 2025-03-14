@@ -11,6 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import TripRequestHistory from "./TripRequestHistory";
 import FixedRouteHistory from "./FixedRouteHistory";
+import DriverTripRequestAccepted from "./DriverTripRequestAccepted";
 
 const HEAD_ROUNDED = 100;
 
@@ -104,7 +105,7 @@ const DriverRider: React.FC<object> = () => {
           initialPage={0}
         >
           <View style={{ flex: 1 }} key={0}>
-            <TripRequestHistory />
+            <DriverTripRequestAccepted />
           </View>
           <View style={{ flex: 1 }} key={0}>
             <FixedRouteHistory />

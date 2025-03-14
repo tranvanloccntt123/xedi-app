@@ -23,6 +23,8 @@
   },
   "java.compile.nullAnalysis.mode": "automatic",
   "cSpell.words": [
-    "openrouteservice"
+    "openrouteservice",
+    "Supabase",
+    "xedi"
   ]
 }

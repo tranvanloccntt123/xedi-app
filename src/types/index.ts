@@ -192,11 +192,14 @@ export interface IDriverTripRequest {
   price: number;
   users?: IUser;
   status: IDriverTripRequestStatus;
+  trip_requests?: ITripRequest;
 }
 
 export enum IDriverTripRequestStatus {
   PENDING = 0,
   CUSTOMER_ACCEPT = 1,
+  DRIVER_MERGED_TRIP_REQUEST = 2,
+  FINISHED = 3,
 }
 
 export enum IFixedRouteStatus {
@@ -208,4 +211,17 @@ export enum IFixedRouteStatus {
 export enum IFixedRouteOrderStatus {
   PENDING = 0,
   ACCEPT = 1,
+}
+
+export enum IMergeTripRequestStatus {
+  PENDING = 0,
+  RUNNING = 1,
+  FINISHED = 2,
+}
+
+export interface IMergeTripRequest {
+  id: number;
+  user_id: string;
+  created_at: string;
+  status: IMergeTripRequestStatus;
 }

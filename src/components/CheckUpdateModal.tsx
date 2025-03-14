@@ -15,19 +15,13 @@ import { VStack } from "./ui/vstack";
 import { Button, ButtonText } from "./ui/button";
 
 const CheckUpdateModal: React.FC<object> = () => {
+  const { isDownloading, isUpdateAvailable, isUpdatePending } =
+    Updates.useUpdates();
   const [showModal, setShowModal] = React.useState<boolean>(false);
-  const [isUpdateAvailable, setIsUpdateAvailable] =
-    React.useState<boolean>(false);
-  const [isDownloading, setIsDownloading] = React.useState(false);
-  const [isUpdatePending, setIsUpdatePending] = React.useState(false);
   const modalAnim = useSharedValue(0);
   const lottieRef = React.useRef<LottieView>(null);
   React.useEffect(() => {
-    Updates.checkForUpdateAsync().then((response) => {
-      if (response.isAvailable) {
-        setIsUpdateAvailable(true);
-      }
-    });
+    Updates.checkForUpdateAsync();
   }, []);
 
   React.useEffect(() => {
@@ -66,11 +60,7 @@ const CheckUpdateModal: React.FC<object> = () => {
                   <Button
                     onPress={() => {
                       lottieRef.current.play();
-                      setIsDownloading(true);
-                      Updates.fetchUpdateAsync().then((r) => {
-                        setIsDownloading(false);
-                        setIsUpdatePending(true);
-                      });
+                      Updates.fetchUpdateAsync();
                     }}
                   >
                     <ButtonText>Cập nhật</ButtonText>

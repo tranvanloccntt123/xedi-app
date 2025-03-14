@@ -9,6 +9,7 @@ export const Tables = {
   USER_COINS: "user_coins",
   TRIP_REQUESTS: "trip_requests",
   DRIVER_TRIP_REQUESTS: "driver_trip_requests",
+  MERGE_TRIP_REQUESTS: "merge_trip_requests",
 };
 
 export const CameraImageSize = {

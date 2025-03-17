@@ -30,6 +30,30 @@ export class BaseTable<Data = any, Source = any> {
         .select((data?.select || "*") as "*");
       if (data?.date) query = query.lt("created_at", data?.date);
 
+      if (data?.filter) {
+        data.filter.forEach((raw) => {
+          switch (raw.filter) {
+            case "lte":
+              query = query.lte(raw.filed, raw.data);
+              break;
+            case "lt":
+              query = query.lt(raw.filed, raw.data);
+              break;
+            case "gte":
+              query = query.gte(raw.filed, raw.data);
+              break;
+            case "gt":
+              query = query.gt(raw.filed, raw.data);
+              break;
+            case "eq":
+              query = query.eq(raw.filed, raw.data);
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
       return query
         .eq("user_id", userId)
         .order("created_at", { ascending: false })

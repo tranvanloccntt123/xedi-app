@@ -74,10 +74,8 @@ const DriverTripRequest: React.FC<{ tripRequestId: number }> = ({
       <Heading>Tài xế báo giá</Heading>
       {!!driverTripRequest && !isFetching && (
         <VStack className="md">
-          <HStack className="md">
-            <Text className="text-lg text-gray-600 font-bold">
-              Giá đã báo:{" "}
-            </Text>
+          <HStack className="md" space="md">
+            <Text className="text-lg text-gray-600 font-bold">Giá đã báo:</Text>
             <Text className="flex-1 text-right text-lg text-black">
               {formatMoney(driverTripRequest.price)} VND
             </Text>

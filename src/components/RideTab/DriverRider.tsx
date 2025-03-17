@@ -9,7 +9,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import TripRequestHistory from "./TripRequestHistory";
 import FixedRouteHistory from "./FixedRouteHistory";
 import DriverTripRequestAccepted from "./DriverTripRequestAccepted";
 

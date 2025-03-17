@@ -171,11 +171,18 @@ export type SupabaseTableInsert<T = any> = {
   error: any;
 };
 
+export type SupabaseFilter = {
+  filter: "lte" | "lt" | "gte" | "gt" | "eq";
+  filed: string;
+  data: string | number;
+};
+
 export type SupbaseParams = {
   select?: any;
   pageNums?: number;
   id?: number;
   date?: string;
+  filter?: SupabaseFilter[];
 };
 
 export type SelectLocationType = "start-location" | "end-location";
@@ -211,17 +218,4 @@ export enum IFixedRouteStatus {
 export enum IFixedRouteOrderStatus {
   PENDING = 0,
   ACCEPT = 1,
-}
-
-export enum IMergeTripRequestStatus {
-  PENDING = 0,
-  RUNNING = 1,
-  FINISHED = 2,
-}
-
-export interface IMergeTripRequest {
-  id: number;
-  user_id: string;
-  created_at: string;
-  status: IMergeTripRequestStatus;
 }

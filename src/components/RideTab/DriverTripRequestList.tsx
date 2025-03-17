@@ -70,28 +70,33 @@ const DriverTripRequestList: React.FC<{
           );
         }}
         queryFn={async function (lastPage: any): Promise<any[]> {
-          const { data } =
-            await xediSupabase.tables.driverTripRequests.selectByUserIdBeforeDate(
-              {
-                date: lastPage,
-                select: `*, ${Tables.TRIP_REQUESTS}(*)`,
-                filter: statusFilter.length === 1 && [
-                  {
-                    filed: "status",
-                    filter: "eq",
-                    data: statusFilter[0],
-                  },
-                ],
-                orFilter: statusFilter.length > 1 && [
-                  {
-                    query: `${statusFilter
-                      .map((filter) => `status.eq.${filter}`)
-                      .join(",")}`,
-                  },
-                ],
-              }
-            );
-          return data as never;
+          try {
+            const { data } =
+              await xediSupabase.tables.driverTripRequests.selectByUserIdBeforeDate(
+                {
+                  date: lastPage,
+                  select: `*, ${Tables.TRIP_REQUESTS}(*)`,
+                  filter: statusFilter.length === 1 && [
+                    {
+                      filed: "status",
+                      filter: "eq",
+                      data: statusFilter[0],
+                    },
+                  ],
+                  orFilter: statusFilter.length > 1 && [
+                    {
+                      query: `${statusFilter
+                        .map((filter) => `status.eq.${filter}`)
+                        .join(",")}`,
+                    },
+                  ],
+                }
+              );
+            return data as never;
+          } catch (e) {
+            console.log(e);
+            return [];
+          }
         }}
         getLastPageNumber={function (lastData: any[]) {
           return lastData?.[lastData.length - 1]?.created_at;

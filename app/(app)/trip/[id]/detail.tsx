@@ -66,6 +66,19 @@ export default function TripRequestDetail() {
     setIsLoading(false);
   }, [tripRequest]);
 
+  const handlerDriverReject = async (driverRequestId: number) => {
+    if (!tripRequest) return;
+    setIsLoading(true);
+    try {
+      await xediSupabase.tables.tripRequest.updateById(tripRequest?.id, {
+        status: IDriverTripRequestStatus.PENDING,
+      });
+      await xediSupabase.tables.driverTripRequests.deleteById(driverRequestId);
+      await fetch();
+    } catch (e) {}
+    setIsLoading(false);
+  };
+
   const handlerFinished = React.useCallback(async () => {
     if (!tripRequest) return;
     setIsLoading(true);
@@ -80,17 +93,22 @@ export default function TripRequestDetail() {
     setIsLoading(false);
   }, [tripRequest]);
 
+  console.log(tripRequest?.status);
+
   return (
     <AppLoading isLoading={isLoading}>
-      {tripRequest.status === IDriverTripRequestStatus.PENDING && (
+      {tripRequest?.status === IDriverTripRequestStatus.PENDING && (
         <TripRequestDetailPending
           tripRequest={tripRequest}
           isRefreshing={false}
           onRefresh={onRefresh}
         />
       )}
-      {tripRequest.status === IDriverTripRequestStatus.CUSTOMER_ACCEPT && (
-        <TripRequestAccepted tripRequest={tripRequest} />
+      {tripRequest?.status === IDriverTripRequestStatus.CUSTOMER_ACCEPT && (
+        <TripRequestAccepted
+          tripRequest={tripRequest}
+          onReject={handlerDriverReject}
+        />
       )}
     </AppLoading>
   );

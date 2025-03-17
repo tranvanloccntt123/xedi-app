@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { ITripRequest } from "@/src/types";
+import { IDriverTripRequestStatus, ITripRequest } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import AppLoading from "@/src/components/View/AppLoading";
 import TripRequestDetailPending from "@/src/components/TripRequest/TripRequestPending";
+import { useDispatch } from "react-redux";
+import { fetchDriverTripRequestAccepted } from "@/src/store/tripRequest/tripRequestsThunk";
+import TripRequestAccepted from "@/src/components/TripRequest/TripRequestAccepted";
 
 export default function TripRequestDetail() {
   const { id } = useLocalSearchParams();
+
+  const dispatch = useDispatch();
+
   const [tripRequest, setTripRequest] = useState<ITripRequest>();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +32,11 @@ export default function TripRequestDetail() {
     } else {
       setError(true);
     }
+    await (
+      dispatch(
+        fetchDriverTripRequestAccepted({ tripRequestId: id as never })
+      ) as any
+    ).unwrap();
     setIsLoading(false);
   };
 
@@ -71,19 +82,16 @@ export default function TripRequestDetail() {
 
   return (
     <AppLoading isLoading={isLoading}>
-      <TripRequestDetailPending
-        tripRequest={tripRequest}
-        isRefreshing={false}
-        onRefresh={function () {
-          // throw new Error("Function not implemented.");
-        }}
-        onRunning={function () {
-          // throw new Error("Function not implemented.");
-        }}
-        onFinished={function () {
-          // throw new Error("Function not implemented.");
-        }}
-      />
+      {tripRequest.status === IDriverTripRequestStatus.PENDING && (
+        <TripRequestDetailPending
+          tripRequest={tripRequest}
+          isRefreshing={false}
+          onRefresh={onRefresh}
+        />
+      )}
+      {tripRequest.status === IDriverTripRequestStatus.CUSTOMER_ACCEPT && (
+        <TripRequestAccepted tripRequest={tripRequest} />
+      )}
     </AppLoading>
   );
 }

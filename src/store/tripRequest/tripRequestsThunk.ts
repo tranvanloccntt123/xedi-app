@@ -19,6 +19,9 @@ export const acceptDriverTripRequest = createAsyncThunk<
             status: IDriverTripRequestStatus.CUSTOMER_ACCEPT,
           }
         );
+      await xediSupabase.tables.tripRequest.updateById(data.tripRequestId, {
+        status: IDriverTripRequestStatus.CUSTOMER_ACCEPT,
+      });
       if (error) {
         throw new Error(error.message);
       }

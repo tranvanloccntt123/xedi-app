@@ -54,6 +54,12 @@ export class BaseTable<Data = any, Source = any> {
         });
       }
 
+      if (data?.orFilter) {
+        data.orFilter.forEach((raw) => {
+          query = query.or(raw.query);
+        });
+      }
+
       return query
         .eq("user_id", userId)
         .order("created_at", { ascending: false })

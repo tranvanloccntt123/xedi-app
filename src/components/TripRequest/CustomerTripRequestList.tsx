@@ -14,9 +14,6 @@ import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import { BottomSheetContext } from "@/src/components/ui/bottom-sheet";
 import { setCurrentDriverTripRequest } from "@/src/store/tripRequest/tripRequestsSlice";
 import { AppDispatch, RootState } from "@/src/store/store";
-import { fetchDriverTripRequestAccepted } from "@/src/store/tripRequest/tripRequestsThunk";
-import { Center } from "../ui/center";
-import { Button, ButtonText } from "../ui/button";
 
 const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,
@@ -35,16 +32,11 @@ const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
 
   const fetch = async () => {
     try {
-      const res = await dispatch(
-        fetchDriverTripRequestAccepted({ tripRequestId })
-      ).unwrap();
-      if (!res.driverTripRequest) {
-        const { data } =
-          await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
-            tripRequestId: tripRequestId,
-          });
-        setRequestList(data);
-      }
+      const { data } =
+        await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
+          tripRequestId: tripRequestId,
+        });
+      setRequestList(data);
     } catch (e) {
       console.log(e);
     }
@@ -64,42 +56,11 @@ const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
     <VStack space="lg" className="bg-white rounded-lg p-4">
       <HStack className="mb-[24px] justify-between">
         <VStack>
-          <Heading>
-            {!tripRequestAccepted ? "Yêu cầu" : "Thông tin tài xế"}
-          </Heading>
-          {!tripRequestAccepted && (
-            <Text className="text-sm text-black">
-              Chọn tài xế mà bạn muốn đi
-            </Text>
-          )}
+          <Heading>Yêu cầu</Heading>
+          <Text className="text-sm text-black">Chọn tài xế mà bạn muốn đi</Text>
         </VStack>
       </HStack>
-      {!!tripRequestAccepted && (
-        <Center className="w-full">
-          <VStack space="lg" className="justify-center item-center">
-            <Avatar className="self-center w-[150px] h-[150px] bg-primary-400 rounded-full justify-center items-center">
-              <AvatarFallbackText className="text-[70px]">
-                {tripRequestAccepted.users?.name}
-              </AvatarFallbackText>
-            </Avatar>
-            <VStack>
-              <Text className="text-2xl font-bold text-black text-center">
-                {tripRequestAccepted.users?.name}
-              </Text>
-              <Text className="text-xl text-center">
-                {tripRequestAccepted.users?.phone}
-              </Text>
-              <Text className="font-[600] text-center">
-                {formatMoney(tripRequestAccepted.price)} VND
-              </Text>
-            </VStack>
-            <Button>
-              <ButtonText>Nhắn tin</ButtonText>
-            </Button>
-          </VStack>
-        </Center>
-      )}
-      {requestList.map((request, index) => (
+      {requestList.map((request) => (
         <VStack key={`${request.id}`} space="lg">
           <TouchableOpacity
             onPress={() => {

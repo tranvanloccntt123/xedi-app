@@ -56,7 +56,7 @@ const FixedRouteHistory: React.FC<object> = () => {
           return data as never;
         }}
         getLastPageNumber={function (lastData: ITripRequest[]) {
-          return lastData[lastData.length - 1].created_at;
+          return lastData?.[lastData.length - 1]?.created_at;
         }}
       />
     </Box>

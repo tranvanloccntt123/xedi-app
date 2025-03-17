@@ -60,7 +60,7 @@ export interface ITripRequest {
   startLocation: InputLocation;
   endLocation: InputLocation;
   departureTime: Date;
-  status: number;
+  status: IDriverTripRequestStatus;
   type: "Delivery" | "Taxi";
   created_at?: string;
 }
@@ -177,12 +177,22 @@ export type SupabaseFilter = {
   data: string | number;
 };
 
+export type SupabaseOrFilter = {
+  query: string;
+};
+
+export type SupabaseAndFilter = {
+  query: string;
+};
+
 export type SupbaseParams = {
   select?: any;
   pageNums?: number;
   id?: number;
   date?: string;
   filter?: SupabaseFilter[];
+  andFilter?: SupabaseAndFilter[];
+  orFilter?: SupabaseOrFilter[];
 };
 
 export type SelectLocationType = "start-location" | "end-location";

@@ -52,7 +52,7 @@ export default function History() {
             return data || [];
           }}
           getLastPageNumber={function (lastData: any[]) {
-            return lastData[lastData.length - 1].created_at;
+            return lastData?.[lastData.length - 1]?.created_at;
           }}
         />
       </SafeAreaView>

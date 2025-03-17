@@ -46,7 +46,7 @@ export default function Home() {
             return data as never;
           }}
           getLastPageNumber={(lastData: INewsFeedItem[]) => {
-            return lastData[lastData.length - 1].created_at;
+            return lastData?.[lastData.length - 1]?.created_at;
           }}
           renderItem={renderItem}
           ListHeaderComponent={

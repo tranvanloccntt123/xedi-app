@@ -23,11 +23,15 @@ const useQueryInfinity = <TData = any, TPage = any>(
     setIsLoading(true);
     try {
       const _data = await query.queryFn(pageNum.current);
-      const newData = params?.isRefresh ? [] : data.concat();
-      newData.push(..._data);
-      pageNum.current = query.getLastPageNumber(_data);
-      setData(newData);
-    } catch (e) {}
+      if (_data.length) {
+        const newData = params?.isRefresh ? [] : data.concat();
+        newData.push(..._data);
+        pageNum.current = query.getLastPageNumber(_data);
+        setData(newData);
+      }
+    } catch (e) {
+      setData([]);
+    }
     setIsLoading(false);
   };
 

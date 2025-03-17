@@ -27,7 +27,7 @@ export default class Feed extends BaseTable<INewsFeedItem> {
         ${Tables.USERS} (*),
         ${Tables.TRIP_REQUESTS} (*)
       `);
-      if (data?.date) query = query.lte("created_at", data?.date);
+      if (data?.date) query = query.lt("created_at", data?.date);
 
       return query
         .order("created_at", { ascending: false })

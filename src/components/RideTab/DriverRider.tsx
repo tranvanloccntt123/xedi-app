@@ -10,7 +10,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import FixedRouteHistory from "./FixedRouteHistory";
-import DriverTripRequestAccepted from "./DriverTripRequestAccepted";
+import DriverTripRequestList from "./DriverTripRequestList";
 
 const HEAD_ROUNDED = 100;
 
@@ -104,9 +104,9 @@ const DriverRider: React.FC<object> = () => {
           initialPage={0}
         >
           <View style={{ flex: 1 }} key={0}>
-            <DriverTripRequestAccepted />
+            <DriverTripRequestList />
           </View>
-          <View style={{ flex: 1 }} key={0}>
+          <View style={{ flex: 1 }} key={1}>
             <FixedRouteHistory />
           </View>
         </PagerView>

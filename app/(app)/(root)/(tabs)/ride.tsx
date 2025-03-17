@@ -12,8 +12,8 @@ export default function Ride() {
 
   return (
     <Box className="flex-1 bg-gray-100 py-2">
-      {user.role === "customer" && <CustomerRide />}
-      {user.role === "driver" && <DriverRider />}
+      {user?.role === "customer" && <CustomerRide />}
+      {user?.role === "driver" && <DriverRider />}
     </Box>
   );
 }

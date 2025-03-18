@@ -3,7 +3,7 @@ import {
   SupabaseTableFilter,
   SupabaseTableInsert,
 } from "@/src/types";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 
 export class BaseTable<Data = any, Source = any> {
   supabase: SupabaseClient;
@@ -20,7 +20,9 @@ export class BaseTable<Data = any, Source = any> {
     return true;
   }
 
-  async selectByUserIdBeforeDate(data?: SupbaseParams) {
+  async selectByUserIdBeforeDate(
+    data?: SupbaseParams
+  ): Promise<PostgrestSingleResponse<Data[]>> {
     try {
       this.validateSupbase();
       const userId = (await this.supabase.auth.getUser())?.data?.user?.id;

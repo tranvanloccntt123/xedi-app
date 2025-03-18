@@ -1,5 +1,5 @@
 import { Tables } from "@/src/constants";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
 import { INewsFeedItem } from "@/src/types";
 
@@ -7,7 +7,10 @@ export default class Feed extends BaseTable<INewsFeedItem> {
   constructor(_supabase: SupabaseClient) {
     super(_supabase, Tables.FEED);
   }
-  async selectFeedAfterId(data?: { date?: string; pageNums?: number }) {
+  async selectFeedAfterId(data?: {
+    date?: string;
+    pageNums?: number;
+  }): Promise<PostgrestSingleResponse<INewsFeedItem[]>> {
     try {
       this.validateSupbase();
       let query = this.supabase.from(this.tableName).select(`
@@ -31,7 +34,7 @@ export default class Feed extends BaseTable<INewsFeedItem> {
 
       return query
         .order("created_at", { ascending: false })
-        .range(0, data?.pageNums || BaseTable.PAGE_NUMS);
+        .range(0, data?.pageNums || BaseTable.PAGE_NUMS) as any;
     } catch (e) {
       throw e;
     }

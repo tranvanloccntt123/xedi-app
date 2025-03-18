@@ -37,6 +37,11 @@ const tripRequestsSlice = createSlice({
     ) => {
       state.currentDriverTripRequest = action.payload;
     },
+    setTripRequests: (state, action: PayloadAction<ITripRequest[]>) => {
+      action.payload.forEach((tripRequest) => {
+        state.tripRequestInfo[tripRequest.id] = tripRequest;
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -51,6 +56,9 @@ const tripRequestsSlice = createSlice({
   },
 });
 
-export const { setCurrentTripRequest, setCurrentDriverTripRequest } =
-  tripRequestsSlice.actions;
+export const {
+  setCurrentTripRequest,
+  setCurrentDriverTripRequest,
+  setTripRequests,
+} = tripRequestsSlice.actions;
 export default tripRequestsSlice.reducer;

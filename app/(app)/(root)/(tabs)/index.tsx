@@ -4,7 +4,7 @@ import React from "react";
 import { Box } from "@/src/components/ui/box";
 import { Heading } from "@/src/components/ui/heading";
 import { VStack } from "@/src/components/ui/vstack";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { Pressable } from "react-native";
 import { Text } from "@/src/components/ui/text";
@@ -23,9 +23,15 @@ import OnlyCustomer from "@/src/components/View/OnlyCustomer";
 import LocationIcon from "@/src/components/icons/LocationIcon";
 import AddIcon from "@/src/components/icons/AddIcon";
 import InfinityList from "@/src/components/InfinityList";
+import { setTripRequests } from "@/src/store/tripRequest/tripRequestsSlice";
+import {
+  pushFetchingInfo,
+  XEDI_GROUP_INFO,
+} from "@/src/store/fetchServices/fetchServicesSlice";
 
 export default function Home() {
   useLocation({});
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const { top } = useSafeAreaInsets();
 
@@ -43,7 +49,21 @@ export default function Home() {
             const { data } = await xediSupabase.tables.feed.selectFeedAfterId({
               date: lastPage,
             });
-            return data as never;
+            dispatch(
+              pushFetchingInfo({
+                groupKey: XEDI_GROUP_INFO.FEED,
+                data,
+              })
+            );
+            dispatch(
+              pushFetchingInfo({
+                groupKey: XEDI_GROUP_INFO.TRIP_REQUEST,
+                data: data
+                  .filter((_data) => !!_data.trip_requests)
+                  .flatMap((_data) => _data.trip_requests),
+              })
+            );
+            return data;
           }}
           getLastPageNumber={(lastData: INewsFeedItem[]) => {
             return lastData?.[lastData.length - 1]?.created_at;

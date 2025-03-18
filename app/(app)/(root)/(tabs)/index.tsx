@@ -63,6 +63,14 @@ export default function Home() {
                   .flatMap((_data) => _data.trip_requests),
               })
             );
+            dispatch(
+              pushFetchingInfo({
+                groupKey: XEDI_GROUP_INFO.FIXED_ROUTE,
+                data: data
+                  .filter((_data) => !!_data.fixed_routes)
+                  .flatMap((_data) => _data.fixed_routes),
+              })
+            );
             return data;
           }}
           getLastPageNumber={(lastData: INewsFeedItem[]) => {

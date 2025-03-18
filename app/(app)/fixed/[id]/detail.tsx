@@ -8,73 +8,88 @@ import AppLoading from "@/src/components/View/AppLoading";
 import FixedRouteDetailPending from "@/src/components/FixedRoute/FixedRouteDetailPending";
 import FixedRouteDetailRunning from "@/src/components/FixedRoute/FixedRouteDetailRunning";
 import FixedRouteDetailFinished from "@/src/components/FixedRoute/FixedRouteDetailFinished";
+import useQuery from "@/hooks/useQuery";
+import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { useDispatch } from "react-redux";
+import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 
 export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();
-  const [fixedRoute, setFixedRoute] = useState<IFixedRoute>();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const queryKey = React.useMemo(
+    () => `${XEDI_GROUP_INFO.FIXED_ROUTE}_${id}`,
+    [id]
+  );
+
+  const dispatch = useDispatch();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const [error, setError] = useState(false);
-
-  const fetch = async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    const { data, error } = await xediSupabase.tables.fixedRoutes.selectById(
-      id
-    );
-    if (data?.[0] && !error) {
-      setFixedRoute(data[0]);
-    } else {
-      setError(true);
-    }
-    setIsLoading(false);
-  };
-
-  React.useEffect(() => {
-    fetch();
-  }, [id]); // Added isLoading to dependencies
+  const {
+    data: fixedRoute,
+    refetch,
+    isLoading: isFixedRouteLoading,
+  } = useQuery({
+    queryKey: queryKey,
+    async queryFn() {
+      const { data, error } = await xediSupabase.tables.fixedRoutes.selectById(
+        id
+      );
+      if (error) {
+        throw error;
+      }
+      return data[0];
+    },
+  });
 
   const onRefresh = React.useCallback(() => {
     setIsRefreshing(true);
     setTimeout(async () => {
-      fetch(); // Just reverse the order for demo purposes
+      refetch(); // Just reverse the order for demo purposes
       setIsRefreshing(false);
     }, 2000);
   }, []);
 
   const handlerRunning = React.useCallback(async () => {
     if (!fixedRoute) return;
-    setIsLoading(true);
-    const { error } = await xediSupabase.tables.fixedRoutes.runningFixedRoute(
-      fixedRoute.id
+    dispatch(
+      fetchDetailInfo({
+        key: queryKey,
+        async fetch() {
+          const { error } =
+            await xediSupabase.tables.fixedRoutes.runningFixedRoute(
+              fixedRoute.id
+            );
+          if (error) {
+            throw error;
+          }
+          return { ...fixedRoute, status: IFixedRouteStatus.RUNNING };
+        },
+      })
     );
-    if (error) {
-      setIsLoading(false);
-      return;
-    }
-    setFixedRoute({ ...fixedRoute, status: 1 });
-    setIsLoading(false);
   }, [fixedRoute]);
 
   const handlerFinished = React.useCallback(async () => {
     if (!fixedRoute) return;
-    setIsLoading(true);
-    const { error } = await xediSupabase.tables.fixedRoutes.finishedFixedRoute(
-      fixedRoute.id
+    dispatch(
+      fetchDetailInfo({
+        key: queryKey,
+        async fetch() {
+          const { error } =
+            await xediSupabase.tables.fixedRoutes.finishedFixedRoute(
+              fixedRoute.id
+            );
+          if (error) {
+            throw error;
+          }
+          return { ...fixedRoute, status: IFixedRouteStatus.FINISHED };
+        },
+      })
     );
-    if (error) {
-      setIsLoading(false);
-      return;
-    }
-    setFixedRoute({ ...fixedRoute, status: 2 });
-    setIsLoading(false);
   }, [fixedRoute]);
 
   return (
-    <AppLoading isLoading={isLoading}>
+    <AppLoading isLoading={isFixedRouteLoading}>
       {fixedRoute?.status === IFixedRouteStatus.PENDING && (
         <FixedRouteDetailPending
           fixedRoute={fixedRoute}

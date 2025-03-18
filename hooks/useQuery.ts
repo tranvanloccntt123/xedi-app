@@ -17,10 +17,10 @@ export const useDataInfo = <TData = any>(queryKey: string) => {
     (state: RootState) => state.fetchServices.requests[queryKey]
   );
   return {
-    data: _store.data as TData,
-    isLoading: _store.isLoading === true,
-    isError: _store.isError === true,
-    errorMessage: _store.errorMessage || "",
+    data: _store?.data as TData,
+    isLoading: _store?.isLoading === true,
+    isError: _store?.isError === true,
+    errorMessage: _store?.errorMessage || "",
   };
 };
 
@@ -38,6 +38,7 @@ const useQuery = <TData = any>(params: QueryParams<TData>) => {
       const data = await params.queryFn();
       dispatch(endFetchingSuccess({ key: params.queryKey, data }));
     } catch (e) {
+      console.log(e);
       dispatch(endFetchingError({ key: params.queryKey, errorMessage: e }));
     }
   };
@@ -47,10 +48,10 @@ const useQuery = <TData = any>(params: QueryParams<TData>) => {
   }, []);
 
   return {
-    data: _store.data,
-    isLoading: _store.isLoading === true,
-    isError: _store.isError === true,
-    errorMessage: _store.errorMessage || "",
+    data: _store?.data,
+    isLoading: _store?.isLoading === true,
+    isError: _store?.isError === true,
+    errorMessage: _store?.errorMessage || "",
     refetch: fetch,
   };
 };

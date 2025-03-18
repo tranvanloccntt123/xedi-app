@@ -83,7 +83,7 @@ const FixedRouteOrderItem: React.FC<{
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="lg" key={data.id} className="bg-white rounded-xl p-[16px]">
+      <VStack space="lg" key={data?.id} className="bg-white rounded-xl p-[16px]">
         <HStack space="md" className="justify-between">
           <HStack space="md" className="items-center">
             <Text className="text-lg font-bold">{data.name}</Text>

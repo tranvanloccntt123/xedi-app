@@ -1,8 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { fetchDetailInfo } from "./fetchServicesThunk";
 
 export enum XEDI_GROUP_INFO {
   FEED = "feed",
   TRIP_REQUEST = "trip_request",
+  FIXED_ROUTE = "fixed_route",
+  DRIVER_TRIP_REQUEST = "driver_trip_request",
 }
 
 export interface FetchState {
@@ -79,8 +82,81 @@ const fetchServicesSlice = createSlice({
         }
       });
     },
+    setFetchingData(state, action: PayloadAction<{ key: string; data: any }>) {
+      if (state.requests[action.payload.key]) {
+        state.requests[action.payload.key].data = action.payload.data;
+      } else {
+        state.requests[action.payload.key] = {
+          isLoading: false,
+          isError: false,
+          errorMessage: "",
+          data: action.payload.data,
+        };
+      }
+    },
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDetailInfo.pending, (state, action) => {
+        const key = action.meta.arg.key;
+        if (key) {
+          if (!state.requests[key]) {
+            state.requests[key] = {
+              isLoading: true,
+              isError: false,
+              errorMessage: "",
+            };
+          } else {
+            state.requests[key] = {
+              ...state.requests[key],
+              isError: false,
+              isLoading: true,
+              errorMessage: "",
+            };
+          }
+        }
+      })
+      .addCase(fetchDetailInfo.fulfilled, (state, action) => {
+        const key = action.payload.key;
+        if (key) {
+          if (!state.requests[key]) {
+            state.requests[key] = {
+              isLoading: false,
+              isError: false,
+              errorMessage: "",
+              data: action.payload.data,
+            };
+          } else {
+            state.requests[key] = {
+              ...state.requests[key],
+              data: action.payload.data,
+              isError: false,
+              isLoading: false,
+              errorMessage: "",
+            };
+          }
+        }
+      })
+      .addCase(fetchDetailInfo.rejected, (state, action) => {
+        const key = action.meta.arg.key;
+        if (key) {
+          if (!state.requests[key]) {
+            state.requests[key] = {
+              isLoading: false,
+              isError: true,
+              errorMessage: "",
+            };
+          } else {
+            state.requests[key] = {
+              ...state.requests[key],
+              isError: true,
+              isLoading: false,
+              errorMessage: "",
+            };
+          }
+        }
+      });
+  },
 });
 
 export const {
@@ -88,5 +164,6 @@ export const {
   endFetchingError,
   endFetchingSuccess,
   pushFetchingInfo,
+  setFetchingData,
 } = fetchServicesSlice.actions;
 export default fetchServicesSlice.reducer;

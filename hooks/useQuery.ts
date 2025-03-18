@@ -10,6 +10,7 @@ import {
 export interface QueryParams<TData = any> {
   queryKey: string;
   queryFn: () => Promise<TData>;
+  disableAutoFetch?: boolean;
 }
 
 export const useDataInfo = <TData = any>(queryKey: string) => {
@@ -32,7 +33,7 @@ const useQuery = <TData = any>(params: QueryParams<TData>) => {
   );
 
   const fetch = async () => {
-    if (_store.isLoading) return;
+    if (_store?.isLoading) return;
     dispatch(startFetching(params.queryKey));
     try {
       const data = await params.queryFn();
@@ -44,11 +45,11 @@ const useQuery = <TData = any>(params: QueryParams<TData>) => {
   };
 
   React.useEffect(() => {
-    fetch();
+    if (!params.disableAutoFetch) fetch();
   }, []);
 
   return {
-    data: _store?.data,
+    data: _store?.data as TData,
     isLoading: _store?.isLoading === true,
     isError: _store?.isError === true,
     errorMessage: _store?.errorMessage || "",

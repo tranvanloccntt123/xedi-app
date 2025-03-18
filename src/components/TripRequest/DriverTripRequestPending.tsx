@@ -30,7 +30,9 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
       if (data.length) {
         return data[0];
       }
+      throw "Not found";
     } catch (e) {
+      console.log(e);
       throw e;
     }
   };

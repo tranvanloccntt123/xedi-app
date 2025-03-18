@@ -145,6 +145,7 @@ const fetchServicesSlice = createSlice({
               isLoading: false,
               isError: true,
               errorMessage: "",
+              data: undefined,
             };
           } else {
             state.requests[key] = {
@@ -152,6 +153,7 @@ const fetchServicesSlice = createSlice({
               isError: true,
               isLoading: false,
               errorMessage: "",
+              data: undefined,
             };
           }
         }

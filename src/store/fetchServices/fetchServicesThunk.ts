@@ -10,7 +10,7 @@ export const fetchDetailInfo = createAsyncThunk(
         key: params.key,
       };
     } catch (e) {
-      rejectWithValue(e);
+      return rejectWithValue(e);
     }
   }
 );

@@ -2,19 +2,18 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
-import { Button, ButtonIcon, ButtonText } from "@/src/components/ui/button";
-import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { Button, ButtonText } from "@/src/components/ui/button";
+import { ScrollView, StyleSheet } from "react-native";
 import { ITripRequest, IUser } from "@/src/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { RootState } from "@/src/store/store";
 import Header from "@/src/components/Header";
-import { EditIcon } from "@/src/components/ui/icon";
 import TripRequestItem from "./TripRequestItem";
 import CustomerTripRequestList from "./CustomerTripRequestList";
-import { BottomSheet } from "../ui/bottom-sheet";
-import CustomerTripRequestBottomSheet from "./CustomerTripRequestBottomSheet";
 import DriverTripRequestPending from "./DriverTripRequestPending";
 import { HStack } from "../ui/hstack";
+import ChevronRightIcon from "../icons/ChevronRightIcon";
+import { Divider } from "../ui/divider";
 
 const styles = StyleSheet.create({
   logo: {
@@ -65,12 +64,21 @@ const TripRequestAccepted: React.FC<{
                   disabled
                 />
               )}
-              {!isAuthor && tripRequest && user.role === "driver" && (
-                <DriverTripRequestPending tripRequestId={tripRequest.id} />
-              )}
-              {isAuthor && (
-                <CustomerTripRequestList tripRequestId={tripRequest.id} />
-              )}
+              <Box className="px-2 bg-white">
+                {!isAuthor && tripRequest && user.role === "driver" && (
+                  <DriverTripRequestPending tripRequestId={tripRequest.id} />
+                )}
+                {isAuthor && (
+                  <CustomerTripRequestList tripRequestId={tripRequest.id} />
+                )}
+                <Divider />
+                <Button className="h-[45px] bg-white">
+                  <ButtonText className="text-black flex-1">
+                    Ghép chuyến
+                  </ButtonText>
+                  <ChevronRightIcon size={24} color={"#000"} />
+                </Button>
+              </Box>
             </VStack>
           </Box>
         </ScrollView>

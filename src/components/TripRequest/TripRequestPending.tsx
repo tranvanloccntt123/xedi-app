@@ -16,6 +16,7 @@ import CustomerTripRequestList from "./CustomerTripRequestList";
 import { BottomSheet } from "../ui/bottom-sheet";
 import CustomerTripRequestBottomSheet from "./CustomerTripRequestBottomSheet";
 import DriverTripRequestPending from "./DriverTripRequestPending";
+import DriverCancelRequest from "./DriverCancelRequest";
 
 const styles = StyleSheet.create({
   logo: {
@@ -82,6 +83,9 @@ const TripRequestDetailPending: React.FC<{
               </VStack>
             </Box>
           </ScrollView>
+          {!isAuthor && tripRequest && user.role === "driver" && (
+            <DriverCancelRequest tripRequestId={tripRequest.id} />
+          )}
         </SafeAreaView>
       </Box>
       {isAuthor && <CustomerTripRequestBottomSheet isAuthor={isAuthor} />}

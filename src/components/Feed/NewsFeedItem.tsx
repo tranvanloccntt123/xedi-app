@@ -71,9 +71,9 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
             <HStack className="justify-between items-center mb-2">
               <HStack space="md" className="justify-center items-center">
                 <Avatar size="sm">
-                  <AvatarFallbackText>{data.users.name}</AvatarFallbackText>
+                  <AvatarFallbackText>{data?.users?.name}</AvatarFallbackText>
                 </Avatar>
-                <Text className="font-bold text-lg">{data.users.name}</Text>
+                <Text className="font-bold text-lg">{data?.users?.name}</Text>
               </HStack>
               <BottomSheetTrigger onPress={handleMoreClick}>
                 <MoreIcon color="#000000" size={24} />

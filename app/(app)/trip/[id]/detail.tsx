@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { IDriverTripRequestStatus } from "@/src/types";
+import { IDriverTripRequestStatus, ITripRequest } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import AppLoading from "@/src/components/View/AppLoading";
 import TripRequestDetailPending from "@/src/components/TripRequest/TripRequestPending";
@@ -10,6 +10,7 @@ import TripRequestAccepted from "@/src/components/TripRequest/TripRequestAccepte
 import useQuery from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
+import TripRequestMerged from "@/src/components/TripRequest/TripRequestMerged";
 
 export default function TripRequestDetail() {
   const { id } = useLocalSearchParams();
@@ -33,14 +34,14 @@ export default function TripRequestDetail() {
         fetchDriverTripRequestAccepted({ tripRequestId: id as never })
       ) as any
     ).unwrap();
-    return data[0];
+    return data[0] as ITripRequest;
   };
 
   const {
     data: tripRequest,
     refetch,
     isLoading: isTripRequestLoading,
-  } = useQuery({
+  } = useQuery<ITripRequest>({
     queryKey,
     queryFn,
   });
@@ -87,6 +88,14 @@ export default function TripRequestDetail() {
           onReject={handlerDriverReject}
         />
       )}
+      {tripRequest?.status ===
+        IDriverTripRequestStatus.DRIVER_MERGED_TRIP_REQUEST &&
+        tripRequest?.fixed_route_id && (
+          <TripRequestMerged
+            tripRequest={tripRequest}
+            onReject={handlerDriverReject}
+          />
+        )}
     </AppLoading>
   );
 }

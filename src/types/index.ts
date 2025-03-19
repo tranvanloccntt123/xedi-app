@@ -63,6 +63,8 @@ export interface ITripRequest {
   status: IDriverTripRequestStatus;
   type: "Delivery" | "Taxi";
   created_at?: string;
+  fixed_route_id?: number;
+  fixed_routes?: IFixedRoute;
 }
 
 export interface IUser {
@@ -228,4 +230,8 @@ export enum IFixedRouteStatus {
 export enum IFixedRouteOrderStatus {
   PENDING = 0,
   ACCEPT = 1,
+}
+
+export enum IErrorRequest {
+  NOT_FOUND = "Not Found",
 }

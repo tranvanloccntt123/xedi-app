@@ -83,6 +83,36 @@ export class BaseTable<Data = any, Source = any> {
         .select((data?.select || "*") as "*");
       if (data?.id) query = query.gt("id", data?.id);
 
+      if (data?.filter) {
+        data.filter.forEach((raw) => {
+          switch (raw.filter) {
+            case "lte":
+              query = query.lte(raw.filed, raw.data);
+              break;
+            case "lt":
+              query = query.lt(raw.filed, raw.data);
+              break;
+            case "gte":
+              query = query.gte(raw.filed, raw.data);
+              break;
+            case "gt":
+              query = query.gt(raw.filed, raw.data);
+              break;
+            case "eq":
+              query = query.eq(raw.filed, raw.data);
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
+      if (data?.orFilter) {
+        data.orFilter.forEach((raw) => {
+          query = query.or(raw.query);
+        });
+      }
+
       return query
         .eq("user_id", userId)
         .order("id", { ascending: true })
@@ -108,10 +138,18 @@ export class BaseTable<Data = any, Source = any> {
     }
   }
 
-  async selectById(id: any) {
+  async selectById(
+    id: any,
+    params?: {
+      query?: string;
+    }
+  ): Promise<SupabaseTableInsert<Data>> {
     try {
       this.validateSupbase();
-      return this.supabase.from(this.tableName).select("*").eq("id", id);
+      return this.supabase
+        .from(this.tableName)
+        .select(params?.query || "*")
+        .eq("id", id) as any;
     } catch (e) {
       throw e;
     }

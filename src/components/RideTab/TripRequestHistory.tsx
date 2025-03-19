@@ -4,6 +4,8 @@ import { ITripRequest } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import InfinityList from "../InfinityList";
 import TripRequestItem from "../TripRequest/TripRequestItem";
+import { Pressable } from "react-native";
+import { router } from "expo-router";
 
 const TripRequestHistory: React.FC<object> = () => {
   return (
@@ -14,8 +16,12 @@ const TripRequestHistory: React.FC<object> = () => {
           index: number;
         }): React.ReactNode {
           return (
-            <Box className="px-2 mb-2">
-              <TripRequestItem tripRequest={data.item} />
+            <Box className="px-2 mb-4">
+              <Pressable
+                onPress={() => router.navigate(`trip/${data.item.id}/detail`)}
+              >
+                <TripRequestItem tripRequest={data.item} disabled />
+              </Pressable>
             </Box>
           );
         }}

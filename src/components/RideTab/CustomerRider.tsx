@@ -108,7 +108,7 @@ const CustomerRide: React.FC<object> = () => {
           <View style={{ flex: 1 }} key={0}>
             <TripRequestHistory />
           </View>
-          <View style={{ flex: 1 }} key={0}>
+          <View style={{ flex: 1 }} key={1}>
             <FixedRouteHistory />
           </View>
         </PagerView>

@@ -113,12 +113,12 @@ const FixedRouteDetailPending: React.FC<{
           <HStack space="md" className="w-full bg-white p-4 rounded-sm">
             <Box className="flex-1">
               <Button
-                className="w-full h-[45px] rounded-md items-center justify-center"
+                className="w-full h-[45px] rounded-md items-center justify-center border-success-500"
                 size="xl"
                 variant="outline"
                 onPress={onFinished}
               >
-                <ButtonText>Hoàn thành</ButtonText>
+                <ButtonText className="text-success-500">Hoàn thành</ButtonText>
               </Button>
             </Box>
             <Box className="flex-1">

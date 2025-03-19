@@ -10,6 +10,7 @@ import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import useQuery from "@/hooks/useQuery";
 import FixedRouteItem from "../FixedRoute/FixedRouteItem";
+import { TouchableOpacity } from "react-native";
 
 const TripRequestMerged: React.FC<{
   tripRequest: ITripRequest;
@@ -36,8 +37,14 @@ const TripRequestMerged: React.FC<{
       mergeComponent={
         !!data && (
           <VStack space="md" className="my-2">
-            <Text className="text-lg font-bold mx-4 text-black">Tiện chuyến</Text>
-            <FixedRouteItem isHiddenPrice fixedRoute={data} disabled />
+            <Text className="text-lg font-bold mx-4 text-black">
+              Tiện chuyến
+            </Text>
+            <TouchableOpacity
+              onPress={() => router.navigate(`fixed/${data.id}/detail`)}
+            >
+              <FixedRouteItem isHiddenPrice fixedRoute={data} disabled />
+            </TouchableOpacity>
           </VStack>
         )
       }

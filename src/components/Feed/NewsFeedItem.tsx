@@ -80,7 +80,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               </BottomSheetTrigger>
             </HStack>
             <Text className="text-gray-500 text-xs mb-4">
-              {moment(data.created_at).fromNow()}
+              {moment(data?.created_at).fromNow()}
             </Text>
             <MentionInput
               editable={false}

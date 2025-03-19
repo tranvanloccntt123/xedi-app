@@ -37,7 +37,7 @@ export default function History() {
                 <VStack className="flex-1">
                   <Text className="text-bold text-md flex-1">{item.body}</Text>
                   <Text className="text-thin text-gray-500 text-xs">
-                    {moment(item.created_at).format("hh:mm")}
+                    {moment(item?.created_at).format("hh:mm")}
                   </Text>
                 </VStack>
               </HStack>

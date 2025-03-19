@@ -72,7 +72,7 @@ const TripRequestAccepted: React.FC<{
                   <CustomerTripRequestList tripRequestId={tripRequest.id} />
                 )}
                 <Divider />
-                <Button className="h-[45px] bg-white">
+                <Button className="h-[45px] bg-white" action="default">
                   <ButtonText className="text-black flex-1">
                     Ghép chuyến
                   </ButtonText>

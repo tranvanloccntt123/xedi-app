@@ -219,7 +219,6 @@ const AddFixedRouteModal: React.FC<{
                 </CheckboxIndicator>
                 <CheckboxLabel>Thời gian linh động</CheckboxLabel>
               </Checkbox>
-
               <Box>
                 <Text>Giá (VND)</Text>
                 <Input>

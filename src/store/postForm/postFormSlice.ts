@@ -21,13 +21,16 @@ interface IFixedRouteTmp extends ITripRequestTmp {
 
 export interface PostFormState {
   content: string;
-  fixedRoutes: IFixedRouteTmp[];
+  fixedRoutes: IFixedRouteTmp;
   tripRequest: ITripRequestTmp;
 }
 
 const initialState: PostFormState = {
   content: "",
-  fixedRoutes: [],
+  fixedRoutes: {
+    inputSelectionType: "start-location",
+    routes: [],
+  },
   tripRequest: {
     inputSelectionType: "start-location",
     routes: [],
@@ -41,6 +44,9 @@ const postFormSlice = createSlice({
     setContent: (state, action: PayloadAction<string>) => {
       state.content = action.payload;
     },
+    setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
+      // state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
+    },
     setTripRequestStartLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
@@ -52,9 +58,6 @@ const postFormSlice = createSlice({
       action: PayloadAction<InputLocation | undefined>
     ) => {
       state.tripRequest.endLocation = action.payload;
-    },
-    setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
-      // state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
     },
     setTripRequestDepartureTime: (
       state,
@@ -95,6 +98,53 @@ const postFormSlice = createSlice({
           state.tripRequest.inputSelectionType = "start-location";
         }
       }
+    },
+
+    //Fixed Route
+
+    setFixedRouteStartLocation: (
+      state,
+      action: PayloadAction<InputLocation | undefined>
+    ) => {
+      state.fixedRoutes.startLocation = action.payload;
+    },
+    setFixedRouteEndLocation: (
+      state,
+      action: PayloadAction<InputLocation | undefined>
+    ) => {
+      state.fixedRoutes.endLocation = action.payload;
+    },
+    setFixedRouteDepartureTime: (
+      state,
+      action: PayloadAction<Date | undefined>
+    ) => {
+      state.fixedRoutes.departureTime = action.payload;
+    },
+    setFixedRouteInputSelectionType: (
+      state,
+      action: PayloadAction<SelectLocationType | undefined>
+    ) => {
+      state.fixedRoutes.inputSelectionType = action.payload || "start-location";
+    },
+    setFixedRouteLocation: (state, action: PayloadAction<InputLocation>) => {
+      if (!action.payload) return;
+      if (state.fixedRoutes.inputSelectionType === "start-location") {
+        state.fixedRoutes.startLocation = action.payload;
+        if (!state.fixedRoutes.endLocation) {
+          state.fixedRoutes.inputSelectionType = "end-location";
+        }
+      } else {
+        state.fixedRoutes.endLocation = action.payload;
+        if (!state.fixedRoutes.startLocation) {
+          state.fixedRoutes.inputSelectionType = "start-location";
+        }
+      }
+    },
+    setFixedRouteTotalSeat: (state, action: PayloadAction<number>) => {
+      state.fixedRoutes.totalSeats = action.payload;
+    },
+    setFixedRoutePrice: (state, action: PayloadAction<number>) => {
+      state.fixedRoutes.price = action.payload;
     },
   },
   extraReducers: (builder) => {

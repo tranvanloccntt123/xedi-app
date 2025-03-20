@@ -22,7 +22,7 @@ const FixedRouteMergeList: React.FC<{
 
   const loadData = async () => {
     const { data } =
-      await xediSupabase.tables.tripRequest.selectByUserIdAfterId({
+      await xediSupabase.tables.tripRequest.selectAfterId({
         filter: [
           {
             filed: "fixed_route_id",
@@ -40,13 +40,13 @@ const FixedRouteMergeList: React.FC<{
     }
   }, [user, isRefreshing, focused]);
 
-  return (
+  return user?.id === fixedRoute?.user_id && (
     <VStack space="md">
       <HStack>
         <Heading className="flex-1">Ghép chuyến</Heading>
       </HStack>
       {listFixedRouteRequest.map((v) => (
-        <TripRequestItem tripRequest={v} disabled={true} />
+        <TripRequestItem tripRequest={v} disabled={true} className="mx-0" />
       ))}
     </VStack>
   );

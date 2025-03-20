@@ -14,6 +14,7 @@ import { formatMoney } from "@/src/utils/formatMoney";
 import { Divider } from "@/src/components/ui/divider";
 import Header from "@/src/components/Header";
 import FixedRouteRequestList from "./FixedRouteRequestList";
+import FixedRouteMergeList from "./FixedRouteMergeList";
 
 const styles = StyleSheet.create({
   logo: {
@@ -76,6 +77,7 @@ const FixedRouteDetailFinished: React.FC<{
                 </VStack>
               </Box>
               <FixedRouteRequestList fixedRoute={fixedRoute} />
+              <FixedRouteMergeList fixedRoute={fixedRoute} />
             </VStack>
           </Box>
         </ScrollView>

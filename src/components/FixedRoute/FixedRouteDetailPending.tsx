@@ -20,6 +20,7 @@ import type { RootState } from "@/src/store/store";
 import FixedRouteRequestList from "@/src/components/FixedRoute/FixedRouteRequestList";
 import Header from "@/src/components/Header";
 import { EditIcon } from "@/src/components/ui/icon";
+import FixedRouteMergeList from "./FixedRouteMergeList";
 
 const styles = StyleSheet.create({
   logo: {
@@ -106,6 +107,7 @@ const FixedRouteDetailPending: React.FC<{
                   router.navigate(`/fixed/${fixedRoute.id}/customer-order`)
                 }
               />
+              <FixedRouteMergeList fixedRoute={fixedRoute} />
             </VStack>
           </Box>
         </ScrollView>

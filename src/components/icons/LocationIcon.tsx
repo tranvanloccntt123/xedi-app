@@ -2,7 +2,7 @@ import React from "react";
 import { Path, Svg } from "react-native-svg";
 
 const LocationIcon: React.FC<{
-  size: number;
+  size: number | string;
   color: string;
 }> = ({ color, size }) => {
   return (

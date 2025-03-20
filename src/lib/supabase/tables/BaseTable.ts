@@ -130,6 +130,36 @@ export class BaseTable<Data = any, Source = any> {
       let query = this.supabase.from(this.tableName).select("*");
       if (data?.id) query = query.gt("id", data?.id);
 
+      if (data?.filter) {
+        data.filter.forEach((raw) => {
+          switch (raw.filter) {
+            case "lte":
+              query = query.lte(raw.filed, raw.data);
+              break;
+            case "lt":
+              query = query.lt(raw.filed, raw.data);
+              break;
+            case "gte":
+              query = query.gte(raw.filed, raw.data);
+              break;
+            case "gt":
+              query = query.gt(raw.filed, raw.data);
+              break;
+            case "eq":
+              query = query.eq(raw.filed, raw.data);
+              break;
+            default:
+              break;
+          }
+        });
+      }
+
+      if (data?.orFilter) {
+        data.orFilter.forEach((raw) => {
+          query = query.or(raw.query);
+        });
+      }
+
       return query
         .order("id", { ascending: true })
         .range(0, data?.pageNums || BaseTable.PAGE_NUMS);

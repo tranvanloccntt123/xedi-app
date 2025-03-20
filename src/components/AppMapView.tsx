@@ -15,6 +15,11 @@ import AppLoading from "./View/AppLoading";
 import { BottomSheetContext } from "@/src/components/ui/bottom-sheet";
 import { Box } from "@/src/components/ui/box";
 import useDebounce from "@/hooks/useDebounce";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 
 setAccessToken(null);
 
@@ -32,20 +37,33 @@ const getTileXY = (lat, lon, zoom) => {
   return { x, y };
 };
 
+const MARKER_SIZE = [10, 50];
+
+const ZOOM_LEVEL = [8, 18];
+
 const AppMapView: React.FC<{
   onPress?: (coordinate: { lat: number; lon: number }) => any;
   isOpenTrigger?: boolean;
   children?: React.ReactNode | React.ReactNode[];
-  onCenterChange?: (coordinate: { lat: number; lon: number }) => any;
+  onCenterChange?: (
+    coordinate: { lat: number; lon: number },
+    zoomLevel?: number
+  ) => any;
+  debounceCenterChange?: number;
   onRegionWillChange?: () => any;
+  isHideCurrentLocation?: boolean;
 }> = ({
   onPress,
   isOpenTrigger,
   children,
   onCenterChange,
   onRegionWillChange,
+  isHideCurrentLocation,
+  debounceCenterChange,
 }) => {
-  const debounce = useDebounce({ time: 100 });
+  const debounce = useDebounce({
+    time: debounceCenterChange !== undefined ? debounceCenterChange : 100,
+  });
   const mapViewRef = React.useRef<MapViewRef>(null);
   const { userLat, userLon } = useSelector((state: RootState) => ({
     userLat: state.auth.user.lat,
@@ -63,19 +81,33 @@ const AppMapView: React.FC<{
   );
   const { handleOpen } = React.useContext(BottomSheetContext);
 
+  const markerResizeAnim = useSharedValue(18);
+
   const onMapPress = (event) => {
     const { geometry } = event;
     geometry.coordinates?.length &&
       onPress?.({ lat: geometry.coordinates[1], lon: geometry.coordinates[0] });
     isOpenTrigger && handleOpen?.();
-    console.log(event);
     const { x, y } = getTileXY(
       geometry.coordinates[1],
       geometry.coordinates[0],
       8
     );
-    console.log(x, y);
   };
+
+  const markerStyle = useAnimatedStyle(() => {
+    return {
+      width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+      height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+      transform: [
+        {
+          translateY:
+            -interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE) / 2,
+        },
+      ],
+    };
+  });
+
   return (
     <Box className="flex-1 w-full">
       <AppLoading isLoading={[lat, lon].includes(null)}>
@@ -84,11 +116,16 @@ const AppMapView: React.FC<{
             style={{ flex: 1 }}
             onPress={onMapPress}
             onRegionWillChange={() => onRegionWillChange?.()}
+            rotateEnabled={false}
             onRegionIsChanging={async (f) => {
+              markerResizeAnim.value = f.properties.zoomLevel;
               if (onCenterChange) {
                 debounce(async () => {
                   const center = await mapViewRef.current.getCenter();
-                  onCenterChange({ lat: center[1], lon: center[0] });
+                  onCenterChange(
+                    { lat: center[1], lon: center[0] },
+                    f.properties.zoomLevel
+                  );
                 });
               }
             }}
@@ -97,7 +134,7 @@ const AppMapView: React.FC<{
             <Camera
               defaultSettings={{
                 centerCoordinate: [lon, lat],
-                zoomLevel: 18,
+                zoomLevel: ZOOM_LEVEL[1],
               }}
             />
             <RasterSource
@@ -105,17 +142,21 @@ const AppMapView: React.FC<{
               tileUrlTemplates={[
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
               ]}
-              minZoomLevel={2}
-              maxZoomLevel={19}
+              minZoomLevel={ZOOM_LEVEL[0]}
+              maxZoomLevel={ZOOM_LEVEL[1]}
             >
               <RasterLayer
                 id="openStreetMapLayer"
                 sourceID="openStreetMapSource"
               />
             </RasterSource>
-            <MarkerView coordinate={[lon, lat]}>
-              <LocationIcon size={50} color="#bf2c2c" />
-            </MarkerView>
+            {!isHideCurrentLocation && (
+              <MarkerView coordinate={[lon, lat]}>
+                <Animated.View style={[markerStyle]}>
+                  <LocationIcon size={"100%"} color="#bf2c2c" />
+                </Animated.View>
+              </MarkerView>
+            )}
             {children}
           </MapView>
         )}

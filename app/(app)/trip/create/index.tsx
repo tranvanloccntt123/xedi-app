@@ -3,7 +3,7 @@ import useLocation from "@/hooks/useLocation";
 import { useDispatch } from "react-redux";
 import { SelectLocationType } from "@/src/types";
 import { useLocalSearchParams } from "expo-router";
-import { resetPost } from "@/src/store/post/postFormSlice";
+import { resetPost } from "@/src/store/postForm/postFormSlice";
 import TripRequestMapSelectionLayout from "@/src/components/TripRequest/TripRequestMapSelectionLayout";
 
 export default function CreateTripRequestOnly() {

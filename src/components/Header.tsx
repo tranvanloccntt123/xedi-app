@@ -14,20 +14,22 @@ const Header: React.FC<{
   rightComponent?: React.ReactNode;
 }> = ({ title, rightComponent, onBack, subTitle }) => {
   return (
-    <HStack space="sm" className="items-center mb-6">
-      {router.canGoBack() && (
-        <Button variant="link" onPress={onBack || router.back}>
-          <ChevronLeftIcon size={24} color="#000000" />
-        </Button>
-      )}
-      <VStack space="sm" className="flex-1 justify-center">
-        <Heading size={subTitle ? "sm" : "xl"} className="flex-1">
-          {title}
-        </Heading>
-        {!!subTitle && <Text className="text-xs text-black">{subTitle}</Text>}
-      </VStack>
-      {!!rightComponent && rightComponent}
-    </HStack>
+    <VStack className="mb-6">
+      <HStack space="sm" className="items-center">
+        {router.canGoBack() && (
+          <Button variant="link" onPress={onBack || router.back}>
+            <ChevronLeftIcon size={24} color="#000000" />
+          </Button>
+        )}
+        <VStack space="sm" className="flex-1 justify-center">
+          <Heading size={"xl"}>
+            {title}
+          </Heading>
+        </VStack>
+        {!!rightComponent && rightComponent}
+      </HStack>
+      {!!subTitle && <Text style={{marginLeft: 30}} className="text-md text-black">{subTitle}</Text>}
+    </VStack>
   );
 };
 

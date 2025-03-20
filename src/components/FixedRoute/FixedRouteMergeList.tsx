@@ -40,7 +40,7 @@ const FixedRouteMergeList: React.FC<{
     }
   }, [user, isRefreshing, focused]);
 
-  return user?.id === fixedRoute?.user_id && (
+  return user?.id === fixedRoute?.user_id && !!listFixedRouteRequest.length && (
     <VStack space="md">
       <HStack>
         <Heading className="flex-1">Ghép chuyến</Heading>

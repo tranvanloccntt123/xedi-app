@@ -12,6 +12,8 @@ import AppMapView from "../AppMapView";
 import Header from "../Header";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
+import { xediSupabase } from "@/src/lib/supabase";
+import { Heading } from "../ui/heading";
 
 const styles = StyleSheet.create({
   logo: {
@@ -34,6 +36,25 @@ const FixedRouteDetailRunning: React.FC<{
 }> = ({ fixedRoute, onFinished }) => {
   useLocation({ isWatchLocation: true });
   const user: IUser = useSelector((state: RootState) => state.auth.user);
+
+  const { lat, lon } = useSelector((state: RootState) => state.location);
+
+  const requesting = React.useRef(false);
+
+  const syncLocation = async () => {
+    if (requesting.current) return;
+    requesting.current = true;
+    try {
+      await xediSupabase.tables.users.updateByUserId({ lat, lon });
+    } catch (e) {}
+    requesting.current = false;
+  };
+
+  React.useEffect(() => {
+    if (lat && lon) {
+      syncLocation();
+    }
+  }, [lat, lon]);
 
   const isAuthor = React.useMemo(
     () => user && fixedRoute && user.id === fixedRoute.user_id,
@@ -59,7 +80,12 @@ const FixedRouteDetailRunning: React.FC<{
             }
           />
         </Box>
-        <AppMapView />
+        <Box className="flex-1">
+          <AppMapView />
+        </Box>
+        <Box className="p-4 bg-white">
+          <Heading>Khách hàng</Heading>
+        </Box>
       </SafeAreaView>
     </Box>
   );

@@ -33,8 +33,8 @@ import {
   setTripRequestStartLocation,
   setTripRequestEndLocation,
   resetPost,
-} from "../../store/post/postFormSlice";
-import { setAndFetchRouteLocation } from "../../store/post/postFormThunks";
+} from "../../store/postForm/postFormSlice";
+import { setAndFetchRouteLocation } from "../../store/postForm/postFormThunks";
 import SwapIcon from "../icons/SwapIcon";
 import CloseIcon from "../icons/CloseIcon";
 import { Button, ButtonText } from "../ui/button";

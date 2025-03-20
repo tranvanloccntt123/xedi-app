@@ -28,6 +28,7 @@ import {
   pushFetchingInfo,
   XEDI_GROUP_INFO,
 } from "@/src/store/fetchServices/fetchServicesSlice";
+import { resetPost } from "@/src/store/postForm/postFormSlice";
 
 export default function Home() {
   useLocation({});
@@ -89,7 +90,10 @@ export default function Home() {
                   </Text>
                 </VStack>
                 <Button
-                  onPress={() => router.push("/post/create")}
+                  onPress={() => {
+                    dispatch(resetPost({}));
+                    router.push("/post/create");
+                  }}
                   variant="link"
                   className="w-[40px] h-[40px] bg-typography-100 rounded-full"
                 >

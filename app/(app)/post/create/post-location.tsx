@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useDispatch } from "react-redux";
-import { setTripRequestInputSelectionType } from "@/src/store/post/postFormSlice";
+import { setTripRequestInputSelectionType } from "@/src/store/postForm/postFormSlice";
 import useLocation from "@/hooks/useLocation";
 import TripRequestMapSelectionLayout from "@/src/components/TripRequest/TripRequestMapSelectionLayout";
 

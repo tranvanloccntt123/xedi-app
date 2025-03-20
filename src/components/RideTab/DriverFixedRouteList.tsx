@@ -2,7 +2,6 @@ import React from "react";
 import { Box } from "../ui/box";
 import InfinityList, { InfinityListMethods } from "../InfinityList";
 import { xediSupabase } from "@/src/lib/supabase";
-import { Tables } from "@/src/constants";
 import { IFixedRoute, IFixedRouteStatus } from "@/src/types";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { HStack } from "../ui/hstack";

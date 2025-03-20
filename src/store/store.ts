@@ -23,7 +23,7 @@ import feedReducer, { FeedState } from "./feed/feedSlice";
 import fetchServices, {
   FetchServicesState,
 } from "./fetchServices/fetchServicesSlice";
-import postFormReducer, { PostFormState } from "./post/postFormSlice";
+import postFormReducer, { PostFormState } from "./postForm/postFormSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserState } from "../types";
 import locationReducer, { LocationState } from "./location/locationSlice";

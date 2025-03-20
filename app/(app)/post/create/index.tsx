@@ -23,7 +23,7 @@ import {
   setFixedRoutes,
   resetPost,
   setTripRequestDepartureTime,
-} from "@/src/store/post/postFormSlice";
+} from "@/src/store/postForm/postFormSlice";
 import DateTime from "@/src/components/DateTime";
 import ErrorModal from "@/src/components/ErrorModal";
 import CreatePostButton from "@/src/components/Feed/CreatePost";
@@ -94,7 +94,6 @@ const CustomerExpand: React.FC<object> = () => {
 
 export default function CreatePost() {
   const dispatch = useDispatch();
-  const [fixedRouteModalVisible, setFixedRouteModalVisible] = useState(false);
   //TODO
   const { content } = useSelector((state: RootState) => state.postForm);
 
@@ -186,7 +185,7 @@ export default function CreatePost() {
               <Button
                 variant="link"
                 className="justify-start"
-                onPress={() => setFixedRouteModalVisible(true)}
+                onPress={() => router.navigate('fixed/create')}
               >
                 <HStack space="sm" className="items-center">
                   <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
@@ -216,8 +215,7 @@ export default function CreatePost() {
       </SafeAreaView>
       <OnlyDriver>
         <AddFixedRouteModal
-          visible={fixedRouteModalVisible}
-          onClose={() => setFixedRouteModalVisible(false)}
+          visible={false}
           onFixedRouteCreated={(fixedRoute) => setFixedRoutes(fixedRoute)}
         />
       </OnlyDriver>

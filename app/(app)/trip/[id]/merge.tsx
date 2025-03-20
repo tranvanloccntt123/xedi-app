@@ -50,7 +50,7 @@ export default function MergeTripRequest() {
   const handlerMergeTripRequest = async () => {
     if (!driverRequest || !checked) return;
     try {
-      await xediSupabase.tables.driverTripRequests.updateById(
+      await xediSupabase.tables.fixedRoutes.updateById(
         driverRequest.id,
         { status: IDriverTripRequestStatus.DRIVER_MERGED_TRIP_REQUEST }
       );

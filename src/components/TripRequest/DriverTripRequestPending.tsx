@@ -23,7 +23,7 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
   const queryFn = async () => {
     try {
       const { data } =
-        await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
+        await xediSupabase.tables.driverTripRequest.selectRequestOrdered({
           tripRequestId: tripRequestId,
           userId: user.id,
         });
@@ -87,7 +87,7 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
           </FormControl>
           <Button
             onPress={async () => {
-              await xediSupabase.tables.driverTripRequests.addWithUserId([
+              await xediSupabase.tables.fixedRoutes.addWithUserId([
                 {
                   price: parseFloat(price),
                   trip_request_id: tripRequestId,

@@ -18,7 +18,7 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
   const queryFn = async () => {
     try {
       const { data } =
-        await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
+        await xediSupabase.tables.fixedRoutes.selectRequestOrdered({
           tripRequestId: tripRequestId,
           userId: user.id,
         });
@@ -43,7 +43,7 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
       fetchDetailInfo({
         key: queryKey,
         async fetch() {
-          await xediSupabase.tables.driverTripRequests.deleteById(data.id);
+          await xediSupabase.tables.fixedRoutes.deleteById(data.id);
           return queryFn();
         },
       })

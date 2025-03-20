@@ -13,7 +13,7 @@ export const acceptDriverTripRequest = createAsyncThunk<
   ) => {
     try {
       const { data: driverTripRequestData, error } =
-        await xediSupabase.tables.driverTripRequests.updateById(
+        await xediSupabase.tables.fixedRoutes.updateById(
           data.driverTripRequestId,
           {
             status: IDriverTripRequestStatus.CUSTOMER_ACCEPT,
@@ -43,7 +43,7 @@ export const fetchDriverTripRequestAccepted = createAsyncThunk<
   async (data: { tripRequestId: number }, { rejectWithValue }) => {
     try {
       const { data: driverTripRequestData, error } =
-        await xediSupabase.tables.driverTripRequests.selectRequestOrderAccepted(
+        await xediSupabase.tables.fixedRoutes.selectRequestOrderAccepted(
           { tripRequestId: data.tripRequestId }
         );
       if (error) {

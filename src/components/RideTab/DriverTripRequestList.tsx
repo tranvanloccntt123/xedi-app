@@ -72,7 +72,7 @@ const DriverTripRequestList: React.FC<{
         queryFn={async function (lastPage: any): Promise<any[]> {
           try {
             const { data } =
-              await xediSupabase.tables.driverTripRequests.selectByUserIdBeforeDate(
+              await xediSupabase.tables.driverTripRequest.selectByUserIdBeforeDate(
                 {
                   date: lastPage,
                   select: `*, ${Tables.TRIP_REQUESTS}(*)`,

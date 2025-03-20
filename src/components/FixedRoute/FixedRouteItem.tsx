@@ -23,11 +23,19 @@ const FixedRouteItem: React.FC<{
   isHiddenPrice?: boolean;
 }> = ({ fixedRoute: item, disabled, className, isHiddenPrice }) => {
   const { title: startTitle, subTitle: startSubTitle } = useMemo(
-    () => splitLocation(item.startLocation.display_name),
+    () =>
+      splitLocation(item?.startLocation?.display_name) ?? {
+        title: "",
+        subTitle: "",
+      },
     []
   );
   const { title: endTitle, subTitle: endSubTitle } = useMemo(
-    () => splitLocation(item.endLocation.display_name),
+    () =>
+      splitLocation(item?.endLocation?.display_name) ?? {
+        title: "",
+        subTitle: "",
+      },
     []
   );
   return (
@@ -43,7 +51,9 @@ const FixedRouteItem: React.FC<{
         )}
         <HStack space="sm">
           {item.status === 2 && (
-            <Text className="text-md font-bold text-success-400">Hoàn thành</Text>
+            <Text className="text-md font-bold text-success-400">
+              Hoàn thành
+            </Text>
           )}
           {!!item.departureTime && (
             <Text className="text-sm font-bold">

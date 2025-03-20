@@ -21,7 +21,7 @@ export function hidePhoneNumber(phoneNumber: string): string {
 }
 
 export function splitLocation(address: string) {
-  const _split = address.split(",").map((v) => v.trim());
+  const _split = (address || "").split(",").map((v) => v.trim());
   if (_split.length < 3) {
     return {
       title: address,

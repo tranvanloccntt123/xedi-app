@@ -18,7 +18,7 @@ export class XediTables {
   notifications: Notifications;
   userCoins: UserCoins;
   tripRequest: TripRequests;
-  driverTripRequests: DriverTripRequests;
+  driverTripRequest: DriverTripRequests;
 
   constructor(supabase: SupabaseClient) {
     this.fixedRoutes = new FixedRoutes(supabase);
@@ -29,6 +29,6 @@ export class XediTables {
     this.notifications = new Notifications(supabase);
     this.userCoins = new UserCoins(supabase);
     this.tripRequest = new TripRequests(supabase);
-    this.driverTripRequests = new DriverTripRequests(supabase);
+    this.driverTripRequest = new DriverTripRequests(supabase);
   }
 }

@@ -33,7 +33,7 @@ const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   const fetch = async () => {
     try {
       const { data } =
-        await xediSupabase.tables.driverTripRequests.selectRequestOrdered({
+        await xediSupabase.tables.driverTripRequest.selectRequestOrdered({
           tripRequestId: tripRequestId,
         });
       setRequestList(data);

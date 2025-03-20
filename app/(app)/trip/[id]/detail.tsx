@@ -64,7 +64,7 @@ export default function TripRequestDetail() {
           await xediSupabase.tables.tripRequest.updateById(tripRequest?.id, {
             status: IDriverTripRequestStatus.PENDING,
           });
-          await xediSupabase.tables.driverTripRequests.deleteById(
+          await xediSupabase.tables.fixedRoutes.deleteById(
             driverRequestId
           );
           return queryFn();

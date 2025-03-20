@@ -34,7 +34,7 @@ const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({
   };
 
   const handleDelete = async () => {
-    if (request) xediSupabase.tables.driverTripRequests.deleteById(request.id);
+    if (request) xediSupabase.tables.fixedRoutes.deleteById(request.id);
   };
 
   return (

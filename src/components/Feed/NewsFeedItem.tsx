@@ -84,7 +84,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
             </Text>
             <MentionInput
               editable={false}
-              value={data.content}
+              value={data?.content || ""}
               onChange={() => {}}
             />
           </VStack>

@@ -4,9 +4,14 @@ import { RootState } from "../../store/store";
 import { ShapeSource, LineLayer } from "@maplibre/maplibre-react-native";
 import { decodePolyline } from "../../lib/osrm";
 
-const CreatePostPolyline: React.FC<object> = () => {
+const CreatePostPolyline: React.FC<{
+  type?: "fixed-route" | "trip-request";
+}> = ({ type }) => {
   const routes = useSelector(
-    (state: RootState) => state.postForm?.tripRequest.routes || []
+    (state: RootState) =>
+      (type === "fixed-route"
+        ? state.postForm?.fixedRoutes.routes
+        : state.postForm?.tripRequest.routes) || []
   );
 
   const lines = React.useMemo(() => {

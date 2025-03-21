@@ -17,13 +17,16 @@ import { StyleSheet } from "react-native";
 import { Center } from "@/src/components/ui/center";
 import { MarkerView } from "@maplibre/maplibre-react-native";
 import EclipseIcon from "@/src/components/icons/EclipseIcon";
+import BottomSheetGesture, {
+  BottomSheetGestureMethods,
+} from "../BottomSheetGesture";
+import LocationSearchTripRequest from "../Location/LocationSearchTripRequest";
 
 const TripRequestMapSelectionLayout: React.FC<{
   onConfirm?: () => any;
   isShareHide?: boolean;
 }> = ({ onConfirm, isShareHide }) => {
   useLocation({ isWatchLocation: true });
-  const { type } = useLocalSearchParams<{ type: SelectLocationType }>();
   const { lat, lon } = useSelector((state: RootState) => state.location);
   const [coordinate, setCoordinate] = React.useState<{
     lat: number;
@@ -32,6 +35,8 @@ const TripRequestMapSelectionLayout: React.FC<{
     lat: lat,
     lon: lon,
   });
+
+  const bottomSheetRef = React.useRef<BottomSheetGestureMethods>(null);
 
   const dispatch = useDispatch();
 
@@ -44,7 +49,6 @@ const TripRequestMapSelectionLayout: React.FC<{
         <Center className="flex-1 w-full">
           <AppMapView
             onCenterChange={(location) => {
-              console.log(location);
               setCoordinate(location);
             }}
           >
@@ -62,11 +66,17 @@ const TripRequestMapSelectionLayout: React.FC<{
           </Animated.View>
         </Center>
       </SafeAreaView>
-      <CreateTripBottomSheet
-        onConfirm={onConfirm}
-        isShareHide={isShareHide}
+      <BottomSheetGesture
         coordinate={coordinate}
         onPress={(location) => dispatch(setTripRequestLocation(location))}
+        ref={bottomSheetRef}
+        locationSearchComponent={
+          <LocationSearchTripRequest
+            onConfirm={onConfirm}
+            isShareHide={isShareHide}
+            onQueryFullfiled={() => bottomSheetRef.current?.openFull()}
+          />
+        }
       />
     </Box>
   );

@@ -162,7 +162,7 @@ const AddFixedRouteModal: React.FC<{
                   }}
                 >
                   <ButtonText>
-                    {startLocation.display_name || "Điểm khởi hành"}
+                    {startLocation?.display_name || "Điểm khởi hành"}
                   </ButtonText>
                 </Button>
                 {!!errors.startLocation && (

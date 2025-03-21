@@ -7,8 +7,6 @@ import {
 } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
-  clamp,
-  runOnJS,
   useAnimatedKeyboard,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -35,7 +33,7 @@ const CreateTripBottomSheet: React.FC<{
   onConfirm?: () => any;
   isShareHide?: boolean;
 }> = ({ coordinate, onCoordinateChange, onPress, onConfirm, isShareHide }) => {
-  const { setCoordinate, firstLoadData, data, title, subTitle, isLoading } =
+  const { setCoordinate, firstLoadData, data, title, subTitle } =
     useReverseLocation();
 
   React.useEffect(() => {

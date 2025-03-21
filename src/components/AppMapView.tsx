@@ -37,9 +37,9 @@ const getTileXY = (lat, lon, zoom) => {
   return { x, y };
 };
 
-const MARKER_SIZE = [10, 50];
+const MARKER_SIZE = [0, 80];
 
-const ZOOM_LEVEL = [8, 18];
+const ZOOM_LEVEL = [0, 18];
 
 const AppMapView: React.FC<{
   onPress?: (coordinate: { lat: number; lon: number }) => any;
@@ -99,12 +99,6 @@ const AppMapView: React.FC<{
     return {
       width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
       height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
-      transform: [
-        {
-          translateY:
-            -interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE) / 2,
-        },
-      ],
     };
   });
 
@@ -152,8 +146,8 @@ const AppMapView: React.FC<{
             </RasterSource>
             {!isHideCurrentLocation && (
               <MarkerView coordinate={[lon, lat]}>
-                <Animated.View style={[markerStyle]}>
-                  <LocationIcon size={"100%"} color="#bf2c2c" />
+                <Animated.View style={[markerStyle, { alignItems: "center" }]}>
+                  <LocationIcon size={"50%"} color="#bf2c2c" />
                 </Animated.View>
               </MarkerView>
             )}

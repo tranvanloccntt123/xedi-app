@@ -5,16 +5,16 @@ import useDebounce from "@/hooks/useDebounce";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {
-  setTripRequestInputSelectionType,
-  setTripRequestLocation,
-  setTripRequestStartLocation,
-  setTripRequestEndLocation,
   resetPost,
+  setFixedRouteStartLocation,
+  setFixedRouteEndLocation,
+  setFixedRouteLocation,
+  setFixedRouteInputSelectionType,
 } from "../../store/postForm/postFormSlice";
-import { setAndFetchRouteLocation } from "../../store/postForm/postFormThunks";
 import { router } from "expo-router";
 import { xediSupabase } from "../../lib/supabase";
 import LocationSearch from "./LocationSearch";
+import { setAndFetchFixedRouteLocation } from "@/src/store/postForm/postFormThunks";
 
 interface LocationSearchProps {
   defaultLocation?: InputLocation;
@@ -23,7 +23,7 @@ interface LocationSearchProps {
   isShareHide?: boolean;
 }
 
-export default function LocationSearchTripRequest({
+export default function LocationSearchFixedRoute({
   defaultLocation,
   onQueryFullfiled,
   onConfirm,
@@ -32,62 +32,44 @@ export default function LocationSearchTripRequest({
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
   const { inputSelectionType, startLocation, endLocation, departureTime } =
-    useSelector((state: RootState) => state.postForm.tripRequest);
+    useSelector((state: RootState) => state.postForm.fixedRoutes);
 
   const dispatch = useDispatch();
 
   const debounceSendEvent = useDebounce({ time: 100 });
 
   useEffect(() => {
-    if (startLocation && endLocation)
-      debounceSendEvent(() => {
-        dispatch(setAndFetchRouteLocation());
-        onQueryFullfiled?.();
-      });
+    debounceSendEvent(() => {
+      dispatch(setAndFetchFixedRouteLocation());
+      onQueryFullfiled?.();
+    });
   }, [startLocation, endLocation]);
 
   const handlerSwap = () => {
     const tmpEndLocation = endLocation;
     const tmpStartLocation = startLocation;
-    dispatch(setTripRequestStartLocation(tmpEndLocation));
-    dispatch(setTripRequestEndLocation(tmpStartLocation));
+    dispatch(setFixedRouteStartLocation(tmpEndLocation));
+    dispatch(setFixedRouteEndLocation(tmpStartLocation));
   };
 
   return (
     <LocationSearch
       defaultLocation={defaultLocation}
-      onConfirm={() =>
-        onConfirm
-          ? onConfirm?.()
-          : async () => {
-              const { data: tripRequestData } =
-                await xediSupabase.tables.tripRequest.add([
-                  {
-                    startLocation,
-                    endLocation,
-                    user_id: user.id,
-                    departureTime,
-                    type: "Taxi",
-                  },
-                ]);
-              dispatch(resetPost({}));
-              router.back();
-            }
-      }
+      onConfirm={onConfirm}
       isShareHide={isShareHide}
       inputSelectionType={inputSelectionType}
       startLocation={startLocation}
       endLocation={endLocation}
       departureTime={departureTime}
       onSwap={handlerSwap}
-      onSelectLocation={(item) => dispatch(setTripRequestLocation(item))}
-      onClearStartLocation={() => dispatch(setTripRequestStartLocation())}
-      onClearEndLocation={() => dispatch(setTripRequestEndLocation())}
+      onSelectLocation={(item) => dispatch(setFixedRouteLocation(item))}
+      onClearStartLocation={() => dispatch(setFixedRouteStartLocation())}
+      onClearEndLocation={() => dispatch(setFixedRouteEndLocation())}
       onStartLocationFocus={() =>
-        dispatch(setTripRequestInputSelectionType("start-location"))
+        dispatch(setFixedRouteInputSelectionType("start-location"))
       }
       onEndLocationFocus={() =>
-        dispatch(setTripRequestInputSelectionType("end-location"))
+        dispatch(setFixedRouteInputSelectionType("end-location"))
       }
     />
   );

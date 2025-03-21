@@ -11,8 +11,6 @@ import { MentionInput } from "@/src/components/ControlledMentions";
 import { HStack } from "@/src/components/ui/hstack";
 import ChevronLeftIcon from "@/src/components/icons/ChevronLeftIcon";
 import FixedRouteIcon from "@/src/components/icons/FixedRouteIcon";
-import AddFixedRouteModal from "@/src/components/FixedRoute/AddFixedRouteModal";
-import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
 import OnlyDriver from "@/src/components/View/OnlyDriver";
 import OnlyCustomer from "@/src/components/View/OnlyCustomer";
 import HiIcon from "@/src/components/icons/HiIcon";
@@ -20,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import {
   setContent,
-  setFixedRoutes,
   resetPost,
   setTripRequestDepartureTime,
 } from "@/src/store/postForm/postFormSlice";
@@ -28,6 +25,8 @@ import DateTime from "@/src/components/DateTime";
 import ErrorModal from "@/src/components/ErrorModal";
 import CreatePostButton from "@/src/components/Feed/CreatePost";
 import ImageIcon from "@/src/components/icons/ImageIcon";
+import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
+import { IFixedRoute } from "@/src/types";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -95,7 +94,9 @@ const CustomerExpand: React.FC<object> = () => {
 export default function CreatePost() {
   const dispatch = useDispatch();
   //TODO
-  const { content } = useSelector((state: RootState) => state.postForm);
+  const { content, fixedRoutes } = useSelector(
+    (state: RootState) => state.postForm
+  );
 
   const [isError, setIsError] = useState(false);
 
@@ -160,32 +161,36 @@ export default function CreatePost() {
                 />
               </Pressable>
             </VStack>
-            {/* <OnlyDriver>
-              {!!fixedRoutes?.length && (
-                <Box>
-                  <ScrollView horizontal>
-                    <HStack space="md">
-                      {fixedRoutes.map((fixedRoute) => (
-                        <Box key={fixedRoute.id}>
-                          <FixedRouteItem
-                            fixedRoute={fixedRoute}
-                            className="w-[280px]"
-                            disabled
-                          />
-                        </Box>
-                      ))}
-                    </HStack>
-                  </ScrollView>
+            <OnlyDriver>
+              {!!fixedRoutes.startLocation && !!fixedRoutes.endLocation && (
+                <Box className="w-full">
+                  <FixedRouteItem
+                    fixedRoute={
+                      {
+                        ...fixedRoutes,
+                        id: 0,
+                        user_id: "",
+                        created_at: new Date(),
+                        availableSeats: 0,
+                        status: 0,
+                        departureTime: (
+                          fixedRoutes.departureTime || new Date()
+                        ).toDateString(),
+                      } as IFixedRoute
+                    }
+                    className="w-[280px]"
+                    disabled
+                  />
                 </Box>
               )}
-            </OnlyDriver> */}
+            </OnlyDriver>
           </VStack>
           <VStack space="lg" className="mt-4">
             <OnlyDriver>
               <Button
                 variant="link"
                 className="justify-start"
-                onPress={() => router.navigate('fixed/create')}
+                onPress={() => router.navigate("fixed/create")}
               >
                 <HStack space="sm" className="items-center">
                   <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
@@ -213,12 +218,6 @@ export default function CreatePost() {
           </VStack>
         </Box>
       </SafeAreaView>
-      <OnlyDriver>
-        <AddFixedRouteModal
-          visible={false}
-          onFixedRouteCreated={(fixedRoute) => setFixedRoutes(fixedRoute)}
-        />
-      </OnlyDriver>
       <ErrorModal
         showModal={isError}
         setShowModal={setIsError}

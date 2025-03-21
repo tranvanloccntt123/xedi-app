@@ -150,6 +150,8 @@ export default function EditFixedRoute() {
                     const numericValue = unformatMoney(value)
                     if (!isNaN(numericValue)) {
                       setPrice(numericValue.toString())
+                    } else {
+                      setPrice("");
                     }
                     setErrors({ ...errors, price: "" })
                   }}

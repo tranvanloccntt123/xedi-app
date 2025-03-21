@@ -4,7 +4,10 @@ import type {
   IFixedRoute,
   SelectLocationType,
 } from "@/src/types";
-import { setAndFetchRouteLocation } from "./postFormThunks";
+import {
+  setAndFetchFixedRouteLocation,
+  setAndFetchRouteLocation,
+} from "./postFormThunks";
 
 interface ITripRequestTmp {
   startLocation?: InputLocation;
@@ -159,6 +162,20 @@ const postFormSlice = createSlice({
       if (action.payload.endLocation)
         state.tripRequest.endLocation = action.payload.endLocation;
     });
+    builder.addCase(
+      setAndFetchFixedRouteLocation.fulfilled,
+      (state, action) => {
+        if (action.payload.routes)
+          state.fixedRoutes.routes = action.payload.routes || [];
+        if (action.payload.inputSelectionType)
+          state.fixedRoutes.inputSelectionType =
+            action.payload.inputSelectionType;
+        if (action.payload.startLocation)
+          state.fixedRoutes.startLocation = action.payload.startLocation;
+        if (action.payload.endLocation)
+          state.fixedRoutes.endLocation = action.payload.endLocation;
+      }
+    );
   },
 });
 
@@ -171,6 +188,13 @@ export const {
   setTripRequestDepartureTime,
   setTripRequestInputSelectionType,
   setTripRequestLocation,
+  setFixedRouteDepartureTime,
+  setFixedRouteEndLocation,
+  setFixedRouteInputSelectionType,
+  setFixedRouteLocation,
+  setFixedRoutePrice,
+  setFixedRouteStartLocation,
+  setFixedRouteTotalSeat,
 } = postFormSlice.actions;
 
 export default postFormSlice.reducer;

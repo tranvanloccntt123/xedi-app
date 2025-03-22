@@ -28,7 +28,8 @@ export default class Feed extends BaseTable<INewsFeedItem> {
           created_at 
         ),
         ${Tables.USERS} (*),
-        ${Tables.TRIP_REQUESTS} (*)
+        ${Tables.TRIP_REQUESTS} (*),
+        ${Tables.COMMENTS} (count)
       `);
       if (data?.date) query = query.lt("created_at", data?.date);
 

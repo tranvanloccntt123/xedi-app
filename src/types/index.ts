@@ -99,6 +99,7 @@ export interface INewsFeedItem {
   fixed_routes: IFixedRoute[];
   trip_requests: ITripRequest[];
   content: string;
+  comments: [{ count: number }];
 }
 
 export interface UserState {
@@ -236,4 +237,14 @@ export enum IFixedRouteOrderStatus {
 
 export enum IErrorRequest {
   NOT_FOUND = "Not Found",
+}
+
+export interface IComment {
+  id: string;
+  users?: IUser;
+  parent_id?: string;
+  created_at: Date;
+  content: string;
+  feed_id?: number;
+  feed?: INewsFeedItem;
 }

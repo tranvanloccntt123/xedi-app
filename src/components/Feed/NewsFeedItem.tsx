@@ -25,6 +25,8 @@ import { Avatar, AvatarFallbackText } from "../ui/avatar";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { useDataInfo } from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { Button, ButtonText } from "../ui/button";
+import ChatIcon from "../icons/ChatIcon";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -172,6 +174,18 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               </HStack>
             </ScrollView>
           ))}
+        <HStack space="md" className="px-4 py-2">
+          <Button
+            variant="link"
+            action="default"
+            onPress={() => router.navigate(`post/${data.id}/comment`)}
+          >
+            <ChatIcon size={24} color="#000" />
+            <Text className="text-xl text-black">
+              {data.comments?.[0]?.count || 0}
+            </Text>
+          </Button>
+        </HStack>
       </VStack>
     </Animated.View>
   );

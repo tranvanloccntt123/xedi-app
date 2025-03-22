@@ -38,7 +38,7 @@ const PinMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
     (state: RootState) => state.postForm.fixedRoutes
   );
   return (
-    (!startLocation || !endLocation) &&
+    (!startLocation?.display_name || !endLocation?.display_name) &&
     !!coordinate?.lat &&
     !!coordinate?.lon && (
       <MarkerView coordinate={[coordinate.lon, coordinate.lat]}>
@@ -82,7 +82,6 @@ export default function CreateFixedRoute() {
         price: `${fixedRouteTmp?.price || ""}`,
         departureTime: `${fixedRouteTmp?.departureTime || ""}`,
       });
-      console.log(validateForm);
       setError({
         price: validateForm.price?.message || "",
         departureTime: validateForm.departureTime?.message || "",

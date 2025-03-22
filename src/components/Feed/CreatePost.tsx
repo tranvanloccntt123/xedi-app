@@ -11,7 +11,7 @@ const CreatePostButton: React.FC<{
 }> = ({ onCreatePostSuccess, onError }) => {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
-  const { content, tripRequest } = useSelector(
+  const { content, tripRequest, fixedRoutes } = useSelector(
     (state: RootState) => state.postForm
   );
 
@@ -22,13 +22,13 @@ const CreatePostButton: React.FC<{
       );
       return;
     }
-    if (!tripRequest.startLocation) {
+    if (!tripRequest.startLocation?.display_name) {
       onError(
         "Bạn cần thêm điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!tripRequest.endLocation) {
+    if (!tripRequest.endLocation?.display_name) {
       onError(
         "Bạn cần thêm điểm đến hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
@@ -58,11 +58,60 @@ const CreatePostButton: React.FC<{
     }
   };
 
+  const handlerDriverPostWithFixedRoute = async () => {
+    if (!fixedRoutes.departureTime) {
+      onError(
+        "Bạn cần thêm thời điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
+      );
+      return;
+    }
+    if (!fixedRoutes.startLocation?.display_name) {
+      onError(
+        "Bạn cần thêm điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
+      );
+      return;
+    }
+    if (!fixedRoutes.endLocation?.display_name) {
+      onError(
+        "Bạn cần thêm điểm đến hành để tài xế thuận tiện trong việc đưa đón nhé!"
+      );
+      return;
+    }
+    if (!fixedRoutes.price) {
+      onError("Bạn cần thêm điểm giá cho chuyến đi");
+      return;
+    }
+    const { data: tripRequestData } = await xediSupabase.tables.fixedRoutes.add(
+      [
+        {
+          startLocation: tripRequest.startLocation,
+          endLocation: tripRequest.endLocation,
+          user_id: user.id,
+          departureTime: tripRequest.departureTime,
+          totalSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
+          availableSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
+          price: parseFloat(`${fixedRoutes.price || 0}`),
+        },
+      ]
+    );
+    const { data } = await xediSupabase.tables.feed.addWithUserId([
+      { content },
+    ]);
+    if (data?.[0]) {
+      tripRequestData.forEach((tripRequest) =>
+        xediSupabase.tables.tripRequest.updateById(tripRequest.id, {
+          feed_id: data[0].id,
+        })
+      );
+      onCreatePostSuccess();
+    }
+  };
+
   const handlerCustomerPost = async () => {
     if (
       !!tripRequest.departureTime ||
-      !!tripRequest.startLocation ||
-      !!tripRequest.endLocation
+      !!tripRequest.startLocation?.display_name ||
+      !!tripRequest.endLocation?.display_name
     ) {
       await handlerCustomerPostWithTripRequest();
     } else {
@@ -76,10 +125,19 @@ const CreatePostButton: React.FC<{
   };
 
   const handleDriverPost = async () => {
+    if (
+      !!fixedRoutes.departureTime ||
+      !!fixedRoutes.startLocation?.display_name ||
+      !fixedRoutes.endLocation?.display_name
+    ) {
+      return;
+    }
     const { data } = await xediSupabase.tables.feed.addWithUserId([
       { content },
     ]);
     onCreatePostSuccess();
+    if (data?.[0] && fixedRoutes) {
+    }
     // if (data?.[0]) {
     //   if (fixedRoutes) {
     //     fixedRoutes.forEach(async (fixedRoute) => {

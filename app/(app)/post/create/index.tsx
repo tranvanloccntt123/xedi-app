@@ -178,7 +178,6 @@ export default function CreatePost() {
                         ).toDateString(),
                       } as IFixedRoute
                     }
-                    className="w-[280px]"
                     disabled
                   />
                 </Box>

@@ -30,8 +30,10 @@ import {
 } from "@/src/utils/validator";
 import { fixedRouteValidator } from "@/src/constants/validator";
 import { router } from "expo-router";
+import Animated from "react-native-reanimated";
+import PinIcon from "@/src/components/icons/PinIcon";
 
-const PinMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
+const EclipseMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
   coordinate,
 }) => {
   const { startLocation, endLocation } = useSelector(
@@ -44,6 +46,21 @@ const PinMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
       <MarkerView coordinate={[coordinate.lon, coordinate.lat]}>
         <EclipseIcon size={18} color="#000000" />
       </MarkerView>
+    )
+  );
+};
+
+const PinMarker: React.FC<object> = () => {
+  const { startLocation, endLocation } = useSelector(
+    (state: RootState) => state.postForm.fixedRoutes
+  );
+  return (
+    (!startLocation?.display_name || !endLocation?.display_name) && (
+      <Animated.View style={[styles.pinContainer]}>
+        <Box style={{ top: -18 }}>
+          <PinIcon size={34} color="#000000" />
+        </Box>
+      </Animated.View>
     )
   );
 };
@@ -110,8 +127,9 @@ export default function CreateFixedRoute() {
             }}
           >
             <CreatePostPolyline type={"fixed-route"} />
-            <PinMarker coordinate={coordinate} />
+            <EclipseMarker coordinate={coordinate} />
           </AppMapView>
+          <PinMarker />
         </Center>
       </SafeAreaView>
       <BottomSheetGesture
@@ -128,57 +146,60 @@ export default function CreateFixedRoute() {
               isShareHide={true}
               onQueryFullfiled={() => bottomSheetRef.current?.openFull()}
             />
-            <Divider />
-            <Box>
-              <Text className="font-bold mb-2">Giá thành (VND)</Text>
-              <Input className="h-[55px] rounded-lg mb-2">
-                <InputField
-                  value={!price ? "" : formatMoney(price)}
-                  onChangeText={(value) => {
-                    const numericValue = unformatMoney(value);
-                    if (!isNaN(numericValue)) {
-                      setPrice(numericValue.toString());
-                      dispatch(setFixedRoutePrice(numericValue));
-                    } else {
-                      setPrice("");
-                      dispatch(setFixedRoutePrice(0));
-                    }
-                    // setErrors({ ...errors, price: "" });
-                  }}
-                  keyboardType="numeric"
-                  placeholder="Nhập giá tiền"
-                />
-              </Input>
-              {!!error.price && (
-                <Text className="text-red-500 text-sm mt-1">{error.price}</Text>
-              )}
-            </Box>
-            <Divider />
-            <Box>
-              <Text
-                className={`${
-                  isFlexDepartureTime ? "text-typography-300" : "text-black"
-                } font-bold mb-2`}
-              >
-                Khởi hành lúc
-              </Text>
-              <DateTimePicker
-                isDisabled={isFlexDepartureTime}
-                date={departureTime}
-                onChangeDate={(date) => {
-                  setDepartureTime(date);
-                  dispatch(setFixedRouteDepartureTime(date));
-                  // setErrors({ ...errors, departureTime: "" });
-                }}
-              />
-              {/* {!!errors.departureTime && (
-                <Text className="text-red-500 text-sm mt-1">
-                  {errors.departureTime}
-                </Text>
-              )} */}
-            </Box>
-            {!!error.departureTime && (
-              <Text className="text-red-500 text-sm mt-1">{error.departureTime}</Text>
+            {!!fixedRouteTmp.startLocation && !!fixedRouteTmp.endLocation && (
+              <>
+                <Divider />
+                <Box>
+                  <Text className="font-bold mb-2">Giá thành (VND)</Text>
+                  <Input className="h-[55px] rounded-lg mb-2">
+                    <InputField
+                      value={!price ? "" : formatMoney(price)}
+                      onChangeText={(value) => {
+                        const numericValue = unformatMoney(value);
+                        if (!isNaN(numericValue)) {
+                          setPrice(numericValue.toString());
+                          dispatch(setFixedRoutePrice(numericValue));
+                        } else {
+                          setPrice("");
+                          dispatch(setFixedRoutePrice(0));
+                        }
+                        // setErrors({ ...errors, price: "" });
+                      }}
+                      keyboardType="numeric"
+                      placeholder="Nhập giá tiền"
+                    />
+                  </Input>
+                  {!!error.price && (
+                    <Text className="text-red-500 text-sm mt-1">
+                      {error.price}
+                    </Text>
+                  )}
+                </Box>
+                <Divider />
+                <Box>
+                  <Text
+                    className={`${
+                      isFlexDepartureTime ? "text-typography-300" : "text-black"
+                    } font-bold mb-2`}
+                  >
+                    Khởi hành lúc
+                  </Text>
+                  <DateTimePicker
+                    isDisabled={isFlexDepartureTime}
+                    date={departureTime}
+                    onChangeDate={(date) => {
+                      setDepartureTime(date);
+                      dispatch(setFixedRouteDepartureTime(date));
+                      // setErrors({ ...errors, departureTime: "" });
+                    }}
+                  />
+                  {!!error.departureTime && (
+                    <Text className="text-red-500 text-sm mt-1">
+                      {error.departureTime}
+                    </Text>
+                  )}
+                </Box>
+              </>
             )}
           </VStack>
         }

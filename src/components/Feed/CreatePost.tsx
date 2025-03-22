@@ -81,13 +81,13 @@ const CreatePostButton: React.FC<{
       onError("Bạn cần thêm điểm giá cho chuyến đi");
       return;
     }
-    const { data: tripRequestData } = await xediSupabase.tables.fixedRoutes.add(
+    const { data: fixedRouteData } = await xediSupabase.tables.fixedRoutes.add(
       [
         {
-          startLocation: tripRequest.startLocation,
-          endLocation: tripRequest.endLocation,
+          startLocation: fixedRoutes.startLocation,
+          endLocation: fixedRoutes.endLocation,
           user_id: user.id,
-          departureTime: tripRequest.departureTime,
+          departureTime: fixedRoutes.departureTime,
           totalSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
           availableSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
           price: parseFloat(`${fixedRoutes.price || 0}`),
@@ -98,8 +98,8 @@ const CreatePostButton: React.FC<{
       { content },
     ]);
     if (data?.[0]) {
-      tripRequestData.forEach((tripRequest) =>
-        xediSupabase.tables.tripRequest.updateById(tripRequest.id, {
+      fixedRouteData.forEach((fixedRoute) =>
+        xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
           feed_id: data[0].id,
         })
       );
@@ -130,25 +130,16 @@ const CreatePostButton: React.FC<{
       !!fixedRoutes.startLocation?.display_name ||
       !fixedRoutes.endLocation?.display_name
     ) {
+      await handlerDriverPostWithFixedRoute();
       return;
     }
     const { data } = await xediSupabase.tables.feed.addWithUserId([
       { content },
     ]);
     onCreatePostSuccess();
-    if (data?.[0] && fixedRoutes) {
+    if (data?.[0]) {
+      onCreatePostSuccess();
     }
-    // if (data?.[0]) {
-    //   if (fixedRoutes) {
-    //     fixedRoutes.forEach(async (fixedRoute) => {
-    //       xediSupabase.tables.fixedRoutes.updateById(fixedRoute.id, {
-    //         feed_id: data[0].id,
-    //       });
-    //     });
-    //   }
-    //   onCreatePostSuccess();
-    //   return;
-    // }
   };
 
   return (

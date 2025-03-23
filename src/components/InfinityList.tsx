@@ -15,6 +15,7 @@ interface InfinityListProps<TData = { id: string | number } & any, TPage = any>
 
 export interface InfinityListMethods {
   refresh: () => Promise<void>;
+  push: (item: any, index: number) => any;
 }
 
 const InfinityList = React.forwardRef<InfinityListMethods, InfinityListProps>(
@@ -32,7 +33,7 @@ const InfinityList = React.forwardRef<InfinityListMethods, InfinityListProps>(
     },
     ref
   ) => {
-    const { data, isRefreshing, refresh, isLoading, fetchNextPage } =
+    const { data, isRefreshing, refresh, isLoading, fetchNextPage, push } =
       useQueryInfinity({
         queryFn,
         queryKey,
@@ -47,6 +48,7 @@ const InfinityList = React.forwardRef<InfinityListMethods, InfinityListProps>(
         async refresh() {
           refresh();
         },
+        push,
       };
     });
 

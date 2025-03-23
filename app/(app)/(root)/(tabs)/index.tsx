@@ -23,7 +23,6 @@ import OnlyCustomer from "@/src/components/View/OnlyCustomer";
 import LocationIcon from "@/src/components/icons/LocationIcon";
 import AddIcon from "@/src/components/icons/AddIcon";
 import InfinityList from "@/src/components/InfinityList";
-import { setTripRequests } from "@/src/store/tripRequest/tripRequestsSlice";
 import {
   pushFetchingInfo,
   XEDI_GROUP_INFO,

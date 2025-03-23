@@ -1,5 +1,5 @@
 import { Tables } from "@/src/constants";
-import { INotification, SupabaseTableFilter, SupbaseParams } from "@/src/types";
+import { INotification, SupabaseTableFilter, SupabaseParams } from "@/src/types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
 
@@ -8,7 +8,7 @@ export default class Notifications extends BaseTable<INotification> {
     super(_supabase, Tables.NOTIFICATIONS);
   }
   async selectByUserIdAfterId(
-    data?: SupbaseParams
+    data?: SupabaseParams
   ): Promise<SupabaseTableFilter<INotification>> {
     try {
       this.validateSupbase();

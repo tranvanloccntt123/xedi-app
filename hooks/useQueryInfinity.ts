@@ -56,6 +56,9 @@ const useQueryInfinity = <TData = any, TPage = any>(
     isLoading,
     isRefreshing,
     refresh,
+    push(item: TData, index: number) {
+      setData([...data.slice(0, index), item, ...data.slice(index)]);
+    },
   };
 };
 

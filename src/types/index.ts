@@ -188,7 +188,7 @@ export type SupabaseAndFilter = {
   query: string;
 };
 
-export type SupbaseParams = {
+export type SupabaseParams = {
   select?: any;
   pageNums?: number;
   id?: number;
@@ -196,6 +196,7 @@ export type SupbaseParams = {
   filter?: SupabaseFilter[];
   andFilter?: SupabaseAndFilter[];
   orFilter?: SupabaseOrFilter[];
+  byCurrentUser?: boolean;
 };
 
 export type SelectLocationType = "start-location" | "end-location";

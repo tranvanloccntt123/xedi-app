@@ -87,7 +87,7 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
           </FormControl>
           <Button
             onPress={async () => {
-              await xediSupabase.tables.fixedRoutes.addWithUserId([
+              await xediSupabase.tables.driverTripRequest.addWithUserId([
                 {
                   price: parseFloat(price),
                   trip_request_id: tripRequestId,

@@ -17,3 +17,10 @@ export const CameraImageSize = {
   width: 3,
   height: 5,
 };
+
+export const PartTypes: any = [
+  {
+    trigger: "@",
+    textStyle: { fontWeight: "bold", color: "#000" },
+  },
+];

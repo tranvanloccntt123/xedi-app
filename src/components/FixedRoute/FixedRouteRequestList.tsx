@@ -10,6 +10,7 @@ import { Heading } from "@/src/components/ui/heading";
 import { Button } from "@/src/components/ui/button";
 import { useNavigation } from "expo-router";
 import FixedRouteOrderItem from "./FixedRouteOrderItem";
+import { Center } from "../ui/center";
 
 const FixedRouteRequestList: React.FC<{
   fixedRoute: IFixedRoute;
@@ -76,18 +77,25 @@ const FixedRouteRequestList: React.FC<{
           </Button>
         )}
       </HStack>
-      {listFixedRouteRequest.map((v) => (
-        <FixedRouteOrderItem
-          fixedRouteOrder={v}
-          key={v.id}
-          isDisabled={
-            !isAuthor || (acceptCountable || 0) >= (fixedRoute.totalSeats || 0)
-          }
-          onDeleted={() => {
-            loadData();
-          }}
-        />
-      ))}
+      {!!listFixedRouteRequest.length &&
+        listFixedRouteRequest.map((v) => (
+          <FixedRouteOrderItem
+            fixedRouteOrder={v}
+            key={v.id}
+            isDisabled={
+              !isAuthor ||
+              (acceptCountable || 0) >= (fixedRoute.totalSeats || 0)
+            }
+            onDeleted={() => {
+              loadData();
+            }}
+          />
+        ))}
+      {!listFixedRouteRequest.length && (
+        <Center className="w-full mt-4 mb-4">
+          <Text className="text-md">Danh sách trống</Text>
+        </Center>
+      )}
     </VStack>
   );
 };

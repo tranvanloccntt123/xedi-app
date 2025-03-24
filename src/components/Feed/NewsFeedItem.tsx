@@ -27,6 +27,7 @@ import { useDataInfo } from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button, ButtonText } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
+import { PartTypes } from "@/src/constants";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -88,6 +89,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               editable={false}
               value={data?.content || ""}
               onChange={() => {}}
+              partTypes={PartTypes as any}
             />
           </VStack>
         </Box>

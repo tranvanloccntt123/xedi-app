@@ -57,6 +57,7 @@ export interface IRating {
 export interface ITripRequest {
   id: number;
   user_id: string;
+  users?: IUser;
   startLocation: InputLocation;
   endLocation: InputLocation;
   departureTime: Date;

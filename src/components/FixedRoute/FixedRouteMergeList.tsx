@@ -8,6 +8,8 @@ import { HStack } from "@/src/components/ui/hstack";
 import { Heading } from "@/src/components/ui/heading";
 import { useNavigation } from "expo-router";
 import TripRequestItem from "../TripRequest/TripRequestItem";
+import { Tables } from "@/src/constants";
+import { Avatar, AvatarFallbackText } from "../ui/avatar";
 
 const FixedRouteMergeList: React.FC<{
   fixedRoute: IFixedRoute;
@@ -21,16 +23,16 @@ const FixedRouteMergeList: React.FC<{
   >([]);
 
   const loadData = async () => {
-    const { data } =
-      await xediSupabase.tables.tripRequest.selectAfterId({
-        filter: [
-          {
-            filed: "fixed_route_id",
-            filter: "eq",
-            data: fixedRoute.id,
-          },
-        ],
-      });
+    const { data } = await xediSupabase.tables.tripRequest.selectAfterId({
+      select: `*, ${Tables.USERS} (*)`,
+      filter: [
+        {
+          filed: "fixed_route_id",
+          filter: "eq",
+          data: fixedRoute.id,
+        },
+      ],
+    });
     setFixedRouteRequest(data as never);
   };
 
@@ -40,15 +42,28 @@ const FixedRouteMergeList: React.FC<{
     }
   }, [user, isRefreshing, focused]);
 
-  return user?.id === fixedRoute?.user_id && !!listFixedRouteRequest.length && (
-    <VStack space="md">
-      <HStack>
-        <Heading className="flex-1">Ghép chuyến</Heading>
-      </HStack>
-      {listFixedRouteRequest.map((v) => (
-        <TripRequestItem tripRequest={v} disabled={true} className="mx-0" />
-      ))}
-    </VStack>
+  return (
+    user?.id === fixedRoute?.user_id &&
+    !!listFixedRouteRequest.length && (
+      <VStack space="md">
+        <HStack>
+          <Heading className="flex-1">Ghép chuyến</Heading>
+        </HStack>
+        {listFixedRouteRequest.map((v) => (
+          <VStack key={v.id} space="sm" className="mb-4">
+            {!!v.users && (
+              <HStack space="md">
+                <Avatar>
+                  <AvatarFallbackText>{v.users.name}</AvatarFallbackText>
+                </Avatar>
+                <Heading>{v.users.name}</Heading>
+              </HStack>
+            )}
+            <TripRequestItem tripRequest={v} disabled={true} className="mx-0" />
+          </VStack>
+        ))}
+      </VStack>
+    )
   );
 };
 

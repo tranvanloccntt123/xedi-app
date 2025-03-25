@@ -5,7 +5,10 @@ import { useSelector } from "react-redux";
 import { Box } from "@/src/components/ui/box";
 import { StyleSheet } from "react-native";
 import type { IFixedRoute, IUser } from "@/src/types";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import type { RootState } from "@/src/store/store";
 import useLocation from "@/hooks/useLocation";
 import AppMapView from "../AppMapView";
@@ -14,6 +17,8 @@ import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { xediSupabase } from "@/src/lib/supabase";
 import { Heading } from "../ui/heading";
+import { scale } from "react-native-size-matters";
+import BottomSheetGesture from "../BottomSheetGesture";
 
 const styles = StyleSheet.create({
   logo: {
@@ -35,6 +40,7 @@ const FixedRouteDetailRunning: React.FC<{
   onFinished: () => any;
 }> = ({ fixedRoute, onFinished }) => {
   useLocation({ isWatchLocation: true });
+  const insets = useSafeAreaInsets();
   const user: IUser = useSelector((state: RootState) => state.auth.user);
 
   const { lat, lon } = useSelector((state: RootState) => state.location);
@@ -63,30 +69,36 @@ const FixedRouteDetailRunning: React.FC<{
 
   return (
     <Box className="flex-1 bg-gray-100">
-      <SafeAreaView style={styles.container}>
-        <Box className="px-4">
-          <Header
-            title="Hành trình"
-            rightComponent={
-              isAuthor && (
-                <Button
-                  onPress={onFinished}
-                  // disabled={!!listFixedRouteRequest.length}
-                  className={`rounded-full`}
-                >
-                  <Text className="text-white">Hoàn thành</Text>
-                </Button>
-              )
-            }
-          />
-        </Box>
-        <Box className="flex-1">
-          <AppMapView />
-        </Box>
-        <Box className="p-4 bg-white">
+      <Box className="px-4 bg-white" style={{ paddingTop: insets.top }}>
+        <Header
+          title="Hành trình"
+          rightComponent={
+            isAuthor && (
+              <Button
+                onPress={onFinished}
+                // disabled={!!listFixedRouteRequest.length}
+                className={`rounded-full`}
+              >
+                <Text className="text-white">Hoàn thành</Text>
+              </Button>
+            )
+          }
+        />
+      </Box>
+      <Box className="flex-1">
+        <AppMapView />
+      </Box>
+      <BottomSheetGesture
+        isDisableFetchRemind={true}
+        coordinate={{
+          lat: 0,
+          lon: 0,
+        }}
+      >
+        <Box className="flex-1 px-2">
           <Heading>Khách hàng</Heading>
         </Box>
-      </SafeAreaView>
+      </BottomSheetGesture>
     </Box>
   );
 };

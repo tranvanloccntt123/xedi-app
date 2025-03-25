@@ -22,7 +22,7 @@ const FixedRouteMergeList: React.FC<{
     ITripRequest[]
   >([]);
 
-  const loadData = async () => {
+  const loadMergeData = async () => {
     const { data } = await xediSupabase.tables.tripRequest.selectAfterId({
       select: `*, ${Tables.USERS} (*)`,
       filter: [
@@ -38,13 +38,13 @@ const FixedRouteMergeList: React.FC<{
 
   React.useEffect(() => {
     if (user?.id || isRefreshing || focused) {
-      loadData();
+      loadMergeData();
     }
   }, [user, isRefreshing, focused]);
 
   return (
     user?.id === fixedRoute?.user_id &&
-    !!listFixedRouteRequest.length && (
+    !!listFixedRouteRequest?.length && (
       <VStack space="md">
         <HStack>
           <Heading className="flex-1">Ghép chuyến</Heading>

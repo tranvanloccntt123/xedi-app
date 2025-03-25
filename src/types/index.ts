@@ -113,6 +113,7 @@ export interface IFixedRouteOrder {
   id: string;
   fixed_route_id: number;
   user_id: string;
+  users?: IUser;
   name: string;
   phone_number: string;
   note?: string;

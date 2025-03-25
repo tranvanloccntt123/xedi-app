@@ -24,6 +24,7 @@ import { router } from "expo-router";
 
 export interface BottomSheetGestureMethods {
   openFull: () => void;
+  openMinor: () => void;
 }
 
 interface BottomSheetGestureProps {
@@ -35,6 +36,7 @@ interface BottomSheetGestureProps {
   onPress?: (_: InputLocation) => any;
   locationSearchComponent?: React.ReactNode;
   isDisableFetchRemind?: boolean;
+  children?: React.ReactNode;
 }
 
 const BottomSheetGesture = React.forwardRef<
@@ -48,6 +50,7 @@ const BottomSheetGesture = React.forwardRef<
       onPress,
       locationSearchComponent,
       isDisableFetchRemind,
+      children,
     },
     ref
   ) => {
@@ -147,6 +150,9 @@ const BottomSheetGesture = React.forwardRef<
         openFull() {
           top.value = withTiming(topPosition[1], { duration: 100 });
         },
+        openMinor() {
+          top.value = withTiming(topPosition[0], { duration: 100 });
+        },
       };
     });
 
@@ -194,6 +200,7 @@ const BottomSheetGesture = React.forwardRef<
                 </Pressable>
               </Box>
             )}
+            {children}
           </VStack>
         </Animated.View>
       </GestureDetector>

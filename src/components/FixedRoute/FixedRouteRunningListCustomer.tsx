@@ -1,3 +1,4 @@
+import React from "react";
 import { Tables } from "@/src/constants";
 import { xediSupabase } from "@/src/lib/supabase";
 import { RootState } from "@/src/store/store";
@@ -8,10 +9,21 @@ import {
   ITripRequest,
   IUser,
 } from "@/src/types";
-import React from "react";
+import { generateUUID } from "@/src/utils/uuid";
+import { FlatList, Linking } from "react-native";
 import { useSelector } from "react-redux";
+import { Box } from "../ui/box";
+import { Divider } from "../ui/divider";
+import { Text } from "../ui/text";
+import { VStack } from "../ui/vstack";
+import { HStack } from "../ui/hstack";
+import HiIcon from "../icons/HiIcon";
+import { scale } from "react-native-size-matters";
+import { Button } from "../ui/button";
+import PhoneIcon from "../icons/PhoneIcon";
 
 type CustomerInFixedRoute = {
+  id: string;
   user: IUser;
   startLocation: InputLocation;
   endLocation: InputLocation;
@@ -38,9 +50,10 @@ const FixedRouteRunningListCustomer: React.FC<{
   const customerList = React.useMemo(() => {
     const list: CustomerInFixedRoute[] = [];
 
-    if (fixedRouteRequestList.length) {
+    if (fixedRouteRequestList?.length) {
       list.push(
         ...fixedRouteRequestList.map((v) => ({
+          id: generateUUID(),
           user: v.users,
           startLocation: v.location,
           endLocation: fixedRoute.endLocation,
@@ -48,9 +61,10 @@ const FixedRouteRunningListCustomer: React.FC<{
       );
     }
 
-    if (mergeRequestList.length) {
+    if (mergeRequestList?.length) {
       list.push(
         ...mergeRequestList.map((v) => ({
+          id: generateUUID(),
           user: v.users,
           startLocation: v.startLocation,
           endLocation: v.endLocation,
@@ -92,7 +106,44 @@ const FixedRouteRunningListCustomer: React.FC<{
     }
   }, [isAuthor, fixedRoute]);
 
-  return <></>;
+  return (
+    <FlatList
+      style={{ flex: 1 }}
+      data={customerList}
+      renderItem={({ item }) => (
+        <Box>
+          <VStack className="mb-2" space="xs">
+            <HStack className="h-[55px] justify-between">
+              <VStack>
+                <Text className="font-bold text-black text-xl">
+                  {item.user?.name}
+                </Text>
+                <Text className="text-md">{item.user?.phone}</Text>
+              </VStack>
+              <Button
+                variant="link"
+                action="default"
+                className="p-3"
+                onPress={() => Linking.openURL(`tel:${item.user?.phone}`)}
+              >
+                <PhoneIcon size={scale(24)} color="#000" />
+              </Button>
+            </HStack>
+            {item.startLocation?.display_name && (
+              <HStack space="sm" className="items-center">
+                <HiIcon size={scale(18)} color="#000" />
+                <Text className="tet-md font-[500] flex-1">
+                  {item.startLocation.display_name}
+                </Text>
+              </HStack>
+            )}
+          </VStack>
+          <Divider />
+        </Box>
+      )}
+      keyExtractor={(item) => `${item.id}`}
+    />
+  );
 };
 
 export default FixedRouteRunningListCustomer;

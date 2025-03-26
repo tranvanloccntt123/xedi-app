@@ -19,6 +19,7 @@ import { xediSupabase } from "@/src/lib/supabase";
 import { Heading } from "../ui/heading";
 import { scale } from "react-native-size-matters";
 import BottomSheetGesture from "../BottomSheetGesture";
+import FixedRouteRunningListCustomer from "./FixedRouteRunningListCustomer";
 
 const styles = StyleSheet.create({
   logo: {
@@ -96,7 +97,10 @@ const FixedRouteDetailRunning: React.FC<{
         }}
       >
         <Box className="flex-1 px-2">
-          <Heading>Khách hàng</Heading>
+          <Heading size="xl" className="mb-2">
+            Khách hàng
+          </Heading>
+          <FixedRouteRunningListCustomer fixedRoute={fixedRoute} />
         </Box>
       </BottomSheetGesture>
     </Box>

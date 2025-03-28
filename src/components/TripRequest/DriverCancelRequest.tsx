@@ -18,7 +18,7 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
   const queryFn = async () => {
     try {
       const { data } =
-        await xediSupabase.tables.fixedRoutes.selectRequestOrdered({
+        await xediSupabase.tables.driverTripRequest.selectRequestOrdered({
           tripRequestId: tripRequestId,
           userId: user.id,
         });
@@ -56,10 +56,10 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
       <Box className="px-4 py-4">
         <Button
           onPress={handleCancelRequest}
-          className="h-[45px] border-error-500"
-          variant="outline"
+          className="h-[45px] bg-error-500"
+          action="default"
         >
-          <ButtonText className="text-error-500">Huỷ yêu cầu</ButtonText>
+          <ButtonText className="text-white">Huỷ yêu cầu</ButtonText>
         </Button>
       </Box>
     )

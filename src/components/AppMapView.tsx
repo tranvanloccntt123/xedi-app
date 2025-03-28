@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import {
@@ -9,6 +9,7 @@ import {
   RasterLayer,
   MarkerView,
   MapViewRef,
+  CameraRef,
 } from "@maplibre/maplibre-react-native";
 import LocationIcon from "./icons/LocationIcon";
 import AppLoading from "./View/AppLoading";
@@ -20,6 +21,21 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+
+export interface AppMapViewProps {
+  onPress?: (coordinate: { lat: number; lon: number }) => any;
+  isOpenTrigger?: boolean;
+  children?: React.ReactNode | React.ReactNode[];
+  onCenterChange?: (
+    coordinate: { lat: number; lon: number },
+    zoomLevel?: number
+  ) => any;
+  debounceCenterChange?: number;
+  onRegionWillChange?: () => any;
+  isHideCurrentLocation?: boolean;
+}
+
+export interface AppMapViewMethods {}
 
 setAccessToken(null);
 
@@ -41,122 +57,127 @@ const MARKER_SIZE = [0, 80];
 
 const ZOOM_LEVEL = [0, 18];
 
-const AppMapView: React.FC<{
-  onPress?: (coordinate: { lat: number; lon: number }) => any;
-  isOpenTrigger?: boolean;
-  children?: React.ReactNode | React.ReactNode[];
-  onCenterChange?: (
-    coordinate: { lat: number; lon: number },
-    zoomLevel?: number
-  ) => any;
-  debounceCenterChange?: number;
-  onRegionWillChange?: () => any;
-  isHideCurrentLocation?: boolean;
-}> = ({
-  onPress,
-  isOpenTrigger,
-  children,
-  onCenterChange,
-  onRegionWillChange,
-  isHideCurrentLocation,
-  debounceCenterChange,
-}) => {
-  const debounce = useDebounce({
-    time: debounceCenterChange !== undefined ? debounceCenterChange : 100,
-  });
-  const mapViewRef = React.useRef<MapViewRef>(null);
-  const { userLat, userLon } = useSelector((state: RootState) => ({
-    userLat: state.auth.user.lat,
-    userLon: state.auth.user.lon,
-  }));
-  const { lat: currentLocationLat, lon: currentLocationLon } = useSelector(
-    (state: RootState) => state.location
-  );
-  const { lat, lon } = React.useMemo(
-    () => ({
-      lat: currentLocationLat || userLat || 21.028511,
-      lon: currentLocationLon || userLon || 105.804817,
-    }),
-    [currentLocationLat, currentLocationLon]
-  );
-  const { handleOpen } = React.useContext(BottomSheetContext);
-
-  const markerResizeAnim = useSharedValue(18);
-
-  const onMapPress = (event) => {
-    const { geometry } = event;
-    geometry.coordinates?.length &&
-      onPress?.({ lat: geometry.coordinates[1], lon: geometry.coordinates[0] });
-    isOpenTrigger && handleOpen?.();
-    const { x, y } = getTileXY(
-      geometry.coordinates[1],
-      geometry.coordinates[0],
-      8
+const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
+  (
+    {
+      onPress,
+      isOpenTrigger,
+      children,
+      onCenterChange,
+      onRegionWillChange,
+      isHideCurrentLocation,
+      debounceCenterChange,
+    },
+    ref
+  ) => {
+    const debounce = useDebounce({
+      time: debounceCenterChange !== undefined ? debounceCenterChange : 100,
+    });
+    const mapViewRef = React.useRef<MapViewRef>(null);
+    const cameraViewRef = React.useRef<CameraRef>(null);
+    const { userLat, userLon } = useSelector((state: RootState) => ({
+      userLat: state.auth.user.lat,
+      userLon: state.auth.user.lon,
+    }));
+    const { lat: currentLocationLat, lon: currentLocationLon } = useSelector(
+      (state: RootState) => state.location
     );
-  };
+    const { lat, lon } = React.useMemo(
+      () => ({
+        lat: currentLocationLat || userLat || 21.028511,
+        lon: currentLocationLon || userLon || 105.804817,
+      }),
+      [currentLocationLat, currentLocationLon]
+    );
+    const { handleOpen } = React.useContext(BottomSheetContext);
 
-  const markerStyle = useAnimatedStyle(() => {
-    return {
-      width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
-      height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+    const markerResizeAnim = useSharedValue(18);
+
+    const onMapPress = (event) => {
+      const { geometry } = event;
+      geometry.coordinates?.length &&
+        onPress?.({
+          lat: geometry.coordinates[1],
+          lon: geometry.coordinates[0],
+        });
+      isOpenTrigger && handleOpen?.();
+      const { x, y } = getTileXY(
+        geometry.coordinates[1],
+        geometry.coordinates[0],
+        8
+      );
     };
-  });
 
-  return (
-    <Box className="flex-1 w-full">
-      <AppLoading isLoading={[lat, lon].includes(null)}>
-        {![lat, lon].includes(null) && (
-          <MapView
-            style={{ flex: 1 }}
-            onPress={onMapPress}
-            onRegionWillChange={() => onRegionWillChange?.()}
-            rotateEnabled={false}
-            onRegionIsChanging={async (f) => {
-              markerResizeAnim.value = f.properties.zoomLevel;
-              if (onCenterChange) {
-                debounce(async () => {
-                  const center = await mapViewRef.current.getCenter();
-                  onCenterChange(
-                    { lat: center[1], lon: center[0] },
-                    f.properties.zoomLevel
-                  );
-                });
-              }
-            }}
-            ref={mapViewRef}
-          >
-            <Camera
-              defaultSettings={{
-                centerCoordinate: [lon, lat],
-                zoomLevel: ZOOM_LEVEL[1],
+    const markerStyle = useAnimatedStyle(() => {
+      return {
+        width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+        height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+      };
+    });
+
+    useImperativeHandle(ref, () => {
+      return {};
+    });
+
+    return (
+      <Box className="flex-1 w-full">
+        <AppLoading isLoading={[lat, lon].includes(null)}>
+          {![lat, lon].includes(null) && (
+            <MapView
+              style={{ flex: 1 }}
+              onPress={onMapPress}
+              onRegionWillChange={() => onRegionWillChange?.()}
+              rotateEnabled={false}
+              onRegionIsChanging={async (f) => {
+                markerResizeAnim.value = f.properties.zoomLevel;
+                if (onCenterChange) {
+                  debounce(async () => {
+                    const center = await mapViewRef.current.getCenter();
+                    onCenterChange(
+                      { lat: center[1], lon: center[0] },
+                      f.properties.zoomLevel
+                    );
+                  });
+                }
               }}
-            />
-            <RasterSource
-              id="openStreetMapSource"
-              tileUrlTemplates={[
-                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-              ]}
-              minZoomLevel={ZOOM_LEVEL[0]}
-              maxZoomLevel={ZOOM_LEVEL[1]}
+              ref={mapViewRef}
             >
-              <RasterLayer
-                id="openStreetMapLayer"
-                sourceID="openStreetMapSource"
+              <Camera
+                ref={cameraViewRef}
+                defaultSettings={{
+                  centerCoordinate: [lon, lat],
+                  zoomLevel: ZOOM_LEVEL[1],
+                }}
               />
-            </RasterSource>
-            {!isHideCurrentLocation && (
-              <MarkerView coordinate={[lon, lat]}>
-                <Animated.View style={[markerStyle, { alignItems: "center" }]}>
-                  <LocationIcon size={"50%"} color="#bf2c2c" />
-                </Animated.View>
-              </MarkerView>
-            )}
-            {children}
-          </MapView>
-        )}
-      </AppLoading>
-    </Box>
-  );
-};
+              <RasterSource
+                id="openStreetMapSource"
+                tileUrlTemplates={[
+                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                ]}
+                minZoomLevel={ZOOM_LEVEL[0]}
+                maxZoomLevel={ZOOM_LEVEL[1]}
+              >
+                <RasterLayer
+                  id="openStreetMapLayer"
+                  sourceID="openStreetMapSource"
+                />
+              </RasterSource>
+              {!isHideCurrentLocation && (
+                <MarkerView coordinate={[lon, lat]}>
+                  <Animated.View
+                    style={[markerStyle, { alignItems: "center" }]}
+                  >
+                    <LocationIcon size={"50%"} color="#bf2c2c" />
+                  </Animated.View>
+                </MarkerView>
+              )}
+              {children}
+            </MapView>
+          )}
+        </AppLoading>
+      </Box>
+    );
+  }
+);
 
 export default AppMapView;

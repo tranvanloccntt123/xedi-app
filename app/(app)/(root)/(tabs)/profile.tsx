@@ -137,7 +137,6 @@ export default function Profile() {
 
         <Button
           size="lg"
-          variant="outline"
           className="mt-4"
           onPress={handleLogout}
         >

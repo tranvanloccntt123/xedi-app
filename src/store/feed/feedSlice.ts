@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { INewsFeedItem } from "@/src/types";
 
 export interface FeedState {
   items: INewsFeedItem[];

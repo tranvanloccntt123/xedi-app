@@ -4,7 +4,6 @@ import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/src/store/store";
-import type { IFixedRoute } from "@/src/types";
 import FixedRouteItem from "./FixedRouteItem";
 import moment from "moment";
 import { Heading } from "@/src/components/ui/heading";

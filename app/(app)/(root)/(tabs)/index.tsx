@@ -9,7 +9,6 @@ import { RootState } from "@/src/store/store";
 import { Pressable } from "react-native";
 import { Text } from "@/src/components/ui/text";
 import NewsFeedItem from "@/src/components/Feed/NewsFeedItem";
-import { INewsFeedItem } from "@/src/types";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@/src/components/ui/hstack";

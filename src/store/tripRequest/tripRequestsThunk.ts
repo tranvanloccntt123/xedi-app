@@ -1,5 +1,5 @@
 import { xediSupabase } from "@/src/lib/supabase";
-import { IDriverTripRequest, IDriverTripRequestStatus } from "@/src/types";
+import { IDriverTripRequestStatus } from "@/src/types/enum";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const acceptDriverTripRequest = createAsyncThunk<
@@ -43,9 +43,9 @@ export const fetchDriverTripRequestAccepted = createAsyncThunk<
   async (data: { tripRequestId: number }, { rejectWithValue }) => {
     try {
       const { data: driverTripRequestData, error } =
-        await xediSupabase.tables.fixedRoutes.selectRequestOrderAccepted(
-          { tripRequestId: data.tripRequestId }
-        );
+        await xediSupabase.tables.driverTripRequest.selectRequestOrderAccepted({
+          tripRequestId: data.tripRequestId,
+        });
       if (error) {
         throw new Error(error.message);
       }

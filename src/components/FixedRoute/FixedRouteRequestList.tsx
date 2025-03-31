@@ -1,5 +1,4 @@
 import React from "react";
-import { IFixedRoute, IFixedRouteOrder, IUser } from "@/src/types";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { xediSupabase } from "@/src/lib/supabase";

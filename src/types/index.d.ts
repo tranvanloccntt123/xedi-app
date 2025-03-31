@@ -1,4 +1,4 @@
-export interface IChatMessage {
+interface IChatMessage {
   id: string;
   chatRoomId: string;
   senderId: string;
@@ -7,7 +7,7 @@ export interface IChatMessage {
   sentAt: Date;
 }
 
-export interface IChatRoom {
+interface IChatRoom {
   id: string;
   tripRequestId?: string;
   fixedRouteId?: string;
@@ -18,20 +18,20 @@ export interface IChatRoom {
   updatedAt: Date;
 }
 
-export interface InputLocation {
+interface InputLocation {
   display_name: string;
   lat: number;
   lon: number;
 }
 
-export interface FixedRouteOrderForm {
+interface FixedRouteOrderForm {
   name: string;
   phone: string;
   note?: string;
   location?: InputLocation;
 }
 
-export interface IFixedRoute {
+interface IFixedRoute {
   id: number;
   user_id: string;
   startLocation: InputLocation;
@@ -41,10 +41,10 @@ export interface IFixedRoute {
   availableSeats: number;
   price: number;
   created_at: Date;
-  status: IFixedRouteStatus;
+  status: number;
 }
 
-export interface IRating {
+interface IRating {
   id: string;
   driverId: string;
   customerId: string;
@@ -54,21 +54,21 @@ export interface IRating {
   createdAt: Date;
 }
 
-export interface ITripRequest {
+interface ITripRequest {
   id: number;
   user_id: string;
   users?: IUser;
   startLocation: InputLocation;
   endLocation: InputLocation;
   departureTime: Date;
-  status: IDriverTripRequestStatus;
+  status: number;
   type: "Delivery" | "Taxi";
   created_at?: string;
   fixed_route_id?: number;
   fixed_routes?: IFixedRoute;
 }
 
-export interface IUser {
+interface IUser {
   id: string;
   name: string;
   phone: string;
@@ -83,7 +83,7 @@ export interface IUser {
   lon?: number;
 }
 
-export interface IVehicle {
+interface IVehicle {
   id: string;
   driverId: string;
   licensePlate: string;
@@ -93,7 +93,7 @@ export interface IVehicle {
   createdAt: Date;
 }
 
-export interface INewsFeedItem {
+interface INewsFeedItem {
   id: string;
   users: IUser;
   created_at: Date;
@@ -103,13 +103,13 @@ export interface INewsFeedItem {
   comments: [{ count: number }];
 }
 
-export interface UserState {
+interface UserState {
   currentUser: IUser | null;
   loading: boolean;
   error: string | null;
 }
 
-export interface IFixedRouteOrder {
+interface IFixedRouteOrder {
   id: string;
   fixed_route_id: number;
   user_id: string;
@@ -119,24 +119,24 @@ export interface IFixedRouteOrder {
   note?: string;
   created_at: Date;
   location: InputLocation;
-  status: IFixedRouteOrderStatus;
+  status: number;
 }
 
-export interface INotification {
+interface INotification {
   id: number;
   body: string;
   users?: IUser;
   created_at: string;
 }
 
-export interface IUserCoin {
+interface IUserCoin {
   id: number;
   created_at: string;
   coins: number;
   user_id: string;
 }
 
-export interface PhotonReverseResponse {
+interface PhotonReverseResponse {
   features: [
     {
       geometry: {
@@ -165,32 +165,32 @@ export interface PhotonReverseResponse {
   type: string;
 }
 
-export type SupabaseTableFilter<T = any> = {
+type SupabaseTableFilter<T = any> = {
   data: Array<T>;
   status: number;
   statusText: string;
 };
 
-export type SupabaseTableInsert<T = any> = {
+type SupabaseTableInsert<T = any> = {
   data: Array<T>;
   error: any;
 };
 
-export type SupabaseFilter = {
+type SupabaseFilter = {
   filter: "lte" | "lt" | "gte" | "gt" | "eq";
   filed: string;
   data: string | number;
 };
 
-export type SupabaseOrFilter = {
+type SupabaseOrFilter = {
   query: string;
 };
 
-export type SupabaseAndFilter = {
+type SupabaseAndFilter = {
   query: string;
 };
 
-export type SupabaseParams = {
+type SupabaseParams = {
   select?: any;
   pageNums?: number;
   id?: number;
@@ -201,48 +201,24 @@ export type SupabaseParams = {
   byCurrentUser?: boolean;
 };
 
-export type SelectLocationType = "start-location" | "end-location";
+type SelectLocationType = "start-location" | "end-location";
 
-export type LatLng = {
+type LatLng = {
   latitude: number;
   longitude: number;
 };
 
-export interface IDriverTripRequest {
+interface IDriverTripRequest {
   id: number;
   user_id: string;
   trip_request_id: number;
   price: number;
   users?: IUser;
-  status: IDriverTripRequestStatus;
+  status: number;
   trip_requests?: ITripRequest;
 }
 
-export enum IDriverTripRequestStatus {
-  PENDING = 0,
-  CUSTOMER_ACCEPT = 1,
-  DRIVER_MERGED_TRIP_REQUEST = 2,
-  GO_LIVE = 4,
-  FINISHED = 3,
-}
-
-export enum IFixedRouteStatus {
-  PENDING = 0,
-  RUNNING = 1,
-  FINISHED = 2,
-}
-
-export enum IFixedRouteOrderStatus {
-  PENDING = 0,
-  ACCEPT = 1,
-  GO_LIVE = 4,
-}
-
-export enum IErrorRequest {
-  NOT_FOUND = "Not Found",
-}
-
-export interface IComment {
+interface IComment {
   id: string;
   users?: IUser;
   parent_id?: string;

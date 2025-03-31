@@ -15,7 +15,6 @@ import { InputField } from "@/src/components/ui/input";
 import { VStack } from "@/src/components/ui/vstack";
 import { Text } from "@/src/components/ui/text";
 import { Pressable } from "@/src/components/ui/pressable";
-import { InputLocation, SelectLocationType } from "../../types";
 import useDebounce from "@/hooks/useDebounce";
 import Animated, {
   interpolateColor,

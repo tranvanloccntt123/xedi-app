@@ -1,7 +1,6 @@
 import { Tables } from "@/src/constants";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
-import { IUserCoin } from "@/src/types";
 
 export default class UserCoins extends BaseTable<IUserCoin> {
   constructor(_supabase: SupabaseClient) {

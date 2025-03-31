@@ -2,7 +2,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { VStack } from "@/src/components/ui/vstack";
 import { Button, ButtonText } from "@/src/components/ui/button";
-import { IDriverTripRequest, IUser } from "@/src/types";
 import type { RootState } from "@/src/store/store";
 import { Heading } from "../ui/heading";
 import { Input, InputField } from "../ui/input";

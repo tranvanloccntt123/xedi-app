@@ -14,7 +14,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Box } from "@/src/components/ui/box";
-import { InputLocation } from "@/src/types";
 import useReverseLocation from "@/hooks/useReverseLocation";
 import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";

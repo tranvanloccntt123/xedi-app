@@ -1,9 +1,4 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type {
-  InputLocation,
-  IFixedRoute,
-  SelectLocationType,
-} from "@/src/types";
 import {
   setAndFetchFixedRouteLocation,
   setAndFetchRouteLocation,

@@ -2,7 +2,6 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { IFixedRouteStatus, IFixedRoute } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import AppLoading from "@/src/components/View/AppLoading";
 import FixedRouteDetailPending from "@/src/components/FixedRoute/FixedRouteDetailPending";
@@ -12,6 +11,7 @@ import useQuery from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { useDispatch } from "react-redux";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
+import { IFixedRouteStatus } from "@/src/types/enum";
 
 export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();

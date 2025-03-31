@@ -11,7 +11,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import InfinityList, {
   InfinityListMethods,
 } from "@/src/components/InfinityList";
-import { IComment, INewsFeedItem } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import { PartTypes, Tables } from "@/src/constants";
 import { HStack } from "@/src/components/ui/hstack";

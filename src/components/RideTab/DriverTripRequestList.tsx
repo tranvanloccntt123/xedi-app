@@ -3,12 +3,10 @@ import { Box } from "../ui/box";
 import InfinityList, { InfinityListMethods } from "../InfinityList";
 import { xediSupabase } from "@/src/lib/supabase";
 import { Tables } from "@/src/constants";
-import { IDriverTripRequest, IDriverTripRequestStatus } from "@/src/types";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { Pressable, ScrollView } from "react-native";
 import { router } from "expo-router";
-import { VStack } from "../ui/vstack";
-import Animated, {
+import {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
@@ -17,6 +15,7 @@ import { HStack } from "../ui/hstack";
 import { Button, ButtonText } from "../ui/button";
 import CloseIcon from "../icons/CloseIcon";
 import AppColors from "@/src/constants/colors";
+import { IDriverTripRequestStatus } from "@/src/types/enum";
 
 const RenderItem: React.FC<{ driverTripRequest: IDriverTripRequest }> = ({
   driverTripRequest,

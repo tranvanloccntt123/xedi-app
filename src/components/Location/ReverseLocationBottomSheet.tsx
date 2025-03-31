@@ -14,7 +14,6 @@ import { Center } from "@/src/components/ui/center";
 import { Text } from "@/src/components/ui/text";
 import { ActivityIndicator, Pressable } from "react-native";
 import useReverseLocation from "@/hooks/useReverseLocation";
-import { InputLocation } from "@/src/types";
 
 const ReverseLocationBottomSheet: React.FC<{
   coordinate?: {

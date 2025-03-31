@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { IDriverTripRequestStatus, ITripRequest } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import AppLoading from "@/src/components/View/AppLoading";
 import TripRequestDetailPending from "@/src/components/TripRequest/TripRequestPending";
@@ -11,6 +10,7 @@ import useQuery from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 import TripRequestMerged from "@/src/components/TripRequest/TripRequestMerged";
+import { IDriverTripRequestStatus } from "@/src/types/enum";
 
 export default function TripRequestDetail() {
   const { id } = useLocalSearchParams();
@@ -64,9 +64,7 @@ export default function TripRequestDetail() {
           await xediSupabase.tables.tripRequest.updateById(tripRequest?.id, {
             status: IDriverTripRequestStatus.PENDING,
           });
-          await xediSupabase.tables.fixedRoutes.deleteById(
-            driverRequestId
-          );
+          await xediSupabase.tables.fixedRoutes.deleteById(driverRequestId);
           return queryFn();
         },
       })

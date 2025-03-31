@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { IDriverTripRequest, ITripRequest } from "@/src/types";
 import {
   acceptDriverTripRequest,
   fetchDriverTripRequestAccepted,

@@ -1,11 +1,10 @@
 import React from "react";
 import { Box } from "../ui/box";
-import { IDriverTripRequest, IUser } from "@/src/types";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button, ButtonText } from "../ui/button";
-import useQuery, { useDataInfo } from "@/hooks/useQuery";
+import useQuery from "@/hooks/useQuery";
 import { xediSupabase } from "@/src/lib/supabase";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 

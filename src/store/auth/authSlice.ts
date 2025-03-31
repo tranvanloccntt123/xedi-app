@@ -1,5 +1,4 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { IUser, IUserCoin } from "@/src/types";
 import {
   fetchUserCoins,
   fetchUserInfo,

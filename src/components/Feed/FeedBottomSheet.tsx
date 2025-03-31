@@ -10,7 +10,6 @@ import {
 } from "@/src/components/ui/bottom-sheet";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/src/store/store";
-import type { INewsFeedItem, IUser } from "@/src/types";
 import { Text } from "@/src/components/ui/text";
 import { xediSupabase } from "@/src/lib/supabase";
 import { deleteFeedItem } from "@/src/store/feed/feedSlice";

@@ -1,6 +1,5 @@
 import React from "react";
 import { Box } from "../ui/box";
-import { ITripRequest } from "@/src/types";
 import { xediSupabase } from "@/src/lib/supabase";
 import InfinityList from "../InfinityList";
 import TripRequestItem from "../TripRequest/TripRequestItem";

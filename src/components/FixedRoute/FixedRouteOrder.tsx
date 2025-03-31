@@ -16,8 +16,6 @@ import {
   Textarea as TextArea,
   TextareaInput as TextAreaInput,
 } from "@/src/components/ui/textarea";
-import { FixedRouteOrderForm, IFixedRoute, IUser } from "@/src/types";
-import { xediSupabase } from "@/src/lib/supabase";
 import { Heading } from "@/src/components/ui/heading";
 import {
   formValidatePerField,

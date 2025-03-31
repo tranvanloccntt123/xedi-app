@@ -25,7 +25,6 @@ import fetchServices, {
 } from "./fetchServices/fetchServicesSlice";
 import postFormReducer, { PostFormState } from "./postForm/postFormSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserState } from "../types";
 import locationReducer, { LocationState } from "./location/locationSlice";
 
 const persistConfig = {

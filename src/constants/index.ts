@@ -24,3 +24,7 @@ export const PartTypes: any = [
     textStyle: { fontWeight: "bold", color: "#000" },
   },
 ];
+
+export const MARKER_SIZE = [0, 80];
+
+export const ZOOM_LEVEL = [0, 18];

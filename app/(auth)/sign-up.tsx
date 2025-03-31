@@ -19,7 +19,6 @@ import { SelectBackdrop } from "@/src/components/ui/select";
 import { SelectContent } from "@/src/components/ui/select";
 import { SelectDragIndicator } from "@/src/components/ui/select";
 import { SelectItem } from "@/src/components/ui/select";
-import type { IUser } from "@/src/types";
 import {
   formValidatePerField,
   formValidateSuccess,

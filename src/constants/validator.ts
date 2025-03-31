@@ -1,10 +1,3 @@
-import {
-  FixedRouteOrderForm,
-  IFixedRoute,
-  InputLocation,
-  IUser,
-} from "../types";
-
 export const authValidator: ValidatorObject<keyof IUser> = {
   phone: {
     required: {

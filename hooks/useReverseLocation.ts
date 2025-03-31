@@ -1,4 +1,3 @@
-import { PhotonReverseResponse } from "@/src/types";
 import axios from "axios";
 import React from "react";
 import useDebounce from "./useDebounce";

@@ -11,7 +11,6 @@ import { Button, ButtonIcon } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { RefreshControl, ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
-import type { IFixedRoute, IUser } from "@/src/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";

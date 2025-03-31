@@ -4,7 +4,6 @@ import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { ScrollView, StyleSheet } from "react-native";
-import { ITripRequest, IUser } from "@/src/types";
 import type { RootState } from "@/src/store/store";
 import Header from "@/src/components/Header";
 import TripRequestItem from "./TripRequestItem";

@@ -4,7 +4,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { VStack } from "@/src/components/ui/vstack";
 import { TouchableOpacity } from "react-native";
-import { IDriverTripRequest } from "@/src/types";
 import { Heading } from "@/src/components/ui/heading";
 import { formatMoney } from "@/src/utils/formatMoney";
 import { Text } from "@/src/components/ui/text";

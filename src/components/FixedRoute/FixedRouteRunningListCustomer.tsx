@@ -2,15 +2,8 @@ import React from "react";
 import { Tables } from "@/src/constants";
 import { xediSupabase } from "@/src/lib/supabase";
 import { RootState } from "@/src/store/store";
-import {
-  IFixedRoute,
-  IFixedRouteOrder,
-  InputLocation,
-  ITripRequest,
-  IUser,
-} from "@/src/types";
 import { generateUUID } from "@/src/utils/uuid";
-import { FlatList, Linking } from "react-native";
+import { FlatList, Linking, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { Box } from "../ui/box";
 import { Divider } from "../ui/divider";
@@ -21,6 +14,8 @@ import HiIcon from "../icons/HiIcon";
 import { scale } from "react-native-size-matters";
 import { Button } from "../ui/button";
 import PhoneIcon from "../icons/PhoneIcon";
+import useQuery from "@/hooks/useQuery";
+import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 
 type CustomerInFixedRoute = {
   id: string;
@@ -31,7 +26,8 @@ type CustomerInFixedRoute = {
 
 const FixedRouteRunningListCustomer: React.FC<{
   fixedRoute: IFixedRoute;
-}> = ({ fixedRoute }) => {
+  onMoveTo?: (coordinate: { lat: number; lon: number }) => any;
+}> = ({ fixedRoute, onMoveTo }) => {
   const user: IUser = useSelector((state: RootState) => state.auth.user);
 
   const isAuthor = React.useMemo(
@@ -39,72 +35,63 @@ const FixedRouteRunningListCustomer: React.FC<{
     [user, fixedRoute]
   );
 
-  const [fixedRouteRequestList, setFixedRouteRequestList] = React.useState<
-    IFixedRouteOrder[]
-  >([]);
+  const { data: customerList } = useQuery<CustomerInFixedRoute[]>({
+    queryKey: `${XEDI_GROUP_INFO.CUSTOMER_LIST}_${fixedRoute.id}`,
+    async queryFn() {
+      if (!isAuthor) {
+        return [];
+      }
+      const list: CustomerInFixedRoute[] = [];
+      const fixedRouteRequestList: IFixedRouteOrder[] = [];
+      const mergeRequestList: ITripRequest[] = [];
+      try {
+        const { data: mergeRequest } =
+          await xediSupabase.tables.tripRequest.selectAfterId({
+            select: `*, ${Tables.USERS} (*)`,
+            filter: [
+              {
+                filed: "fixed_route_id",
+                filter: "eq",
+                data: fixedRoute.id,
+              },
+            ],
+          });
+        !!mergeRequest && mergeRequestList.push(...mergeRequest);
+      } catch (e) {}
 
-  const [mergeRequestList, setMergeRequestList] = React.useState<
-    ITripRequest[]
-  >([]);
+      try {
+        const { data: requestList } =
+          await xediSupabase.tables.fixedRouteOrders.selectOrderByStatus(
+            fixedRoute.id
+          );
+        !!requestList && fixedRouteRequestList.push(...(requestList as any));
+      } catch (e) {}
 
-  const customerList = React.useMemo(() => {
-    const list: CustomerInFixedRoute[] = [];
+      if (fixedRouteRequestList?.length) {
+        list.push(
+          ...fixedRouteRequestList.map((v) => ({
+            id: generateUUID(),
+            user: v.users,
+            startLocation: v.location,
+            endLocation: fixedRoute.endLocation,
+          }))
+        );
+      }
 
-    if (fixedRouteRequestList?.length) {
-      list.push(
-        ...fixedRouteRequestList.map((v) => ({
-          id: generateUUID(),
-          user: v.users,
-          startLocation: v.location,
-          endLocation: fixedRoute.endLocation,
-        }))
-      );
-    }
+      if (mergeRequestList?.length) {
+        list.push(
+          ...mergeRequestList.map((v) => ({
+            id: generateUUID(),
+            user: v.users,
+            startLocation: v.startLocation,
+            endLocation: v.endLocation,
+          }))
+        );
+      }
 
-    if (mergeRequestList?.length) {
-      list.push(
-        ...mergeRequestList.map((v) => ({
-          id: generateUUID(),
-          user: v.users,
-          startLocation: v.startLocation,
-          endLocation: v.endLocation,
-        }))
-      );
-    }
-
-    return list;
-  }, [mergeRequestList, fixedRouteRequestList]);
-
-  const loadMergeData = async () => {
-    const { data: mergeRequest } =
-      await xediSupabase.tables.tripRequest.selectAfterId({
-        select: `*, ${Tables.USERS} (*)`,
-        filter: [
-          {
-            filed: "fixed_route_id",
-            filter: "eq",
-            data: fixedRoute.id,
-          },
-        ],
-      });
-    setMergeRequestList(mergeRequest as never);
-  };
-
-  const loadData = async () => {
-    const { data, error } =
-      await xediSupabase.tables.fixedRouteOrders.selectOrderByStatus(
-        fixedRoute.id
-      );
-    if (error) return;
-    setFixedRouteRequestList(data as never);
-  };
-
-  React.useEffect(() => {
-    if (!!fixedRoute && isAuthor) {
-      loadMergeData();
-      loadData();
-    }
-  }, [isAuthor, fixedRoute]);
+      return list;
+    },
+  });
 
   return (
     <FlatList
@@ -130,12 +117,23 @@ const FixedRouteRunningListCustomer: React.FC<{
               </Button>
             </HStack>
             {item.startLocation?.display_name && (
-              <HStack space="sm" className="items-center">
-                <HiIcon size={scale(18)} color="#000" />
-                <Text className="tet-md font-[500] flex-1">
-                  {item.startLocation.display_name}
-                </Text>
-              </HStack>
+              <TouchableOpacity
+                onPress={() =>
+                  item.startLocation?.lat &&
+                  item.startLocation?.lon &&
+                  onMoveTo?.({
+                    lat: item.startLocation?.lat,
+                    lon: item.startLocation.lon,
+                  })
+                }
+              >
+                <HStack space="sm" className="items-center">
+                  <HiIcon size={scale(18)} color="#000" />
+                  <Text className="tet-md font-[500] flex-1">
+                    {item.startLocation.display_name}
+                  </Text>
+                </HStack>
+              </TouchableOpacity>
             )}
           </VStack>
           <Divider />

@@ -7,7 +7,6 @@ import { Heading } from "@/src/components/ui/heading";
 import { Text } from "@/src/components/ui/text";
 import { ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
-import type { IFixedRoute } from "@/src/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { HStack } from "@/src/components/ui/hstack";
 import { formatMoney } from "@/src/utils/formatMoney";

@@ -12,13 +12,6 @@ import {
   TextInputSelectionChangeEventData,
   View,
 } from "react-native";
-
-import {
-  MentionInputProps,
-  MentionInputRef,
-  MentionPartType,
-  Suggestion,
-} from "../types";
 import {
   defaultMentionTextStyle,
   generateValueFromPartsAndChangedText,

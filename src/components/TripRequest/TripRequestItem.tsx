@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { Box } from "@/src/components/ui/box";
 import { Text } from "@/src/components/ui/text";
-import type { ITripRequest } from "@/src/types";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { router } from "expo-router";

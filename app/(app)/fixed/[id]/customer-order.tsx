@@ -11,7 +11,6 @@ import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
 import { xediSupabase } from "@/src/lib/supabase";
 import { RootState } from "@/src/store/store";
-import { FixedRouteOrderForm, InputLocation, IUser } from "@/src/types";
 import { splitLocation } from "@/src/utils";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useMemo, useState } from "react";

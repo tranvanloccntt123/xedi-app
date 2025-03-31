@@ -4,14 +4,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Box } from "@/src/components/ui/box";
 import { StyleSheet } from "react-native";
-import type { IFixedRoute, IUser } from "@/src/types";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import type { RootState } from "@/src/store/store";
 import useLocation from "@/hooks/useLocation";
-import AppMapView from "../AppMapView";
+import AppMapView, { AppMapViewMethods } from "../AppMapView";
 import Header from "../Header";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
@@ -20,6 +16,14 @@ import { Heading } from "../ui/heading";
 import { scale } from "react-native-size-matters";
 import BottomSheetGesture from "../BottomSheetGesture";
 import FixedRouteRunningListCustomer from "./FixedRouteRunningListCustomer";
+import { MarkerView } from "@maplibre/maplibre-react-native";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
+import LocationIcon from "../icons/LocationIcon";
+import { ZOOM_LEVEL, MARKER_SIZE } from "@/src/constants";
 
 const styles = StyleSheet.create({
   logo: {
@@ -42,6 +46,9 @@ const FixedRouteDetailRunning: React.FC<{
 }> = ({ fixedRoute, onFinished }) => {
   useLocation({ isWatchLocation: true });
   const insets = useSafeAreaInsets();
+
+  const mapRef = React.useRef<AppMapViewMethods>(null);
+
   const user: IUser = useSelector((state: RootState) => state.auth.user);
 
   const { lat, lon } = useSelector((state: RootState) => state.location);
@@ -68,6 +75,15 @@ const FixedRouteDetailRunning: React.FC<{
     [user, fixedRoute]
   );
 
+  const markerResizeAnim = useSharedValue(ZOOM_LEVEL[1]);
+
+  const markerStyle = useAnimatedStyle(() => {
+    return {
+      width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+      height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
+    };
+  });
+
   return (
     <Box className="flex-1 bg-gray-100">
       <Box className="px-4 bg-white" style={{ paddingTop: insets.top }}>
@@ -87,7 +103,18 @@ const FixedRouteDetailRunning: React.FC<{
         />
       </Box>
       <Box className="flex-1">
-        <AppMapView />
+        <AppMapView
+          ref={mapRef}
+          onCenterChange={(_, zoomLevel) => {
+            markerResizeAnim.value = zoomLevel;
+          }}
+        >
+          <MarkerView coordinate={[lon, lat]}>
+            <Animated.View style={[markerStyle, { alignItems: "center" }]}>
+              <LocationIcon size={"50%"} color="#bf2c2c" />
+            </Animated.View>
+          </MarkerView>
+        </AppMapView>
       </Box>
       <BottomSheetGesture
         isDisableFetchRemind={true}
@@ -100,7 +127,13 @@ const FixedRouteDetailRunning: React.FC<{
           <Heading size="xl" className="mb-2">
             Khách hàng
           </Heading>
-          <FixedRouteRunningListCustomer fixedRoute={fixedRoute} />
+          <FixedRouteRunningListCustomer
+            fixedRoute={fixedRoute}
+            onMoveTo={(coordinate) => {
+              console.log("MOVE TO ", coordinate);
+              mapRef.current?.moveTo(coordinate);
+            }}
+          />
         </Box>
       </BottomSheetGesture>
     </Box>

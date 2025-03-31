@@ -15,7 +15,6 @@ import Animated, {
 } from "react-native-reanimated";
 import { Box } from "../ui/box";
 import LocationSearchTripRequest from "../Location/LocationSearchTripRequest";
-import { InputLocation } from "../../types";
 import useReverseLocation from "@/hooks/useReverseLocation";
 import { VStack } from "../ui/vstack";
 import { Heading } from "../ui/heading";

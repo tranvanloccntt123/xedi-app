@@ -1,7 +1,6 @@
 import { Tables } from "@/src/constants";
 import { PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
-import { INewsFeedItem } from "@/src/types";
 
 export default class Feed extends BaseTable<INewsFeedItem> {
   constructor(_supabase: SupabaseClient) {

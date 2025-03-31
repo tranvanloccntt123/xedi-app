@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect } from "react";
-import { InputLocation, IUser } from "../../types";
 import useDebounce from "@/hooks/useDebounce";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";

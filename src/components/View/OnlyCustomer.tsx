@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { IUser } from "../../types";
 
 const OnlyCustomer: React.FC<{
   children: React.ReactNode | React.ReactNode[];

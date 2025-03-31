@@ -1,5 +1,4 @@
 import { Tables } from "@/src/constants";
-import { IFixedRouteOrder } from "@/src/types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
 

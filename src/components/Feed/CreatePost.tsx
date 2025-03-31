@@ -3,7 +3,6 @@ import { Button, ButtonText } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { xediSupabase } from "../../lib/supabase";
-import { IUser } from "../../types";
 
 const CreatePostButton: React.FC<{
   onError: (message: string) => any;

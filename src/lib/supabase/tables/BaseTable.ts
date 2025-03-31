@@ -1,8 +1,3 @@
-import {
-  SupabaseParams,
-  SupabaseTableFilter,
-  SupabaseTableInsert,
-} from "@/src/types";
 import { PostgrestSingleResponse, SupabaseClient } from "@supabase/supabase-js";
 
 export class BaseTable<Data = any, Source = any> {

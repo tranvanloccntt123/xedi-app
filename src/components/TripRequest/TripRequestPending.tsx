@@ -6,7 +6,6 @@ import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Button, ButtonIcon } from "@/src/components/ui/button";
 import { RefreshControl, ScrollView, StyleSheet } from "react-native";
-import { ITripRequest, IUser } from "@/src/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import type { RootState } from "@/src/store/store";
 import Header from "@/src/components/Header";

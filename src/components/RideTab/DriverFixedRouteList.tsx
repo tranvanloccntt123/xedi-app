@@ -2,7 +2,6 @@ import React from "react";
 import { Box } from "../ui/box";
 import InfinityList, { InfinityListMethods } from "../InfinityList";
 import { xediSupabase } from "@/src/lib/supabase";
-import { IFixedRoute, IFixedRouteStatus } from "@/src/types";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { HStack } from "../ui/hstack";
 import { Button, ButtonText } from "../ui/button";
@@ -10,6 +9,7 @@ import CloseIcon from "../icons/CloseIcon";
 import AppColors from "@/src/constants/colors";
 import FixedRouteItem from "../FixedRoute/FixedRouteItem";
 import { router } from "expo-router";
+import { IFixedRouteStatus } from "@/src/types/enum";
 
 const DriverFixedRouteList: React.FC<{
   statusFilter?: IFixedRouteStatus[];

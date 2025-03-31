@@ -6,6 +6,7 @@ export enum XEDI_GROUP_INFO {
   TRIP_REQUEST = "trip_request",
   FIXED_ROUTE = "fixed_route",
   DRIVER_TRIP_REQUEST = "driver_trip_request",
+  CUSTOMER_LIST = "customer_list",
 }
 
 export interface FetchState {

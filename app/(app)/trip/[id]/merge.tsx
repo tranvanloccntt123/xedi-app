@@ -4,17 +4,8 @@ import Header from "@/src/components/Header";
 import InfinityList from "@/src/components/InfinityList";
 import { Box } from "@/src/components/ui/box";
 import { xediSupabase } from "@/src/lib/supabase";
-import {
-  IDriverTripRequestStatus,
-  IErrorRequest,
-  IFixedRoute,
-  IFixedRouteStatus,
-} from "@/src/types";
 import { router, useLocalSearchParams } from "expo-router";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RootState } from "@/src/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,6 +18,11 @@ import { HStack } from "@/src/components/ui/hstack";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import {
+  IDriverTripRequestStatus,
+  IErrorRequest,
+  IFixedRouteStatus,
+} from "@/src/types/enum";
 
 export default function MergeTripRequest() {
   const insets = useSafeAreaInsets();
@@ -50,10 +46,9 @@ export default function MergeTripRequest() {
   const handlerMergeTripRequest = async () => {
     if (!driverRequest || !checked) return;
     try {
-      await xediSupabase.tables.fixedRoutes.updateById(
-        driverRequest.id,
-        { status: IDriverTripRequestStatus.DRIVER_MERGED_TRIP_REQUEST }
-      );
+      await xediSupabase.tables.fixedRoutes.updateById(driverRequest.id, {
+        status: IDriverTripRequestStatus.DRIVER_MERGED_TRIP_REQUEST,
+      });
       await xediSupabase.tables.tripRequest.updateById(id, {
         fixed_route_id: checked,
         status: IDriverTripRequestStatus.DRIVER_MERGED_TRIP_REQUEST,
@@ -145,7 +140,11 @@ export default function MergeTripRequest() {
           className="bg-white px-[16px] pt-4"
           style={{ paddingBottom: insets.bottom }}
         >
-          <Button onPress={handlerMergeTripRequest} isDisabled={!driverRequest || !checked} className="h-[45px]">
+          <Button
+            onPress={handlerMergeTripRequest}
+            isDisabled={!driverRequest || !checked}
+            className="h-[45px]"
+          >
             <ButtonText>Xác nhận</ButtonText>
           </Button>
         </Box>

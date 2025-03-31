@@ -1,7 +1,4 @@
 import React from "react";
-import { Button, ButtonText } from "@/src/components/ui/button";
-import { IFixedRoute, ITripRequest } from "@/src/types";
-import ChevronRightIcon from "../icons/ChevronRightIcon";
 import { router } from "expo-router";
 import TripRequestDriverHandleLayout from "./TripRequestDriverHandleLayout";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";

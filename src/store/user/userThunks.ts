@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { xediSupabase } from "@/src/lib/supabase";
-import type { IUser, IUserCoin } from "@/src/types";
 
 export const fetchUserInfo = createAsyncThunk<IUser, void>(
   "user/fetchUserInfo",

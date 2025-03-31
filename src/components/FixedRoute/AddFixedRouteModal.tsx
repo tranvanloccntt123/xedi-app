@@ -25,13 +25,14 @@ import { VStack } from "../ui/vstack";
 import { xediSupabase } from "../../lib/supabase";
 import { formatMoney, unformatMoney } from "../../utils/formatMoney";
 import {
-  formValidate,
   formValidatePerField,
   formValidateSuccess,
 } from "../../utils/validator";
-import { fixedRouteValidator, locationValidator } from "../../constants/validator";
+import {
+  fixedRouteValidator,
+  locationValidator,
+} from "../../constants/validator";
 import { Box } from "../ui/box";
-import { IFixedRoute, InputLocation } from "../../types";
 import {
   Checkbox,
   CheckboxIndicator,

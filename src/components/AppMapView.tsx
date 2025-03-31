@@ -21,6 +21,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
+import { ZOOM_LEVEL, MARKER_SIZE } from "../constants";
 
 export interface AppMapViewProps {
   onPress?: (coordinate: { lat: number; lon: number }) => any;
@@ -35,7 +36,9 @@ export interface AppMapViewProps {
   isHideCurrentLocation?: boolean;
 }
 
-export interface AppMapViewMethods {}
+export interface AppMapViewMethods {
+  moveTo: (coordinate: { lat: number; lon: number }, duration?: number) => any;
+}
 
 setAccessToken(null);
 
@@ -52,10 +55,6 @@ const getTileXY = (lat, lon, zoom) => {
   );
   return { x, y };
 };
-
-const MARKER_SIZE = [0, 80];
-
-const ZOOM_LEVEL = [0, 18];
 
 const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
   (
@@ -91,7 +90,7 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
     );
     const { handleOpen } = React.useContext(BottomSheetContext);
 
-    const markerResizeAnim = useSharedValue(18);
+    const markerResizeAnim = useSharedValue(ZOOM_LEVEL[1]);
 
     const onMapPress = (event) => {
       const { geometry } = event;
@@ -108,6 +107,8 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
       );
     };
 
+    const moveRef = React.useRef<any>(null);
+
     const markerStyle = useAnimatedStyle(() => {
       return {
         width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
@@ -116,7 +117,18 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
     });
 
     useImperativeHandle(ref, () => {
-      return {};
+      return {
+        moveTo(coordinate, duration = 200) {
+          cameraViewRef.current?.moveTo(
+            [coordinate.lon, coordinate.lat],
+            duration
+          );
+          clearTimeout(moveRef.current);
+          moveRef.current = setTimeout(() => {
+            cameraViewRef.current?.zoomTo(ZOOM_LEVEL[1], duration + 10);
+          }, 210);
+        },
+      };
     });
 
     return (

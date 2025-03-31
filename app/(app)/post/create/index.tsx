@@ -26,7 +26,6 @@ import ErrorModal from "@/src/components/ErrorModal";
 import CreatePostButton from "@/src/components/Feed/CreatePost";
 import ImageIcon from "@/src/components/icons/ImageIcon";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
-import { IFixedRoute } from "@/src/types";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {

@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect } from "react";
-import type { INewsFeedItem } from "@/src/types";
 import moment from "moment";
 import { Box } from "../ui/box";
 import { VStack } from "../ui/vstack";

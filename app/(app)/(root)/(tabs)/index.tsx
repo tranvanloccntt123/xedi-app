@@ -27,6 +27,7 @@ import {
   XEDI_GROUP_INFO,
 } from "@/src/store/fetchServices/fetchServicesSlice";
 import { resetPost } from "@/src/store/postForm/postFormSlice";
+import AppColors from "@/src/constants/colors";
 
 export default function Home() {
   useLocation({});
@@ -42,7 +43,7 @@ export default function Home() {
 
   return (
     <BottomSheet>
-      <Box className="flex-1 bg-gray-100" style={{ paddingTop: top }}>
+      <Box className="flex-1 bg-xedi-background" style={{ paddingTop: top }}>
         <InfinityList
           queryFn={async (lastPage) => {
             const { data } = await xediSupabase.tables.feed.selectFeedAfterId({
@@ -93,9 +94,9 @@ export default function Home() {
                     router.push("/post/create");
                   }}
                   variant="link"
-                  className="w-[40px] h-[40px] bg-typography-100 rounded-full"
+                  className="w-[40px] h-[40px] bg-xedi-primary rounded-full"
                 >
-                  <AddIconInLine size={24} color={"#000000"} />
+                  <AddIconInLine size={24} color={AppColors.white} />
                 </Button>
               </HStack>
               <OnlyCustomer>

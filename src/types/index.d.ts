@@ -227,3 +227,13 @@ interface IComment {
   feed_id?: number;
   feed?: INewsFeedItem;
 }
+
+type CustomerInFixedRouteType = "TripRequest" | "FixedRouteOrder";
+
+type CustomerInFixedRoute = {
+  id: string;
+  user: IUser;
+  startLocation: InputLocation;
+  endLocation: InputLocation;
+  type: CustomerInFixedRouteType;
+};

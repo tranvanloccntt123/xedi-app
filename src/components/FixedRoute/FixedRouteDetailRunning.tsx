@@ -9,12 +9,14 @@ import type { RootState } from "@/src/store/store";
 import useLocation from "@/hooks/useLocation";
 import AppMapView, { AppMapViewMethods } from "../AppMapView";
 import Header from "../Header";
-import { Button } from "../ui/button";
+import { Button, ButtonText } from "../ui/button";
 import { Text } from "../ui/text";
 import { xediSupabase } from "@/src/lib/supabase";
 import { Heading } from "../ui/heading";
 import { scale } from "react-native-size-matters";
-import BottomSheetGesture from "../BottomSheetGesture";
+import BottomSheetGesture, {
+  BottomSheetGestureMethods,
+} from "../BottomSheetGesture";
 import FixedRouteRunningListCustomer from "./FixedRouteRunningListCustomer";
 import { MarkerView } from "@maplibre/maplibre-react-native";
 import Animated, {
@@ -24,6 +26,7 @@ import Animated, {
 } from "react-native-reanimated";
 import LocationIcon from "../icons/LocationIcon";
 import { ZOOM_LEVEL, MARKER_SIZE } from "@/src/constants";
+import FixedRouteCustomerMarker from "./FixedRouteCustomerMarker";
 
 const styles = StyleSheet.create({
   logo: {
@@ -48,6 +51,8 @@ const FixedRouteDetailRunning: React.FC<{
   const insets = useSafeAreaInsets();
 
   const mapRef = React.useRef<AppMapViewMethods>(null);
+
+  const bottomRef = React.useRef<BottomSheetGestureMethods>(null);
 
   const user: IUser = useSelector((state: RootState) => state.auth.user);
 
@@ -77,13 +82,6 @@ const FixedRouteDetailRunning: React.FC<{
 
   const markerResizeAnim = useSharedValue(ZOOM_LEVEL[1]);
 
-  const markerStyle = useAnimatedStyle(() => {
-    return {
-      width: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
-      height: interpolate(markerResizeAnim.value, ZOOM_LEVEL, MARKER_SIZE),
-    };
-  });
-
   return (
     <Box className="flex-1 bg-gray-100">
       <Box className="px-4 bg-white" style={{ paddingTop: insets.top }}>
@@ -109,14 +107,14 @@ const FixedRouteDetailRunning: React.FC<{
             markerResizeAnim.value = zoomLevel;
           }}
         >
-          <MarkerView coordinate={[lon, lat]}>
-            <Animated.View style={[markerStyle, { alignItems: "center" }]}>
-              <LocationIcon size={"50%"} color="#bf2c2c" />
-            </Animated.View>
-          </MarkerView>
+          <FixedRouteCustomerMarker
+            fixedRoute={fixedRoute}
+            markerResizeAnim={markerResizeAnim}
+          />
         </AppMapView>
       </Box>
       <BottomSheetGesture
+        ref={bottomRef}
         isDisableFetchRemind={true}
         coordinate={{
           lat: 0,
@@ -124,14 +122,17 @@ const FixedRouteDetailRunning: React.FC<{
         }}
       >
         <Box className="flex-1 px-2">
+          <Button className="mb-2" variant="link">
+            <ButtonText>Vị trí hiện tại</ButtonText>
+          </Button>
           <Heading size="xl" className="mb-2">
             Khách hàng
           </Heading>
           <FixedRouteRunningListCustomer
             fixedRoute={fixedRoute}
             onMoveTo={(coordinate) => {
-              console.log("MOVE TO ", coordinate);
               mapRef.current?.moveTo(coordinate);
+              bottomRef.current?.openFull();
             }}
           />
         </Box>

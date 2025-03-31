@@ -23,6 +23,7 @@
   },
   "java.compile.nullAnalysis.mode": "automatic",
   "cSpell.words": [
+    "Fullfield",
     "openrouteservice",
     "Supabase",
     "Supbase",

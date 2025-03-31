@@ -17,13 +17,6 @@ import PhoneIcon from "../icons/PhoneIcon";
 import useQuery from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 
-type CustomerInFixedRoute = {
-  id: string;
-  user: IUser;
-  startLocation: InputLocation;
-  endLocation: InputLocation;
-};
-
 const FixedRouteRunningListCustomer: React.FC<{
   fixedRoute: IFixedRoute;
   onMoveTo?: (coordinate: { lat: number; lon: number }) => any;
@@ -74,6 +67,7 @@ const FixedRouteRunningListCustomer: React.FC<{
             user: v.users,
             startLocation: v.location,
             endLocation: fixedRoute.endLocation,
+            type: "FixedRouteOrder" as CustomerInFixedRouteType,
           }))
         );
       }
@@ -85,6 +79,7 @@ const FixedRouteRunningListCustomer: React.FC<{
             user: v.users,
             startLocation: v.startLocation,
             endLocation: v.endLocation,
+            type: "TripRequest" as CustomerInFixedRouteType,
           }))
         );
       }

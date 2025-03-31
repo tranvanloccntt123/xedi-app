@@ -27,12 +27,13 @@ import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button, ButtonText } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
 import { PartTypes } from "@/src/constants";
+import AppColors from "@/src/constants/colors";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
 }
 
-const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
+const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
   const dispatch = useDispatch();
 
   const { data } = useDataInfo<INewsFeedItem>(
@@ -89,6 +90,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               value={data?.content || ""}
               onChange={() => {}}
               partTypes={PartTypes as any}
+              style={{ color: AppColors.text }}
             />
           </VStack>
         </Box>
@@ -104,7 +106,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               >
                 <FixedRouteItem
                   fixedRoute={data.fixed_routes[0]}
-                  className="mx-0 bg-gray-50 rounded-md w-full"
+                  className="mx-0 rounded-none w-full"
                   disabled
                 />
               </Pressable>
@@ -125,7 +127,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
                   >
                     <FixedRouteItem
                       fixedRoute={fixedRoute}
-                      className="mx-0 bg-gray-50 rounded-md w-[280px]"
+                      className="mx-0 rounded-none w-[280px]"
                       disabled
                     />
                   </Pressable>
@@ -146,7 +148,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
               >
                 <TripRequestItem
                   tripRequest={data.trip_requests[0]}
-                  className="mx-0 bg-gray-50 rounded-md w-full"
+                  className="mx-0 rounded-none w-full"
                   disabled
                 />
               </Pressable>
@@ -167,7 +169,7 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
                   >
                     <TripRequestItem
                       tripRequest={tripRequest}
-                      className="mx-0 bg-gray-50 rounded-md w-[280px]"
+                      className="mx-0 rounded-none w-[280px]"
                       disabled
                     />
                   </Pressable>
@@ -190,6 +192,6 @@ const NewsFeedItem: React.FC<NewsFeedItemProps> = ({ item }) => {
       </VStack>
     </Animated.View>
   );
-};
+});
 
 export default NewsFeedItem;

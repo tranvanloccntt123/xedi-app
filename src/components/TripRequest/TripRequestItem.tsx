@@ -26,7 +26,7 @@ const TripRequestItem: React.FC<{
     []
   );
   return (
-    <VStack space="md" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
+    <VStack space="md" className={`mx-2 bg-xedi-background p-4 rounded-md ${className}`}>
       {item?.status === 0 && <Heading size="sm">Đang tìm xe...</Heading>}
       <HStack className="justify-between items-center">
         {!!item.departureTime && (

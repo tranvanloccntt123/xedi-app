@@ -12,6 +12,7 @@ import HiIcon from "../icons/HiIcon";
 import FixedRouteIcon from "../icons/FixedRouteIcon";
 import { splitLocation } from "../../utils";
 import { Divider } from "../ui/divider";
+import AppColors from "@/src/constants/colors";
 
 const APP_STRUCT = "FIXED_ROUTES_ITEM";
 
@@ -38,15 +39,20 @@ const FixedRouteItem: React.FC<{
     []
   );
   return (
-    <VStack space="md" className={`mx-2 bg-white p-4 rounded-md ${className}`}>
+    <VStack
+      space="md"
+      className={`mx-2 bg-xedi-background p-4 rounded-md ${className}`}
+    >
       <HStack className="justify-between h-[30px]">
         {!!item.departureTime && (
-          <Text className="text-sm font-bold">
+          <Text className="text-sm font-bold color-xedi-text">
             {moment(item.departureTime).format("HH:mm")}
           </Text>
         )}
         {!item.departureTime && (
-          <Text className="text-sm font-bold">Thời gian linh động</Text>
+          <Text className="text-sm font-bold color-xedi-text">
+            Thời gian linh động
+          </Text>
         )}
         <HStack space="sm">
           {item.status === 2 && (
@@ -55,7 +61,7 @@ const FixedRouteItem: React.FC<{
             </Text>
           )}
           {!!item.departureTime && (
-            <Text className="text-sm font-bold">
+            <Text className="text-sm font-bold color-xedi-text">
               {moment(item.departureTime).format("DD/MM/YYYY")}
             </Text>
           )}
@@ -64,10 +70,12 @@ const FixedRouteItem: React.FC<{
       <VStack space="lg">
         <HStack space="md" className="items-center">
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
-            <HiIcon size={24} color="#000000" />
+            <HiIcon size={24} color={AppColors.text} />
           </Box>
           <VStack>
-            <Text className="text-black font-bold text-lg">{startTitle}</Text>
+            <Text className="color-xedi-text font-bold text-lg">
+              {startTitle}
+            </Text>
             {!!startSubTitle && (
               <Text className="text-gray-500 text-md">{startSubTitle}</Text>
             )}
@@ -75,10 +83,12 @@ const FixedRouteItem: React.FC<{
         </HStack>
         <HStack space="md" className="items-center">
           <Box className="w-[15px] h-[15px] p-[3px] justify-center items-center">
-            <FixedRouteIcon size={24} color="#000000" />
+            <FixedRouteIcon size={24} color={AppColors.text} />
           </Box>
           <VStack>
-            <Text className="text-black font-bold text-lg">{endTitle}</Text>
+            <Text className="color-xedi-text font-bold text-lg">
+              {endTitle}
+            </Text>
             {!!endSubTitle && (
               <Text className="text-gray-500 text-md">{endSubTitle}</Text>
             )}
@@ -88,7 +98,7 @@ const FixedRouteItem: React.FC<{
       {!isHiddenPrice && (
         <>
           <Divider />
-          <Text className="text-lg text-gray-600">
+          <Text className="text-lg color-xedi-text font-bold">
             Giá: {formatMoney(item.price)} VND
           </Text>
         </>

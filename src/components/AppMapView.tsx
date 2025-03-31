@@ -22,6 +22,8 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { ZOOM_LEVEL, MARKER_SIZE } from "../constants";
+import { TouchableOpacity } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
 
 export interface AppMapViewProps {
   onPress?: (coordinate: { lat: number; lon: number }) => any;
@@ -134,58 +136,62 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
     return (
       <Box className="flex-1 w-full">
         <AppLoading isLoading={[lat, lon].includes(null)}>
-          {![lat, lon].includes(null) && (
-            <MapView
-              style={{ flex: 1 }}
-              onPress={onMapPress}
-              onRegionWillChange={() => onRegionWillChange?.()}
-              rotateEnabled={false}
-              onRegionIsChanging={async (f) => {
-                markerResizeAnim.value = f.properties.zoomLevel;
-                if (onCenterChange) {
-                  debounce(async () => {
-                    const center = await mapViewRef.current.getCenter();
-                    onCenterChange(
-                      { lat: center[1], lon: center[0] },
-                      f.properties.zoomLevel
-                    );
-                  });
-                }
-              }}
-              ref={mapViewRef}
-            >
-              <Camera
-                ref={cameraViewRef}
-                defaultSettings={{
-                  centerCoordinate: [lon, lat],
-                  zoomLevel: ZOOM_LEVEL[1],
+          <>
+            {![lat, lon].includes(null) && (
+              <MapView
+                style={{ flex: 1 }}
+                onPress={onMapPress}
+                onRegionWillChange={() => onRegionWillChange?.()}
+                rotateEnabled={false}
+                zoomEnabled={false}
+                onRegionIsChanging={async (f) => {
+                  markerResizeAnim.value = f.properties.zoomLevel;
+                  if (onCenterChange) {
+                    debounce(async () => {
+                      const center = await mapViewRef.current.getCenter();
+                      onCenterChange(
+                        { lat: center[1], lon: center[0] },
+                        f.properties.zoomLevel
+                      );
+                    });
+                  }
                 }}
-              />
-              <RasterSource
-                id="openStreetMapSource"
-                tileUrlTemplates={[
-                  "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                ]}
-                minZoomLevel={ZOOM_LEVEL[0]}
-                maxZoomLevel={ZOOM_LEVEL[1]}
+                ref={mapViewRef}
               >
-                <RasterLayer
-                  id="openStreetMapLayer"
-                  sourceID="openStreetMapSource"
+                <Camera
+                  ref={cameraViewRef}
+                  defaultSettings={{
+                    centerCoordinate: [lon, lat],
+                    zoomLevel: ZOOM_LEVEL[1],
+                  }}
                 />
-              </RasterSource>
-              {!isHideCurrentLocation && (
-                <MarkerView coordinate={[lon, lat]}>
-                  <Animated.View
-                    style={[markerStyle, { alignItems: "center" }]}
-                  >
-                    <LocationIcon size={"50%"} color="#bf2c2c" />
-                  </Animated.View>
-                </MarkerView>
-              )}
-              {children}
-            </MapView>
-          )}
+                <RasterSource
+                  id="openStreetMapSource"
+                  tileUrlTemplates={[
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                  ]}
+                  minZoomLevel={ZOOM_LEVEL[0]}
+                  maxZoomLevel={ZOOM_LEVEL[1]}
+                >
+                  <RasterLayer
+                    id="openStreetMapLayer"
+                    sourceID="openStreetMapSource"
+                  />
+                </RasterSource>
+                {!isHideCurrentLocation && (
+                  <MarkerView coordinate={[lon, lat]}>
+                    <Animated.View
+                      style={[markerStyle, { alignItems: "center" }]}
+                    >
+                      <LocationIcon size={"50%"} color="#bf2c2c" />
+                    </Animated.View>
+                  </MarkerView>
+                )}
+                {children}
+              </MapView>
+            )}
+            <TouchableOpacity></TouchableOpacity>
+          </>
         </AppLoading>
       </Box>
     );

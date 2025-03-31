@@ -21,6 +21,7 @@ import {
   parseValue,
 } from "../utils";
 import { Text } from "../../ui/text";
+import { MentionInputProps, MentionInputRef, MentionPartType, Suggestion } from "../types";
 
 export const regexWeb =
   /(((H|h)(T|t)(T|t)(P|p)(S|s)|(F|f)(T|t)(P|p)|(H|h)(T|t)(T|t)(P|p)):\/\/)?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
@@ -28,10 +29,6 @@ export const regexWeb =
 export const regexHashTag = /\B(\#[a-zA-Z0-9_]+\b)(?!;)/g;
 
 const ContentRegex = [regexWeb, regexHashTag];
-
-const Colors = {
-  primary: "black",
-};
 
 const MentionInput = forwardRef<MentionInputRef, MentionInputProps>(
   (

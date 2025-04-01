@@ -28,6 +28,7 @@ import { Button, ButtonText } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
 import { PartTypes } from "@/src/constants";
 import AppColors from "@/src/constants/colors";
+import { scale } from "react-native-size-matters";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -68,7 +69,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-4 bg-white">
+      <VStack space="sm" className="mb-4 bg-xedi-card">
         <Box className="p-4 rounded-lg">
           <VStack>
             <HStack className="justify-between items-center mb-2">
@@ -78,8 +79,11 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
                 </Avatar>
                 <Text className="font-bold text-lg">{data?.users?.name}</Text>
               </HStack>
-              <BottomSheetTrigger onPress={handleMoreClick}>
-                <MoreIcon color="#000000" size={24} />
+              <BottomSheetTrigger
+                className="bg-xedi-card"
+                onPress={handleMoreClick}
+              >
+                <MoreIcon color={AppColors.text} size={scale(20)} />
               </BottomSheetTrigger>
             </HStack>
             <Text className="text-gray-500 text-xs mb-4">
@@ -90,7 +94,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
               value={data?.content || ""}
               onChange={() => {}}
               partTypes={PartTypes as any}
-              style={{ color: AppColors.text }}
+              textStyle={{ color: AppColors.text, fontSize: 20 }}
             />
           </VStack>
         </Box>
@@ -183,8 +187,8 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
             action="default"
             onPress={() => router.navigate(`post/${data.id}/comment`)}
           >
-            <ChatIcon size={24} color="#000" />
-            <Text className="text-xl text-black">
+            <ChatIcon size={scale(16)} color="#000" />
+            <Text className="text-xl color-xedi-text">
               {data.comments?.[0]?.count || 0}
             </Text>
           </Button>

@@ -7,7 +7,6 @@ const MoreIcon: React.FC<{ size: number; color: string }> = ({
 }) => {
   return (
     <Svg fill={color} width={size} height={size} viewBox="-3.5 0 24 24">
-      <Rect width="24" height="24" fill="white" />
       <Circle
         cx="12"
         cy="7"

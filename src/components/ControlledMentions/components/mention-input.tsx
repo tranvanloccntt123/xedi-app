@@ -47,6 +47,8 @@ const MentionInput = forwardRef<MentionInputRef, MentionInputProps>(
 
       onTrigger,
 
+      textStyle,
+
       ...textInputProps
     },
     ref
@@ -213,7 +215,7 @@ const MentionInput = forwardRef<MentionInputRef, MentionInputProps>(
           onChangeText={onChangeInput}
           onSelectionChange={handleSelectionChange}
         >
-          <Text>
+          <Text style={textStyle}>
             {parts.map(({ text, partType, data }, index) => {
               if (partType) {
                 return (

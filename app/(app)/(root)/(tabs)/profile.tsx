@@ -58,7 +58,7 @@ export default function Profile() {
 
   return (
     <ScrollView>
-      <Box className="bg-primary-500 p-4">
+      <Box className="bg-xedi-background p-4">
         <HStack
           space="md"
           className="items-center justify-between"

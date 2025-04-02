@@ -13,19 +13,12 @@ import { Button, ButtonText } from "../ui/button";
 import { Text } from "../ui/text";
 import { xediSupabase } from "@/src/lib/supabase";
 import { Heading } from "../ui/heading";
-import { scale } from "react-native-size-matters";
 import BottomSheetGesture, {
   BottomSheetGestureMethods,
 } from "../BottomSheetGesture";
 import FixedRouteRunningListCustomer from "./FixedRouteRunningListCustomer";
-import { MarkerView } from "@maplibre/maplibre-react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from "react-native-reanimated";
-import LocationIcon from "../icons/LocationIcon";
-import { ZOOM_LEVEL, MARKER_SIZE } from "@/src/constants";
+import { useSharedValue } from "react-native-reanimated";
+import { ZOOM_LEVEL } from "@/src/constants";
 import FixedRouteCustomerMarker from "./FixedRouteCustomerMarker";
 
 const styles = StyleSheet.create({
@@ -83,7 +76,7 @@ const FixedRouteDetailRunning: React.FC<{
   const markerResizeAnim = useSharedValue(ZOOM_LEVEL[1]);
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <Box className="px-4 bg-white" style={{ paddingTop: insets.top }}>
         <Header
           title="Hành trình"

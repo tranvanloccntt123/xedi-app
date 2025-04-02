@@ -12,12 +12,13 @@ import Animated, {
 import FixedRouteHistory from "./FixedRouteHistory";
 import DriverTripRequestList from "./DriverTripRequestList";
 import DriverFixedRoute from "./DriverFixedRouteList";
+import AppColors from "@/src/constants/colors";
 
 const HEAD_ROUNDED = 100;
 
 const HEADER_BG_COLOR = {
-  active: "rgba(52, 170, 246, 1)",
-  inActive: "rgba(52, 170, 246, 0)",
+  active: AppColors.primary,
+  inActive: AppColors.card,
 };
 
 const HEADER_TXT_COLOR = {
@@ -67,10 +68,10 @@ const DriverRider: React.FC<object> = () => {
     };
   });
   return (
-    <Box className="flex-1">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <HStack
-          className="justify-center items-center self-center bg-gray-200"
+          className="justify-center items-center self-center bg-xedi-card"
           style={styles.headerContainer}
         >
           <Pressable

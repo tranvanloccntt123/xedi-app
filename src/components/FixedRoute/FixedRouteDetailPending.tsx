@@ -51,7 +51,7 @@ const FixedRouteDetailPending: React.FC<{
   );
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={styles.container}>
         <ScrollView
           style={styles.container}

@@ -16,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.3.0",
     "@expo-google-fonts/mali": "^0.3.0",
     "@expo/html-elements": "^0.4.2",
     "@expo/ngrok": "^4.1.3",

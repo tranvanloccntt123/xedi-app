@@ -34,7 +34,7 @@ const FixedRouteDetailFinished: React.FC<{
   fixedRoute: IFixedRoute;
 }> = ({ fixedRoute }) => {
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.container}>
           <Box className="flex-1 px-4 bg-gray-100">

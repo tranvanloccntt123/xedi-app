@@ -38,7 +38,7 @@ const TripRequestMapSelectionLayout: React.FC<{
   const dispatch = useDispatch();
 
   return (
-    <Box className="flex-1 bg-white">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <Box className="px-4">
           <Header title="Tạo tuyến đường" />

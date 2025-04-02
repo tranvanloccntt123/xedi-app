@@ -112,7 +112,7 @@ export default function CreatePost() {
   const ref = useRef(null);
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <Box className="p-4 flex-1">
           <HStack space="sm" className="items-center mb-6">

@@ -240,19 +240,34 @@ type CustomerInFixedRoute = {
 
 type XediFontSize = "xs" | "2xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 
-type XediFontWeight = "200" | "300" | "400" | "500" | "600" | "700";
+type XediFontWeight =
+  | "100"
+  | "200"
+  | "300"
+  | "400"
+  | "500"
+  | "600"
+  | "700"
+  | "800"
+  | "900";
 
 type XediFont = {
-  Mali_200ExtraLight: number;
-  Mali_200ExtraLight_Italic: number;
-  Mali_300Light: number;
-  Mali_300Light_Italic: number;
-  Mali_400Regular: number;
-  Mali_400Regular_Italic: number;
-  Mali_500Medium: number;
-  Mali_500Medium_Italic: number;
-  Mali_600SemiBold: number;
-  Mali_600SemiBold_Italic: number;
-  Mali_700Bold: number;
-  Mali_700Bold_Italic: number;
+  Inter_100Thin: number;
+  Inter_100Thin_Italic: number;
+  Inter_200ExtraLight: number;
+  Inter_200ExtraLight_Italic: number;
+  Inter_300Light: number;
+  Inter_300Light_Italic: number;
+  Inter_400Regular: number;
+  Inter_400Regular_Italic: number;
+  Inter_500Medium: number;
+  Inter_500Medium_Italic: number;
+  Inter_600SemiBold: number;
+  Inter_600SemiBold_Italic: number;
+  Inter_700Bold: number;
+  Inter_700Bold_Italic: number;
+  Inter_800ExtraBold: number;
+  Inter_800ExtraBold_Italic: number;
+  Inter_900Black: number;
+  Inter_900Black_Italic: number;
 };

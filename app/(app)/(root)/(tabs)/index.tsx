@@ -2,7 +2,6 @@ const APP_STRUCT = "HOME_SCREEN";
 
 import React from "react";
 import { Box } from "@/src/components/ui/box";
-import { Heading } from "@/src/components/ui/heading";
 import { VStack } from "@/src/components/ui/vstack";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
@@ -28,6 +27,7 @@ import {
 } from "@/src/store/fetchServices/fetchServicesSlice";
 import { resetPost } from "@/src/store/postForm/postFormSlice";
 import AppColors from "@/src/constants/colors";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 export default function Home() {
   useLocation({});
@@ -81,10 +81,21 @@ export default function Home() {
             <VStack space="md">
               <HStack space="md" className="p-4">
                 <VStack className="flex-1" space="md">
-                  <Heading size="lg">
+                  <Text
+                    style={wrapTextStyle(
+                      { fontWeight: "700", color: AppColors.text },
+                      "md"
+                    )}
+                  >
                     Xin Chào, {user?.name || user?.phone}
-                  </Heading>
-                  <Text className="text-gray-600 mb-4">
+                  </Text>
+                  <Text
+                    className="mb-4"
+                    style={wrapTextStyle(
+                      { fontWeight: "500", color: AppColors.text },
+                      "2xs"
+                    )}
+                  >
                     Đây là bảng tin mới nhất của bạn. Kéo xuống để cập nhật.
                   </Text>
                 </VStack>

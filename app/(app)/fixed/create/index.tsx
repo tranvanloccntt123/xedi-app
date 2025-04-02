@@ -112,7 +112,7 @@ export default function CreateFixedRoute() {
     }
   };
   return (
-    <Box className="flex-1 bg-white">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <Box className="px-4">
           <Header

@@ -83,18 +83,18 @@ const DriverStatusButton: React.FC<{
   return (
     <Button
       onPress={onPress}
-      className={`rounded-full h-[25px] ${
-        isChecked ? "border-primary-500" : "border-black"
+      className={`rounded-full border-0 h-[25px] ${
+        isChecked ? "bg-xedi-secondary" : "bg-xedi-background"
       }`}
-      variant="outline"
+      action="default"
     >
       <CloseIcon
         size={12}
-        color={isChecked ? AppColors.primary : AppColors.black}
+        color={isChecked ? AppColors.text : AppColors.black}
       />
       <ButtonText
         className={`text-sm font-[400] ${
-          isChecked ? "text-primary-500" : "text-black"
+          isChecked ? "color-xedi-text" : "color-xedi-placeholder"
         }`}
       >
         {title}

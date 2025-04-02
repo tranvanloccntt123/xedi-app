@@ -4,7 +4,6 @@ import React, { useState, useMemo } from "react";
 import { useRouter } from "expo-router";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/src/store/store";
-import { updateUser } from "@/src/store/authSlice";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";
@@ -90,7 +89,7 @@ export default function EditProfile() {
   };
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <Box className="px-4">
           <Header title="Chỉnh sửa hồ sơ" />
@@ -138,7 +137,7 @@ export default function EditProfile() {
               </FormControl>
               <Button
                 size="lg"
-                className={`mt-4 h-[45px] ${!isFormChanged && 'opacity-[50%]'}`}
+                className={`mt-4 h-[45px] ${!isFormChanged && "opacity-[50%]"}`}
                 onPress={handleSave}
                 disabled={!isFormChanged}
               >

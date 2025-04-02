@@ -164,7 +164,7 @@ export default function Comment() {
   const { height, width } = useWindowDimensions();
   const dispatch = useDispatch();
   return (
-    <Box className="flex-1 bg-white">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={AppStyles.container}>
         <Box className="items-center justify-center" style={AppStyles.header}>
           <Heading>Bình luận</Heading>

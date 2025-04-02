@@ -14,7 +14,7 @@ const select = `id, body, created_at, ${Tables.USERS}(*)`;
 
 export default function History() {
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={{ flex: 1 }}>
         <InfinityList
           renderItem={({ item, index, data }) => (

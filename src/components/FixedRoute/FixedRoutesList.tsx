@@ -25,8 +25,12 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   const filteredRoutes = fixedRoutes.filter(
     (route: IFixedRoute) =>
       route.user_id === user?.id &&
-      (route.startLocation.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        route.endLocation.toLowerCase().includes(searchQuery.toLowerCase()))
+      (route.startLocation.display_name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+        route.endLocation.display_name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()))
   );
 
   const renderItem = useCallback(
@@ -74,4 +78,3 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
     </Box>
   );
 }
-

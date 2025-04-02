@@ -237,3 +237,22 @@ type CustomerInFixedRoute = {
   endLocation: InputLocation;
   type: CustomerInFixedRouteType;
 };
+
+type XediFontSize = "xs" | "2xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+
+type XediFontWeight = "200" | "300" | "400" | "500" | "600" | "700";
+
+type XediFont = {
+  Mali_200ExtraLight: number;
+  Mali_200ExtraLight_Italic: number;
+  Mali_300Light: number;
+  Mali_300Light_Italic: number;
+  Mali_400Regular: number;
+  Mali_400Regular_Italic: number;
+  Mali_500Medium: number;
+  Mali_500Medium_Italic: number;
+  Mali_600SemiBold: number;
+  Mali_600SemiBold_Italic: number;
+  Mali_700Bold: number;
+  Mali_700Bold_Italic: number;
+};

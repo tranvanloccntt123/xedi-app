@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { Box } from "@/src/components/ui/box";
-import { Text } from "@/src/components/ui/text";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { router } from "expo-router";
@@ -13,6 +12,8 @@ import FixedRouteIcon from "../icons/FixedRouteIcon";
 import { splitLocation } from "../../utils";
 import { Divider } from "../ui/divider";
 import AppColors from "@/src/constants/colors";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
+import { Text } from "react-native";
 
 const APP_STRUCT = "FIXED_ROUTES_ITEM";
 
@@ -41,27 +42,32 @@ const FixedRouteItem: React.FC<{
   return (
     <VStack
       space="md"
-      className={`mx-2 bg-xedi-background p-4 rounded-md ${className}`}
+      className={`mx-2 bg-xedi-card p-4 rounded-md ${className}`}
     >
       <HStack className="justify-between h-[30px]">
         {!!item.departureTime && (
-          <Text className="text-sm font-bold color-xedi-text">
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
             {moment(item.departureTime).format("HH:mm")}
           </Text>
         )}
         {!item.departureTime && (
-          <Text className="text-sm font-bold color-xedi-text">
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
             Thời gian linh động
           </Text>
         )}
         <HStack space="sm">
           {item.status === 2 && (
-            <Text className="text-md font-bold text-success-400">
+            <Text
+              style={wrapTextStyle(
+                { fontWeight: "700", color: AppColors.success },
+                "2xs"
+              )}
+            >
               Hoàn thành
             </Text>
           )}
           {!!item.departureTime && (
-            <Text className="text-sm font-bold color-xedi-text">
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
               {moment(item.departureTime).format("DD/MM/YYYY")}
             </Text>
           )}
@@ -73,11 +79,18 @@ const FixedRouteItem: React.FC<{
             <HiIcon size={24} color={AppColors.text} />
           </Box>
           <VStack>
-            <Text className="color-xedi-text font-bold text-lg">
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
               {startTitle}
             </Text>
             {!!startSubTitle && (
-              <Text className="text-gray-500 text-md">{startSubTitle}</Text>
+              <Text
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.placeholder },
+                  "2xs"
+                )}
+              >
+                {startSubTitle}
+              </Text>
             )}
           </VStack>
         </HStack>
@@ -86,11 +99,18 @@ const FixedRouteItem: React.FC<{
             <FixedRouteIcon size={24} color={AppColors.text} />
           </Box>
           <VStack>
-            <Text className="color-xedi-text font-bold text-lg">
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
               {endTitle}
             </Text>
             {!!endSubTitle && (
-              <Text className="text-gray-500 text-md">{endSubTitle}</Text>
+              <Text
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.placeholder },
+                  "2xs"
+                )}
+              >
+                {endSubTitle}
+              </Text>
             )}
           </VStack>
         </HStack>
@@ -98,7 +118,7 @@ const FixedRouteItem: React.FC<{
       {!isHiddenPrice && (
         <>
           <Divider />
-          <Text className="text-lg color-xedi-text font-bold">
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
             Giá: {formatMoney(item.price)} VND
           </Text>
         </>

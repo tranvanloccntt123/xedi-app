@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { Box } from "@/src/components/ui/box";
-import { Text } from "@/src/components/ui/text";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { router } from "expo-router";
@@ -10,7 +9,9 @@ import { HStack } from "@/src/components/ui/hstack";
 import HiIcon from "@/src/components/icons/HiIcon";
 import FixedRouteIcon from "@/src/components/icons/FixedRouteIcon";
 import { splitLocation } from "@/src/utils";
-import { Heading } from "@/src/components/ui/heading";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
+import AppColors from "@/src/constants/colors";
+import { Text } from "react-native";
 
 const TripRequestItem: React.FC<{
   tripRequest: ITripRequest;
@@ -26,19 +27,33 @@ const TripRequestItem: React.FC<{
     []
   );
   return (
-    <VStack space="md" className={`mx-2 bg-xedi-background p-4 rounded-md ${className}`}>
-      {item?.status === 0 && <Heading size="sm">Đang tìm xe...</Heading>}
+    <VStack
+      space="md"
+      className={`mx-2 bg-xedi-card p-4 rounded-md ${className}`}
+    >
+      {item?.status === 0 && (
+        <Text
+          style={wrapTextStyle(
+            { fontWeight: "500", color: AppColors.contrast },
+            "2xs"
+          )}
+        >
+          Đang tìm xe...
+        </Text>
+      )}
       <HStack className="justify-between items-center">
         {!!item.departureTime && (
-          <Text className="text-sm font-bold">
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
             {moment(item.departureTime).format("HH:mm")}
           </Text>
         )}
         {!item.departureTime && (
-          <Text className="text-sm font-bold">Thời gian linh động</Text>
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+            Thời gian linh động
+          </Text>
         )}
         {!!item.departureTime && (
-          <Text className="text-sm font-bold">
+          <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
             {moment(item.departureTime).format("DD/MM/YYYY")}
           </Text>
         )}
@@ -49,9 +64,18 @@ const TripRequestItem: React.FC<{
             <HiIcon size={24} color="#000000" />
           </Box>
           <VStack>
-            <Text className="text-black font-bold text-lg">{startTitle}</Text>
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+              {startTitle}
+            </Text>
             {!!startSubTitle && (
-              <Text className="text-gray-500 text-md">{startSubTitle}</Text>
+              <Text
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.placeholder },
+                  "2xs"
+                )}
+              >
+                {startSubTitle}
+              </Text>
             )}
           </VStack>
         </HStack>
@@ -60,9 +84,18 @@ const TripRequestItem: React.FC<{
             <FixedRouteIcon size={24} color="#000000" />
           </Box>
           <VStack>
-            <Text className="text-black font-bold text-lg">{endTitle}</Text>
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+              {endTitle}
+            </Text>
             {!!endSubTitle && (
-              <Text className="text-gray-500 text-md">{endSubTitle}</Text>
+              <Text
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.placeholder },
+                  "2xs"
+                )}
+              >
+                {endSubTitle}
+              </Text>
             )}
           </VStack>
         </HStack>

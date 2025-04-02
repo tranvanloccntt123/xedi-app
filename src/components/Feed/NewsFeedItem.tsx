@@ -4,9 +4,8 @@ import moment from "moment";
 import { Box } from "../ui/box";
 import { VStack } from "../ui/vstack";
 import { HStack } from "../ui/hstack";
-import { Text } from "../ui/text";
 import FixedRouteItem from "../FixedRoute/FixedRouteItem";
-import { Platform, Pressable, ScrollView } from "react-native";
+import { Platform, Pressable, ScrollView, Text } from "react-native";
 import MoreIcon from "../icons/MoreIcon";
 import { BottomSheetTrigger } from "../ui/bottom-sheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,11 +23,12 @@ import { Avatar, AvatarFallbackText } from "../ui/avatar";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { useDataInfo } from "@/hooks/useQuery";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
-import { Button, ButtonText } from "../ui/button";
+import { Button } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
 import { PartTypes } from "@/src/constants";
 import AppColors from "@/src/constants/colors";
 import { scale } from "react-native-size-matters";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -69,7 +69,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-4 bg-xedi-card">
+      <VStack space="sm" className="mb-4 bg-xedi-white">
         <Box className="p-4 rounded-lg">
           <VStack>
             <HStack className="justify-between items-center mb-2">
@@ -77,16 +77,20 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
                 <Avatar size="sm">
                   <AvatarFallbackText>{data?.users?.name}</AvatarFallbackText>
                 </Avatar>
-                <Text className="font-bold text-lg">{data?.users?.name}</Text>
+                <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+                  {data?.users?.name}
+                </Text>
               </HStack>
-              <BottomSheetTrigger
-                className="bg-xedi-card"
-                onPress={handleMoreClick}
-              >
+              <BottomSheetTrigger onPress={handleMoreClick}>
                 <MoreIcon color={AppColors.text} size={scale(20)} />
               </BottomSheetTrigger>
             </HStack>
-            <Text className="text-gray-500 text-xs mb-4">
+            <Text
+              style={wrapTextStyle(
+                { fontWeight: "500", color: AppColors.placeholder },
+                "xs"
+              )}
+            >
               {moment(data?.created_at).fromNow()}
             </Text>
             <MentionInput
@@ -94,7 +98,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
               value={data?.content || ""}
               onChange={() => {}}
               partTypes={PartTypes as any}
-              textStyle={{ color: AppColors.text, fontSize: 20 }}
+              textStyle={wrapTextStyle({ fontWeight: "600" }, "xl")}
             />
           </VStack>
         </Box>
@@ -188,7 +192,12 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
             onPress={() => router.navigate(`post/${data.id}/comment`)}
           >
             <ChatIcon size={scale(16)} color="#000" />
-            <Text className="text-xl color-xedi-text">
+            <Text
+              style={wrapTextStyle(
+                { fontWeight: "500", color: AppColors.text },
+                "md"
+              )}
+            >
               {data.comments?.[0]?.count || 0}
             </Text>
           </Button>

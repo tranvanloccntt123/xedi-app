@@ -7,9 +7,6 @@ import {
 } from "@/src/store/auth/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
 import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
-
-const APP_STRUCT = "ROOT_LAYOUT";
-
 import "@/global.css";
 import "react-native-url-polyfill/auto";
 
@@ -32,6 +29,10 @@ import { registerNotification } from "@/src/firebase/messaging";
 import CheckUpdateModal from "@/src/components/CheckUpdateModal";
 
 import { startNetworkLogging } from "react-native-network-logger";
+
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font";
+import { XediFonts } from "@/src/theme/AppStyles";
 
 startNetworkLogging();
 
@@ -110,7 +111,17 @@ function AuthWrapper() {
   );
 }
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
+  const [loaded, error] = useFonts(XediFonts);
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
   return (
     <GestureHandlerRootView>
       <Provider store={store}>

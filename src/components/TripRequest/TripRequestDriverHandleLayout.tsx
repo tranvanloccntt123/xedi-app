@@ -51,12 +51,12 @@ const TripRequestDriverHandleLayout: React.FC<{
   );
 
   return (
-    <Box className="flex-1 bg-gray-100">
+    <Box className="flex-1 bg-xedi-background">
       <Box className="px-4" style={{ paddingTop: insets.top }}>
         <Header title="Chi tiết hành trình" />
       </Box>
       <ScrollView style={styles.container}>
-        <Box className="flex-1 px-4 bg-gray-100">
+        <Box className="flex-1 px-4">
           <VStack space="md">
             {!!tripRequest && (
               <TripRequestItem

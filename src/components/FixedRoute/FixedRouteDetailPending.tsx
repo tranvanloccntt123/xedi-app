@@ -59,7 +59,7 @@ const FixedRouteDetailPending: React.FC<{
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
         >
-          <Box className="flex-1 px-4 bg-gray-100">
+          <Box className="flex-1 px-4">
             <VStack space="md">
               <Header
                 title="Chi tiết hành trình"

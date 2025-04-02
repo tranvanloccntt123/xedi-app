@@ -8,6 +8,7 @@ import ProfileIcon from "@/src/components/icons/ProfileIcon";
 import NotificationIcon from "@/src/components/icons/Notifications";
 import { useDispatch } from "react-redux";
 import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
+import AppColors from "@/src/constants/colors";
 
 export default function TabsLayout() {
   const dispatch = useDispatch();
@@ -18,7 +19,13 @@ export default function TabsLayout() {
   }, []);
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: AppColors.primary,
+        tabBarInactiveTintColor: AppColors.placeholder,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

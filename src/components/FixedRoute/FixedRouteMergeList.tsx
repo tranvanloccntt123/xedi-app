@@ -9,6 +9,7 @@ import { useNavigation } from "expo-router";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { Tables } from "@/src/constants";
 import { Avatar, AvatarFallbackText } from "../ui/avatar";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const FixedRouteMergeList: React.FC<{
   fixedRoute: IFixedRoute;
@@ -46,7 +47,12 @@ const FixedRouteMergeList: React.FC<{
     !!listFixedRouteRequest?.length && (
       <VStack space="md">
         <HStack>
-          <Heading className="flex-1">Ghép chuyến</Heading>
+          <Heading
+            className="flex-1"
+            style={wrapTextStyle({ fontWeight: "700" }, "sm")}
+          >
+            Ghép chuyến
+          </Heading>
         </HStack>
         {listFixedRouteRequest.map((v) => (
           <VStack key={v.id} space="sm" className="mb-4">

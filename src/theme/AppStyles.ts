@@ -72,7 +72,7 @@ export const XediFonts: XediFont = {
 
 export const getFontSize = (fontSize: XediFontSize) => {
   const font: Record<XediFontSize, number> = {
-    xs: scale(8),
+    xs: scale(10),
     "2xs": scale(12),
     sm: scale(14),
     md: scale(16),
@@ -148,7 +148,7 @@ export const wrapTextStyle = (
   const fontSize = getFontSize(_fontSize);
   const fontFamily = getFontFamily(fontWeight, style?.fontStyle === "italic");
   return {
-    color: AppColors.text,
+    // color: AppColors.text,
     ...style,
     fontSize,
     fontFamily,

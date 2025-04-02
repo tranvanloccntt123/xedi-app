@@ -5,7 +5,7 @@ const AppColors = {
   foreground: "rgb(255, 255, 255)",
   secondary: "rgb(140, 200, 180)",
   contrast: "rgb(50, 100, 90)",
-  card: "rgb(250, 252, 250)",
+  card: "rgb(240, 248, 245)",
   placeholder: "rgb(120, 145, 135)",
   error: "rgb(230, 80, 90)",
   info: "rgb(90, 180, 160)",

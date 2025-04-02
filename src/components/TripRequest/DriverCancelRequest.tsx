@@ -55,7 +55,7 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
       <Box className="px-4 py-4">
         <Button
           onPress={handleCancelRequest}
-          className="h-[45px] bg-error-500"
+          className="h-[45px] bg-xedi-error"
           action="default"
         >
           <ButtonText className="text-white">Huỷ yêu cầu</ButtonText>

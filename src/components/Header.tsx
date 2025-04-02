@@ -6,6 +6,7 @@ import ChevronLeftIcon from "./icons/ChevronLeftIcon";
 import { router } from "expo-router";
 import { VStack } from "./ui/vstack";
 import { Text } from "./ui/text";
+import { wrapTextStyle } from "../theme/AppStyles";
 
 const Header: React.FC<{
   title: string;
@@ -22,13 +23,20 @@ const Header: React.FC<{
           </Button>
         )}
         <VStack space="sm" className="flex-1 justify-center">
-          <Heading size={"xl"}>
+          <Heading style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
             {title}
           </Heading>
         </VStack>
         {!!rightComponent && rightComponent}
       </HStack>
-      {!!subTitle && <Text style={{marginLeft: 30}} className="text-md text-black">{subTitle}</Text>}
+      {!!subTitle && (
+        <Text
+          className="text-md color-xedi-text opacity-80"
+          style={wrapTextStyle({ fontWeight: "400", marginLeft: 30 }, "2xs")}
+        >
+          {subTitle}
+        </Text>
+      )}
     </VStack>
   );
 };

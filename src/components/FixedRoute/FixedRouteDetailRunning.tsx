@@ -115,7 +115,17 @@ const FixedRouteDetailRunning: React.FC<{
         }}
       >
         <Box className="flex-1 px-2">
-          <Button className="mb-2" variant="link">
+          <Button
+            onPress={() => {
+              if (!lat && !lon) {
+                return;
+              }
+              mapRef.current?.moveTo({ lat, lon });
+              bottomRef.current?.openFull();
+            }}
+            className="mb-2"
+            variant="link"
+          >
             <ButtonText>Vị trí hiện tại</ButtonText>
           </Button>
           <Heading size="xl" className="mb-2">

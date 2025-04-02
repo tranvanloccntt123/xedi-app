@@ -10,6 +10,7 @@ import { Button } from "@/src/components/ui/button";
 import { useNavigation } from "expo-router";
 import FixedRouteOrderItem from "./FixedRouteOrderItem";
 import { Center } from "../ui/center";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const FixedRouteRequestList: React.FC<{
   fixedRoute: IFixedRoute;
@@ -61,9 +62,12 @@ const FixedRouteRequestList: React.FC<{
   return (
     <VStack space="md">
       <HStack>
-        <Heading className="flex-1">
+        <Text
+          className="flex-1"
+          style={wrapTextStyle({ fontWeight: "700" }, "sm")}
+        >
           {isAuthor ? "Danh sách yêu cầu được gửi đến" : "Yêu cầu của bạn"}
-        </Heading>
+        </Text>
         {!isAuthor && user.role === "customer" && (
           <Button
             onPress={onFixedRouteOrder}
@@ -72,7 +76,12 @@ const FixedRouteRequestList: React.FC<{
               !!listFixedRouteRequest.length && "opacity-[50%]"
             }`}
           >
-            <Text className="text-white">Đặt</Text>
+            <Text
+              className="text-white"
+              style={wrapTextStyle({ fontWeight: "400" }, "sm")}
+            >
+              Đặt
+            </Text>
           </Button>
         )}
       </HStack>
@@ -92,7 +101,12 @@ const FixedRouteRequestList: React.FC<{
         ))}
       {!listFixedRouteRequest.length && (
         <Center className="w-full mt-4 mb-4">
-          <Text className="text-md">Danh sách trống</Text>
+          <Text
+            className="text-md"
+            style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+          >
+            Danh sách trống
+          </Text>
         </Center>
       )}
     </VStack>

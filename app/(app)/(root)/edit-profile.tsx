@@ -27,6 +27,7 @@ import { Text } from "@/src/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/src/components/Header";
 import { updateUserInfo } from "@/src/store/user/userThunks";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 export default function EditProfile() {
   const router = useRouter();
@@ -98,10 +99,17 @@ export default function EditProfile() {
           <Box className="px-4">
             <VStack space="md">
               <FormControl isInvalid={!!errors.name}>
-                <Text>Họ và tên</Text>
-                <Input className="h-[45px]">
+                <Text
+                  className="color-xedi-text"
+                  style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+                >
+                  Họ và tên
+                </Text>
+                <Input className="color-xedi-text h-[45px] bg-xedi-card/[.9] border-0">
                   <InputField
                     value={name}
+                    className="color-xedi-text"
+                    style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
                     onChangeText={(value) => handleInputChange("name", value)}
                   />
                 </Input>
@@ -110,10 +118,17 @@ export default function EditProfile() {
                 </FormControlError>
               </FormControl>
               <FormControl isInvalid={!!errors.email}>
-                <Text>Email</Text>
-                <Input className="h-[45px]">
+                <Text
+                  className="color-xedi-text"
+                  style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+                >
+                  Email
+                </Text>
+                <Input className="h-[45px] rounded-lg border-0 bg-xedi-card/[.9]">
                   <InputField
                     value={email}
+                    className="color-xedi-text"
+                    style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
                     onChangeText={(value) => handleInputChange("email", value)}
                     keyboardType="email-address"
                   />
@@ -123,8 +138,13 @@ export default function EditProfile() {
                 </FormControlError>
               </FormControl>
               <FormControl isInvalid={!!errors.phone} isDisabled>
-                <Text>Số điện thoại</Text>
-                <Input className="h-[45px]">
+                <Text
+                  className="color-xedi-text"
+                  style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+                >
+                  Số điện thoại
+                </Text>
+                <Input className="h-[45px] bg-xedi-card border-0">
                   <InputField
                     value={phone}
                     onChangeText={(value) => handleInputChange("phone", value)}
@@ -137,11 +157,17 @@ export default function EditProfile() {
               </FormControl>
               <Button
                 size="lg"
-                className={`mt-4 h-[45px] ${!isFormChanged && "opacity-[50%]"}`}
+                className={`mt-4 h-[45px] bg-xedi-primary`}
                 onPress={handleSave}
-                disabled={!isFormChanged}
+                action="default"
+                isDisabled={!isFormChanged || name === ""}
               >
-                <ButtonText>Lưu thay đổi</ButtonText>
+                <ButtonText
+                  className="text-white"
+                  style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+                >
+                  Lưu thay đổi
+                </ButtonText>
               </Button>
             </VStack>
           </Box>

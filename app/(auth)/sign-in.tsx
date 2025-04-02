@@ -20,6 +20,7 @@ import { authValidator } from "@/src/constants/validator";
 import { supabase } from "@/src/lib/supabase";
 import { pattern } from "@/src/constants";
 import PasswordInput from "@/src/components/PasswordInput";
+import { Image } from "react-native";
 
 export default function SignIn() {
   const [phone, setPhone] = useState("");

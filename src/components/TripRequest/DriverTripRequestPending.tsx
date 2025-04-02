@@ -12,6 +12,7 @@ import { xediSupabase } from "../../lib/supabase";
 import { HStack } from "../ui/hstack";
 import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
 import useQuery from "@/hooks/useQuery";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,
@@ -48,13 +49,26 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
   const [price, setPrice] = React.useState("");
 
   return (
-    <VStack space="lg" className="bg-white rounded-lg p-4">
-      <Heading>Tài xế báo giá</Heading>
+    <VStack space="lg" className="bg-xedi-card rounded-lg p-4">
+      <Heading
+        className="color-xedi-text"
+        style={wrapTextStyle({ fontWeight: "700" }, "sm")}
+      >
+        Tài xế báo giá
+      </Heading>
       {!!driverTripRequest && !isLoading && (
         <VStack className="md">
           <HStack className="md" space="md">
-            <Text className="text-lg text-gray-600 font-bold">Giá đã báo:</Text>
-            <Text className="flex-1 text-right text-lg text-black">
+            <Text
+              className="flex-1 color-xedi-placeholder"
+              style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+            >
+              Giá đã báo:
+            </Text>
+            <Text
+              className="flex-1 text-right"
+              style={wrapTextStyle({ fontWeight: "700" }, "2xs")}
+            >
               {formatMoney(driverTripRequest.price)} VND
             </Text>
           </HStack>
@@ -63,7 +77,10 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
       {!driverTripRequest && !isLoading && (
         <VStack space="md">
           <FormControl>
-            <Text className="mb-2 text-md font-medium text-gray-700">
+            <Text
+              className="mb-2 color-xedi-placeholder"
+              style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+            >
               Giá (VND)
             </Text>
             <Input>

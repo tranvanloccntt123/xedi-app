@@ -3,7 +3,6 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 import React from "react";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
-import { Heading } from "@/src/components/ui/heading";
 import { Text } from "@/src/components/ui/text";
 import { ScrollView, StyleSheet } from "react-native";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
@@ -14,6 +13,7 @@ import { Divider } from "@/src/components/ui/divider";
 import Header from "@/src/components/Header";
 import FixedRouteRequestList from "./FixedRouteRequestList";
 import FixedRouteMergeList from "./FixedRouteMergeList";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const styles = StyleSheet.create({
   logo: {
@@ -36,8 +36,8 @@ const FixedRouteDetailFinished: React.FC<{
   return (
     <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.container}>
-          <Box className="flex-1 px-4 bg-gray-100">
+        <ScrollView style={styles.container} bounces={false}>
+          <Box className="flex-1 px-4">
             <VStack space="md">
               <Header title="Chi tiết hành trình" />
               {!!fixedRoute && (
@@ -48,28 +48,52 @@ const FixedRouteDetailFinished: React.FC<{
                   isHiddenPrice
                 />
               )}
-              <Box className="p-4 bg-white rounded-md mb-4">
+              <Box className="p-4 bg-xedi-card rounded-md mb-4">
                 <VStack space="md">
-                  <Heading size="md">Thanh toán</Heading>
+                  <Text style={wrapTextStyle({ fontWeight: "900" }, "sm")}>
+                    Thanh toán
+                  </Text>
                   <HStack space="md">
-                    <Text className="flex-1">Cước phí</Text>
-                    <Text className="flex-1 text-right text-lg font-[600] text-black">
+                    <Text
+                      className="flex-1 color-xedi-placeholder"
+                      style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+                    >
+                      Cước phí
+                    </Text>
+                    <Text
+                      className="flex-1 text-right"
+                      style={wrapTextStyle({ fontWeight: "700" }, "2xs")}
+                    >
                       {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
                     </Text>
                   </HStack>
                   <Divider />
                   <HStack>
-                    <Heading size="sm" className="flex-1">
+                    <Text
+                      className="flex-1 color-xedi-placeholder"
+                      style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+                    >
                       Trả qua tiền mặt
-                    </Heading>
-                    <Text className="flex-1 text-right text-lg font-[600] text-black">
+                    </Text>
+                    <Text
+                      className="flex-1 text-right"
+                      style={wrapTextStyle({ fontWeight: "700" }, "2xs")}
+                    >
                       {formatMoney(fixedRoute?.price?.toString() || "")} (VND)
                     </Text>
                   </HStack>
                   <Divider />
                   <HStack space="md">
-                    <Text className="flex-1">Trạng thái</Text>
-                    <Text className="flex-1 text-right text-lg font-[600] text-success-500">
+                    <Text
+                      className="flex-1 color-xedi-placeholder"
+                      style={wrapTextStyle({ fontWeight: "400" }, "2xs")}
+                    >
+                      Trạng thái
+                    </Text>
+                    <Text
+                      className="flex-1 text-right color-xedi-success"
+                      style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+                    >
                       Hoàn thành
                     </Text>
                   </HStack>

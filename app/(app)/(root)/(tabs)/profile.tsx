@@ -20,16 +20,31 @@ import type { RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
 import { Pressable, ScrollView } from "react-native";
 import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import CoinsIcon from "@/src/components/icons/CoinsIcon";
+import AppColors from "@/src/constants/colors";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
     <HStack space="md" className="items-center">
       <VStack className="flex-1">
-        <Text className="font-semibold">{title}</Text>
-        <Text className="text-gray-600">{subtitle}</Text>
+        <Text
+          className="color-xedi-text"
+          style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+        >
+          {title}
+        </Text>
+        <Text
+          className="color-xedi-text opacity-80"
+          style={wrapTextStyle({ fontWeight: "500" }, "xs")}
+        >
+          {subtitle}
+        </Text>
       </VStack>
       <ChevronRightIcon size={24} color="gray" />
     </HStack>
@@ -57,8 +72,13 @@ export default function Profile() {
   };
 
   return (
-    <ScrollView>
-      <Box className="bg-xedi-background p-4">
+    <Box className="flex-1 bg-xedi-background">
+      <SafeAreaView>
+        <ScrollView
+          bounces={false}
+          style={{ backgroundColor: AppColors.background }}
+        >
+          {/* <Box className="bg-xedi-background p-4">
         <HStack
           space="md"
           className="items-center justify-between"
@@ -69,10 +89,10 @@ export default function Profile() {
               <AvatarFallbackText>{user?.name}</AvatarFallbackText>
             </Avatar>
             <VStack>
-              <Heading size="lg" className="text-white">
+              <Heading size="lg" className="color-xedi-text">
                 {user?.name}
               </Heading>
-              <Text className="text-white">{user?.phone}</Text>
+              <Text className="color-xedi-text">{user?.phone}</Text>
             </VStack>
           </HStack>
           <VStack>
@@ -84,65 +104,76 @@ export default function Profile() {
             </Button>
           </VStack>
         </HStack>
-      </Box>
+      </Box> */}
 
-      <VStack space="md" className="p-4">
-        <Heading size="sm">Tài khoản</Heading>
-        <ProfileSection
-          title="Thông tin cá nhân"
-          subtitle="Quản lý thông tin cá nhân của bạn"
-          onPress={() => router.push("/edit-profile")}
-        />
-        <ProfileSection
-          title="Địa điểm đã lưu"
-          subtitle="Quản lý các địa điểm yêu thích của bạn"
-          onPress={() => router.push("/add-location")}
-        />
+          <VStack space="md" className="p-4 flex-1">
+            <Heading size="sm">Tài khoản</Heading>
+            <ProfileSection
+              title="Thông tin cá nhân"
+              subtitle="Quản lý thông tin cá nhân của bạn"
+              onPress={() => router.push("/edit-profile")}
+            />
+            <ProfileSection
+              title="Địa điểm đã lưu"
+              subtitle="Quản lý các địa điểm yêu thích của bạn"
+              onPress={() => router.push("/add-location")}
+            />
+            <ProfileSection
+              title={`${coins?.coins || 0} Điểm`}
+              subtitle="Rút tiền trong vòng 24 giờ."
+              onPress={() => router.push("/edit-profile")}
+            />
+            <Divider className="my-2" />
 
-        <Divider className="my-2" />
+            <Heading size="sm">Tùy chọn</Heading>
+            <ProfileSection
+              title="Thông báo"
+              subtitle="Quản lý cài đặt thông báo của bạn"
+              onPress={() => {
+                /* Navigate to notifications screen */
+              }}
+            />
+            <ProfileSection
+              title="Ngôn ngữ"
+              subtitle="Thay đổi ngôn ngữ ứng dụng"
+              onPress={() => {
+                /* Navigate to language selection screen */
+              }}
+            />
 
-        <Heading size="sm">Tùy chọn</Heading>
-        <ProfileSection
-          title="Thông báo"
-          subtitle="Quản lý cài đặt thông báo của bạn"
-          onPress={() => {
-            /* Navigate to notifications screen */
-          }}
-        />
-        <ProfileSection
-          title="Ngôn ngữ"
-          subtitle="Thay đổi ngôn ngữ ứng dụng"
-          onPress={() => {
-            /* Navigate to language selection screen */
-          }}
-        />
+            <Divider className="my-2" />
 
-        <Divider className="my-2" />
+            <Heading size="sm">Hỗ trợ</Heading>
+            <ProfileSection
+              title="Trung tâm trợ giúp"
+              subtitle="Nhận trợ giúp và liên hệ hỗ trợ"
+              onPress={() => {
+                /* Navigate to help center screen */
+              }}
+            />
+            <ProfileSection
+              title="Giới thiệu"
+              subtitle="Tìm hiểu thêm về Xedi"
+              onPress={() => {
+                /* Navigate to about screen */
+              }}
+            />
 
-        <Heading size="sm">Hỗ trợ</Heading>
-        <ProfileSection
-          title="Trung tâm trợ giúp"
-          subtitle="Nhận trợ giúp và liên hệ hỗ trợ"
-          onPress={() => {
-            /* Navigate to help center screen */
-          }}
-        />
-        <ProfileSection
-          title="Giới thiệu"
-          subtitle="Tìm hiểu thêm về Xedi"
-          onPress={() => {
-            /* Navigate to about screen */
-          }}
-        />
-
-        <Button
-          size="lg"
-          className="mt-4"
-          onPress={handleLogout}
-        >
-          <ButtonText>Đăng xuất</ButtonText>
-        </Button>
-      </VStack>
-    </ScrollView>
+            <Button
+              size="lg"
+              className="mt-[54px] self-center rounded-full bg-xedi-white shadow-xs"
+              onPress={handleLogout}
+            >
+              <ButtonText
+                className="color-xedi-text"
+                style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
+              >
+                Đăng xuất
+              </ButtonText>
+            </Button>
+          </VStack>
+        </ScrollView>
+      </SafeAreaView>
+    </Box>
   );
 }

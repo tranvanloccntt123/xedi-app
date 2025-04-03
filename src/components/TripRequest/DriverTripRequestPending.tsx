@@ -83,9 +83,10 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
             >
               Giá (VND)
             </Text>
-            <Input>
+            <Input className="border-0 bg-xedi-white">
               <InputField
                 value={formatMoney(price)}
+                placeholder="Nhập báo giá"
                 onChangeText={(value) => {
                   if (!value) {
                     setPrice("");

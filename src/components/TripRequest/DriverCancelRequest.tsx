@@ -42,7 +42,7 @@ const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({
       fetchDetailInfo({
         key: queryKey,
         async fetch() {
-          await xediSupabase.tables.fixedRoutes.deleteById(data.id);
+          await xediSupabase.tables.driverTripRequest.deleteById(data.id);
           return queryFn();
         },
       })

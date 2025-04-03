@@ -29,6 +29,7 @@ import { PartTypes } from "@/src/constants";
 import AppColors from "@/src/constants/colors";
 import { scale } from "react-native-size-matters";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
+import MentionText from "../ControlledMentions/components/mention-text";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -93,10 +94,8 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
             >
               {moment(data?.created_at).fromNow()}
             </Text>
-            <MentionInput
-              editable={false}
+            <MentionText
               value={data?.content || ""}
-              onChange={() => {}}
               partTypes={PartTypes as any}
               textStyle={wrapTextStyle({ fontWeight: "600" }, "xl")}
             />

@@ -1,1 +1,1 @@
-export * from './mention-input';
+export * from "./mention-input";

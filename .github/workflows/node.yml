@@ -13,4 +13,4 @@ jobs:
         with:
           node-version: "20"
       - run: npx expo install
-      - run: npx expo update --channel preview --message "${{github.event.head_commit.message}}"
+      - run: npx expo update --channel preview --message "${{github.event.head_commit.message}} "

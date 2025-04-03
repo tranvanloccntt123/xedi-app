@@ -8,5 +8,5 @@ jobs:
   build-update:
     runs-on: self-hosted
     steps:
-      - run: npx expo install
+      - run: npm install
       - run: npx expo update --channel preview --message "${{github.event.head_commit.message}}"

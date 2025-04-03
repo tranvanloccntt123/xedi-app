@@ -21,6 +21,7 @@ export interface PostFormState {
   content: string;
   fixedRoutes: IFixedRouteTmp;
   tripRequest: ITripRequestTmp;
+  images: string[];
 }
 
 const initialState: PostFormState = {
@@ -33,6 +34,7 @@ const initialState: PostFormState = {
     inputSelectionType: "start-location",
     routes: [],
   },
+  images: [],
 };
 
 const postFormSlice = createSlice({
@@ -143,6 +145,16 @@ const postFormSlice = createSlice({
     },
     setFixedRoutePrice: (state, action: PayloadAction<number>) => {
       state.fixedRoutes.price = action.payload;
+    },
+    addImage: (state, action: PayloadAction<string>) => {
+      const data = state.images.concat();
+      data.push(action.payload);
+      state.images = data;
+    },
+    removeImage: (state, action: PayloadAction<number>) => {
+      const data = state.images.concat();
+      data.splice(action.payload, 1);
+      state.images = data;
     },
   },
   extraReducers: (builder) => {

@@ -1,21 +1,6 @@
 import { scale, ScaledSheet, TextStyle } from "react-native-size-matters";
 
 import {
-  Mali_200ExtraLight,
-  Mali_200ExtraLight_Italic,
-  Mali_300Light,
-  Mali_300Light_Italic,
-  Mali_400Regular,
-  Mali_400Regular_Italic,
-  Mali_500Medium,
-  Mali_500Medium_Italic,
-  Mali_600SemiBold,
-  Mali_600SemiBold_Italic,
-  Mali_700Bold,
-  Mali_700Bold_Italic,
-} from "@expo-google-fonts/mali";
-
-import {
   Inter_100Thin,
   Inter_100Thin_Italic,
   Inter_200ExtraLight,
@@ -37,7 +22,6 @@ import {
 } from "@expo-google-fonts/inter";
 
 import { StyleProp } from "react-native";
-import AppColors from "../constants/colors";
 
 const AppStyles = ScaledSheet.create({
   container: {
@@ -70,17 +54,14 @@ export const XediFonts: XediFont = {
   Inter_900Black_Italic: Inter_900Black_Italic,
 };
 
-export const getFontSize = (fontSize: XediFontSize) => {
-  const font: Record<XediFontSize, number> = {
-    xs: scale(10),
-    "2xs": scale(12),
-    sm: scale(14),
-    md: scale(16),
-    lg: scale(20),
-    xl: scale(24),
-    "2xl": scale(28),
-  };
-  return font[fontSize];
+export const xediFontSize = {
+  xs: scale(9),
+  "2xs": scale(10),
+  sm: scale(13),
+  md: scale(15),
+  lg: scale(18),
+  xl: scale(22),
+  "2xl": scale(28),
 };
 
 export const getFontWeight = (fontWeight: XediFontWeight): XediFontWeight => {
@@ -145,7 +126,7 @@ export const wrapTextStyle = (
   const fontWeight: XediFontWeight = getFontWeight(
     (style.fontWeight as XediFontWeight) ?? "400"
   );
-  const fontSize = getFontSize(_fontSize);
+  const fontSize = xediFontSize[_fontSize];
   const fontFamily = getFontFamily(fontWeight, style?.fontStyle === "italic");
   return {
     // color: AppColors.text,

@@ -7,8 +7,6 @@ import { RootState } from "@/src/store/store";
 import AppMapView from "@/src/components/AppMapView";
 import useLocation from "@/hooks/useLocation";
 import { Center } from "@/src/components/ui/center";
-import { MarkerView } from "@maplibre/maplibre-react-native";
-import EclipseIcon from "@/src/components/icons/EclipseIcon";
 import { StyleSheet } from "react-native";
 import BottomSheetGesture from "@/src/components/BottomSheetGesture";
 import {
@@ -30,8 +28,8 @@ import {
 } from "@/src/utils/validator";
 import { fixedRouteValidator } from "@/src/constants/validator";
 import { router } from "expo-router";
-import Animated from "react-native-reanimated";
-import PinIcon from "@/src/components/icons/PinIcon";
+import PinMarkerIcon from "@/src/components/PrinMarkerIcon";
+import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
 
 const EclipseMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
   coordinate,
@@ -40,12 +38,8 @@ const EclipseMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
     (state: RootState) => state.postForm.fixedRoutes
   );
   return (
-    (!startLocation?.display_name || !endLocation?.display_name) &&
-    !!coordinate?.lat &&
-    !!coordinate?.lon && (
-      <MarkerView coordinate={[coordinate.lon, coordinate.lat]}>
-        <EclipseIcon size={18} color="#000000" />
-      </MarkerView>
+    (!startLocation?.display_name || !endLocation?.display_name) && (
+      <EclipseMarkerIcon coordinate={coordinate} />
     )
   );
 };
@@ -56,11 +50,7 @@ const PinMarker: React.FC<object> = () => {
   );
   return (
     (!startLocation?.display_name || !endLocation?.display_name) && (
-      <Animated.View style={[styles.pinContainer]}>
-        <Box style={{ top: -18 }}>
-          <PinIcon size={34} color="#000000" />
-        </Box>
-      </Animated.View>
+      <PinMarkerIcon />
     )
   );
 };

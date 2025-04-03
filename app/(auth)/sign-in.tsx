@@ -20,7 +20,10 @@ import { authValidator } from "@/src/constants/validator";
 import { supabase } from "@/src/lib/supabase";
 import { pattern } from "@/src/constants";
 import PasswordInput from "@/src/components/PasswordInput";
-import { Image } from "react-native";
+import { ScaledSheet } from "react-native-size-matters";
+import Logo from "@/src/components/Logo";
+import FormLabel from "@/src/components/FormLabel";
+import FormError from "@/src/components/FormError";
 
 export default function SignIn() {
   const [phone, setPhone] = useState("");
@@ -67,13 +70,12 @@ export default function SignIn() {
       >
         <VStack className="w-full max-w-md">
           <VStack space="xs" className="mb-6">
+            <Logo size="xl" className="self-center mb-[26px]" />
             <Heading size="2xl">Đăng nhập Xedi</Heading>
             <Text>Lên xe ngay đi</Text>
           </VStack>
           <FormControl className="w-full mb-1" isInvalid={!!error.phone}>
-            <Text className="mb-2 text-md font-medium text-gray-700">
-              Số điện thoại
-            </Text>
+            <FormLabel>Số điện thoại</FormLabel>
             <Input variant="outline" size="md" className="h-[45px]">
               <InputField
                 placeholder="Nhập số điện thoại"
@@ -85,28 +87,18 @@ export default function SignIn() {
                 keyboardType="phone-pad"
               />
             </Input>
-            {!!error.phone && (
-              <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
-            )}
+            {!!error.phone && <FormError>{error.phone}</FormError>}
           </FormControl>
           <FormControl className="w-full mb-6" isInvalid={!!error.password}>
-            <Text className="mb-2 text-md font-medium text-gray-700">
-              Mật khẩu
-            </Text>
+            <FormLabel>Mật khẩu</FormLabel>
             <PasswordInput
               password={password}
               setPassword={setPassword}
               setErrorPassword={setErrorMessage}
             />
-            {!!error.password && (
-              <Text className="text-red-500 text-sm mt-1">
-                {error.password}
-              </Text>
-            )}
+            {!!error.password && <FormError>{error.password}</FormError>}
           </FormControl>
-          {errorMessage && (
-            <Text className="text-red-500 mb-4">{errorMessage}</Text>
-          )}
+          {errorMessage && <FormError>{errorMessage}</FormError>}
           <Button
             size="lg"
             className={`w-full bg-blue-500 h-[45px] ${
@@ -128,3 +120,5 @@ export default function SignIn() {
     </Box>
   );
 }
+
+const styles = ScaledSheet.create({});

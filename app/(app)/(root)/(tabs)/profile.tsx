@@ -1,12 +1,8 @@
+import React from "react";
 import { logout, clearAuthData } from "@/src/store/auth/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
-// import { clearTripRequests } from "@/src/store/tripRequest/tripRequestsSlice";
 import { supabase } from "@/src/lib/supabase";
 import { clearUser } from "@/src/store/user/userSlice";
-
-const APP_STRUCT = "PROFILE_SCREEN";
-
-import React from "react";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
@@ -24,8 +20,6 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
-import CoinsIcon from "@/src/components/icons/CoinsIcon";
 import AppColors from "@/src/constants/colors";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 
@@ -41,7 +35,7 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
         </Text>
         <Text
           className="color-xedi-text opacity-80"
-          style={wrapTextStyle({ fontWeight: "500" }, "xs")}
+          style={wrapTextStyle({ fontWeight: "400" }, "xs")}
         >
           {subtitle}
         </Text>

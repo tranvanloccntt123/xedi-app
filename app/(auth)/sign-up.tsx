@@ -5,11 +5,9 @@ import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { FormControl } from "@/src/components/ui/form-control";
-import { Heading } from "@/src/components/ui/heading";
 import { Input } from "@/src/components/ui/input";
 import { InputField } from "@/src/components/ui/input";
 import { VStack } from "@/src/components/ui/vstack";
-import { Text } from "@/src/components/ui/text";
 import { Link } from "expo-router";
 import { Select } from "@/src/components/ui/select";
 import { SelectTrigger } from "@/src/components/ui/select";
@@ -24,9 +22,15 @@ import {
   formValidateSuccess,
 } from "@/src/utils/validator";
 import { authValidator } from "@/src/constants/validator";
-import { ScrollView } from "react-native";
+import { ScrollView, Text } from "react-native";
 import { supabase, xediSupabase } from "@/src/lib/supabase";
 import { pattern } from "@/src/constants";
+import Logo from "@/src/components/Logo";
+import { HStack } from "@/src/components/ui/hstack";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
+import AppColors from "@/src/constants/colors";
+import FormLabel from "@/src/components/FormLabel";
+import FormError from "@/src/components/FormError";
 
 export default function SignUp() {
   const [user, setUserState] = useState<Partial<IUser>>({
@@ -95,14 +99,24 @@ export default function SignUp() {
       }}
     >
       <VStack space="md" className="w-full max-w-md">
-        <VStack space="xs" className="mb-6">
-          <Heading size="2xl">Đăng ký Xedi</Heading>
-          <Text>Tạo tài khoản mới</Text>
-        </VStack>
+        <HStack space="md">
+          <Logo size="sm" />
+          <VStack space="xs" className="mb-6">
+            <Text style={wrapTextStyle({ fontWeight: "800" }, "lg")}>
+              Đăng ký Xedi
+            </Text>
+            <Text
+              style={wrapTextStyle(
+                { fontWeight: "400", color: AppColors.text, opacity: 0.8 },
+                "2xs"
+              )}
+            >
+              Tạo tài khoản mới
+            </Text>
+          </VStack>
+        </HStack>
         <FormControl className="w-full mb-1" isInvalid={!!error.name}>
-          <Text className="mb-2 text-sm font-medium text-gray-700">
-            Họ và tên
-          </Text>
+          <FormLabel>Họ và tên</FormLabel>
           <Input variant="outline" size="md" className="h-[45px]">
             <InputField
               placeholder="Nhập họ và tên"
@@ -110,14 +124,10 @@ export default function SignUp() {
               onChangeText={(value) => handleChange("name", value)}
             />
           </Input>
-          {!!error.name && (
-            <Text className="text-red-500 text-sm mt-1">{error.name}</Text>
-          )}
+          {!!error.name && <FormError>{error.name}</FormError>}
         </FormControl>
         <FormControl className="w-full mb-1" isInvalid={!!error.phone}>
-          <Text className="mb-2 text-sm font-medium text-gray-700">
-            Số điện thoại
-          </Text>
+          <FormLabel>Số điện thoại</FormLabel>
           <Input variant="outline" size="md" className="h-[45px]">
             <InputField
               placeholder="Nhập số điện thoại"
@@ -126,14 +136,10 @@ export default function SignUp() {
               keyboardType="phone-pad"
             />
           </Input>
-          {!!error.phone && (
-            <Text className="text-red-500 text-sm mt-1">{error.phone}</Text>
-          )}
+          {!!error.phone && <FormError>{error.phone}</FormError>}
         </FormControl>
         <FormControl className="w-full mb-1" isInvalid={!!error.email}>
-          <Text className="mb-2 text-sm font-medium text-gray-700">
-            Email (không bắt buộc)
-          </Text>
+          <FormLabel>Email (không bắt buộc)</FormLabel>
           <Input variant="outline" size="md" className="h-[45px]">
             <InputField
               placeholder="Nhập email"
@@ -142,14 +148,10 @@ export default function SignUp() {
               keyboardType="email-address"
             />
           </Input>
-          {!!error.email && (
-            <Text className="text-red-500 text-sm mt-1">{error.email}</Text>
-          )}
+          {!!error.email && <FormError>{error.email}</FormError>}
         </FormControl>
         <FormControl className="w-full mb-1" isInvalid={!!error.password}>
-          <Text className="mb-2 text-sm font-medium text-gray-700">
-            Mật khẩu
-          </Text>
+          <FormLabel>Mật khẩu</FormLabel>
           <Input variant="outline" size="md" className="h-[45px]">
             <InputField
               placeholder="Nhập mật khẩu"
@@ -158,14 +160,10 @@ export default function SignUp() {
               secureTextEntry
             />
           </Input>
-          {!!error.password && (
-            <Text className="text-red-500 text-sm mt-1">{error.password}</Text>
-          )}
+          {!!error.password && <FormError>{error.password}</FormError>}
         </FormControl>
         <FormControl className="w-full mb-6" isInvalid={!!error.role}>
-          <Text className="mb-2 text-sm font-medium text-gray-700">
-            Vai trò
-          </Text>
+          <FormLabel>Vai trò</FormLabel>
           <Select
             selectedValue={user.role}
             initialLabel="Khách hàng"
@@ -183,17 +181,23 @@ export default function SignUp() {
               </SelectContent>
             </SelectPortal>
           </Select>
-          {!!error.role && (
-            <Text className="text-red-500 text-sm mt-1">{error.role}</Text>
-          )}
+          {!!error.role && <FormError>{error.role}</FormError>}
         </FormControl>
-        {errorMessage && (
-          <Text className="text-red-500 mb-4">{errorMessage}</Text>
-        )}
+        {errorMessage && <FormError>{errorMessage}</FormError>}
         <Button size="lg" className="w-full bg-blue-500" onPress={handleSignUp}>
           <ButtonText className="text-white">Đăng ký</ButtonText>
         </Button>
-        <Text className="text-center mt-4">
+        <Text
+          style={wrapTextStyle(
+            {
+              fontWeight: "500",
+              color: AppColors.text,
+              opacity: 0.8,
+              alignSelf: "center",
+            },
+            "2xs"
+          )}
+        >
           Đã có tài khoản?{" "}
           <Link href="/sign-in" className="text-blue-500">
             Đăng nhập

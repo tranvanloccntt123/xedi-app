@@ -65,7 +65,7 @@ const TripRequestDriverHandleLayout: React.FC<{
                 disabled
               />
             )}
-            <Box className="px-2 bg-white">
+            <Box className="px-2 bg-xedi-card">
               {!isAuthor && tripRequest && user.role === "driver" && (
                 <DriverTripRequestPending tripRequestId={tripRequest.id} />
               )}
@@ -95,7 +95,7 @@ const TripRequestDriverHandleLayout: React.FC<{
             </Box>
           )}
           <Box className="flex-1">
-            <Button className="h-[45px]">
+            <Button className="h-[45px] bg-xedi-primary" action="default">
               <ButtonText>Nhắn tin</ButtonText>
             </Button>
           </Box>

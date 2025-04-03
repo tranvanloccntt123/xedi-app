@@ -6,6 +6,10 @@ import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import ReverseLocationBottomSheet from "@/src/components/Location/ReverseLocationBottomSheet";
 import Header from "@/src/components/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
+import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
+import { Center } from "@/src/components/ui/center";
+import PinMarkerIcon from "@/src/components/PrinMarkerIcon";
+import BottomSheetGesture from "@/src/components/BottomSheetGesture";
 
 export default function AddLocation() {
   useLocation({ isWatchLocation: true });
@@ -22,9 +26,14 @@ export default function AddLocation() {
           <Box className="px-4">
             <Header title="Thêm điểm đón" />
           </Box>
-          <AppMapView isOpenTrigger={true} onPress={(c) => setCoordinate(c)} />
+          <Center className="flex-1">
+            <AppMapView onCenterChange={(c) => setCoordinate(c)}>
+              <EclipseMarkerIcon coordinate={coordinate} />
+            </AppMapView>
+            <PinMarkerIcon />
+          </Center>
         </SafeAreaView>
-        <ReverseLocationBottomSheet coordinate={coordinate} />
+        <BottomSheetGesture coordinate={coordinate} />
       </Box>
     </BottomSheet>
   );

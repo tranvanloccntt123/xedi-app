@@ -6,7 +6,7 @@ on:
     branches: [master]
 jobs:
   build-update:
-    runs-on: DESKTOP-II7CI0F
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3

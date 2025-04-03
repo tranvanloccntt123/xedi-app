@@ -1,42 +1,99 @@
 {
   "expo": {
-    "name": "xedi",
-    "slug": "xedi",
+    "name": "xedi-app",
+    "slug": "xedi-app",
+    "runtimeVersion": "1.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "icon": "./assets/images/logo.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "updates": {
+      "url": "https://u.expo.dev/d0d3739c-f024-4eaa-8c30-03d3139a6cd9"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tei.xediapp",
+      "entitlements": {
+        "aps-environment": "production"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"],
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera.",
+        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to your Microphone."
+      },
+      "googleServicesFile": "./firebase/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.xedi"
+      "package": "com.tei.xediapp",
+      "googleServicesFile": "./firebase/google-services.json",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
-      "bundler": "metro",
+      "favicon": "./assets/images/logo.png",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "bundler": "metro"
     },
+    "scheme": "xedi-app",
     "plugins": [
+      "@react-native-firebase/app",
       "expo-router",
+      "expo-secure-store",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "15.1",
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ],
+      ["@maplibre/maplibre-react-native"],
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
+        }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d0d3739c-f024-4eaa-8c30-03d3139a6cd9"
+      }
     }
   }
 }

@@ -1,0 +1,9 @@
+# Supabase
+.branches
+.temp
+
+# dotenvx
+.env.keys
+.env.local
+.env.*.local
+xedi-66660-firebase-adminsdk-fbsvc-05125ce8da.json

@@ -15,6 +15,7 @@ import AppColors from "../constants/colors";
 import { resetPost } from "../store/postForm/postFormSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import { scale } from "react-native-size-matters";
 
 const HomeHeader = React.memo(() => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -55,23 +56,31 @@ const HomeHeader = React.memo(() => {
       <OnlyCustomer>
         <VStack
           space="sm"
-          className="p-2 border-[1px] border-gray-200 bg-white mb-4 mx-2 rounded-xl"
+          className="p-2 border-0 bg-xedi-primary/[0.2] mb-4 mx-2 rounded-xl"
         >
           <Pressable
             onPress={() => router.navigate("/trip/create?type=end-location")}
           >
             <HStack
               space="md"
-              className="p-4 rounded-md items-center bg-gray-100"
+              className="p-4 rounded-md items-center bg-xedi-background"
             >
-              <LocationIcon size={24} color="#f56505" />
-              <Text className="text-black">Bạn muốn đến đâu</Text>
+              <LocationIcon size={scale(20)} color={AppColors.warning} />
+              <Text
+                className="color-xedi-text"
+                style={wrapTextStyle({ fontWeight: "500" }, "sm")}
+              >
+                Bạn muốn đến đâu
+              </Text>
             </HStack>
           </Pressable>
           <HStack>
-            <Button variant="link">
-              <AddIcon size={24} color="rgb(52, 170, 246)" />
-              <ButtonText className="font-[400] text-sm">
+            <Button
+              variant="link"
+              onPress={() => router.navigate("/add-location")}
+            >
+              <AddIcon size={scale(15)} color={AppColors.primary} />
+              <ButtonText style={wrapTextStyle({ fontWeight: "400" }, "2xs")}>
                 Thêm điểm đón
               </ButtonText>
             </Button>

@@ -168,9 +168,9 @@ const BottomSheetGesture = React.forwardRef<
         >
           <VStack
             space="md"
-            className="rounded-t-[32px] bg-white p-[16px] flex-1 shadow-md"
+            className="rounded-t-[32px] bg-xedi-background p-[16px] flex-1 shadow-md"
           >
-            <Box className="w-[75px] h-[3px] bg-gray-500 self-center mb-[12px] rounded-full" />
+            <Box className="w-[75px] h-[3px] bg-xedi-background self-center mb-[12px] rounded-full" />
             {locationSearchComponent}
             {locationSearchComponent !== undefined && <Divider />}
             {!isDisableFetchRemind && !!title && !!subTitle && (

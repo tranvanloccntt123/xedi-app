@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  ActivityIndicator,
   BackHandler,
   Pressable,
   StyleSheet,
@@ -20,6 +21,7 @@ import { Heading } from "@/src/components/ui/heading";
 import { Text } from "@/src/components/ui/text";
 import { Divider } from "@/src/components/ui/divider";
 import { router } from "expo-router";
+import { scale } from "react-native-size-matters";
 
 export interface BottomSheetGestureMethods {
   openFull: () => void;
@@ -53,7 +55,7 @@ const BottomSheetGesture = React.forwardRef<
     },
     ref
   ) => {
-    const { setCoordinate, firstLoadData, data, title, subTitle } =
+    const { setCoordinate, firstLoadData, data, title, subTitle, isLoading } =
       useReverseLocation();
 
     React.useEffect(() => {
@@ -198,6 +200,12 @@ const BottomSheetGesture = React.forwardRef<
                   </VStack>
                 </Pressable>
               </Box>
+            )}
+            {isLoading && (
+              <ActivityIndicator
+                size={"small"}
+                style={{ marginTop: scale(10) }}
+              />
             )}
             {children}
           </VStack>

@@ -11,6 +11,7 @@ export const Tables = {
   DRIVER_TRIP_REQUESTS: "driver_trip_requests",
   MERGE_TRIP_REQUESTS: "merge_trip_requests",
   COMMENTS: "comments",
+  USER_LOCATION_STORE: "users_location_store",
 };
 
 export const CameraImageSize = {

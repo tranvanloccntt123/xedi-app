@@ -1,5 +1,3 @@
-const APP_STRUCT = 'APP_LAYOUT';
-
 import React from 'react';
 import { Stack } from 'expo-router';
 import { Box } from '@/src/components/ui/box';

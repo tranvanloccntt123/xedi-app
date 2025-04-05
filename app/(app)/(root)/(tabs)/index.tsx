@@ -10,10 +10,10 @@ import useLocation from "@/hooks/useLocation";
 import InfinityList from "@/src/components/InfinityList";
 import {
   pushFetchingInfo,
-  XEDI_GROUP_INFO,
+  XEDI_QUERY_KEY,
 } from "@/src/store/fetchServices/fetchServicesSlice";
 
-import HomeHeader from "@/src/components/HomeHeader";
+import HomeHeader from "@/src/components/Home/HomeHeader";
 
 export default function Home() {
   useLocation({});
@@ -34,13 +34,13 @@ export default function Home() {
             });
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.FEED,
+                groupKey: XEDI_QUERY_KEY.FEED,
                 data,
               })
             );
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.TRIP_REQUEST,
+                groupKey: XEDI_QUERY_KEY.TRIP_REQUEST,
                 data: data
                   .filter((_data) => !!_data.trip_requests)
                   .flatMap((_data) => _data.trip_requests),
@@ -48,7 +48,7 @@ export default function Home() {
             );
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.FIXED_ROUTE,
+                groupKey: XEDI_QUERY_KEY.FIXED_ROUTE,
                 data: data
                   .filter((_data) => !!_data.fixed_routes)
                   .flatMap((_data) => _data.fixed_routes),

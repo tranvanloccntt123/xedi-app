@@ -98,7 +98,7 @@ export default function SignUp() {
         padding: 16,
       }}
     >
-      <VStack space="md" className="w-full max-w-md">
+      <VStack space="md" className="w-full max-w-xls">
         <HStack space="md">
           <Logo size="sm" />
           <VStack space="xs" className="mb-6">

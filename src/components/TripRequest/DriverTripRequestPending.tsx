@@ -10,7 +10,7 @@ import { FormControl } from "../ui/form-control";
 import { Text } from "../ui/text";
 import { xediSupabase } from "../../lib/supabase";
 import { HStack } from "../ui/hstack";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import useQuery from "@/hooks/useQuery";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 
@@ -18,7 +18,7 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,
 }) => {
   const user: IUser = useSelector((state: RootState) => state.auth.user);
-  const queryKey = `${XEDI_GROUP_INFO.DRIVER_TRIP_REQUEST}_${tripRequestId}`;
+  const queryKey = `${XEDI_QUERY_KEY.DRIVER_TRIP_REQUEST}_${tripRequestId}`;
 
   const queryFn = async () => {
     try {

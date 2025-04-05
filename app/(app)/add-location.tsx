@@ -1,6 +1,6 @@
+import React from "react";
 import useLocation from "@/hooks/useLocation";
 import { Box } from "@/src/components/ui/box";
-import React from "react";
 import AppMapView from "@/src/components/AppMapView";
 import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import Header from "@/src/components/Header";
@@ -9,14 +9,14 @@ import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
 import { Center } from "@/src/components/ui/center";
 import PinMarkerIcon from "@/src/components/PrinMarkerIcon";
 import BottomSheetGesture from "@/src/components/BottomSheetGesture";
-import { useSelector } from "react-redux";
-import { RootState } from "@/src/store/store";
 import { StatusBar } from "react-native";
+import useUserLocation from "@/hooks/useUserLocation";
+import { DEFAULT_LOCATION } from "@/src/constants";
 
 export default function AddLocation() {
   useLocation({ isWatchLocation: true });
 
-  const { lat, lon } = useSelector((state: RootState) => state.location);
+  const { lat, lon } = useUserLocation(DEFAULT_LOCATION);
 
   const [coordinate, setCoordinate] = React.useState<{
     lat: number;
@@ -41,7 +41,7 @@ export default function AddLocation() {
             <PinMarkerIcon />
           </Center>
         </SafeAreaView>
-        <BottomSheetGesture coordinate={coordinate} />
+        <BottomSheetGesture coordinate={coordinate} onPress={(location) => {}} />
       </Box>
     </BottomSheet>
   );

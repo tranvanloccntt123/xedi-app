@@ -68,7 +68,7 @@ export default function SignIn() {
         space="xl"
         className="flex-1 w-full p-4 bg-white items-center justify-center"
       >
-        <VStack className="w-full max-w-md">
+        <VStack className="w-full max-w-xl">
           <VStack space="xs" className="mb-6">
             <Logo size="xl" className="self-center mb-[26px]" />
             <Heading size="2xl">Đăng nhập Xedi</Heading>

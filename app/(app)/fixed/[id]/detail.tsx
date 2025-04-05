@@ -8,7 +8,7 @@ import FixedRouteDetailPending from "@/src/components/FixedRoute/FixedRouteDetai
 import FixedRouteDetailRunning from "@/src/components/FixedRoute/FixedRouteDetailRunning";
 import FixedRouteDetailFinished from "@/src/components/FixedRoute/FixedRouteDetailFinished";
 import useQuery from "@/hooks/useQuery";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { useDispatch } from "react-redux";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 import { IFixedRouteStatus } from "@/src/types/enum";
@@ -17,7 +17,7 @@ export default function FixedRouteDetail() {
   const { id } = useLocalSearchParams();
 
   const queryKey = React.useMemo(
-    () => `${XEDI_GROUP_INFO.FIXED_ROUTE}_${id}`,
+    () => `${XEDI_QUERY_KEY.FIXED_ROUTE}_${id}`,
     [id]
   );
 

@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchUserCoins,
-  fetchUserInfo,
+  fetchMyUserInfo,
   updateUserInfo,
 } from "@/src/store/user/userThunks";
 
@@ -42,7 +42,7 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+      .addCase(fetchMyUserInfo.fulfilled, (state, action) => {
         state.user = action.payload;
       })
       .addCase(updateUserInfo.fulfilled, (state, action) => {

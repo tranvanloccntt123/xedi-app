@@ -22,6 +22,7 @@ import {
 } from "@expo-google-fonts/inter";
 
 import { StyleProp } from "react-native";
+import AppColors from "../constants/colors";
 
 const AppStyles = ScaledSheet.create({
   container: {
@@ -30,6 +31,10 @@ const AppStyles = ScaledSheet.create({
   header: {
     width: "100%",
     height: "45@vs",
+  },
+  primaryBtn: {
+    height: "40@vs",
+    backgroundColor: AppColors.primary,
   },
 });
 

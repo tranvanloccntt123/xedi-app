@@ -28,7 +28,7 @@ import Animated, {
 } from "react-native-reanimated";
 import {
   setFetchingData,
-  XEDI_GROUP_INFO,
+  XEDI_QUERY_KEY,
 } from "@/src/store/fetchServices/fetchServicesSlice";
 import { useDataInfo } from "@/hooks/useQuery";
 import LottieView from "lottie-react-native";
@@ -157,7 +157,7 @@ const CommentItem: React.FC<{
 
 export default function Comment() {
   const { id } = useLocalSearchParams();
-  const queryKey = `${XEDI_GROUP_INFO.FEED}_${id}`;
+  const queryKey = `${XEDI_QUERY_KEY.FEED}_${id}`;
   const { data } = useDataInfo<INewsFeedItem>(queryKey);
   const listRef = React.useRef<InfinityListMethods>(null);
   const commentRef = React.useRef<CommentInputMethods>(null);

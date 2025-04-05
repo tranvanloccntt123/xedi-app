@@ -6,7 +6,7 @@ import {
   clearAuthData,
 } from "@/src/store/auth/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
-import { fetchUserCoins, fetchUserInfo } from "@/src/store/user/userThunks";
+import { fetchUserCoins, fetchMyUserInfo } from "@/src/store/user/userThunks";
 import "@/global.css";
 import "react-native-url-polyfill/auto";
 
@@ -82,7 +82,7 @@ function AuthWrapper() {
       (event, session) => {
         if (event === "SIGNED_IN") {
           if (session?.user) {
-            dispatch(fetchUserInfo());
+            dispatch(fetchMyUserInfo());
             dispatch(fetchUserCoins());
             dispatch(setAuthenticated(true));
           }

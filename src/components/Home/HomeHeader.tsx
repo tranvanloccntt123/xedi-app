@@ -1,20 +1,18 @@
 import React from "react";
-import { Box } from "./ui/box";
-import { VStack } from "./ui/vstack";
-import { HStack } from "./ui/hstack";
-import { Text } from "./ui/text";
-import { wrapTextStyle } from "../theme/AppStyles";
-import { Button, ButtonText } from "./ui/button";
-import AddIconInLine from "./icons/AddIconInline";
-import OnlyCustomer from "./View/OnlyCustomer";
-import { Pressable } from "react-native";
+import { VStack } from "../ui/vstack";
+import { HStack } from "../ui/hstack";
+import { wrapTextStyle } from "../../theme/AppStyles";
+import { Button, ButtonText } from "../ui/button";
+import AddIconInLine from "../icons/AddIconInline";
+import OnlyCustomer from "../View/OnlyCustomer";
+import { Pressable, Text } from "react-native";
 import { router } from "expo-router";
-import LocationIcon from "./icons/LocationIcon";
-import AddIcon from "./icons/AddIcon";
-import AppColors from "../constants/colors";
-import { resetPost } from "../store/postForm/postFormSlice";
+import LocationIcon from "../icons/LocationIcon";
+import AddIcon from "../icons/AddIcon";
+import AppColors from "../../constants/colors";
+import { resetPost } from "../../store/postForm/postFormSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState } from "../../store/store";
 import { scale } from "react-native-size-matters";
 
 const HomeHeader = React.memo(() => {
@@ -33,7 +31,6 @@ const HomeHeader = React.memo(() => {
             Xin Chào, {user?.name || user?.phone}
           </Text>
           <Text
-            className="mb-4"
             style={wrapTextStyle(
               { fontWeight: "500", color: AppColors.text },
               "2xs"
@@ -67,8 +64,10 @@ const HomeHeader = React.memo(() => {
             >
               <LocationIcon size={scale(20)} color={AppColors.warning} />
               <Text
-                className="color-xedi-text"
-                style={wrapTextStyle({ fontWeight: "500" }, "sm")}
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.text },
+                  "sm"
+                )}
               >
                 Bạn muốn đến đâu
               </Text>

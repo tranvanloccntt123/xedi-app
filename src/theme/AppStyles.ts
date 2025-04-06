@@ -33,8 +33,12 @@ const AppStyles = ScaledSheet.create({
     height: "45@vs",
   },
   primaryBtn: {
-    height: "40@vs",
+    height: "35@vs",
     backgroundColor: AppColors.primary,
+  },
+  cancelBtn: {
+    height: "35@vs",
+    backgroundColor: AppColors.placeholder,
   },
 });
 

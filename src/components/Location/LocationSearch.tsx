@@ -31,6 +31,7 @@ import { router } from "expo-router";
 import { HStack } from "../ui/hstack";
 import ShareIcon from "../icons/ShareIcon";
 import AppColors from "@/src/constants/colors";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 interface LocationSearchProps {
   defaultLocation?: InputLocation;
@@ -196,7 +197,7 @@ export default function LocationSearch({
       <ScrollView keyboardShouldPersistTaps="handled">
         <HStack space="md" className="items-center">
           <Box
-            className="bg-xedi-placeholder flex-1"
+            className="bg-xedi-primary/[.08] flex-1"
             style={{ borderRadius: BORDER_RADIUS }}
           >
             <Animated.View style={[styles.inputContainer, startLocationStyle]}>
@@ -211,6 +212,7 @@ export default function LocationSearch({
                     startLocationAnim.value = withTiming(1, { duration: 50 });
                     onStartLocationFocus?.();
                   }}
+                  style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
                     (startLocationAnim.value = withTiming(0, { duration: 50 }))
                   }
@@ -241,6 +243,7 @@ export default function LocationSearch({
                     endLocationAnim.value = withTiming(1, { duration: 50 });
                     onEndLocationFocus?.();
                   }}
+                  style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
                     (endLocationAnim.value = withTiming(0, { duration: 50 }))
                   }

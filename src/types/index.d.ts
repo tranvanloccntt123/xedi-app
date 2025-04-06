@@ -68,11 +68,14 @@ interface ITripRequest {
   fixed_routes?: IFixedRoute;
 }
 
-interface IUserLocationStore {
-  id: string;
-  created_at: string;
+interface IUserLocationStoreSource {
   user_id: string;
   location: InputLocation;
+}
+
+interface IUserLocationStore extends IUserLocationStoreSource {
+  id: string;
+  created_at: string;
 }
 
 interface IUser {

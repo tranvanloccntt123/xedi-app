@@ -2,7 +2,6 @@ import React from "react";
 import useLocation from "@/hooks/useLocation";
 import { Box } from "@/src/components/ui/box";
 import AppMapView from "@/src/components/AppMapView";
-import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import Header from "@/src/components/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
@@ -12,11 +11,28 @@ import BottomSheetGesture from "@/src/components/BottomSheetGesture";
 import { StatusBar } from "react-native";
 import useUserLocation from "@/hooks/useUserLocation";
 import { DEFAULT_LOCATION } from "@/src/constants";
+import { ScaledSheet } from "react-native-size-matters";
+import useQuery from "@/hooks/useQuery";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
+import { xediSupabase } from "@/src/lib/supabase";
+import ConfirmationModal from "@/src/components/Location/ConfirmationModal";
 
 export default function AddLocation() {
   useLocation({ isWatchLocation: true });
 
+  const { refetch, data } = useQuery({
+    queryKey: XEDI_QUERY_KEY.YOUR_LOCATIONS_STORED,
+    async queryFn() {
+      return xediSupabase.tables.userLocationStore.selectByUserIdAfterDate({
+        pageNums: 4,
+      });
+    },
+  });
+
   const { lat, lon } = useUserLocation(DEFAULT_LOCATION);
+
+  const [showConfirmationModal, setShowConfirmationModal] =
+    React.useState(false);
 
   const [coordinate, setCoordinate] = React.useState<{
     lat: number;
@@ -26,23 +42,37 @@ export default function AddLocation() {
     lon: lon,
   });
 
+  const [location, setLocation] = React.useState<InputLocation>();
+
   return (
-    <BottomSheet>
-      <Box className="flex-1">
-        <StatusBar translucent backgroundColor={"transparent"} />
-        <SafeAreaView style={{ flex: 1 }}>
-          <Box className="px-4">
-            <Header title="Thêm điểm đón" />
-          </Box>
-          <Center className="flex-1">
-            <AppMapView onCenterChange={(c) => setCoordinate(c)}>
-              <EclipseMarkerIcon coordinate={coordinate} />
-            </AppMapView>
-            <PinMarkerIcon />
-          </Center>
-        </SafeAreaView>
-        <BottomSheetGesture coordinate={coordinate} onPress={(location) => {}} />
-      </Box>
-    </BottomSheet>
+    <Box className="flex-1">
+      <StatusBar translucent backgroundColor={"transparent"} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <Box className="px-4">
+          <Header title="Thêm điểm đón" />
+        </Box>
+        <Center className="flex-1">
+          <AppMapView onCenterChange={(c) => setCoordinate(c)}>
+            <EclipseMarkerIcon coordinate={coordinate} />
+          </AppMapView>
+          <PinMarkerIcon />
+        </Center>
+      </SafeAreaView>
+      <BottomSheetGesture
+        coordinate={coordinate}
+        onPress={(location) => {
+          setLocation(location);
+          setShowConfirmationModal(true);
+        }}
+      />
+      <ConfirmationModal
+        location={location}
+        showConfirmationModal={showConfirmationModal}
+        setShowConfirmationModal={setShowConfirmationModal}
+        onConfirm={refetch}
+      />
+    </Box>
   );
 }
+
+const styles = ScaledSheet.create({});

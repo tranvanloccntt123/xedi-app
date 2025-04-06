@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { fetchMyUserInfo } from "../user/userThunks";
 
 export interface LocationState {
   lat: number | null;
@@ -23,6 +24,14 @@ const locationSlice = createSlice({
     setGranted(state, action: PayloadAction<boolean>) {
       state.granted = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(fetchMyUserInfo.fulfilled, (state, actions) => {
+      if (!!actions.payload.lat && !!actions.payload.lon) {
+        state.lat = actions.payload.lat;
+        state.lon = actions.payload.lon;
+      }
+    });
   },
 });
 

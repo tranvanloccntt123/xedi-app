@@ -12,7 +12,7 @@ import { xediSupabase } from "../../lib/supabase";
 import { HStack } from "../ui/hstack";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import useQuery from "@/hooks/useQuery";
-import { wrapTextStyle } from "@/src/theme/AppStyles";
+import AppStyles, { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
   tripRequestId,
@@ -83,10 +83,11 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
             >
               Giá (VND)
             </Text>
-            <Input className="border-0 bg-xedi-white">
+            <Input className="border-0 bg-xedi-white" style={AppStyles.inp}>
               <InputField
                 value={formatMoney(price)}
                 placeholder="Nhập báo giá"
+                style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                 onChangeText={(value) => {
                   if (!value) {
                     setPrice("");
@@ -103,6 +104,8 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
             </Input>
           </FormControl>
           <Button
+            action="default"
+            style={AppStyles.primaryBtn}
             onPress={async () => {
               await xediSupabase.tables.driverTripRequest.addWithUserId([
                 {
@@ -113,7 +116,9 @@ const DriverTripRequestPending: React.FC<{ tripRequestId: number }> = ({
               refetch();
             }}
           >
-            <ButtonText>Gửi báo giá</ButtonText>
+            <ButtonText style={wrapTextStyle({ fontWeight: "500" }, "2xs")}>
+              Gửi báo giá
+            </ButtonText>
           </Button>
         </VStack>
       )}

@@ -18,13 +18,14 @@ import BottomSheetGesture, {
   BottomSheetGestureMethods,
 } from "../BottomSheetGesture";
 import LocationSearchTripRequest from "../Location/LocationSearchTripRequest";
+import useUserLocation from "@/hooks/useUserLocation";
 
 const TripRequestMapSelectionLayout: React.FC<{
   onConfirm?: () => any;
   isShareHide?: boolean;
 }> = ({ onConfirm, isShareHide }) => {
   useLocation({ isWatchLocation: true });
-  const { lat, lon } = useSelector((state: RootState) => state.location);
+  const { lat, lon } = useUserLocation();
   const [coordinate, setCoordinate] = React.useState<{
     lat: number;
     lon: number;

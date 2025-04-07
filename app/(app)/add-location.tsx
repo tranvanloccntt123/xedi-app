@@ -23,9 +23,11 @@ export default function AddLocation() {
   const { refetch, data } = useQuery({
     queryKey: XEDI_QUERY_KEY.YOUR_LOCATIONS_STORED,
     async queryFn() {
-      return xediSupabase.tables.userLocationStore.selectByUserIdAfterDate({
-        pageNums: 4,
-      });
+      const { data } =
+        await xediSupabase.tables.userLocationStore.selectByUserIdAfterDate({
+          pageNums: 4,
+        });
+      return data || [];
     },
   });
 

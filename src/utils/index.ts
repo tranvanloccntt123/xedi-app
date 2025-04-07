@@ -1,6 +1,3 @@
-import { EnhancedStore } from "@reduxjs/toolkit";
-import { RootState, store } from "../store/store";
-
 export function hidePhoneNumber(phoneNumber: string): string {
   // Remove any non-digit characters from the phone number
   const cleanNumber = phoneNumber.replace(/\D/g, "");

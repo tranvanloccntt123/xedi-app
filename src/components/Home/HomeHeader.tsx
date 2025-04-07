@@ -14,6 +14,7 @@ import { resetPost } from "../../store/postForm/postFormSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { scale } from "react-native-size-matters";
+import HomeListUserLocation from "./HomeListUserLocation";
 
 const HomeHeader = React.memo(() => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -56,7 +57,10 @@ const HomeHeader = React.memo(() => {
           className="p-2 border-0 bg-xedi-primary/[0.2] mb-4 mx-2 rounded-xl"
         >
           <Pressable
-            onPress={() => router.navigate("/trip/create?type=end-location")}
+            onPress={() => {
+              dispatch(resetPost({inputSelectionType: 'end-location'}));
+              router.navigate("/trip/create?type=end-location");
+            }}
           >
             <HStack
               space="md"
@@ -73,17 +77,7 @@ const HomeHeader = React.memo(() => {
               </Text>
             </HStack>
           </Pressable>
-          <HStack>
-            <Button
-              variant="link"
-              onPress={() => router.navigate("/add-location")}
-            >
-              <AddIcon size={scale(15)} color={AppColors.primary} />
-              <ButtonText style={wrapTextStyle({ fontWeight: "400" }, "2xs")}>
-                Thêm điểm đón
-              </ButtonText>
-            </Button>
-          </HStack>
+          <HomeListUserLocation />
         </VStack>
       </OnlyCustomer>
     </VStack>

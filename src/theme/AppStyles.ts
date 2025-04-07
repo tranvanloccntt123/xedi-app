@@ -40,6 +40,9 @@ const AppStyles = ScaledSheet.create({
     height: "35@vs",
     backgroundColor: AppColors.placeholder,
   },
+  inp: {
+    height: "35@vs",
+  },
 });
 
 export const XediFonts: XediFont = {

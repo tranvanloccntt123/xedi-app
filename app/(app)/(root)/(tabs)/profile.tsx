@@ -69,7 +69,7 @@ export default function Profile() {
             <ProfileSection
               title="Địa điểm đã lưu"
               subtitle="Quản lý các địa điểm yêu thích của bạn"
-              onPress={() => router.push("/add-location")}
+              onPress={() => router.push("/location-stored")}
             />
             <ProfileSection
               title={`${coins?.coins || 0} Điểm`}

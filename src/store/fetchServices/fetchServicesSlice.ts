@@ -1,12 +1,13 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { fetchDetailInfo } from "./fetchServicesThunk";
 
-export enum XEDI_GROUP_INFO {
+export enum XEDI_QUERY_KEY {
   FEED = "feed",
   TRIP_REQUEST = "trip_request",
   FIXED_ROUTE = "fixed_route",
   DRIVER_TRIP_REQUEST = "driver_trip_request",
   CUSTOMER_LIST = "customer_list",
+  YOUR_LOCATIONS_STORED = "your_locations_store",
 }
 
 export interface FetchState {

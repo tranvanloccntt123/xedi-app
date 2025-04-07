@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { xediSupabase } from "@/src/lib/supabase";
 
-export const fetchUserInfo = createAsyncThunk<IUser, void>(
+export const fetchMyUserInfo = createAsyncThunk<IUser, void>(
   "user/fetchUserInfo",
   async (_, { rejectWithValue }) => {
     try {

@@ -27,7 +27,7 @@ import { Text } from "@/src/components/ui/text";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "@/src/components/Header";
 import { updateUserInfo } from "@/src/store/user/userThunks";
-import { wrapTextStyle } from "@/src/theme/AppStyles";
+import AppStyles, { wrapTextStyle } from "@/src/theme/AppStyles";
 
 export default function EditProfile() {
   const router = useRouter();
@@ -97,7 +97,7 @@ export default function EditProfile() {
         </Box>
         <ScrollView>
           <Box className="px-4">
-            <VStack space="md">
+            <VStack space="md" className="max-w-xl w-full self-center">
               <FormControl isInvalid={!!errors.name}>
                 <Text
                   className="color-xedi-text"
@@ -156,10 +156,10 @@ export default function EditProfile() {
                 </FormControlError>
               </FormControl>
               <Button
-                size="lg"
-                className={`mt-4 h-[45px] bg-xedi-primary`}
+                className={`mt-4 bg-xedi-primary`}
                 onPress={handleSave}
                 action="default"
+                style={AppStyles.primaryBtn}
                 isDisabled={!isFormChanged || name === ""}
               >
                 <ButtonText

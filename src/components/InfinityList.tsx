@@ -52,15 +52,20 @@ const InfinityList = React.forwardRef<InfinityListMethods, InfinityListProps>(
       };
     });
 
+    const _renderItem = React.useCallback(
+      ({ item, index }: { item: any; index: number }) => {
+        return renderItem({ item, index, data }) as never;
+      },
+      [data]
+    );
+
     return (
       <FlatList
         data={data}
         keyExtractor={(item, index) =>
           `${queryKey || "Infinity"}-${item?.id}-${index}`
         }
-        renderItem={({ item, index }) =>
-          renderItem({ item, index, data }) as never
-        }
+        renderItem={_renderItem}
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={refresh} />
         }

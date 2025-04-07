@@ -3,6 +3,7 @@ import { Box } from "@/src/components/ui/box";
 import { Image, StyleSheet } from "react-native";
 import LottieView from "lottie-react-native";
 import Lottie from "@/src/lottie";
+import AppColors from "@/src/constants/colors";
 
 const styles = StyleSheet.create({
   logo: {
@@ -18,19 +19,14 @@ const AppLoading: React.FC<{
 }> = ({ isLoading, children }) => {
   return isLoading ? (
     <Box className="flex-1 justify-center items-center">
-      <Box className="w-[200px] h-[200px]">
+      <Box className="w-[300px] h-[300px]">
         <LottieView
           source={Lottie.FIND_LOCATION}
-          colorFilters={[]}
           style={{ width: "100%", height: "100%" }}
           autoPlay
           loop
         />
       </Box>
-      <Image
-        source={require("../../../assets/images/logo.png")}
-        style={styles.logo}
-      />
     </Box>
   ) : (
     children

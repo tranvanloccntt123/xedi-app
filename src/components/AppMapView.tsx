@@ -21,9 +21,10 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { ZOOM_LEVEL, MARKER_SIZE } from "../constants";
+import { ZOOM_LEVEL, MARKER_SIZE, DEFAULT_LOCATION } from "../constants";
 import { TouchableOpacity } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
+import useUserLocation from "@/hooks/useUserLocation";
 
 export interface AppMapViewProps {
   onPress?: (coordinate: { lat: number; lon: number }) => any;
@@ -76,20 +77,7 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
     });
     const mapViewRef = React.useRef<MapViewRef>(null);
     const cameraViewRef = React.useRef<CameraRef>(null);
-    const { userLat, userLon } = useSelector((state: RootState) => ({
-      userLat: state.auth.user.lat,
-      userLon: state.auth.user.lon,
-    }));
-    const { lat: currentLocationLat, lon: currentLocationLon } = useSelector(
-      (state: RootState) => state.location
-    );
-    const { lat, lon } = React.useMemo(
-      () => ({
-        lat: currentLocationLat || userLat || 21.028511,
-        lon: currentLocationLon || userLon || 105.804817,
-      }),
-      [currentLocationLat, currentLocationLon]
-    );
+    const { lat, lon } = useUserLocation(DEFAULT_LOCATION);
     const { handleOpen } = React.useContext(BottomSheetContext);
 
     const markerResizeAnim = useSharedValue(ZOOM_LEVEL[1]);
@@ -178,7 +166,7 @@ const AppMapView = React.forwardRef<AppMapViewMethods, AppMapViewProps>(
                     sourceID="openStreetMapSource"
                   />
                 </RasterSource>
-                {!isHideCurrentLocation && (
+                {!isHideCurrentLocation && ![lat, lon].includes(null) && (
                   <MarkerView coordinate={[lon, lat]}>
                     <Animated.View
                       style={[markerStyle, { alignItems: "center" }]}

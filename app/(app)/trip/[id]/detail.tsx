@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { fetchDriverTripRequestAccepted } from "@/src/store/tripRequest/tripRequestsThunk";
 import TripRequestAccepted from "@/src/components/TripRequest/TripRequestAccepted";
 import useQuery from "@/hooks/useQuery";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 import TripRequestMerged from "@/src/components/TripRequest/TripRequestMerged";
 import { IDriverTripRequestStatus } from "@/src/types/enum";
@@ -16,7 +16,7 @@ export default function TripRequestDetail() {
   const { id } = useLocalSearchParams();
 
   const queryKey = React.useMemo(
-    () => `${XEDI_GROUP_INFO.TRIP_REQUEST}_${id}`,
+    () => `${XEDI_QUERY_KEY.TRIP_REQUEST}_${id}`,
     [id]
   );
 

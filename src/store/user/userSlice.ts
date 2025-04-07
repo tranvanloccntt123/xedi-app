@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { IUser, UserState } from "@/src/types"
-import { fetchUserInfo, updateUserInfo } from "./userThunks"
+import { fetchMyUserInfo, updateUserInfo } from "./userThunks"
 
 export const initialState: UserState = {
   currentUser: null,
@@ -26,15 +26,15 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserInfo.pending, (state) => {
+      .addCase(fetchMyUserInfo.pending, (state) => {
         state.loading = true
         state.error = null
       })
-      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+      .addCase(fetchMyUserInfo.fulfilled, (state, action) => {
         state.loading = false
         state.currentUser = action.payload
       })
-      .addCase(fetchUserInfo.rejected, (state, action) => {
+      .addCase(fetchMyUserInfo.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload as string
       })

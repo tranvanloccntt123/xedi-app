@@ -15,7 +15,7 @@ import { scale } from "react-native-size-matters";
 import { Button } from "../ui/button";
 import PhoneIcon from "../icons/PhoneIcon";
 import useQuery from "@/hooks/useQuery";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 
 const FixedRouteRunningListCustomer: React.FC<{
   fixedRoute: IFixedRoute;
@@ -29,7 +29,7 @@ const FixedRouteRunningListCustomer: React.FC<{
   );
 
   const { data: customerList } = useQuery<CustomerInFixedRoute[]>({
-    queryKey: `${XEDI_GROUP_INFO.CUSTOMER_LIST}_${fixedRoute.id}`,
+    queryKey: `${XEDI_QUERY_KEY.CUSTOMER_LIST}_${fixedRoute.id}`,
     async queryFn() {
       if (!isAuthor) {
         return [];

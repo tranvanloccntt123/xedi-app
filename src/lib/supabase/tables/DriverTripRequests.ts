@@ -1,6 +1,7 @@
 import { Tables } from "@/src/constants";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { BaseTable } from "./BaseTable";
+import { IDriverTripRequestStatus } from "@/src/types/enum";
 
 export default class DriverTripRequests extends BaseTable<IDriverTripRequest> {
   constructor(_supabase: SupabaseClient) {

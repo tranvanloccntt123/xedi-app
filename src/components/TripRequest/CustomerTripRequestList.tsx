@@ -52,7 +52,7 @@ const CustomerTripRequestList: React.FC<{ tripRequestId: number }> = ({
   }, [tripRequestAccepted]);
 
   return (
-    <VStack space="lg" className="bg-white rounded-lg p-4">
+    <VStack space="lg" className="bg-xedi-card rounded-lg p-4">
       <HStack className="mb-[24px] justify-between">
         <VStack>
           <Heading>Yêu cầu</Heading>

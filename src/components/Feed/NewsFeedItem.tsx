@@ -17,12 +17,11 @@ import Animated, {
   withTiming,
   interpolate,
 } from "react-native-reanimated";
-import { MentionInput } from "../ControlledMentions";
 import { router } from "expo-router";
 import { Avatar, AvatarFallbackText } from "../ui/avatar";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { useDataInfo } from "@/hooks/useQuery";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
 import { PartTypes } from "@/src/constants";
@@ -39,7 +38,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
   const dispatch = useDispatch();
 
   const { data } = useDataInfo<INewsFeedItem>(
-    `${XEDI_GROUP_INFO.FEED}_${item.id}`
+    `${XEDI_QUERY_KEY.FEED}_${item.id}`
   );
 
   const deletedItems = useSelector(
@@ -97,7 +96,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
             <MentionText
               value={data?.content || ""}
               partTypes={PartTypes as any}
-              textStyle={wrapTextStyle({ fontWeight: "600" }, "xl")}
+              textStyle={wrapTextStyle({ fontWeight: "500" }, "2xs")}
             />
           </VStack>
         </Box>

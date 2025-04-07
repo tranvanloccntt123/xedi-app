@@ -12,9 +12,10 @@ const Header: React.FC<{
   subTitle?: string;
   onBack?: () => any;
   rightComponent?: React.ReactNode;
-}> = ({ title, rightComponent, onBack, subTitle }) => {
+  className?: string;
+}> = ({ title, rightComponent, onBack, subTitle, className }) => {
   return (
-    <VStack className="mb-6">
+    <VStack className={`mb-6 ${className}`}>
       <HStack space="sm" className="items-center">
         {router.canGoBack() && (
           <Button variant="link" onPress={onBack || router.back}>

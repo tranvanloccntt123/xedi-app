@@ -1,41 +1,24 @@
-const APP_STRUCT = "HOME_SCREEN";
-
 import React from "react";
 import { Box } from "@/src/components/ui/box";
-import { VStack } from "@/src/components/ui/vstack";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/src/store/store";
-import { Pressable } from "react-native";
-import { Text } from "@/src/components/ui/text";
+import { useDispatch } from "react-redux";
 import NewsFeedItem from "@/src/components/Feed/NewsFeedItem";
-import { Button, ButtonText } from "@/src/components/ui/button";
-import { useRouter } from "expo-router";
-import { HStack } from "@/src/components/ui/hstack";
-import AddIconInLine from "@/src/components/icons/AddIconInline";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { xediSupabase } from "@/src/lib/supabase";
 import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import FeedBottomSheet from "@/src/components/Feed/FeedBottomSheet";
 import useLocation from "@/hooks/useLocation";
-import OnlyCustomer from "@/src/components/View/OnlyCustomer";
-import LocationIcon from "@/src/components/icons/LocationIcon";
-import AddIcon from "@/src/components/icons/AddIcon";
 import InfinityList from "@/src/components/InfinityList";
 import {
   pushFetchingInfo,
-  XEDI_GROUP_INFO,
+  XEDI_QUERY_KEY,
 } from "@/src/store/fetchServices/fetchServicesSlice";
-import { resetPost } from "@/src/store/postForm/postFormSlice";
-import AppColors from "@/src/constants/colors";
-import { wrapTextStyle } from "@/src/theme/AppStyles";
+
+import HomeHeader from "@/src/components/Home/HomeHeader";
 
 export default function Home() {
   useLocation({});
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
   const { top } = useSafeAreaInsets();
-
-  const router = useRouter();
 
   const renderItem = ({ item }: { item: INewsFeedItem }) => (
     <NewsFeedItem item={item} />
@@ -51,13 +34,13 @@ export default function Home() {
             });
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.FEED,
+                groupKey: XEDI_QUERY_KEY.FEED,
                 data,
               })
             );
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.TRIP_REQUEST,
+                groupKey: XEDI_QUERY_KEY.TRIP_REQUEST,
                 data: data
                   .filter((_data) => !!_data.trip_requests)
                   .flatMap((_data) => _data.trip_requests),
@@ -65,7 +48,7 @@ export default function Home() {
             );
             dispatch(
               pushFetchingInfo({
-                groupKey: XEDI_GROUP_INFO.FIXED_ROUTE,
+                groupKey: XEDI_QUERY_KEY.FIXED_ROUTE,
                 data: data
                   .filter((_data) => !!_data.fixed_routes)
                   .flatMap((_data) => _data.fixed_routes),
@@ -77,69 +60,7 @@ export default function Home() {
             return lastData?.[lastData.length - 1]?.created_at;
           }}
           renderItem={renderItem}
-          ListHeaderComponent={
-            <VStack space="md">
-              <HStack space="md" className="p-4">
-                <VStack className="flex-1" space="md">
-                  <Text
-                    style={wrapTextStyle(
-                      { fontWeight: "700", color: AppColors.text },
-                      "md"
-                    )}
-                  >
-                    Xin Chào, {user?.name || user?.phone}
-                  </Text>
-                  <Text
-                    className="mb-4"
-                    style={wrapTextStyle(
-                      { fontWeight: "500", color: AppColors.text },
-                      "2xs"
-                    )}
-                  >
-                    Đây là bảng tin mới nhất của bạn. Kéo xuống để cập nhật.
-                  </Text>
-                </VStack>
-                <Button
-                  onPress={() => {
-                    dispatch(resetPost({}));
-                    router.push("/post/create");
-                  }}
-                  variant="link"
-                  className="w-[40px] h-[40px] bg-xedi-primary rounded-full"
-                >
-                  <AddIconInLine size={24} color={AppColors.white} />
-                </Button>
-              </HStack>
-              <OnlyCustomer>
-                <VStack
-                  space="sm"
-                  className="p-2 border-[1px] border-gray-200 bg-white mb-4 mx-2 rounded-xl"
-                >
-                  <Pressable
-                    onPress={() =>
-                      router.navigate("/trip/create?type=end-location")
-                    }
-                  >
-                    <HStack
-                      space="md"
-                      className="p-4 rounded-md items-center bg-gray-100"
-                    >
-                      <LocationIcon size={24} color="#f56505" />
-                      <Text className="text-black">Bạn muốn đến đâu</Text>
-                    </HStack>
-                  </Pressable>
-                  <HStack>
-                    <Button variant="link">
-                      <AddIcon size={24} color="rgb(52, 170, 246)" />
-                      <ButtonText className="font-[400] text-sm">
-                        Thêm điểm đón
-                      </ButtonText>
-                    </Button>
-                  </HStack>
-                </VStack>
-              </OnlyCustomer>
-            </VStack>
-          }
+          ListHeaderComponent={<HomeHeader />}
         />
       </Box>
       <FeedBottomSheet />

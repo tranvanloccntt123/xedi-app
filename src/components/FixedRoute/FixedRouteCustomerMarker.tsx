@@ -1,5 +1,5 @@
 import { useDataInfo } from "@/hooks/useQuery";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { MarkerView } from "@maplibre/maplibre-react-native";
 import React from "react";
 import Animated, {
@@ -18,7 +18,7 @@ const FixedRouteCustomerMarker: React.FC<{
   markerResizeAnim: SharedValue<number>;
 }> = ({ fixedRoute, markerResizeAnim }) => {
   const { data } = useDataInfo<CustomerInFixedRoute[]>(
-    `${XEDI_GROUP_INFO.CUSTOMER_LIST}_${fixedRoute.id}`
+    `${XEDI_QUERY_KEY.CUSTOMER_LIST}_${fixedRoute.id}`
   );
 
   const markerStyle = useAnimatedStyle(() => {

@@ -1,8 +1,8 @@
-import React, { forwardRef, useMemo } from "react";
-import { View } from "react-native";
+import React, { useMemo } from "react";
+import { Text, View } from "react-native";
 import { defaultMentionTextStyle, parseValue } from "../utils";
-import { Text } from "../../ui/text";
-import { MentionInputProps, MentionInputRef } from "../types";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
+import AppColors from "@/src/constants/colors";
 
 export const regexWeb =
   /(((H|h)(T|t)(T|t)(P|p)(S|s)|(F|f)(T|t)(P|p)|(H|h)(T|t)(T|t)(P|p)):\/\/)?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g;
@@ -33,13 +33,33 @@ const MentionText = ({
   const renderTextByRegex = (text: string, i?: number) => {
     if (ContentRegex[0].test(text)) {
       return (
-        <Text className="text-info-500" key={`substring-${i}`}>
+        <Text
+          key={`substring-${i}`}
+          style={wrapTextStyle(
+            {
+              fontWeight: "500",
+              fontStyle: "italic",
+              color: AppColors.primary,
+            },
+            "2xs"
+          )}
+        >
           {text}
         </Text>
       );
     } else if (ContentRegex[1].test(text)) {
       return (
-        <Text className="text-info-500" key={`substring-${i}`}>
+        <Text
+          key={`substring-${i}`}
+          style={wrapTextStyle(
+            {
+              fontWeight: "500",
+              fontStyle: "italic",
+              color: AppColors.primary,
+            },
+            "2xs"
+          )}
+        >
           {text}
         </Text>
       );
@@ -80,7 +100,11 @@ const MentionText = ({
               </Text>
             );
           }
-          return <Text key={index}>{renderText(text)}</Text>;
+          return (
+            <Text key={index} style={textStyle}>
+              {renderText(text)}
+            </Text>
+          );
         })}
       </Text>
     </View>

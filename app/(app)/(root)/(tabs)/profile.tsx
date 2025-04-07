@@ -6,39 +6,25 @@ import { clearUser } from "@/src/store/user/userSlice";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
-import { Text } from "@/src/components/ui/text";
-import { Heading } from "@/src/components/ui/heading";
 import { Divider } from "@/src/components/ui/divider";
 import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/src/store/store";
 import { useRouter } from "expo-router";
-import { Pressable, ScrollView } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import AppColors from "@/src/constants/colors";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
+import { ScaledSheet } from "react-native-size-matters";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
     <HStack space="md" className="items-center">
       <VStack className="flex-1">
-        <Text
-          className="color-xedi-text"
-          style={wrapTextStyle({ fontWeight: "600" }, "2xs")}
-        >
-          {title}
-        </Text>
-        <Text
-          className="color-xedi-text opacity-80"
-          style={wrapTextStyle({ fontWeight: "400" }, "xs")}
-        >
-          {subtitle}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.subTitle}>{subtitle}</Text>
       </VStack>
       <ChevronRightIcon size={24} color="gray" />
     </HStack>
@@ -47,8 +33,7 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
 
 export default function Profile() {
   const router = useRouter();
-  const { user, coins } = useSelector((state: RootState) => state.auth);
-  const { top } = useSafeAreaInsets();
+  const { coins } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -72,36 +57,10 @@ export default function Profile() {
           bounces={false}
           style={{ backgroundColor: AppColors.background }}
         >
-          {/* <Box className="bg-xedi-background p-4">
-        <HStack
-          space="md"
-          className="items-center justify-between"
-          style={{ paddingTop: top }}
-        >
-          <HStack space="md">
-            <Avatar>
-              <AvatarFallbackText>{user?.name}</AvatarFallbackText>
-            </Avatar>
-            <VStack>
-              <Heading size="lg" className="color-xedi-text">
-                {user?.name}
-              </Heading>
-              <Text className="color-xedi-text">{user?.phone}</Text>
-            </VStack>
-          </HStack>
-          <VStack>
-            <Button>
-              <HStack space="sm">
-                <CoinsIcon size={24} />
-                <Text className="text-white">{coins?.coins || 0}</Text>
-              </HStack>
-            </Button>
-          </VStack>
-        </HStack>
-      </Box> */}
-
           <VStack space="md" className="p-4 flex-1">
-            <Heading size="sm">Tài khoản</Heading>
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
+              Tài khoản
+            </Text>
             <ProfileSection
               title="Thông tin cá nhân"
               subtitle="Quản lý thông tin cá nhân của bạn"
@@ -110,7 +69,7 @@ export default function Profile() {
             <ProfileSection
               title="Địa điểm đã lưu"
               subtitle="Quản lý các địa điểm yêu thích của bạn"
-              onPress={() => router.push("/add-location")}
+              onPress={() => router.push("/location-stored")}
             />
             <ProfileSection
               title={`${coins?.coins || 0} Điểm`}
@@ -119,7 +78,9 @@ export default function Profile() {
             />
             <Divider className="my-2" />
 
-            <Heading size="sm">Tùy chọn</Heading>
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
+              Tùy chọn
+            </Text>
             <ProfileSection
               title="Thông báo"
               subtitle="Quản lý cài đặt thông báo của bạn"
@@ -137,7 +98,9 @@ export default function Profile() {
 
             <Divider className="my-2" />
 
-            <Heading size="sm">Hỗ trợ</Heading>
+            <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
+              Hỗ trợ
+            </Text>
             <ProfileSection
               title="Trung tâm trợ giúp"
               subtitle="Nhận trợ giúp và liên hệ hỗ trợ"
@@ -171,3 +134,15 @@ export default function Profile() {
     </Box>
   );
 }
+
+const styles = ScaledSheet.create({
+  title: {
+    ...wrapTextStyle({ fontWeight: "600" }, "2xs"),
+    color: AppColors.text,
+  },
+  subTitle: {
+    ...wrapTextStyle({ fontWeight: "400" }, "xs"),
+    color: AppColors.text,
+    opacity: 0.8,
+  },
+});

@@ -17,7 +17,7 @@ import { CheckIcon } from "@/src/components/ui/icon";
 import { HStack } from "@/src/components/ui/hstack";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
-import { XEDI_GROUP_INFO } from "@/src/store/fetchServices/fetchServicesSlice";
+import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import {
   IDriverTripRequestStatus,
   IErrorRequest,
@@ -29,7 +29,7 @@ export default function MergeTripRequest() {
   const { id } = useLocalSearchParams();
   const [checked, setChecked] = React.useState<number>(0);
   const queryKey = React.useMemo(
-    () => `${XEDI_GROUP_INFO.TRIP_REQUEST}_${id}`,
+    () => `${XEDI_QUERY_KEY.TRIP_REQUEST}_${id}`,
     [id]
   );
   const driverRequest = useSelector(

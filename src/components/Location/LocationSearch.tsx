@@ -30,6 +30,8 @@ import { Button, ButtonText } from "../ui/button";
 import { router } from "expo-router";
 import { HStack } from "../ui/hstack";
 import ShareIcon from "../icons/ShareIcon";
+import AppColors from "@/src/constants/colors";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 interface LocationSearchProps {
   defaultLocation?: InputLocation;
@@ -89,7 +91,7 @@ export default function LocationSearch({
       borderColor: interpolateColor(
         startLocationAnim.value,
         [0, 1],
-        ["rgba(255, 255, 255, 0)", "rgba(52, 170, 246, 1)"]
+        ["rgba(255, 255, 255, 0)", AppColors.primary]
       ),
     };
   });
@@ -104,7 +106,7 @@ export default function LocationSearch({
       borderColor: interpolateColor(
         endLocationAnim.value,
         [0, 1],
-        ["rgba(255, 255, 255, 0)", "rgba(52, 170, 246, 1)"]
+        ["rgba(255, 255, 255, 0)", AppColors.primary]
       ),
     };
   });
@@ -195,12 +197,12 @@ export default function LocationSearch({
       <ScrollView keyboardShouldPersistTaps="handled">
         <HStack space="md" className="items-center">
           <Box
-            className="bg-gray-100 flex-1"
+            className="bg-xedi-primary/[.08] flex-1"
             style={{ borderRadius: BORDER_RADIUS }}
           >
             <Animated.View style={[styles.inputContainer, startLocationStyle]}>
               <Input className="h-[55px] border-0 px-2">
-                <HiIcon size={24} color="#000000" />
+                <HiIcon size={24} color={AppColors.black} />
                 <InputField
                   ref={startLocationRef as never}
                   placeholder="Điểm đón"
@@ -210,6 +212,7 @@ export default function LocationSearch({
                     startLocationAnim.value = withTiming(1, { duration: 50 });
                     onStartLocationFocus?.();
                   }}
+                  style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
                     (startLocationAnim.value = withTiming(0, { duration: 50 }))
                   }
@@ -222,7 +225,7 @@ export default function LocationSearch({
                         onClearStartLocation?.();
                       }}
                     >
-                      <CloseIcon size={24} color="#000000" />
+                      <CloseIcon size={24} color={AppColors.black} />
                     </Pressable>
                   )}
                 </Box>
@@ -230,7 +233,7 @@ export default function LocationSearch({
             </Animated.View>
             <Animated.View style={[styles.inputContainer, endLocationStyle]}>
               <Input className="h-[55px] border-0 px-2">
-                <LocationIcon size={24} color="#f56505" />
+                <LocationIcon size={24} color={AppColors.warning} />
                 <InputField
                   ref={endLocationRef as never}
                   placeholder="Điểm đến"
@@ -240,6 +243,7 @@ export default function LocationSearch({
                     endLocationAnim.value = withTiming(1, { duration: 50 });
                     onEndLocationFocus?.();
                   }}
+                  style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
                     (endLocationAnim.value = withTiming(0, { duration: 50 }))
                   }

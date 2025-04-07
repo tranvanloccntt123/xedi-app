@@ -79,6 +79,14 @@ const postFormSlice = createSlice({
         routes: [],
       },
     }),
+    resetPostWithStartLocation: (_, action: PayloadAction<InputLocation>) => ({
+      ...initialState,
+      tripRequest: {
+        inputSelectionType: "end-location",
+        routes: [],
+        startLocation: action.payload,
+      },
+    }),
     setTripRequestInputSelectionType: (
       state,
       action: PayloadAction<SelectLocationType | undefined>
@@ -202,6 +210,7 @@ export const {
   setFixedRoutePrice,
   setFixedRouteStartLocation,
   setFixedRouteTotalSeat,
+  resetPostWithStartLocation,
 } = postFormSlice.actions;
 
 export default postFormSlice.reducer;

@@ -196,7 +196,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
                 "md"
               )}
             >
-              {data.comments?.[0]?.count || 0}
+              {data?.comments?.[0]?.count || 0}
             </Text>
           </Button>
         </HStack>

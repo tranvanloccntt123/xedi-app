@@ -16,9 +16,14 @@ import useQuery from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { xediSupabase } from "@/src/lib/supabase";
 import ConfirmationModal from "@/src/components/Location/ConfirmationModal";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/store/store";
+import { router } from "expo-router";
 
 export default function AddLocation() {
   useLocation({ isWatchLocation: true });
+
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const { refetch, data } = useQuery({
     queryKey: XEDI_QUERY_KEY.YOUR_LOCATIONS_STORED,
@@ -71,7 +76,22 @@ export default function AddLocation() {
         location={location}
         showConfirmationModal={showConfirmationModal}
         setShowConfirmationModal={setShowConfirmationModal}
-        onConfirm={refetch}
+        onConfirm={() => {
+          xediSupabase.tables.userLocationStore
+            .add([
+              {
+                user_id: user.id,
+                location: location,
+              },
+            ])
+            .then((response) => {
+              const { data } = response;
+              if (!!data) {
+                refetch?.();
+                router.back();
+              }
+            });
+        }}
       />
     </Box>
   );

@@ -16,6 +16,10 @@ class XediSupabase {
   async getUser() {
     return supabase.auth.getUser();
   }
+
+  async getBucket() {
+    return supabase.storage.from("popular");
+  }
 }
 
 export const xediSupabase = new XediSupabase();

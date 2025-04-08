@@ -238,6 +238,16 @@ interface IComment {
   feed?: INewsFeedItem;
 }
 
+interface IFeedMediaSource {
+  path: string;
+  feed_id: number;
+}
+
+interface IFeedMedia extends IFeedMediaSource {
+  id: number;
+  created_at: string;
+}
+
 type CustomerInFixedRouteType = "TripRequest" | "FixedRouteOrder";
 
 type CustomerInFixedRoute = {

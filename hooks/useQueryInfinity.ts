@@ -13,6 +13,7 @@ const useQueryInfinity = <TData = any, TPage = any>(
   query: InfinityQuery<TData, TPage>
 ) => {
   const [data, setData] = React.useState<TData[]>([]);
+  const hashId = React.useRef<Set<string | number>>(new Set());
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = React.useState<boolean>(false);
 
@@ -25,7 +26,16 @@ const useQueryInfinity = <TData = any, TPage = any>(
       const _data = await query.queryFn(pageNum.current);
       if (_data.length) {
         const newData = params?.isRefresh ? [] : data.concat();
-        newData.push(..._data);
+        if (params?.isRefresh) {
+          hashId.current = new Set();
+        }
+        _data.forEach((item: any) => {
+          if (hashId.current.has(item.id)) {
+            return;
+          }
+          newData.push(item);
+          hashId.current.add(item.id);
+        });
         pageNum.current = query.getLastPageNumber(_data);
         setData(newData);
       }
@@ -43,6 +53,7 @@ const useQueryInfinity = <TData = any, TPage = any>(
     if (isRefreshing) return;
     setIsRefreshing(true);
     pageNum.current = query.initPage;
+    hashId.current = new Set();
     setTimeout(async () => {
       await fetch({ isRefresh: true });
       await query.refreshCallback?.();
@@ -57,7 +68,15 @@ const useQueryInfinity = <TData = any, TPage = any>(
     isRefreshing,
     refresh,
     push(item: TData, index: number) {
-      setData([...data.slice(0, index), item, ...data.slice(index)]);
+      if (hashId.current.has((item as any).id)) {
+        return;
+      }
+      if (data.length) {
+        setData([...data.slice(0, index), item, ...data.slice(index)]);
+      } else {
+        setData([item]);
+      }
+      hashId.current.add((item as any).id);
     },
   };
 };

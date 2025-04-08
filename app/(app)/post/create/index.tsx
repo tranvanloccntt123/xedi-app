@@ -26,6 +26,7 @@ import ErrorModal from "@/src/components/ErrorModal";
 import CreatePostButton from "@/src/components/Feed/CreatePost";
 import ImageIcon from "@/src/components/icons/ImageIcon";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -61,7 +62,10 @@ const CustomerExpand: React.FC<object> = () => {
           <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
             <HiIcon size={18} color="#000000" />
           </Box>
-          <ButtonText className="text-black">
+          <ButtonText
+            className="color-xedi-text"
+            style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+          >
             {startLocation
               ? truncateText(startLocation.display_name, 30)
               : "Thêm điểm đón"}
@@ -79,7 +83,10 @@ const CustomerExpand: React.FC<object> = () => {
           <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
             <FixedRouteIcon size={18} color="#000000" />
           </Box>
-          <ButtonText className="text-black">
+          <ButtonText
+            className="color-xedi-text"
+            style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+          >
             {endLocation
               ? truncateText(endLocation.display_name, 30)
               : "Thêm điểm đến"}
@@ -210,7 +217,12 @@ export default function CreatePost() {
                 <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
                   <ImageIcon size={18} color="#000000" />
                 </Box>
-                <ButtonText className="text-black">Thêm ảnh</ButtonText>
+                <ButtonText
+                  className="color-xedi-text"
+                  style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+                >
+                  Thêm ảnh
+                </ButtonText>
               </HStack>
             </Button>
           </VStack>

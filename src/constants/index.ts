@@ -15,6 +15,7 @@ export const Tables = {
   MERGE_TRIP_REQUESTS: "merge_trip_requests",
   COMMENTS: "comments",
   USER_LOCATION_STORE: "users_location_store",
+  FEED_MEDIA: "feed_media",
 };
 
 export const CameraImageSize = {

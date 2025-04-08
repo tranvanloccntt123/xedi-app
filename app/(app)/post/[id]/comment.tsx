@@ -238,6 +238,7 @@ export default function Comment() {
         <CommentInput
           ref={commentRef}
           onSendComment={(comment) => {
+            console.log("SENDED");
             listRef.current?.push?.(comment, 0);
             if (data) {
               dispatch(

@@ -4,6 +4,8 @@ import { Button, ButtonText } from "../ui/button";
 import moment from "moment";
 import { Platform } from "react-native";
 import { HStack } from "../ui/hstack";
+import { FontWeight } from "@shopify/react-native-skia";
+import { wrapTextStyle } from "@/src/theme/AppStyles";
 
 const DateTime: React.FC<XediDatePicker> = ({
   date,
@@ -43,12 +45,13 @@ const DateTime: React.FC<XediDatePicker> = ({
           onPress={() => setTimeModalVisible(true)}
         >
           <ButtonText
-            className={`text-start font-normal ${
+            style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+            className={`text-start color-xedi-text ${
               isDisabled
-                ? "text-typography-300"
+                ? "opacity-50"
                 : timeValue
-                ? "text-black"
-                : "text-typography-300"
+                ? "opacity-100"
+                : "opacity-50"
             }`}
           >
             {timeValue ? timeValue : "00:00"}
@@ -61,12 +64,13 @@ const DateTime: React.FC<XediDatePicker> = ({
           onPress={() => setDateModalVisible(true)}
         >
           <ButtonText
-            className={`text-start font-normal ${
+            style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+            className={`text-start color-xedi-text ${
               isDisabled
-                ? "text-typography-300"
-                : value
-                ? "text-black"
-                : "text-typography-300"
+                ? "opacity-50"
+                : timeValue
+                ? "opacity-100"
+                : "opacity-50"
             }`}
           >
             {value ? value : placeholder || "Choose your date"}

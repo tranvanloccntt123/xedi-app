@@ -24,11 +24,13 @@ const ConfirmationModal: React.FC<{
   showConfirmationModal: boolean;
   setShowConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>;
   onConfirm?: () => any;
+  modalTitle?: string;
 }> = ({
   showConfirmationModal,
   setShowConfirmationModal,
   location,
   onConfirm,
+  modalTitle,
 }) => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { title, subTitle } = React.useMemo(
@@ -49,7 +51,9 @@ const ConfirmationModal: React.FC<{
       <ModalContent className="max-w-xl bg-xedi-background">
         <ModalBody className="mb-5">
           <Box className="py-[16px]">
-            <Text style={styles.title}>Xác nhận thêm địa chỉ</Text>
+            <Text style={styles.title}>
+              {modalTitle || "Xác nhận thêm địa chỉ"}
+            </Text>
           </Box>
           <Divider />
           <VStack className="py-[16px]">
@@ -78,19 +82,7 @@ const ConfirmationModal: React.FC<{
           <Button
             onPress={() => {
               setShowConfirmationModal(false);
-              xediSupabase.tables.userLocationStore
-                .add([
-                  {
-                    user_id: user.id,
-                    location: location,
-                  },
-                ])
-                .then((response) => {
-                  const { data } = response;
-                  if (!!data) {
-                    onConfirm?.();
-                  }
-                });
+              onConfirm?.();
             }}
             action="default"
             className="flex-grow"

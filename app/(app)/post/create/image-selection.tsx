@@ -14,6 +14,36 @@ import {
   useCameraDevice,
   useCameraPermission,
 } from "react-native-vision-camera";
+import { Asset, getAssetsAsync, usePermissions } from "expo-media-library";
+
+const ImageThumbnail: React.FC<object> = () => {
+  const [image, setImage] = React.useState<Asset>();
+  const [permissionResponse, requestPermission] = usePermissions();
+
+  React.useEffect(() => {
+    const getThumbnail = async () => {
+      if (permissionResponse.status !== "granted") {
+        await requestPermission();
+      }
+    };
+
+    getThumbnail();
+  }, []);
+
+  React.useEffect(() => {
+    if (permissionResponse.status === "granted") {
+      getAssetsAsync()
+        .then((page) => {
+          console.log(page.assets);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  }, [permissionResponse])
+
+  return <Box></Box>;
+};
 
 export default function ImageSelection() {
   const insets = useSafeAreaInsets();
@@ -51,19 +81,19 @@ export default function ImageSelection() {
         }}
       >
         {router.canGoBack() && (
-          <Box
-            className="absolute left-[16px] bg-xedi-background/[0.8] rounded-full"
+          <Button
+            action="default"
+            className="absolute left-[16px] bg-xedi-background/[0.8] rounded-full p-0 justify-center items-center"
             style={{
               top: insets.top,
               zIndex: 2,
               width: scale(24),
               height: scale(24),
             }}
+            onPress={router.back}
           >
-            <Button action="default" className="flex-1" onPress={router.back}>
-              <ChevronLeftIcon size={scale(18)} color={AppColors.text} />
-            </Button>
-          </Box>
+            <ChevronLeftIcon size={scale(18)} color={AppColors.text} />
+          </Button>
         )}
         {!!device && (
           <Camera
@@ -77,6 +107,7 @@ export default function ImageSelection() {
           />
         )}
       </Box>
+      <ImageThumbnail />
       <Center
         className="w-full absolute left-0 right-0"
         style={{ bottom: insets.bottom + scale(16) }}

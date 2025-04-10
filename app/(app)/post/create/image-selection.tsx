@@ -18,18 +18,21 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import AppStyles from "@/src/theme/AppStyles";
+import AppStyles, { wrapTextStyle } from "@/src/theme/AppStyles";
 import AppColors from "@/src/constants/colors";
 import Header from "@/src/components/Header";
 import { HStack } from "@/src/components/ui/hstack";
-import { Button } from "@/src/components/ui/button";
+import { Button, ButtonText } from "@/src/components/ui/button";
 import CameraShutterIcon from "@/src/components/icons/CameraShutterIcon";
 import { router } from "expo-router";
+import { useDispatch } from "react-redux";
+import { addImage } from "@/src/store/postForm/postFormSlice";
 
 const NUMS = 3;
 
 export default function ImageSelection() {
   const { width } = useWindowDimensions();
+  const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const itemWidth = React.useMemo(() => width / NUMS - 0.5, [width]);
   const [images, setImages] = React.useState<Asset[]>([]);
@@ -60,6 +63,9 @@ export default function ImageSelection() {
         endCursor.current = page.endCursor;
         hasNextPage.current = page.hasNextPage;
         setImages([...images, ...page.assets]);
+        if (!imagePreview) {
+          setImagePreview(page.assets[0]);
+        }
         isLoading.current = false;
       })
       .catch(() => {
@@ -115,7 +121,27 @@ export default function ImageSelection() {
           style={[styles.navHeader, { paddingTop: insets.top }]}
           className="px-[16px]"
         >
-          <Header title="Chọn ảnh" />
+          <Header
+            title="Chọn ảnh"
+            rightComponent={
+              !!imagePreview && (
+                <Button
+                  action="default"
+                  onPress={() => {
+                    dispatch(addImage(imagePreview.uri));
+                    router.back();
+                  }}
+                >
+                  <ButtonText
+                    className="color-xedi-primary"
+                    style={wrapTextStyle({ fontWeight: "500" }, "sm")}
+                  >
+                    Tiếp
+                  </ButtonText>
+                </Button>
+              )
+            }
+          />
         </Box>
         <Animated.View
           style={[styles.previewContainer, { top: insets.top }, previewStyle]}

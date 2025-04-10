@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Pressable } from "react-native";
+import { Image, Pressable, ScrollView, TouchableOpacity } from "react-native";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";
 import { Heading } from "@/src/components/ui/heading";
@@ -20,6 +20,7 @@ import {
   setContent,
   resetPost,
   setTripRequestDepartureTime,
+  removeImage,
 } from "@/src/store/postForm/postFormSlice";
 import DateTime from "@/src/components/DateTime";
 import ErrorModal from "@/src/components/ErrorModal";
@@ -27,6 +28,15 @@ import CreatePostButton from "@/src/components/Feed/CreatePost";
 import ImageIcon from "@/src/components/icons/ImageIcon";
 import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
+import { scale, ScaledSheet } from "react-native-size-matters";
+import TrashIcon from "@/src/components/icons/TrashIcon";
+import AppColors from "@/src/constants/colors";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -97,10 +107,29 @@ const CustomerExpand: React.FC<object> = () => {
   );
 };
 
+const ImageThumbnail: React.FC<{ uri: string; index: number }> = ({
+  uri,
+  index,
+}) => {
+  const dispatch = useDispatch();
+  const handlerDelete = () => {
+    dispatch(removeImage(index));
+  };
+
+  return (
+    <Animated.View>
+      <TouchableOpacity onPress={handlerDelete} style={styles.removeBtn}>
+        <TrashIcon size={scale(14)} color={AppColors.error} />
+      </TouchableOpacity>
+      <Image source={{ uri }} style={styles.thumbnail} />
+    </Animated.View>
+  );
+};
+
 export default function CreatePost() {
   const dispatch = useDispatch();
   //TODO
-  const { content, fixedRoutes } = useSelector(
+  const { content, fixedRoutes, images } = useSelector(
     (state: RootState) => state.postForm
   );
 
@@ -116,6 +145,7 @@ export default function CreatePost() {
   }, []);
 
   const router = useRouter();
+
   const ref = useRef(null);
 
   return (
@@ -138,35 +168,50 @@ export default function CreatePost() {
             />
           </HStack>
           <VStack space="md" className="flex-1">
-            <VStack
-              space="md"
-              className="bg-white flex-1"
-              style={{ borderRadius: ROUNDED }}
-            >
+            <Box className="flex-1 bg-xedi-primary/[.2] rounded-2xl">
               <Pressable
                 style={{ flex: 1 }}
                 onPress={() => ref.current?.focus()}
               >
-                <MentionInput
-                  inputRef={ref}
-                  value={content}
-                  onChange={(text) => {
-                    dispatch(setContent(text));
-                  }}
-                  containerStyle={{
-                    flex: 1,
-                  }}
-                  style={{
-                    height: "100%",
-                    borderWidth: 0,
-                    borderColor: "white",
-                    borderRadius: ROUNDED,
-                    padding: ROUNDED,
-                  }}
-                  textAlignVertical="top"
-                />
+                <ScrollView style={{ flex: 1 }}>
+                  <MentionInput
+                    inputRef={ref}
+                    value={content}
+                    onChange={(text) => {
+                      dispatch(setContent(text));
+                    }}
+                    containerStyle={{
+                      flex: 1,
+                    }}
+                    style={{
+                      height: "100%",
+                      borderRadius: ROUNDED,
+                      padding: ROUNDED,
+                    }}
+                    textAlignVertical="top"
+                  />
+                </ScrollView>
               </Pressable>
-            </VStack>
+            </Box>
+            {!!images?.length && (
+              <Box>
+                <ScrollView
+                  bounces={false}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <HStack space="xs">
+                    {images.map((image, index) => (
+                      <ImageThumbnail
+                        key={index.toString()}
+                        uri={image}
+                        index={index}
+                      />
+                    ))}
+                  </HStack>
+                </ScrollView>
+              </Box>
+            )}
             <OnlyDriver>
               {!!fixedRoutes.startLocation && !!fixedRoutes.endLocation && (
                 <Box className="w-full">
@@ -237,3 +282,28 @@ export default function CreatePost() {
     </Box>
   );
 }
+
+const styles = ScaledSheet.create({
+  thumbnail: {
+    width: "100@s",
+    height: "100@s",
+    resizeMode: "cover",
+  },
+  removeBtn: {
+    position: "absolute",
+    right: "2@s",
+    top: "2@s",
+    width: "30@s",
+    height: "30@s",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2,
+    backgroundColor: AppColors.card,
+    borderRadius: "30@s",
+    elevation: 2,
+    shadowColor: AppColors.text,
+    shadowOffset: { width: -2, height: -2 },
+    shadowOpacity: 0.5,
+    shadowRadius: "2@s",
+  },
+});

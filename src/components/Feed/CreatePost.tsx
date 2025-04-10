@@ -3,6 +3,7 @@ import { Button, ButtonText } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { xediSupabase } from "../../lib/supabase";
+import { generateUUID } from "@/src/utils/uuid";
 
 const CreatePostButton: React.FC<{
   onError: (message: string) => any;
@@ -10,7 +11,7 @@ const CreatePostButton: React.FC<{
 }> = ({ onCreatePostSuccess, onError }) => {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
-  const { content, tripRequest, fixedRoutes } = useSelector(
+  const { content, tripRequest, fixedRoutes, images } = useSelector(
     (state: RootState) => state.postForm
   );
 
@@ -55,6 +56,12 @@ const CreatePostButton: React.FC<{
       );
       onCreatePostSuccess();
     }
+    if (!!images.length) {
+      for (const path of images) {
+        const name = `public/${generateUUID()}.png`;
+        // await xediSupabase.getBucket().upload(path,);
+      }
+    }
   };
 
   const handlerDriverPostWithFixedRoute = async () => {
@@ -80,19 +87,17 @@ const CreatePostButton: React.FC<{
       onError("Bạn cần thêm điểm giá cho chuyến đi");
       return;
     }
-    const { data: fixedRouteData } = await xediSupabase.tables.fixedRoutes.add(
-      [
-        {
-          startLocation: fixedRoutes.startLocation,
-          endLocation: fixedRoutes.endLocation,
-          user_id: user.id,
-          departureTime: fixedRoutes.departureTime,
-          totalSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
-          availableSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
-          price: parseFloat(`${fixedRoutes.price || 0}`),
-        },
-      ]
-    );
+    const { data: fixedRouteData } = await xediSupabase.tables.fixedRoutes.add([
+      {
+        startLocation: fixedRoutes.startLocation,
+        endLocation: fixedRoutes.endLocation,
+        user_id: user.id,
+        departureTime: fixedRoutes.departureTime,
+        totalSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
+        availableSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
+        price: parseFloat(`${fixedRoutes.price || 0}`),
+      },
+    ]);
     const { data } = await xediSupabase.tables.feed.addWithUserId([
       { content },
     ]);

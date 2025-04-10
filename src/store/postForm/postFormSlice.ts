@@ -211,6 +211,8 @@ export const {
   setFixedRouteStartLocation,
   setFixedRouteTotalSeat,
   resetPostWithStartLocation,
+  addImage,
+  removeImage,
 } = postFormSlice.actions;
 
 export default postFormSlice.reducer;

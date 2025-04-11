@@ -31,12 +31,7 @@ import { wrapTextStyle } from "@/src/theme/AppStyles";
 import { scale, ScaledSheet } from "react-native-size-matters";
 import TrashIcon from "@/src/components/icons/TrashIcon";
 import AppColors from "@/src/constants/colors";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -204,7 +199,7 @@ export default function CreatePost() {
                     {images.map((image, index) => (
                       <ImageThumbnail
                         key={index.toString()}
-                        uri={image}
+                        uri={`data:image/jpeg;base64,${image}`}
                         index={index}
                       />
                     ))}
@@ -246,7 +241,10 @@ export default function CreatePost() {
                   <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
                     <FixedRouteIcon size={18} color="#000000" />
                   </Box>
-                  <ButtonText className="text-black">
+                  <ButtonText
+                    className="color-xedi-text"
+                    style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+                  >
                     Tạo tuyến cố định
                   </ButtonText>
                 </HStack>

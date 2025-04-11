@@ -5,6 +5,16 @@ import { RootState } from "../../store/store";
 import { xediSupabase } from "../../lib/supabase";
 import { generateUUID } from "@/src/utils/uuid";
 
+const base64ToUint8Array = (base64: string) => {
+  const binaryString = atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+};
+
 const CreatePostButton: React.FC<{
   onError: (message: string) => any;
   onCreatePostSuccess: () => any;
@@ -14,6 +24,30 @@ const CreatePostButton: React.FC<{
   const { content, tripRequest, fixedRoutes, images } = useSelector(
     (state: RootState) => state.postForm
   );
+
+  const uploadImage = async (newFeed: INewsFeedItem) => {
+    try {
+      if (!!images.length) {
+        for (const path of images) {
+          const name = `${generateUUID()}.jpg`;
+          await xediSupabase
+            .getBucket()
+            .upload(name, base64ToUint8Array(path), {
+              contentType: "image/jpeg",
+            });
+          await xediSupabase.tables.feedMedia.addWithUserId([
+            {
+              path: name,
+              feed_id: newFeed.id,
+              content_type: "image",
+            } as IFeedMediaSource,
+          ]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handlerCustomerPostWithTripRequest = async () => {
     if (!tripRequest.departureTime) {
@@ -54,13 +88,8 @@ const CreatePostButton: React.FC<{
           feed_id: data[0].id,
         })
       );
+      await uploadImage(data[0]);
       onCreatePostSuccess();
-    }
-    if (!!images.length) {
-      for (const path of images) {
-        const name = `public/${generateUUID()}.png`;
-        // await xediSupabase.getBucket().upload(path,);
-      }
     }
   };
 
@@ -107,6 +136,7 @@ const CreatePostButton: React.FC<{
           feed_id: data[0].id,
         })
       );
+      await uploadImage(data[0]);
       onCreatePostSuccess();
     }
   };
@@ -123,6 +153,7 @@ const CreatePostButton: React.FC<{
         { content },
       ]);
       if (data?.[0]) {
+        await uploadImage(data[0]);
         onCreatePostSuccess();
       }
     }
@@ -140,8 +171,8 @@ const CreatePostButton: React.FC<{
     const { data } = await xediSupabase.tables.feed.addWithUserId([
       { content },
     ]);
-    onCreatePostSuccess();
     if (data?.[0]) {
+      await uploadImage(data[0]);
       onCreatePostSuccess();
     }
   };

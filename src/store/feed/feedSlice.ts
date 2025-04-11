@@ -3,7 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 export interface FeedState {
   items: INewsFeedItem[];
   currentNewsFeedItem: INewsFeedItem | null;
-  deletedItems: string[]; // New state to store deleted item IDs
+  deletedItems: number[]; // New state to store deleted item IDs
 }
 
 const initialState: FeedState = {
@@ -30,7 +30,7 @@ const feedSlice = createSlice({
         state.items[index] = action.payload;
       }
     },
-    deleteFeedItem: (state, action: PayloadAction<string>) => {
+    deleteFeedItem: (state, action: PayloadAction<number>) => {
       state.deletedItems.push(action.payload); // Mark the item as deleted
       // We'll keep the item in the items array for animation purposes
     },

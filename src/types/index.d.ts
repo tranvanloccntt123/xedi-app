@@ -104,11 +104,12 @@ interface IVehicle {
 }
 
 interface INewsFeedItem {
-  id: string;
+  id: number;
   users: IUser;
   created_at: Date;
   fixed_routes: IFixedRoute[];
   trip_requests: ITripRequest[];
+  feed_media: IFeedMedia[];
   content: string;
   comments: [{ count: number }];
 }
@@ -241,6 +242,8 @@ interface IComment {
 interface IFeedMediaSource {
   path: string;
   feed_id: number;
+  user_id: string;
+  content_type: "image" | "video";
 }
 
 interface IFeedMedia extends IFeedMediaSource {

@@ -5,7 +5,13 @@ import { Box } from "../ui/box";
 import { VStack } from "../ui/vstack";
 import { HStack } from "../ui/hstack";
 import FixedRouteItem from "../FixedRoute/FixedRouteItem";
-import { Platform, Pressable, ScrollView, Text } from "react-native";
+import {
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  useWindowDimensions,
+} from "react-native";
 import MoreIcon from "../icons/MoreIcon";
 import { BottomSheetTrigger } from "../ui/bottom-sheet";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,15 +30,36 @@ import { useDataInfo } from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button } from "../ui/button";
 import ChatIcon from "../icons/ChatIcon";
-import { PartTypes } from "@/src/constants";
+import { CameraImageSize, PartTypes } from "@/src/constants";
 import AppColors from "@/src/constants/colors";
 import { scale } from "react-native-size-matters";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 import MentionText from "../ControlledMentions/components/mention-text";
+import { Image } from "expo-image";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
 }
+
+const NewFeedMedia: React.FC<{ media: IFeedMedia }> = ({ media }) => {
+  const { width } = useWindowDimensions();
+  const height = React.useMemo(
+    () => width * (CameraImageSize.height / CameraImageSize.width),
+    [width]
+  );
+  return (
+    <Box>
+      <Image
+        source={{
+          uri: `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/popular/${media.path}`,
+        }}
+        style={{ width, height }}
+        contentFit="contain"
+        cachePolicy="memory-disk"
+      />
+    </Box>
+  );
+};
 
 const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
   const dispatch = useDispatch();
@@ -71,35 +98,40 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
     <Animated.View style={animatedStyle}>
       <VStack space="sm" className="mb-4 bg-xedi-white">
         <Box className="p-4 rounded-lg">
-          <VStack>
-            <HStack className="justify-between items-center mb-2">
-              <HStack space="md" className="justify-center items-center">
-                <Avatar size="sm">
-                  <AvatarFallbackText>{data?.users?.name}</AvatarFallbackText>
-                </Avatar>
-                <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
-                  {data?.users?.name}
-                </Text>
+          <VStack space="md">
+            <VStack space="xs">
+              <HStack className="justify-between items-center">
+                <HStack space="md" className="justify-center items-center">
+                  <Avatar size="sm">
+                    <AvatarFallbackText>{data?.users?.name}</AvatarFallbackText>
+                  </Avatar>
+                  <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+                    {data?.users?.name}
+                  </Text>
+                </HStack>
+                <BottomSheetTrigger onPress={handleMoreClick}>
+                  <MoreIcon color={AppColors.text} size={scale(20)} />
+                </BottomSheetTrigger>
               </HStack>
-              <BottomSheetTrigger onPress={handleMoreClick}>
-                <MoreIcon color={AppColors.text} size={scale(20)} />
-              </BottomSheetTrigger>
-            </HStack>
-            <Text
-              style={wrapTextStyle(
-                { fontWeight: "500", color: AppColors.placeholder },
-                "xs"
-              )}
-            >
-              {moment(data?.created_at).fromNow()}
-            </Text>
+              <Text
+                style={wrapTextStyle(
+                  { fontWeight: "500", color: AppColors.placeholder },
+                  "xs"
+                )}
+              >
+                {moment(data?.created_at).fromNow()}
+              </Text>
+            </VStack>
             <MentionText
               value={data?.content || ""}
               partTypes={PartTypes as any}
-              textStyle={wrapTextStyle({ fontWeight: "500" }, "2xs")}
+              textStyle={wrapTextStyle({ fontWeight: "500" }, "sm")}
             />
           </VStack>
         </Box>
+        {!!item.feed_media.length && (
+          <NewFeedMedia media={item.feed_media[0]} />
+        )}
         {!!data?.fixed_routes?.length &&
           (data.fixed_routes.length === 1 ? (
             <Box className="mb-4">

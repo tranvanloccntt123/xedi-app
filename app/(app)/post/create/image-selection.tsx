@@ -1,7 +1,11 @@
 import { Box } from "@/src/components/ui/box";
 import React from "react";
 import {
+  Alert,
   Image,
+  Linking,
+  PermissionsAndroid,
+  Platform,
   StatusBar,
   TouchableOpacity,
   useWindowDimensions,
@@ -27,11 +31,40 @@ import CameraShutterIcon from "@/src/components/icons/CameraShutterIcon";
 import { router } from "expo-router";
 import { useDispatch } from "react-redux";
 import { addImage } from "@/src/store/postForm/postFormSlice";
+import { CameraImageSize } from "@/src/constants";
+import * as ImageManipulator from "expo-image-manipulator";
 
 const NUMS = 3;
 
+const requestAndroidPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      {
+        title: "Gallery Access Permission",
+        message: "This app needs access to your gallery to select images.",
+        buttonPositive: "OK",
+        buttonNegative: "Cancel",
+      }
+    );
+
+    if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+      Linking.openSettings();
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.warn(err);
+    return false;
+  }
+};
+
 export default function ImageSelection() {
   const { width } = useWindowDimensions();
+  const height = React.useMemo(
+    () => width * (CameraImageSize.height / CameraImageSize.width),
+    [width]
+  );
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
   const itemWidth = React.useMemo(() => width / NUMS - 0.5, [width]);
@@ -44,13 +77,14 @@ export default function ImageSelection() {
   const offsetY = useSharedValue(0);
 
   React.useEffect(() => {
-    const getThumbnail = async () => {
-      if (permissionResponse?.status !== "granted") {
-        await requestPermission();
+    if (!!permissionResponse && permissionResponse?.status !== "granted") {
+      if (Platform.OS === "ios") {
+        requestPermission();
       }
-    };
-
-    getThumbnail();
+      if (Platform.OS === "android") {
+        requestAndroidPermission();
+      }
+    }
   }, []);
 
   const fetchAssets = async () => {
@@ -127,8 +161,21 @@ export default function ImageSelection() {
               !!imagePreview && (
                 <Button
                   action="default"
-                  onPress={() => {
-                    dispatch(addImage(imagePreview.uri));
+                  onPress={async () => {
+                    const image =
+                      await ImageManipulator.ImageManipulator.manipulate(
+                        imagePreview.uri
+                      )
+                        .resize({
+                          width:
+                            imagePreview.width > 500 ? 500 : imagePreview.width,
+                        })
+                        .renderAsync();
+                    const result = await image.saveAsync({
+                      format: ImageManipulator.SaveFormat.JPEG,
+                      base64: true
+                    });
+                    dispatch(addImage(result.base64));
                     router.back();
                   }}
                 >
@@ -144,7 +191,11 @@ export default function ImageSelection() {
           />
         </Box>
         <Animated.View
-          style={[styles.previewContainer, { top: insets.top }, previewStyle]}
+          style={[
+            styles.previewContainer,
+            { top: insets.top, height },
+            previewStyle,
+          ]}
         >
           {!!imagePreview && (
             <Image
@@ -159,7 +210,7 @@ export default function ImageSelection() {
           keyExtractor={(item, index) => index.toString()}
           ListHeaderComponent={
             <Box>
-              <Box style={styles.listHeader} />
+              <Box style={{ height }} />
               <HStack className="items-center justify-between">
                 <Button
                   onPress={() => router.replace("/post/create/camera")}
@@ -187,9 +238,7 @@ const styles = ScaledSheet.create({
     flex: 1,
     resizeMode: "cover",
   },
-  listHeader: {
-    height: "400@vs",
-  },
+  listHeader: {},
   navHeader: {
     position: "absolute",
     left: 0,
@@ -200,10 +249,10 @@ const styles = ScaledSheet.create({
   },
   previewContainer: {
     width: "100%",
-    height: "400@vs",
     position: "absolute",
     zIndex: 2,
     backgroundColor: AppColors.background,
+    padding: "15@s",
   },
   cameraBtn: {
     width: "30@s",

@@ -47,6 +47,7 @@ const NewFeedMedia: React.FC<{ media: IFeedMedia }> = ({ media }) => {
     () => width * (CameraImageSize.height / CameraImageSize.width),
     [width]
   );
+
   return (
     <Box>
       <Image

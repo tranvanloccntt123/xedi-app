@@ -285,7 +285,7 @@ const styles = ScaledSheet.create({
   thumbnail: {
     width: "100@s",
     height: "100@s",
-    resizeMode: "cover",
+    resizeMode: 'contain',
   },
   removeBtn: {
     position: "absolute",

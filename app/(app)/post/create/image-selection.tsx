@@ -33,6 +33,9 @@ import { useDispatch } from "react-redux";
 import { addImage } from "@/src/store/postForm/postFormSlice";
 import { CameraImageSize } from "@/src/constants";
 import * as ImageManipulator from "expo-image-manipulator";
+import ImagePreview, {
+  ImagePreviewMethods,
+} from "@/src/components/ImagePreview";
 
 const NUMS = 3;
 
@@ -147,6 +150,8 @@ export default function ImageSelection() {
     []
   );
 
+  const previewRef = React.useRef<ImagePreviewMethods>(null);
+
   return (
     <Box className="flex-1 bg-xedi-background">
       <StatusBar translucent={false} backgroundColor={"transparent"} />
@@ -162,20 +167,55 @@ export default function ImageSelection() {
                 <Button
                   action="default"
                   onPress={async () => {
-                    const image =
-                      await ImageManipulator.ImageManipulator.manipulate(
-                        imagePreview.uri
-                      )
-                        .resize({
-                          width:
-                            imagePreview.width > 500 ? 500 : imagePreview.width,
-                        })
-                        .renderAsync();
-                    const result = await image.saveAsync({
-                      format: ImageManipulator.SaveFormat.JPEG,
-                      base64: true
-                    });
-                    dispatch(addImage(result.base64));
+                    const info = previewRef.current?.getImageInfo();
+                    if (info) {
+                      console.log(info);
+                      const scaledWidth = imagePreview.width * info.scale;
+                      const scaledHeight = imagePreview.height * info.scale;
+
+                      // Calculate the top-left corner of the container in the image's coordinate system
+                      const cropX =
+                        (scaledWidth - width) / 2 - info.x / info.scale;
+                      const cropY =
+                        (scaledHeight - height) / 2 - info.y / info.scale;
+
+                      // Ensure crop coordinates are within image bounds
+                      const originX = Math.max(
+                        0,
+                        Math.min(cropX, imagePreview.width - width / info.scale)
+                      );
+                      const originY = Math.max(
+                        0,
+                        Math.min(
+                          cropY,
+                          imagePreview.height - height / info.scale
+                        )
+                      );
+
+                      console.log({
+                        originX: info.x * info.scale,
+                        originY: info.y * info.scale,
+                        width: width / info.scale,
+                        height: height / info.scale,
+                      });
+
+                      const image =
+                        await ImageManipulator.ImageManipulator.manipulate(
+                          imagePreview.uri
+                        )
+                          .crop({
+                            originX: info.x / info.scale,
+                            originY: info.y / info.scale,
+                            width: width / info.scale,
+                            height: height / info.scale,
+                          })
+                          .renderAsync();
+                      const result = await image.saveAsync({
+                        format: ImageManipulator.SaveFormat.JPEG,
+                        base64: true,
+                      });
+                      dispatch(addImage(result.base64));
+                    }
                     router.back();
                   }}
                 >
@@ -198,10 +238,7 @@ export default function ImageSelection() {
           ]}
         >
           {!!imagePreview && (
-            <Image
-              source={{ uri: imagePreview.uri }}
-              style={{ flex: 1, resizeMode: "contain" }}
-            />
+            <ImagePreview ref={previewRef} image={imagePreview} />
           )}
         </Animated.View>
         <Animated.FlatList
@@ -252,7 +289,7 @@ const styles = ScaledSheet.create({
     position: "absolute",
     zIndex: 2,
     backgroundColor: AppColors.background,
-    padding: "15@s",
+    overflow: "hidden",
   },
   cameraBtn: {
     width: "30@s",

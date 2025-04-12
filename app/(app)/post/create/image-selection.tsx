@@ -62,6 +62,54 @@ const requestAndroidPermission = async () => {
   }
 };
 
+/**
+ * Checks if READ_EXTERNAL_STORAGE permission is granted on Android.
+ *
+ * @returns {Promise<boolean>} A promise that resolves to true if permission is granted, false otherwise.
+ */
+const checkStoragePermission = async (): Promise<boolean> => {
+  // Only run on Android
+  if (Platform.OS !== "android") {
+    console.log("Permission check skipped: Not on Android.");
+    // Assume granted or handle non-Android platforms as needed
+    return true;
+  }
+
+  try {
+    // Android 13 (API 33) and above require granular media permissions
+    if (Platform.Version >= 33) {
+      const imagePermission = PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES;
+      const videoPermission = PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO;
+
+      const hasImagePermission = await PermissionsAndroid.check(
+        imagePermission
+      );
+      const hasVideoPermission = await PermissionsAndroid.check(
+        videoPermission
+      );
+
+      const granted = hasImagePermission && hasVideoPermission;
+
+      return granted;
+    } else {
+      // Android 12 (API 32) and below use READ_EXTERNAL_STORAGE
+      const storagePermission =
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+      const hasStoragePermission = await PermissionsAndroid.check(
+        storagePermission
+      );
+
+      console.log(
+        `Android 12 or lower READ_EXTERNAL_STORAGE permission: ${hasStoragePermission}`
+      );
+      return hasStoragePermission;
+    }
+  } catch (err) {
+    console.warn("Error checking media permissions:", err);
+    return false; // Assume not granted if there's an error
+  }
+};
+
 export default function ImageSelection() {
   const { width } = useWindowDimensions();
   const height = React.useMemo(
@@ -79,15 +127,18 @@ export default function ImageSelection() {
   const isLoading = React.useRef<boolean>(false);
   const offsetY = useSharedValue(0);
 
-  React.useEffect(() => {
-    if (!!permissionResponse && permissionResponse?.status !== "granted") {
-      if (Platform.OS === "ios") {
-        requestPermission();
-      }
-      if (Platform.OS === "android") {
+  const permissionHandler = async () => {
+    if (Platform.OS === "android") {
+      const granted = await checkStoragePermission();
+      console.log(granted);
+      if (!granted) {
         requestAndroidPermission();
       }
     }
+  };
+
+  React.useEffect(() => {
+    permissionHandler();
   }, []);
 
   const fetchAssets = async () => {
@@ -169,46 +220,18 @@ export default function ImageSelection() {
                   onPress={async () => {
                     const info = previewRef.current?.getImageInfo();
                     if (info) {
-                      console.log(info);
-                      const scaledWidth = imagePreview.width * info.scale;
-                      const scaledHeight = imagePreview.height * info.scale;
-
-                      // Calculate the top-left corner of the container in the image's coordinate system
-                      const cropX =
-                        (scaledWidth - width) / 2 - info.x / info.scale;
-                      const cropY =
-                        (scaledHeight - height) / 2 - info.y / info.scale;
-
-                      // Ensure crop coordinates are within image bounds
-                      const originX = Math.max(
-                        0,
-                        Math.min(cropX, imagePreview.width - width / info.scale)
-                      );
-                      const originY = Math.max(
-                        0,
-                        Math.min(
-                          cropY,
-                          imagePreview.height - height / info.scale
-                        )
-                      );
-
-                      console.log({
-                        originX: info.x * info.scale,
-                        originY: info.y * info.scale,
+                      const cropInfo = {
+                        originX: Math.abs(info.x / info.scale),
+                        originY: Math.abs(info.y / info.scale),
                         width: width / info.scale,
                         height: height / info.scale,
-                      });
+                      };
 
                       const image =
                         await ImageManipulator.ImageManipulator.manipulate(
                           imagePreview.uri
                         )
-                          .crop({
-                            originX: info.x / info.scale,
-                            originY: info.y / info.scale,
-                            width: width / info.scale,
-                            height: height / info.scale,
-                          })
+                          .crop(cropInfo)
                           .renderAsync();
                       const result = await image.saveAsync({
                         format: ImageManipulator.SaveFormat.JPEG,

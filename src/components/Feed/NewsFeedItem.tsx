@@ -97,143 +97,147 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <VStack space="sm" className="mb-4 bg-xedi-white">
-        <Box className="p-4 rounded-lg">
-          <VStack space="md">
-            <VStack space="xs">
-              <HStack className="justify-between items-center">
-                <HStack space="md" className="justify-center items-center">
-                  <Avatar size="sm">
-                    <AvatarFallbackText>{data?.users?.name}</AvatarFallbackText>
-                  </Avatar>
-                  <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
-                    {data?.users?.name}
-                  </Text>
+      <Pressable onPress={() => router.navigate(`post/${item.id}/detail`)}>
+        <VStack space="sm" className="mb-4 bg-xedi-white">
+          <Box className="p-4 rounded-lg">
+            <VStack space="md">
+              <VStack space="xs">
+                <HStack className="justify-between items-center">
+                  <HStack space="md" className="justify-center items-center">
+                    <Avatar size="sm">
+                      <AvatarFallbackText>
+                        {data?.users?.name}
+                      </AvatarFallbackText>
+                    </Avatar>
+                    <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
+                      {data?.users?.name}
+                    </Text>
+                  </HStack>
+                  <BottomSheetTrigger onPress={handleMoreClick}>
+                    <MoreIcon color={AppColors.text} size={scale(20)} />
+                  </BottomSheetTrigger>
                 </HStack>
-                <BottomSheetTrigger onPress={handleMoreClick}>
-                  <MoreIcon color={AppColors.text} size={scale(20)} />
-                </BottomSheetTrigger>
-              </HStack>
+                <Text
+                  style={wrapTextStyle(
+                    { fontWeight: "500", color: AppColors.placeholder },
+                    "xs"
+                  )}
+                >
+                  {moment(data?.created_at).fromNow()}
+                </Text>
+              </VStack>
+              <MentionText
+                value={data?.content || ""}
+                partTypes={PartTypes as any}
+                textStyle={wrapTextStyle({ fontWeight: "500" }, "sm")}
+              />
+            </VStack>
+          </Box>
+          {!!item.feed_media.length && (
+            <NewFeedMedia media={item.feed_media[0]} />
+          )}
+          {!!data?.fixed_routes?.length &&
+            (data.fixed_routes.length === 1 ? (
+              <Box className="mb-4">
+                <Pressable
+                  key={data.fixed_routes[0].id}
+                  onPress={() =>
+                    router.navigate(`/fixed/${data.fixed_routes[0].id}/detail`)
+                  }
+                  style={{ width: "100%" }}
+                >
+                  <FixedRouteItem
+                    fixedRoute={data.fixed_routes[0]}
+                    className="mx-0 rounded-none w-full"
+                    disabled
+                  />
+                </Pressable>
+              </Box>
+            ) : (
+              <ScrollView
+                horizontal
+                bounces={false}
+                showsHorizontalScrollIndicator={Platform.OS === "web"}
+              >
+                <HStack space="md" className="mb-4 px-2">
+                  {data.fixed_routes.map((fixedRoute) => (
+                    <Pressable
+                      key={fixedRoute.id}
+                      onPress={() =>
+                        router.navigate(`/fixed/${fixedRoute.id}/detail`)
+                      }
+                    >
+                      <FixedRouteItem
+                        fixedRoute={fixedRoute}
+                        className="mx-0 rounded-none w-[280px]"
+                        disabled
+                      />
+                    </Pressable>
+                  ))}
+                </HStack>
+              </ScrollView>
+            ))}
+
+          {!!data?.trip_requests?.length &&
+            (data.trip_requests.length === 1 ? (
+              <Box className="mb-4">
+                <Pressable
+                  key={data.trip_requests[0].id}
+                  onPress={() =>
+                    router.navigate(`/trip/${data.trip_requests[0].id}/detail`)
+                  }
+                  style={{ width: "100%" }}
+                >
+                  <TripRequestItem
+                    tripRequest={data.trip_requests[0]}
+                    className="mx-0 rounded-none w-full"
+                    disabled
+                  />
+                </Pressable>
+              </Box>
+            ) : (
+              <ScrollView
+                horizontal
+                bounces={false}
+                showsHorizontalScrollIndicator={Platform.OS === "web"}
+              >
+                <HStack space="md" className="mb-4 px-2">
+                  {data.trip_requests.map((tripRequest) => (
+                    <Pressable
+                      key={tripRequest.id}
+                      onPress={() =>
+                        router.navigate(`/trip/${tripRequest.id}/detail`)
+                      }
+                    >
+                      <TripRequestItem
+                        tripRequest={tripRequest}
+                        className="mx-0 rounded-none w-[280px]"
+                        disabled
+                      />
+                    </Pressable>
+                  ))}
+                </HStack>
+              </ScrollView>
+            ))}
+          <HStack space="md" className="px-4 py-2">
+            <Button
+              variant="link"
+              action="default"
+              onPress={() => router.navigate(`post/${data.id}/comment`)}
+            >
+              <ChatIcon size={scale(16)} color="#000" />
               <Text
                 style={wrapTextStyle(
-                  { fontWeight: "500", color: AppColors.placeholder },
-                  "xs"
+                  { fontWeight: "500", color: AppColors.text },
+                  "md"
                 )}
               >
-                {moment(data?.created_at).fromNow()}
+                {data?.comments?.[0]?.count || 0}
               </Text>
-            </VStack>
-            <MentionText
-              value={data?.content || ""}
-              partTypes={PartTypes as any}
-              textStyle={wrapTextStyle({ fontWeight: "500" }, "sm")}
-            />
-          </VStack>
-        </Box>
-        {!!item.feed_media.length && (
-          <NewFeedMedia media={item.feed_media[0]} />
-        )}
-        {!!data?.fixed_routes?.length &&
-          (data.fixed_routes.length === 1 ? (
-            <Box className="mb-4">
-              <Pressable
-                key={data.fixed_routes[0].id}
-                onPress={() =>
-                  router.navigate(`/fixed/${data.fixed_routes[0].id}/detail`)
-                }
-                style={{ width: "100%" }}
-              >
-                <FixedRouteItem
-                  fixedRoute={data.fixed_routes[0]}
-                  className="mx-0 rounded-none w-full"
-                  disabled
-                />
-              </Pressable>
-            </Box>
-          ) : (
-            <ScrollView
-              horizontal
-              bounces={false}
-              showsHorizontalScrollIndicator={Platform.OS === "web"}
-            >
-              <HStack space="md" className="mb-4 px-2">
-                {data.fixed_routes.map((fixedRoute) => (
-                  <Pressable
-                    key={fixedRoute.id}
-                    onPress={() =>
-                      router.navigate(`/fixed/${fixedRoute.id}/detail`)
-                    }
-                  >
-                    <FixedRouteItem
-                      fixedRoute={fixedRoute}
-                      className="mx-0 rounded-none w-[280px]"
-                      disabled
-                    />
-                  </Pressable>
-                ))}
-              </HStack>
-            </ScrollView>
-          ))}
-
-        {!!data?.trip_requests?.length &&
-          (data.trip_requests.length === 1 ? (
-            <Box className="mb-4">
-              <Pressable
-                key={data.trip_requests[0].id}
-                onPress={() =>
-                  router.navigate(`/trip/${data.trip_requests[0].id}/detail`)
-                }
-                style={{ width: "100%" }}
-              >
-                <TripRequestItem
-                  tripRequest={data.trip_requests[0]}
-                  className="mx-0 rounded-none w-full"
-                  disabled
-                />
-              </Pressable>
-            </Box>
-          ) : (
-            <ScrollView
-              horizontal
-              bounces={false}
-              showsHorizontalScrollIndicator={Platform.OS === "web"}
-            >
-              <HStack space="md" className="mb-4 px-2">
-                {data.trip_requests.map((tripRequest) => (
-                  <Pressable
-                    key={tripRequest.id}
-                    onPress={() =>
-                      router.navigate(`/trip/${tripRequest.id}/detail`)
-                    }
-                  >
-                    <TripRequestItem
-                      tripRequest={tripRequest}
-                      className="mx-0 rounded-none w-[280px]"
-                      disabled
-                    />
-                  </Pressable>
-                ))}
-              </HStack>
-            </ScrollView>
-          ))}
-        <HStack space="md" className="px-4 py-2">
-          <Button
-            variant="link"
-            action="default"
-            onPress={() => router.navigate(`post/${data.id}/comment`)}
-          >
-            <ChatIcon size={scale(16)} color="#000" />
-            <Text
-              style={wrapTextStyle(
-                { fontWeight: "500", color: AppColors.text },
-                "md"
-              )}
-            >
-              {data?.comments?.[0]?.count || 0}
-            </Text>
-          </Button>
-        </HStack>
-      </VStack>
+            </Button>
+          </HStack>
+        </VStack>
+      </Pressable>
     </Animated.View>
   );
 });

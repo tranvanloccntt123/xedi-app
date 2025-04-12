@@ -36,6 +36,7 @@ import { scale } from "react-native-size-matters";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 import MentionText from "../ControlledMentions/components/mention-text";
 import { Image } from "expo-image";
+import FeedMediaCarousel from "./FeedMediaCarousel";
 
 interface NewsFeedItemProps {
   item: INewsFeedItem;
@@ -97,7 +98,12 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <Pressable onPress={() => router.navigate(`post/${item.id}/detail`)}>
+      <Pressable
+        onPress={() =>
+          !!data?.feed_media?.length &&
+          router.navigate(`post/${item.id}/detail`)
+        }
+      >
         <VStack space="sm" className="mb-4 bg-xedi-white">
           <Box className="p-4 rounded-lg">
             <VStack space="md">
@@ -133,9 +139,7 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
               />
             </VStack>
           </Box>
-          {!!item.feed_media.length && (
-            <NewFeedMedia media={item.feed_media[0]} />
-          )}
+          <FeedMediaCarousel feedMedia={data?.feed_media || []} />
           {!!data?.fixed_routes?.length &&
             (data.fixed_routes.length === 1 ? (
               <Box className="mb-4">

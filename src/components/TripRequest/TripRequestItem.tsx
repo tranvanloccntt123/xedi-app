@@ -12,7 +12,9 @@ import { splitLocation } from "@/src/utils";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 import AppColors from "@/src/constants/colors";
 import { Text } from "react-native";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 const TripRequestItem: React.FC<{
   tripRequest: ITripRequest;
   disabled?: boolean;

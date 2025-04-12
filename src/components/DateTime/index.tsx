@@ -4,9 +4,10 @@ import { Button, ButtonText } from "../ui/button";
 import moment from "moment";
 import { Platform } from "react-native";
 import { HStack } from "../ui/hstack";
-import { FontWeight } from "@shopify/react-native-skia";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 const DateTime: React.FC<XediDatePicker> = ({
   date,
   onChangeDate,

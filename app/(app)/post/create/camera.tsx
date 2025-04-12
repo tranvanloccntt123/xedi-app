@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import React, { useRef } from "react";
 import {
   Image,
+  Platform,
   StatusBar,
   TouchableOpacity,
   useWindowDimensions,
@@ -19,8 +20,15 @@ import {
   useCameraDevice,
   useCameraPermission,
 } from "react-native-vision-camera";
-import { Asset, getAssetsAsync, usePermissions } from "expo-media-library";
+import {
+  Asset,
+  getAssetInfoAsync,
+  getAssetsAsync,
+  usePermissions,
+} from "expo-media-library";
 import { HStack } from "@/src/components/ui/hstack";
+import { useDispatch } from "react-redux";
+import { setImage } from "@/src/store/markImage/markImageSlice";
 
 const ImageThumbnail: React.FC<object> = () => {
   const [image, setImage] = React.useState<Asset>();
@@ -67,7 +75,7 @@ export default function PostCamera() {
   const { width } = useWindowDimensions();
   const device = useCameraDevice("back");
   const camera = useRef<Camera>(null);
-
+  const dispatch = useDispatch();
   const { hasPermission, requestPermission } = useCameraPermission();
 
   React.useEffect(() => {
@@ -79,7 +87,12 @@ export default function PostCamera() {
   const takePicture = async () => {
     try {
       const photo = await camera.current.takePhoto({});
-      console.log(photo.path);
+      dispatch(
+        setImage(
+          Platform.OS === "android" ? `file://${photo.path}` : photo.path
+        )
+      );
+      router.replace(`post/create/edit-image`);
     } catch (e) {
       console.log(e);
     }
@@ -115,9 +128,7 @@ export default function PostCamera() {
         {!!device && (
           <Camera
             ref={camera}
-            style={{
-              flex: 1,
-            }}
+            style={{flex: 1}}
             device={device}
             isActive={true}
             photo={true}

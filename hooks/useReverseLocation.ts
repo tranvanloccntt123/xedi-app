@@ -3,8 +3,11 @@ import React from "react";
 import useDebounce from "./useDebounce";
 import { splitLocation } from "@/src/utils";
 
-const useReverseLocation = (initCoordinate?: { lat: number; lon: number }) => {
-  const debounce = useDebounce({ time: 200 });
+const useReverseLocation = (
+  initCoordinate?: { lat: number; lon: number },
+  debounceNumber: number = 200
+) => {
+  const debounce = useDebounce({ time: debounceNumber || 200 });
   const [firstLoadData, setFirstLoadData] =
     React.useState<PhotonReverseResponse>();
   const [data, setData] = React.useState<PhotonReverseResponse>();

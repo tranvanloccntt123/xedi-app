@@ -14,7 +14,9 @@ import { Divider } from "../ui/divider";
 import AppColors from "@/src/constants/colors";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 import { Text } from "react-native";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 const APP_STRUCT = "FIXED_ROUTES_ITEM";
 
 const FixedRouteItem: React.FC<{

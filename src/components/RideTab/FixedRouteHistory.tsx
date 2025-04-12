@@ -7,7 +7,9 @@ import { Pressable } from "react-native";
 import { router } from "expo-router";
 import moment from "moment";
 import { Text } from "../ui/text";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 const FixedRouteHistory: React.FC<object> = () => {
   return (
     <Box className="flex-1 py-4">

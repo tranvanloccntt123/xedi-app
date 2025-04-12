@@ -10,7 +10,6 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-
 import authReducer, { AuthState } from "./auth/authSlice";
 import userReducer from "./user/userSlice";
 import fixedRoutesReducer, {
@@ -26,6 +25,9 @@ import fetchServices, {
 import postFormReducer, { PostFormState } from "./postForm/postFormSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import locationReducer, { LocationState } from "./location/locationSlice";
+import markImageReducer, {
+  MarkImageSliceState,
+} from "./markImage/markImageSlice";
 
 const persistConfig = {
   key: "root",
@@ -42,6 +44,7 @@ const combinedReducer = combineReducers({
   postForm: postFormReducer,
   location: locationReducer,
   fetchServices: fetchServices,
+  markImage: markImageReducer,
 });
 
 const rootReducer = (state: RootState | undefined, action: AnyAction) => {
@@ -77,5 +80,6 @@ export type RootState = {
   postForm: PostFormState;
   location: LocationState;
   fetchServices: FetchServicesState;
+  markImage: MarkImageSliceState;
 };
 export type AppDispatch = typeof store.dispatch;

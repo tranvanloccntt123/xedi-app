@@ -180,13 +180,13 @@ const CreatePostButton: React.FC<{
   return (
     <Button
       className={`rounded-full ${
-        content ? "bg-primary-400" : "bg-primary-400/[.5]"
+        !content && !images.length ? "bg-primary-400/[.5]" : "bg-primary-400"
       }`}
       size="lg"
       onPress={
         user?.role === "customer" ? handlerCustomerPost : handleDriverPost
       }
-      disabled={!content}
+      disabled={!content && !images.length}
     >
       <ButtonText>Tạo</ButtonText>
     </Button>

@@ -9,7 +9,9 @@ import moment from "moment";
 import { Heading } from "@/src/components/ui/heading";
 import LottieView from "lottie-react-native";
 import Lottie from "@/src/lottie";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 const APP_STRUCT = "FIXED_ROUTES_LIST";
 
 interface FixedRoutesListProps {

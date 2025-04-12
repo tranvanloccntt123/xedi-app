@@ -1,7 +1,6 @@
 import { Box } from "@/src/components/ui/box";
 import React from "react";
 import {
-  Alert,
   Image,
   Linking,
   PermissionsAndroid,
@@ -41,17 +40,12 @@ const NUMS = 3;
 
 const requestAndroidPermission = async () => {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      {
-        title: "Gallery Access Permission",
-        message: "This app needs access to your gallery to select images.",
-        buttonPositive: "OK",
-        buttonNegative: "Cancel",
-      }
-    );
+    const granted = await PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES,
+      PermissionsAndroid.PERMISSIONS.READ_MEDIA_VIDEO,
+    ]);
 
-    if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+    if (!Object.values(granted).includes("granted")) {
       Linking.openSettings();
       return false;
     }
@@ -62,11 +56,6 @@ const requestAndroidPermission = async () => {
   }
 };
 
-/**
- * Checks if READ_EXTERNAL_STORAGE permission is granted on Android.
- *
- * @returns {Promise<boolean>} A promise that resolves to true if permission is granted, false otherwise.
- */
 const checkStoragePermission = async (): Promise<boolean> => {
   // Only run on Android
   if (Platform.OS !== "android") {
@@ -187,7 +176,7 @@ export default function ImageSelection() {
   };
 
   const renderItem = React.useCallback(
-    ({ item, index }: { item: Asset; index: number }) => (
+    ({ item }: { item: Asset; index: number }) => (
       <Box style={{ width: itemWidth, height: itemWidth, padding: scale(1) }}>
         <TouchableOpacity
           style={{ flex: 1 }}
@@ -240,6 +229,7 @@ export default function ImageSelection() {
                       dispatch(addImage(result.base64));
                     }
                     router.back();
+                    // router.replace(`post/create/edit-image`);
                   }}
                 >
                   <ButtonText

@@ -22,10 +22,12 @@ import { Text } from "react-native";
 import { Button } from "@/src/components/ui/button";
 import CloseIcon from "@/src/components/icons/CloseIcon";
 import { scale } from "react-native-size-matters";
-
+import "moment/locale/vi"; // Import the Vietnamese locale
+// Set the locale globally for moment (optional, but good practice if you use it often)
+moment.locale("vi");
 // --- Component ---
 export default function PostDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, defaultIndex } = useLocalSearchParams();
   const insets = useSafeAreaInsets();
   const { data, isLoading } = useQuery<INewsFeedItem>({
     queryKey: `${XEDI_QUERY_KEY.FEED}_${id}`,
@@ -61,7 +63,7 @@ export default function PostDetail() {
 
   // --- Render ---
   return (
-    <AppLoading isLoading={isLoading}>
+    <AppLoading isLoading={!data}>
       {!!data && (
         <Box className="flex-1 bg-xedi-black">
           <SafeAreaView style={AppStyles.container}>
@@ -75,7 +77,10 @@ export default function PostDetail() {
                 <CloseIcon size={scale(24)} color={AppColors.white} />
               </Button>
             </HStack>
-            <FeedMediaCarousel feedMedia={data?.feed_media || []} />
+            <FeedMediaCarousel
+              feedMedia={data?.feed_media || []}
+              defaultIndex={!!defaultIndex ? Number(defaultIndex) : 0}
+            />
           </SafeAreaView>
           {/* 5. Caption */}
           <Box

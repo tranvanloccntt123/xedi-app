@@ -57,15 +57,6 @@ export default function EditImage() {
   const backgroundImage = useImage(image);
   const [data, setData] = React.useState<PhotonReverseResponse>();
   const [isLoading, setIsLoading] = React.useState(false);
-  // React.useEffect(() => {
-  //   if (!image) {
-  //     router.back();
-  //   }
-  //   // A sample base64-encoded pixel
-  //   const data = Skia.Data.fromBase64(image);
-  //   const _image = Skia.Image.MakeImageFromEncoded(data);
-  //   setBackgroundImage(_image);
-  // }, [image]);
 
   React.useEffect(() => {
     if (granted && lat && lon) {

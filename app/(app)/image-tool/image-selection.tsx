@@ -35,6 +35,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import ImagePreview, {
   ImagePreviewMethods,
 } from "@/src/components/ImagePreview";
+import { MarkImageType, setMarkImageType } from "@/src/store/markImage/markImageSlice";
 
 const NUMS = 3;
 
@@ -263,7 +264,7 @@ export default function ImageSelection() {
               <Box style={{ height }} />
               <HStack className="items-center justify-between">
                 <Button
-                  onPress={() => router.replace("/post/create/camera")}
+                  onPress={() => router.replace("/image-tool/camera")}
                   style={styles.cameraBtn}
                   action="default"
                 >

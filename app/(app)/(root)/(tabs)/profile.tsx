@@ -18,6 +18,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AppColors from "@/src/constants/colors";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
 import { ScaledSheet } from "react-native-size-matters";
+import { Center } from "@/src/components/ui/center";
+import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -30,6 +32,24 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
     </HStack>
   </Pressable>
 );
+
+const ProfileAvatar = () => {
+  const { avatar, name } = useSelector((state: RootState) => state.auth.user);
+  return (
+    <Center className="mb-[56px] mt-[16px]">
+      <Avatar size="2xl" className="mb-[12px]">
+        {!!avatar ? <></> : <AvatarFallbackText>{name}</AvatarFallbackText>}
+      </Avatar>
+      <Text
+        style={[
+          wrapTextStyle({ fontWeight: "600", color: AppColors.text }, "sm"),
+        ]}
+      >
+        {name}
+      </Text>
+    </Center>
+  );
+};
 
 export default function Profile() {
   const router = useRouter();
@@ -54,9 +74,11 @@ export default function Profile() {
     <Box className="flex-1 bg-xedi-background">
       <SafeAreaView>
         <ScrollView
+          showsVerticalScrollIndicator={false}
           bounces={false}
           style={{ backgroundColor: AppColors.background }}
         >
+          <ProfileAvatar />
           <VStack space="md" className="p-4 flex-1">
             <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
               Tài khoản

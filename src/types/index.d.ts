@@ -91,6 +91,7 @@ interface IUser {
   password?: string;
   lat?: number;
   lon?: number;
+  avatar?: string;
 }
 
 interface IVehicle {

@@ -32,6 +32,10 @@ import { scale, ScaledSheet } from "react-native-size-matters";
 import TrashIcon from "@/src/components/icons/TrashIcon";
 import AppColors from "@/src/constants/colors";
 import Animated from "react-native-reanimated";
+import {
+  setMarkImageType,
+  MarkImageType,
+} from "@/src/store/markImage/markImageSlice";
 const ROUNDED = 15;
 
 const truncateText = (text: string, maxLength: number) => {
@@ -133,6 +137,7 @@ export default function CreatePost() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    dispatch(setMarkImageType(MarkImageType.POST));
     // Reset the post slice when the component mounts
     return () => {
       dispatch(resetPost({}));
@@ -254,7 +259,7 @@ export default function CreatePost() {
             <Button
               variant="link"
               className="justify-start"
-              onPress={() => router.push("/post/create/image-selection")}
+              onPress={() => router.push("/image-tool/image-selection")}
             >
               <HStack space="sm" className="items-center">
                 <Box className="w-[30px] h-[30px] bg-typography-100 items-center justify-center rounded-full">
@@ -285,7 +290,7 @@ const styles = ScaledSheet.create({
   thumbnail: {
     width: "100@s",
     height: "100@s",
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   removeBtn: {
     position: "absolute",

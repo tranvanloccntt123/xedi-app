@@ -92,7 +92,7 @@ export default function PostCamera() {
           Platform.OS === "android" ? `file://${photo.path}` : photo.path
         )
       );
-      router.replace(`post/create/edit-image`);
+      router.replace(`image-tool/edit-image`);
     } catch (e) {
       console.log(e);
     }

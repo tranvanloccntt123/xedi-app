@@ -17,8 +17,8 @@ class XediSupabase {
     return supabase.auth.getUser();
   }
 
-  getBucket() {
-    return supabase.storage.from("popular");
+  getBucket(bucket?: "popular" | "profile") {
+    return supabase.storage.from(bucket || "popular");
   }
 }
 

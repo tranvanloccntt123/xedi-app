@@ -31,7 +31,8 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
     const scale = useSharedValue(1);
     const startScale = useSharedValue(0);
 
-    const calculateImagePosition = (animationMs?: number) => {
+
+    const { imageWidth, imageHeight } = React.useMemo(() => {
       const imageSize = (image.width || 1) / (image.height || 1);
 
       let imageWidth = width;
@@ -44,19 +45,33 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
 
       imageHeight = imageWidth / imageSize;
 
-      const initialScale = imageWidth / image.width;
+      const initialScale = imageHeight / image.height;
 
-      translationX.value = animationMs
-        ? withTiming(0, { duration: animationMs })
-        : 0;
+      return {
+        imageWidth: image.width * initialScale,
+        imageHeight: image.height * initialScale,
+      };
+    }, [image, width, height]);
 
-      translationY.value = animationMs
-        ? withTiming(0, { duration: animationMs })
-        : 0;
 
-      scale.value = animationMs
-        ? withTiming(initialScale, { duration: animationMs })
-        : initialScale;
+    const calculateImagePosition = (animationMs?: number) => {
+      // const imageSize = (image.width || 1) / (image.height || 1);
+      // let imageWidth = width;
+      // let imageHeight = imageWidth / imageSize;
+      // if (imageHeight < height) {
+      //   imageWidth = height * imageSize;
+      // }
+      // imageHeight = imageWidth / imageSize;
+      // const initialScale = imageWidth / image.width;
+      // translationX.value = animationMs
+      //   ? withTiming(0, { duration: animationMs })
+      //   : 0;
+      // translationY.value = animationMs
+      //   ? withTiming(0, { duration: animationMs })
+      //   : 0;
+      // scale.value = animationMs
+      //   ? withTiming(initialScale, { duration: animationMs })
+      //   : initialScale;
     };
 
     const pan = Gesture.Pan()
@@ -69,24 +84,25 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
         translationY.value = prevTranslationY.value + event.translationY;
       })
       .onEnd(() => {
-        const imageWidth = scale.value * image.width;
-        const imageHeight = scale.value * image.height;
-        if (translationX.value > 0) {
-          translationX.value = withTiming(0, { duration: 200 });
-        }
-        if (translationX.value < width - imageWidth) {
-          translationX.value = withTiming(width - imageWidth, {
-            duration: 200,
-          });
-        }
-        if (translationY.value > 0) {
-          translationY.value = withTiming(0, { duration: 200 });
-        }
-        if (translationY.value < height - imageHeight) {
-          translationY.value = withTiming(height - imageHeight, {
-            duration: 200,
-          });
-        }
+        console.log(translationX.value, translationX.value, scale.value);
+        // const imageWidth = scale.value * image.width;
+        // const imageHeight = scale.value * image.height;
+        // if (translationX.value > 0) {
+        //   translationX.value = withTiming(0, { duration: 200 });
+        // }
+        // if (translationX.value < width - imageWidth) {
+        //   translationX.value = withTiming(width - imageWidth, {
+        //     duration: 200,
+        //   });
+        // }
+        // if (translationY.value > 0) {
+        //   translationY.value = withTiming(0, { duration: 200 });
+        // }
+        // if (translationY.value < height - imageHeight) {
+        //   translationY.value = withTiming(height - imageHeight, {
+        //     duration: 200,
+        //   });
+        // }
       })
       .runOnJS(true);
 
@@ -102,26 +118,31 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
         );
       })
       .onEnd(() => {
-        const imageWidth = scale.value * image.width;
-        const imageHeight = scale.value * image.height;
-        if (imageWidth < width || imageHeight < height) {
-          calculateImagePosition(200);
-        }
+        // const imageWidth = scale.value * image.width;
+        // const imageHeight = scale.value * image.height;
+        // if (imageWidth < width || imageHeight < height) {
+        //   calculateImagePosition(200);
+        // }
       })
       .runOnJS(true);
 
     // Refs for gesture handlers
     React.useEffect(() => {
-      calculateImagePosition();
+      translationX.value = 0;
+      translationY.value = 0;
+      scale.value = 1;
+      // calculateImagePosition();
     }, [image, width, height]);
 
-    const imageStyle = useAnimatedStyle(() => ({
+    const translateStyle = useAnimatedStyle(() => ({
       transform: [
         { translateX: translationX.value },
         { translateY: translationY.value },
       ] as never,
-      width: image.width * scale.value,
-      height: image.height * scale.value,
+    }));
+
+    const scaleStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
     }));
 
     const multiGesture = Gesture.Simultaneous(pan, pinch);
@@ -141,17 +162,20 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
     return (
       <GestureDetector gesture={multiGesture}>
         <Box style={{ width, height }}>
-          <Animated.Image
-            source={{ uri: image.uri }}
-            style={[
-              {
-                width: image.width,
-                height: image.height,
-                resizeMode: "contain",
-              },
-              imageStyle,
-            ]}
-          />
+          <Animated.View style={[translateStyle]}>
+            <Animated.View style={[scaleStyle, { flex: 1 }]}>
+              <Animated.Image
+                source={{ uri: image.uri }}
+                style={[
+                  {
+                    width: imageWidth,
+                    height: imageHeight,
+                    resizeMode: "contain",
+                  },
+                ]}
+              />
+            </Animated.View>
+          </Animated.View>
         </Box>
       </GestureDetector>
     );

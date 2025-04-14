@@ -120,7 +120,6 @@ export default function ImageSelection() {
   const permissionHandler = async () => {
     if (Platform.OS === "android") {
       const granted = await checkStoragePermission();
-      console.log(granted);
       if (!granted) {
         requestAndroidPermission();
       }

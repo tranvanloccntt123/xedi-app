@@ -1,7 +1,7 @@
 import React from "react";
 import { Asset } from "expo-media-library";
 import { Box } from "./ui/box";
-import { useWindowDimensions } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { CameraImageSize } from "../constants";
 import Animated, {
   clamp,
@@ -10,9 +10,13 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Image } from "expo-image";
+import { StyleSheet } from "react-native";
+import { makeImageFromView } from "@shopify/react-native-skia";
 
 export interface ImagePreviewMethods {
   getImageInfo: () => { x: number; y: number; scale: number };
+  getBase64Image: () => Promise<string>;
 }
 
 const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
@@ -30,7 +34,6 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
 
     const scale = useSharedValue(1);
     const startScale = useSharedValue(0);
-
 
     const { imageWidth, imageHeight } = React.useMemo(() => {
       const imageSize = (image.width || 1) / (image.height || 1);
@@ -53,27 +56,6 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
       };
     }, [image, width, height]);
 
-
-    const calculateImagePosition = (animationMs?: number) => {
-      // const imageSize = (image.width || 1) / (image.height || 1);
-      // let imageWidth = width;
-      // let imageHeight = imageWidth / imageSize;
-      // if (imageHeight < height) {
-      //   imageWidth = height * imageSize;
-      // }
-      // imageHeight = imageWidth / imageSize;
-      // const initialScale = imageWidth / image.width;
-      // translationX.value = animationMs
-      //   ? withTiming(0, { duration: animationMs })
-      //   : 0;
-      // translationY.value = animationMs
-      //   ? withTiming(0, { duration: animationMs })
-      //   : 0;
-      // scale.value = animationMs
-      //   ? withTiming(initialScale, { duration: animationMs })
-      //   : initialScale;
-    };
-
     const pan = Gesture.Pan()
       .onStart((e) => {
         prevTranslationX.value = translationX.value;
@@ -82,27 +64,6 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
       .onUpdate((event) => {
         translationX.value = prevTranslationX.value + event.translationX;
         translationY.value = prevTranslationY.value + event.translationY;
-      })
-      .onEnd(() => {
-        console.log(translationX.value, translationX.value, scale.value);
-        // const imageWidth = scale.value * image.width;
-        // const imageHeight = scale.value * image.height;
-        // if (translationX.value > 0) {
-        //   translationX.value = withTiming(0, { duration: 200 });
-        // }
-        // if (translationX.value < width - imageWidth) {
-        //   translationX.value = withTiming(width - imageWidth, {
-        //     duration: 200,
-        //   });
-        // }
-        // if (translationY.value > 0) {
-        //   translationY.value = withTiming(0, { duration: 200 });
-        // }
-        // if (translationY.value < height - imageHeight) {
-        //   translationY.value = withTiming(height - imageHeight, {
-        //     duration: 200,
-        //   });
-        // }
       })
       .runOnJS(true);
 
@@ -116,13 +77,6 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
           0.2,
           Math.min(width / 100, height / 100)
         );
-      })
-      .onEnd(() => {
-        // const imageWidth = scale.value * image.width;
-        // const imageHeight = scale.value * image.height;
-        // if (imageWidth < width || imageHeight < height) {
-        //   calculateImagePosition(200);
-        // }
       })
       .runOnJS(true);
 
@@ -147,6 +101,8 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
 
     const multiGesture = Gesture.Simultaneous(pan, pinch);
 
+    const viewRef = React.useRef<View>(null);
+
     React.useImperativeHandle(ref, () => {
       return {
         getImageInfo() {
@@ -156,28 +112,47 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
             scale: scale.value,
           };
         },
+        async getBase64Image() {
+          const snapshot = await makeImageFromView(viewRef);
+          return snapshot.encodeToBase64();
+        },
       };
     });
 
     return (
-      <GestureDetector gesture={multiGesture}>
-        <Box style={{ width, height }}>
-          <Animated.View style={[translateStyle]}>
-            <Animated.View style={[scaleStyle, { flex: 1 }]}>
-              <Animated.Image
+      <View style={{ width, height }} ref={viewRef}>
+        <GestureDetector gesture={multiGesture}>
+          <Box style={{ width, height }}>
+            <Box className="absolute top-0 left-0 right-0 bottom-0">
+              <Image
                 source={{ uri: image.uri }}
                 style={[
                   {
                     width: imageWidth,
                     height: imageHeight,
-                    resizeMode: "contain",
                   },
                 ]}
+                contentFit="contain"
+                blurRadius={90}
               />
+            </Box>
+            <Animated.View style={[translateStyle]}>
+              <Animated.View style={[scaleStyle, { flex: 1 }]}>
+                <Animated.Image
+                  source={{ uri: image.uri }}
+                  style={[
+                    {
+                      width: imageWidth,
+                      height: imageHeight,
+                      resizeMode: "contain",
+                    },
+                  ]}
+                />
+              </Animated.View>
             </Animated.View>
-          </Animated.View>
-        </Box>
-      </GestureDetector>
+          </Box>
+        </GestureDetector>
+      </View>
     );
   }
 );

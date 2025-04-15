@@ -35,7 +35,10 @@ import * as ImageManipulator from "expo-image-manipulator";
 import ImagePreview, {
   ImagePreviewMethods,
 } from "@/src/components/ImagePreview";
-import { MarkImageType, setMarkImageType } from "@/src/store/markImage/markImageSlice";
+import {
+  MarkImageType,
+  setMarkImageType,
+} from "@/src/store/markImage/markImageSlice";
 
 const NUMS = 3;
 
@@ -207,26 +210,9 @@ export default function ImageSelection() {
                 <Button
                   action="default"
                   onPress={async () => {
-                    const info = previewRef.current?.getImageInfo();
+                    const info = await previewRef.current?.getBase64Image();
                     if (info) {
-                      const cropInfo = {
-                        originX: Math.abs(info.x / info.scale),
-                        originY: Math.abs(info.y / info.scale),
-                        width: width / info.scale,
-                        height: height / info.scale,
-                      };
-
-                      const image =
-                        await ImageManipulator.ImageManipulator.manipulate(
-                          imagePreview.uri
-                        )
-                          .crop(cropInfo)
-                          .renderAsync();
-                      const result = await image.saveAsync({
-                        format: ImageManipulator.SaveFormat.JPEG,
-                        base64: true,
-                      });
-                      dispatch(addImage(result.base64));
+                      dispatch(addImage(info));
                     }
                     router.back();
                     // router.replace(`post/create/edit-image`);

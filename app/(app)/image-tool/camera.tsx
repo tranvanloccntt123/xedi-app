@@ -20,12 +20,7 @@ import {
   useCameraDevice,
   useCameraPermission,
 } from "react-native-vision-camera";
-import {
-  Asset,
-  getAssetInfoAsync,
-  getAssetsAsync,
-  usePermissions,
-} from "expo-media-library";
+import { Asset, getAssetsAsync, usePermissions } from "expo-media-library";
 import { HStack } from "@/src/components/ui/hstack";
 import { useDispatch } from "react-redux";
 import { setImage } from "@/src/store/markImage/markImageSlice";
@@ -48,7 +43,6 @@ const ImageThumbnail: React.FC<object> = () => {
     if (permissionResponse?.status === "granted") {
       getAssetsAsync()
         .then((page) => {
-          console.log(page.assets);
           setImage(page.assets[0]);
         })
         .catch((e) => {
@@ -59,7 +53,7 @@ const ImageThumbnail: React.FC<object> = () => {
 
   return (
     <TouchableOpacity
-      onPress={() => router.replace("/post/create/image-selection")}
+      onPress={() => router.replace("/image-tool/image-selection")}
     >
       <Box>
         {!!image && (
@@ -128,7 +122,7 @@ export default function PostCamera() {
         {!!device && (
           <Camera
             ref={camera}
-            style={{flex: 1}}
+            style={{ flex: 1 }}
             device={device}
             isActive={true}
             photo={true}

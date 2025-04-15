@@ -23,6 +23,11 @@ export const CameraImageSize = {
   height: 5,
 };
 
+export const AvatarImageSize = {
+  width: 1,
+  height: 1,
+};
+
 export const PartTypes: any = [
   {
     trigger: "@",

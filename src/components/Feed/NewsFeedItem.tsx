@@ -66,10 +66,6 @@ const NewsFeedItem = React.memo(({ item }: NewsFeedItemProps) => {
     };
   });
 
-  if (deletedItems.includes(data?.id) && opacity.value === 0) {
-    return null;
-  }
-
   const carouselRef = React.useRef<FeedMediaCarouselMethods>(null);
 
   return (

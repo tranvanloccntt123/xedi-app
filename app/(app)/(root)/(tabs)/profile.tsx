@@ -11,15 +11,20 @@ import { Button } from "@/src/components/ui/button";
 import { ButtonText } from "@/src/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/src/store/store";
-import { useRouter } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Pressable, ScrollView, Text } from "react-native";
 import ChevronRightIcon from "@/src/components/icons/ChevronRightIcon";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppColors from "@/src/constants/colors";
 import { wrapTextStyle } from "@/src/theme/AppStyles";
-import { ScaledSheet } from "react-native-size-matters";
+import { scale, ScaledSheet } from "react-native-size-matters";
 import { Center } from "@/src/components/ui/center";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
+import PenIcon from "@/src/components/icons/PenIcon";
+import {
+  MarkImageType,
+  setMarkImageType,
+} from "@/src/store/markImage/markImageSlice";
 
 const ProfileSection = ({ title, subtitle, onPress }) => (
   <Pressable onPress={onPress}>
@@ -34,12 +39,26 @@ const ProfileSection = ({ title, subtitle, onPress }) => (
 );
 
 const ProfileAvatar = () => {
+  const dispatch = useDispatch();
   const { avatar, name } = useSelector((state: RootState) => state.auth.user);
   return (
     <Center className="mb-[56px] mt-[16px]">
-      <Avatar size="2xl" className="mb-[12px]">
-        {!!avatar ? <></> : <AvatarFallbackText>{name}</AvatarFallbackText>}
-      </Avatar>
+      <Box className="mb-[12px]">
+        <Avatar size="2xl">
+          {!!avatar ? <></> : <AvatarFallbackText>{name}</AvatarFallbackText>}
+        </Avatar>
+        <Button
+          action="default"
+          className="absolute bg-xedi-background shadow-sm p-0 rounded-full bottom-0 right-0"
+          style={{ width: scale(25), height: scale(25) }}
+          onPress={() => {
+            dispatch(setMarkImageType(MarkImageType.AVATAR));
+            router.navigate("/image-tool/image-selection");
+          }}
+        >
+          <PenIcon size={scale(16)} color={AppColors.text} />
+        </Button>
+      </Box>
       <Text
         style={[
           wrapTextStyle({ fontWeight: "600", color: AppColors.text }, "sm"),

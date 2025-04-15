@@ -53,6 +53,10 @@ const FeedMediaCarousel = React.forwardRef<
       width={width}
       height={imageHeight}
       defaultIndex={defaultIndex}
+      // panGestureHandlerProps={{
+      //   activeOffsetX: [-10, 10], // Enable horizontal panning
+      //   failOffsetY: [-5, 5], // Limit vertical movement to fail the gesture
+      // }}
     />
   ) : (
     renderImage({ item: feedMedia[0], index: 0 })

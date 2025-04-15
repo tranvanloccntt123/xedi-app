@@ -4,16 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { xediSupabase } from "../../lib/supabase";
 import { generateUUID } from "@/src/utils/uuid";
-
-const base64ToUint8Array = (base64: string) => {
-  const binaryString = atob(base64);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-  return bytes;
-};
+import { base64ToUint8Array } from "@/src/utils";
 
 const CreatePostButton: React.FC<{
   onError: (message: string) => any;

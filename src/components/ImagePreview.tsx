@@ -2,17 +2,18 @@ import React from "react";
 import { Asset } from "expo-media-library";
 import { Box } from "./ui/box";
 import { useWindowDimensions, View } from "react-native";
-import { CameraImageSize } from "../constants";
+import { AvatarImageSize, CameraImageSize } from "../constants";
 import Animated, {
   clamp,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
 import { makeImageFromView } from "@shopify/react-native-skia";
+import { MarkImageType } from "../store/markImage/markImageSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 export interface ImagePreviewMethods {
   getImageInfo: () => { x: number; y: number; scale: number };
@@ -22,9 +23,15 @@ export interface ImagePreviewMethods {
 const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
   ({ image }, ref) => {
     const { width } = useWindowDimensions();
+    const markType = useSelector((state: RootState) => state.markImage.type);
+    const size = React.useMemo(
+      () =>
+        markType === MarkImageType.AVATAR ? AvatarImageSize : CameraImageSize,
+      [markType]
+    );
     const height = React.useMemo(
-      () => width * (CameraImageSize.height / CameraImageSize.width),
-      [width]
+      () => width * (size.height / size.width),
+      [width, size]
     );
     // Gesture state
     const translationX = useSharedValue(0);

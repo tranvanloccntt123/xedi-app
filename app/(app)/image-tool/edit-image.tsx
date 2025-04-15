@@ -8,8 +8,6 @@ import {
   Image,
   LinearGradient,
   Rect,
-  Skia,
-  SkImage,
   Text,
   useFont,
   useImage,
@@ -21,7 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AppStyles, { wrapTextStyle } from "@/src/theme/AppStyles";
 import Header from "@/src/components/Header";
 import { useWindowDimensions } from "react-native";
-import { CameraImageSize } from "@/src/constants";
+import { AvatarImageSize, CameraImageSize } from "@/src/constants";
 import useLocation from "@/hooks/useLocation";
 import { Inter_400Regular } from "@expo-google-fonts/inter";
 import { scale } from "react-native-size-matters";
@@ -30,10 +28,13 @@ import moment from "moment";
 import AppImages from "@/assets/images";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import axios from "axios";
-import { splitLocation } from "@/src/utils";
+import { base64ToUint8Array, splitLocation } from "@/src/utils";
 import { addImage } from "@/src/store/postForm/postFormSlice";
 
 import "moment/locale/vi"; // Import the Vietnamese locale
+import { MarkImageType } from "@/src/store/markImage/markImageSlice";
+import { xediSupabase } from "@/src/lib/supabase";
+import { generateUUID } from "@/src/utils/uuid";
 // Set the locale globally for moment (optional, but good practice if you use it often)
 moment.locale("vi");
 
@@ -43,15 +44,22 @@ export default function EditImage() {
   const { lat, lon, granted } = useSelector(
     (state: RootState) => state.location
   );
+  const user = useSelector((state: RootState) => state.auth.user);
   const logo = useImage(AppImages.LOGO);
   const timeFont = useFont(Inter_400Regular, scale(40));
   const dateFont = useFont(Inter_400Regular, scale(14));
   const locationFont = useFont(Inter_400Regular, scale(12));
   const { image } = useSelector((state: RootState) => state.markImage);
   const { width } = useWindowDimensions();
+  const markType = useSelector((state: RootState) => state.markImage.type);
+  const size = React.useMemo(
+    () =>
+      markType === MarkImageType.AVATAR ? AvatarImageSize : CameraImageSize,
+    [markType]
+  );
   const height = React.useMemo(
-    () => width * (CameraImageSize.height / CameraImageSize.width),
-    [width]
+    () => width * (size.height / size.width),
+    [width, size]
   );
   const dispatch = useDispatch();
   const backgroundImage = useImage(image);
@@ -103,6 +111,32 @@ export default function EditImage() {
     );
   }, [data]);
 
+  const handlerNext = async () => {
+    if (isLoading || !logo) {
+      return;
+    }
+    const image = await canvasRef.current?.makeImageSnapshot();
+    const base64 = image.encodeToBase64(ImageFormat.JPEG);
+    if (markType === MarkImageType.AVATAR) {
+      try {
+        const name = `${generateUUID()}.jpg`;
+        await xediSupabase
+          .getBucket("profile")
+          .upload(name, base64ToUint8Array(base64), {
+            contentType: "image/jpeg",
+          });
+        await xediSupabase.tables.users.updateById(user.id, {
+          avatar: name,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      dispatch(addImage(base64));
+    }
+    router.back();
+  };
+
   return (
     <Box className="flex-1 bg-xedi-background">
       <SafeAreaView style={AppStyles.container}>
@@ -110,18 +144,7 @@ export default function EditImage() {
           title=""
           className="px-[16px]"
           rightComponent={
-            <Button
-              action="default"
-              onPress={async () => {
-                if (isLoading || !logo) {
-                  return;
-                }
-                const image = await canvasRef.current?.makeImageSnapshot();
-                const base64 = image.encodeToBase64(ImageFormat.JPEG);
-                dispatch(addImage(base64));
-                router.back();
-              }}
-            >
+            <Button action="default" onPress={handlerNext}>
               <ButtonText
                 className="color-xedi-primary"
                 style={wrapTextStyle({ fontWeight: "500" }, "sm")}

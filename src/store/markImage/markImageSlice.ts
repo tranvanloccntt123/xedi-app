@@ -23,7 +23,7 @@ const markImageSlice = createSlice({
       state.image = action.payload;
     },
     setMarkImageType(state, action: PayloadAction<MarkImageType>) {
-      state.type = action.payload || MarkImageType.POST;
+      state.type = action.payload;
     },
   },
 });

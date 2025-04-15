@@ -28,17 +28,18 @@ import { HStack } from "@/src/components/ui/hstack";
 import { Button, ButtonText } from "@/src/components/ui/button";
 import CameraShutterIcon from "@/src/components/icons/CameraShutterIcon";
 import { router } from "expo-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addImage } from "@/src/store/postForm/postFormSlice";
-import { CameraImageSize } from "@/src/constants";
+import { AvatarImageSize, CameraImageSize } from "@/src/constants";
 import * as ImageManipulator from "expo-image-manipulator";
 import ImagePreview, {
   ImagePreviewMethods,
 } from "@/src/components/ImagePreview";
-import {
-  MarkImageType,
-  setMarkImageType,
-} from "@/src/store/markImage/markImageSlice";
+import { MarkImageType } from "@/src/store/markImage/markImageSlice";
+import { RootState } from "@/src/store/store";
+import { generateUUID } from "@/src/utils/uuid";
+import { xediSupabase } from "@/src/lib/supabase";
+import { base64ToUint8Array } from "@/src/utils";
 
 const NUMS = 3;
 
@@ -105,9 +106,16 @@ const checkStoragePermission = async (): Promise<boolean> => {
 
 export default function ImageSelection() {
   const { width } = useWindowDimensions();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const markType = useSelector((state: RootState) => state.markImage.type);
+  const size = React.useMemo(
+    () =>
+      markType === MarkImageType.AVATAR ? AvatarImageSize : CameraImageSize,
+    [markType]
+  );
   const height = React.useMemo(
-    () => width * (CameraImageSize.height / CameraImageSize.width),
-    [width]
+    () => width * (size.height / size.width),
+    [width, size]
   );
   const dispatch = useDispatch();
   const insets = useSafeAreaInsets();
@@ -210,12 +218,25 @@ export default function ImageSelection() {
                 <Button
                   action="default"
                   onPress={async () => {
-                    const info = await previewRef.current?.getBase64Image();
-                    if (info) {
-                      dispatch(addImage(info));
+                    const base64 = await previewRef.current?.getBase64Image();
+                    if (markType === MarkImageType.AVATAR) {
+                      try {
+                        const name = `${generateUUID()}.jpg`;
+                        await xediSupabase
+                          .getBucket("profile")
+                          .upload(name, base64ToUint8Array(base64), {
+                            contentType: "image/jpeg",
+                          });
+                        await xediSupabase.tables.users.updateById(user.id, {
+                          avatar: name,
+                        });
+                      } catch (e) {
+                        console.log(e);
+                      }
+                    } else {
+                      dispatch(addImage(base64));
                     }
                     router.back();
-                    // router.replace(`post/create/edit-image`);
                   }}
                 >
                   <ButtonText

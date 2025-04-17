@@ -44,12 +44,13 @@ function AuthWrapper() {
   );
 
   React.useEffect(() => {
-    const inAuthGroup = segments[0] === "(auth)";
-
-    if (!isAuthenticated && !inAuthGroup) {
-      router.replace("/sign-in");
-    } else if (isAuthenticated && inAuthGroup) {
-      router.replace("/");
+    if (segments[segments.length - 1] !== "network-debug") {
+      const inAuthGroup = segments[0] === "(auth)";
+      if (!isAuthenticated && !inAuthGroup) {
+        router.replace("/sign-in");
+      } else if (isAuthenticated && inAuthGroup) {
+        router.replace("/");
+      }
     }
   }, [isAuthenticated, segments, router]);
 

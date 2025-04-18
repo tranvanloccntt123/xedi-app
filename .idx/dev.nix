@@ -4,15 +4,14 @@
   # Which nixpkgs channel to use.
   channel = "stable-23.11"; # or "unstable"
   # Use https://search.nixos.org/packages to find packages
-  packages = [
-    pkgs.nodejs_20
-    pkgs.nodejs_20
-    pkgs.jdk21_headless
-    pkgs.gradle
-    pkgs.socat
-  ];
+  packages = [ pkgs.nodejs_20 pkgs.nodejs_20 pkgs.jdk21_headless pkgs.gradle ];
   # Sets environment variables in the workspace
   env = { EXPO_USE_FAST_RESOLVER = 1; };
+  services = {
+    docker = {
+      enable = true;
+    };
+  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
@@ -30,20 +29,17 @@
       };
       # Runs when a workspace restarted
       onStart = {
-        # forward-ports = ''
-        #   socat -d -d TCP-LISTEN:5554,reuseaddr,fork TCP:$(cat /etc/resolv.conf | tail -n1 | cut -d " " -f 2):5554
-        # '';
-        # connect-device = ''
-        #   adb -s localhost:5554 wait-for-device 
-        # '';
-        # android = ''
-        #   npm run android
-        # '';
+        android = ''
+          echo -e "\033[1;33mWaiting for Android emulator to be ready...\033[0m"
+          # Wait for the device connection command to finish
+          adb -s emulator-5554 wait-for-device && \
+          npm run android
+        '';
       };
     };
     # Enable previews and customize configuration
     previews = {
-      enable = false;
+      enable = true;
       previews = {
         web = {
           command = [ "npm" "run" "web" "--" "--port" "$PORT" ];

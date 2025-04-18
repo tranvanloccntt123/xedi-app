@@ -9,7 +9,8 @@
     "userInterfaceStyle": "light",
     "assetBundlePatterns": ["**/*"],
     "updates": {
-      "url": "https://u.expo.dev/d0d3739c-f024-4eaa-8c30-03d3139a6cd9"
+      "url": "https://u.expo.dev/d0d3739c-f024-4eaa-8c30-03d3139a6cd9",
+      "checkAutomatically": "NEVER"
     },
     "ios": {
       "supportsTablet": true,

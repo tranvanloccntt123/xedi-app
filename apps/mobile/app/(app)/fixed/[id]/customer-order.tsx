@@ -9,7 +9,7 @@ import { Button } from "@/src/components/ui/button";
 import { Divider } from "@/src/components/ui/divider";
 import { Text } from "@/src/components/ui/text";
 import { VStack } from "@/src/components/ui/vstack";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { RootState } from "@/src/store/store";
 import { splitLocation } from "@/src/utils";
 import { router, useLocalSearchParams } from "expo-router";

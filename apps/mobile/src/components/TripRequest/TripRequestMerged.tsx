@@ -2,7 +2,7 @@ import React from "react";
 import { router } from "expo-router";
 import TripRequestDriverHandleLayout from "./TripRequestDriverHandleLayout";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { VStack } from "../ui/vstack";
 import { Text } from "../ui/text";
 import useQuery from "@/hooks/useQuery";

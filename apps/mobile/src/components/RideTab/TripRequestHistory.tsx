@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "../ui/box";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import InfinityList from "../InfinityList";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { Pressable } from "react-native";

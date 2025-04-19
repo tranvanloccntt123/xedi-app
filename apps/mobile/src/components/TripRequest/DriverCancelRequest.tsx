@@ -5,7 +5,7 @@ import { RootState } from "@/src/store/store";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { Button, ButtonText } from "../ui/button";
 import useQuery from "@/hooks/useQuery";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { fetchDetailInfo } from "@/src/store/fetchServices/fetchServicesThunk";
 
 const DriverCancelRequest: React.FC<{ tripRequestId: number }> = ({

@@ -2,7 +2,7 @@ const APP_STRUCT = "FIXED_ROUTE_DETAIL_SCREEN";
 
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import AppLoading from "@/src/components/View/AppLoading";
 import FixedRouteDetailPending from "@/src/components/FixedRoute/FixedRouteDetailPending";
 import FixedRouteDetailRunning from "@/src/components/FixedRoute/FixedRouteDetailRunning";

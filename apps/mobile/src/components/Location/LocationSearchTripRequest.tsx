@@ -12,7 +12,7 @@ import {
 } from "../../store/postForm/postFormSlice";
 import { setAndFetchRouteLocation } from "../../store/postForm/postFormThunks";
 import { router } from "expo-router";
-import { xediSupabase } from "../../lib/supabase";
+import { xediSupabase } from "supabase-client";
 import LocationSearch from "./LocationSearch";
 
 interface LocationSearchProps {

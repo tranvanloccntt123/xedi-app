@@ -17,7 +17,7 @@ import {
   formValidateSuccess,
 } from "@/src/utils/validator";
 import { authValidator } from "@/src/constants/validator";
-import { supabase } from "@/src/lib/supabase";
+import { supabase } from "supabase-client";
 import { pattern } from "@/src/constants";
 import PasswordInput from "@/src/components/PasswordInput";
 import { ScaledSheet } from "react-native-size-matters";

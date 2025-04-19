@@ -11,7 +11,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/src/store/store";
 import { Text } from "@/src/components/ui/text";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { deleteFeedItem } from "@/src/store/feed/feedSlice";
 
 const FeedBottomSheet: React.FC<object> = () => {

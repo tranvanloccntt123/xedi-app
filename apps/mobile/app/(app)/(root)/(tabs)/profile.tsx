@@ -1,7 +1,7 @@
 import React from "react";
 import { logout, clearAuthData } from "@/src/store/auth/authSlice";
 import { clearFixedRoutes } from "@/src/store/fixedRoute/fixedRoutesSlice";
-import { supabase } from "@/src/lib/supabase";
+import { supabase } from "supabase-client";
 import { clearUser } from "@/src/store/user/userSlice";
 import { Box } from "@/src/components/ui/box";
 import { VStack } from "@/src/components/ui/vstack";

@@ -14,7 +14,7 @@ import { DEFAULT_LOCATION } from "@/src/constants";
 import { ScaledSheet } from "react-native-size-matters";
 import useQuery from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
-import { xediSupabase } from "@/src/lib/supabase";
+import {xediSupabase, supabase} from 'supabase-client';
 import ConfirmationModal from "@/src/components/Location/ConfirmationModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";

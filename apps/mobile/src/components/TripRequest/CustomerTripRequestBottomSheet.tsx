@@ -10,7 +10,7 @@ import {
 import { Text } from "../ui/text";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { acceptDriverTripRequest } from "@/src/store/tripRequest/tripRequestsThunk";
 
 const CustomerTripRequestBottomSheet: React.FC<{ isAuthor: boolean }> = ({

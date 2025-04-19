@@ -33,7 +33,7 @@ import { addImage } from "@/src/store/postForm/postFormSlice";
 
 import "moment/locale/vi"; // Import the Vietnamese locale
 import { MarkImageType } from "@/src/store/markImage/markImageSlice";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { generateUUID } from "@/src/utils/uuid";
 // Set the locale globally for moment (optional, but good practice if you use it often)
 moment.locale("vi");

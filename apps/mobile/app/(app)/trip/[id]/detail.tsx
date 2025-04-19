@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import AppLoading from "@/src/components/View/AppLoading";
 import TripRequestDetailPending from "@/src/components/TripRequest/TripRequestPending";
 import { useDispatch } from "react-redux";

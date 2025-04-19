@@ -22,7 +22,7 @@ import {
 import LocationSearch from "../Location/LocationSearch";
 import DateTimePicker from "../DateTime";
 import { VStack } from "../ui/vstack";
-import { xediSupabase } from "../../lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { formatMoney, unformatMoney } from "../../utils/formatMoney";
 import {
   formValidatePerField,

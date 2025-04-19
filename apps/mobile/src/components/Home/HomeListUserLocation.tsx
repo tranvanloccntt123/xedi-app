@@ -2,7 +2,7 @@ import React from "react";
 import { HStack } from "../ui/hstack";
 import useQuery from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import AddIcon from "../icons/AddIcon";
 import AppColors from "../../constants/colors";
 import { Button, ButtonText } from "../ui/button";

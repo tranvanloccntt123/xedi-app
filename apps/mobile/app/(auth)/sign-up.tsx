@@ -23,7 +23,7 @@ import {
 } from "@/src/utils/validator";
 import { authValidator } from "@/src/constants/validator";
 import { ScrollView, Text } from "react-native";
-import { supabase, xediSupabase } from "@/src/lib/supabase";
+import { supabase, xediSupabase } from "supabase-client";
 import { pattern } from "@/src/constants";
 import Logo from "@/src/components/Logo";
 import { HStack } from "@/src/components/ui/hstack";

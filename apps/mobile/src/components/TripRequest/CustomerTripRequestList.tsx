@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native";
 import { Heading } from "@/src/components/ui/heading";
 import { formatMoney } from "@/src/utils/formatMoney";
 import { Text } from "@/src/components/ui/text";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import { BottomSheetContext } from "@/src/components/ui/bottom-sheet";

@@ -15,7 +15,7 @@ import { Divider } from "@/src/components/ui/divider";
 import { VStack } from "@/src/components/ui/vstack";
 import { ScaledSheet } from "react-native-size-matters";
 import { splitLocation } from "@/src/utils";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "../ui/box";
 import InfinityList, { InfinityListMethods } from "../InfinityList";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { Tables } from "@/src/constants";
 import TripRequestItem from "../TripRequest/TripRequestItem";
 import { Pressable, ScrollView } from "react-native";

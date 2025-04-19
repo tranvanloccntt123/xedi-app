@@ -19,7 +19,6 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../src/store/store";
 import { useSelector } from "react-redux";
 import type { RootState } from "../src/store/store";
-import { supabase, xediSupabase } from "@/src/lib/supabase";
 
 import { Box } from "@/src/components/ui/box";
 import { Platform } from "react-native";
@@ -33,6 +32,8 @@ import { startNetworkLogging } from "react-native-network-logger";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { XediFonts } from "@/src/theme/AppStyles";
+
+import {xediSupabase, supabase} from 'supabase-client';
 
 startNetworkLogging();
 

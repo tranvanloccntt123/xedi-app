@@ -1,0 +1,13 @@
+{
+    "name": "supabase-client",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+        "@react-native-async-storage/async-storage": "^2.1.2",
+        "@supabase/supabase-js": "^2.49.4",
+        "react-native-url-polyfill": "^2.0.0"
+    },
+    "devDependencies": {
+        "supabase": "^2.9.6"
+    }
+}

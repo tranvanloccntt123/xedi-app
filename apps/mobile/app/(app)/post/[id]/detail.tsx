@@ -9,7 +9,7 @@ import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";
 import AppColors from "@/src/constants/colors";
 import { router, useLocalSearchParams } from "expo-router";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import useQuery from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import { PartTypes, Tables } from "@/src/constants";

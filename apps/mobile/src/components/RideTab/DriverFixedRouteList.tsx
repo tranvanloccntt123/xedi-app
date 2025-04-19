@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "../ui/box";
 import InfinityList, { InfinityListMethods } from "../InfinityList";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { HStack } from "../ui/hstack";
 import { Button, ButtonText } from "../ui/button";

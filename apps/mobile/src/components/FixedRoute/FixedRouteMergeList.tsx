@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/src/store/store";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { VStack } from "@/src/components/ui/vstack";
 import { HStack } from "@/src/components/ui/hstack";
 import { Heading } from "@/src/components/ui/heading";

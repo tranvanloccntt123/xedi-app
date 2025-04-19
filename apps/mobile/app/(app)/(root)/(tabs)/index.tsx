@@ -3,7 +3,7 @@ import { Box } from "@/src/components/ui/box";
 import { useDispatch } from "react-redux";
 import NewsFeedItem from "@/src/components/Feed/NewsFeedItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { xediSupabase } from "@/src/lib/supabase";
+import {xediSupabase} from 'supabase-client';
 import { BottomSheet } from "@/src/components/ui/bottom-sheet";
 import FeedBottomSheet from "@/src/components/Feed/FeedBottomSheet";
 import useLocation from "@/hooks/useLocation";

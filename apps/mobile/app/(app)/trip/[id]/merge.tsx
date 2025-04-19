@@ -3,7 +3,7 @@ import FixedRouteItem from "@/src/components/FixedRoute/FixedRouteItem";
 import Header from "@/src/components/Header";
 import InfinityList from "@/src/components/InfinityList";
 import { Box } from "@/src/components/ui/box";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RootState } from "@/src/store/store";

@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonText } from "../ui/button";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { xediSupabase } from "../../lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { generateUUID } from "@/src/utils/uuid";
 import { base64ToUint8Array } from "@/src/utils";
 

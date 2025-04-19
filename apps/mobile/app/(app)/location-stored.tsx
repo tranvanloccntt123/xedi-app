@@ -5,7 +5,7 @@ import AppStyles, { wrapTextStyle } from "@/src/theme/AppStyles";
 import Header from "@/src/components/Header";
 import useQuery from "@/hooks/useQuery";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
-import { xediSupabase } from "@/src/lib/supabase";
+import {xediSupabase, supabase} from 'supabase-client';
 import { FlatList, RefreshControl, Text } from "react-native";
 import { VStack } from "@/src/components/ui/vstack";
 import { splitLocation } from "@/src/utils";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Tables } from "@/src/constants";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { RootState } from "@/src/store/store";
 import { generateUUID } from "@/src/utils/uuid";
 import { FlatList, Linking, TouchableOpacity } from "react-native";

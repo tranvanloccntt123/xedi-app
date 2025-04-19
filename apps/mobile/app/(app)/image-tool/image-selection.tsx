@@ -38,7 +38,7 @@ import ImagePreview, {
 import { MarkImageType } from "@/src/store/markImage/markImageSlice";
 import { RootState } from "@/src/store/store";
 import { generateUUID } from "@/src/utils/uuid";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { base64ToUint8Array } from "@/src/utils";
 
 const NUMS = 3;

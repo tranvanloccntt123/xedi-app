@@ -11,7 +11,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import InfinityList, {
   InfinityListMethods,
 } from "@/src/components/InfinityList";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { PartTypes, Tables } from "@/src/constants";
 import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";

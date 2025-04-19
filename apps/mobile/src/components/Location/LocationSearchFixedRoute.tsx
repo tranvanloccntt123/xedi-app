@@ -11,7 +11,7 @@ import {
   setFixedRouteInputSelectionType,
 } from "../../store/postForm/postFormSlice";
 import { router } from "expo-router";
-import { xediSupabase } from "../../lib/supabase";
+import { xediSupabase } from "supabase-client";
 import LocationSearch from "./LocationSearch";
 import { setAndFetchFixedRouteLocation } from "@/src/store/postForm/postFormThunks";
 

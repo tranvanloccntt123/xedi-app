@@ -8,7 +8,7 @@ import { Input, InputField } from "../ui/input";
 import { formatMoney, unformatMoney } from "../../utils/formatMoney";
 import { FormControl } from "../ui/form-control";
 import { Text } from "../ui/text";
-import { xediSupabase } from "../../lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { HStack } from "../ui/hstack";
 import { XEDI_QUERY_KEY } from "@/src/store/fetchServices/fetchServicesSlice";
 import useQuery from "@/hooks/useQuery";

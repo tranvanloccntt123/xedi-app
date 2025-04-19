@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@/src/components/ui/box";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { xediSupabase } from "@/src/lib/supabase";
+import {xediSupabase} from 'supabase-client';
 import { Tables } from "@/src/constants";
 import { HStack } from "@/src/components/ui/hstack";
 import { Avatar, AvatarFallbackText } from "@/src/components/ui/avatar";

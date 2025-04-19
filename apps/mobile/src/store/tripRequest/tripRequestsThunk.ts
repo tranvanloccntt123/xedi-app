@@ -1,4 +1,4 @@
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { IDriverTripRequestStatus } from "@/src/types/enum";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 

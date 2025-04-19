@@ -11,7 +11,7 @@ import AppMapView, { AppMapViewMethods } from "../AppMapView";
 import Header from "../Header";
 import { Button, ButtonText } from "../ui/button";
 import { Text } from "../ui/text";
-import { xediSupabase } from "@/src/lib/supabase";
+import { xediSupabase } from "supabase-client";
 import { Heading } from "../ui/heading";
 import BottomSheetGesture, {
   BottomSheetGestureMethods,

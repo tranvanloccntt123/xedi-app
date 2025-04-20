@@ -5,15 +5,15 @@ import {
 } from "./postFormThunks";
 
 interface ITripRequestTmp {
-  startLocation?: InputLocation;
-  endLocation?: InputLocation;
+  start_location?: InputLocation;
+  end_location?: InputLocation;
   inputSelectionType: SelectLocationType;
   routes: Route[];
-  departureTime?: Date;
+  departure_time?: Date;
 }
 
 interface IFixedRouteTmp extends ITripRequestTmp {
-  totalSeats?: number;
+  total_seats?: number;
   price?: number;
 }
 
@@ -47,23 +47,23 @@ const postFormSlice = createSlice({
     setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
       // state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
     },
-    setTripRequestStartLocation: (
+    setTripRequeststart_location: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.tripRequest.startLocation = action.payload;
+      state.tripRequest.start_location = action.payload;
     },
-    setTripRequestEndLocation: (
+    setTripRequestend_location: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.tripRequest.endLocation = action.payload;
+      state.tripRequest.end_location = action.payload;
     },
-    setTripRequestDepartureTime: (
+    setTripRequestdeparture_time: (
       state,
       action: PayloadAction<Date | undefined>
     ) => {
-      state.tripRequest.departureTime = action.payload;
+      state.tripRequest.departure_time = action.payload;
     },
     resetPost: (
       _,
@@ -79,12 +79,12 @@ const postFormSlice = createSlice({
         routes: [],
       },
     }),
-    resetPostWithStartLocation: (_, action: PayloadAction<InputLocation>) => ({
+    resetPostWithstart_location: (_, action: PayloadAction<InputLocation>) => ({
       ...initialState,
       tripRequest: {
         inputSelectionType: "end-location",
         routes: [],
-        startLocation: action.payload,
+        start_location: action.payload,
       },
     }),
     setTripRequestInputSelectionType: (
@@ -96,13 +96,13 @@ const postFormSlice = createSlice({
     setTripRequestLocation: (state, action: PayloadAction<InputLocation>) => {
       if (!action.payload) return;
       if (state.tripRequest.inputSelectionType === "start-location") {
-        state.tripRequest.startLocation = action.payload;
-        if (!state.tripRequest.endLocation) {
+        state.tripRequest.start_location = action.payload;
+        if (!state.tripRequest.end_location) {
           state.tripRequest.inputSelectionType = "end-location";
         }
       } else {
-        state.tripRequest.endLocation = action.payload;
-        if (!state.tripRequest.startLocation) {
+        state.tripRequest.end_location = action.payload;
+        if (!state.tripRequest.start_location) {
           state.tripRequest.inputSelectionType = "start-location";
         }
       }
@@ -110,23 +110,23 @@ const postFormSlice = createSlice({
 
     //Fixed Route
 
-    setFixedRouteStartLocation: (
+    setFixedRoutestart_location: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.fixedRoutes.startLocation = action.payload;
+      state.fixedRoutes.start_location = action.payload;
     },
-    setFixedRouteEndLocation: (
+    setFixedRouteend_location: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
-      state.fixedRoutes.endLocation = action.payload;
+      state.fixedRoutes.end_location = action.payload;
     },
-    setFixedRouteDepartureTime: (
+    setFixedRoutedeparture_time: (
       state,
       action: PayloadAction<Date | undefined>
     ) => {
-      state.fixedRoutes.departureTime = action.payload;
+      state.fixedRoutes.departure_time = action.payload;
     },
     setFixedRouteInputSelectionType: (
       state,
@@ -137,19 +137,19 @@ const postFormSlice = createSlice({
     setFixedRouteLocation: (state, action: PayloadAction<InputLocation>) => {
       if (!action.payload) return;
       if (state.fixedRoutes.inputSelectionType === "start-location") {
-        state.fixedRoutes.startLocation = action.payload;
-        if (!state.fixedRoutes.endLocation) {
+        state.fixedRoutes.start_location = action.payload;
+        if (!state.fixedRoutes.end_location) {
           state.fixedRoutes.inputSelectionType = "end-location";
         }
       } else {
-        state.fixedRoutes.endLocation = action.payload;
-        if (!state.fixedRoutes.startLocation) {
+        state.fixedRoutes.end_location = action.payload;
+        if (!state.fixedRoutes.start_location) {
           state.fixedRoutes.inputSelectionType = "start-location";
         }
       }
     },
     setFixedRouteTotalSeat: (state, action: PayloadAction<number>) => {
-      state.fixedRoutes.totalSeats = action.payload;
+      state.fixedRoutes.total_seats = action.payload;
     },
     setFixedRoutePrice: (state, action: PayloadAction<number>) => {
       state.fixedRoutes.price = action.payload;
@@ -172,10 +172,10 @@ const postFormSlice = createSlice({
       if (action.payload.inputSelectionType)
         state.tripRequest.inputSelectionType =
           action.payload.inputSelectionType;
-      if (action.payload.startLocation)
-        state.tripRequest.startLocation = action.payload.startLocation;
-      if (action.payload.endLocation)
-        state.tripRequest.endLocation = action.payload.endLocation;
+      if (action.payload.start_location)
+        state.tripRequest.start_location = action.payload.start_location;
+      if (action.payload.end_location)
+        state.tripRequest.end_location = action.payload.end_location;
     });
     builder.addCase(
       setAndFetchFixedRouteLocation.fulfilled,
@@ -185,10 +185,10 @@ const postFormSlice = createSlice({
         if (action.payload.inputSelectionType)
           state.fixedRoutes.inputSelectionType =
             action.payload.inputSelectionType;
-        if (action.payload.startLocation)
-          state.fixedRoutes.startLocation = action.payload.startLocation;
-        if (action.payload.endLocation)
-          state.fixedRoutes.endLocation = action.payload.endLocation;
+        if (action.payload.start_location)
+          state.fixedRoutes.start_location = action.payload.start_location;
+        if (action.payload.end_location)
+          state.fixedRoutes.end_location = action.payload.end_location;
       }
     );
   },
@@ -196,21 +196,21 @@ const postFormSlice = createSlice({
 
 export const {
   setContent,
-  setTripRequestStartLocation,
-  setTripRequestEndLocation,
+  setTripRequeststart_location,
+  setTripRequestend_location,
   setFixedRoutes,
   resetPost,
-  setTripRequestDepartureTime,
+  setTripRequestdeparture_time,
   setTripRequestInputSelectionType,
   setTripRequestLocation,
-  setFixedRouteDepartureTime,
-  setFixedRouteEndLocation,
+  setFixedRoutedeparture_time,
+  setFixedRouteend_location,
   setFixedRouteInputSelectionType,
   setFixedRouteLocation,
   setFixedRoutePrice,
-  setFixedRouteStartLocation,
+  setFixedRoutestart_location,
   setFixedRouteTotalSeat,
-  resetPostWithStartLocation,
+  resetPostWithstart_location,
   addImage,
   removeImage,
 } = postFormSlice.actions;

@@ -27,20 +27,20 @@ export default function FixedRoutesList({ searchQuery }: FixedRoutesListProps) {
   const filteredRoutes = fixedRoutes.filter(
     (route: IFixedRoute) =>
       route.user_id === user?.id &&
-      (route.startLocation.display_name
+      (route.start_location.display_name
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
-        route.endLocation.display_name
+        route.end_location.display_name
           .toLowerCase()
           .includes(searchQuery.toLowerCase()))
   );
 
   const renderItem = useCallback(
     ({ item, index }: { item: IFixedRoute; index: number }) => {
-      const month = moment(item.departureTime).format("MM/YYYY");
+      const month = moment(item.departure_time).format("MM/YYYY");
       const upMonth =
         index &&
-        moment(filteredRoutes[index - 1].departureTime).format("MM/YYYY");
+        moment(filteredRoutes[index - 1].departure_time).format("MM/YYYY");
       return (
         <Box className="px-4 mb-[15px] w-full">
           {(index === 0 || month !== upMonth) && (

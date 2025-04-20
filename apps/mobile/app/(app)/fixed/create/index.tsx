@@ -10,7 +10,7 @@ import { Center } from "@/src/components/ui/center";
 import { StyleSheet } from "react-native";
 import BottomSheetGesture from "@/src/components/BottomSheetGesture";
 import {
-  setFixedRouteDepartureTime,
+  setFixedRoutedeparture_time,
   setFixedRouteLocation,
   setFixedRoutePrice,
 } from "@/src/store/postForm/postFormSlice";
@@ -34,22 +34,22 @@ import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
 const EclipseMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
   coordinate,
 }) => {
-  const { startLocation, endLocation } = useSelector(
+  const { start_location, end_location } = useSelector(
     (state: RootState) => state.postForm.fixedRoutes
   );
   return (
-    (!startLocation?.display_name || !endLocation?.display_name) && (
+    (!start_location?.display_name || !end_location?.display_name) && (
       <EclipseMarkerIcon coordinate={coordinate} />
     )
   );
 };
 
 const PinMarker: React.FC<object> = () => {
-  const { startLocation, endLocation } = useSelector(
+  const { start_location, end_location } = useSelector(
     (state: RootState) => state.postForm.fixedRoutes
   );
   return (
-    (!startLocation?.display_name || !endLocation?.display_name) && (
+    (!start_location?.display_name || !end_location?.display_name) && (
       <PinMarkerIcon />
     )
   );
@@ -71,27 +71,27 @@ export default function CreateFixedRoute() {
     lat: lat,
     lon: lon,
   });
-  const [departureTime, setDepartureTime] = React.useState(
-    fixedRouteTmp.departureTime || new Date()
+  const [departure_time, setdeparture_time] = React.useState(
+    fixedRouteTmp.departure_time || new Date()
   );
   const [error, setError] = React.useState({
     price: "",
-    departureTime: "",
+    departure_time: "",
   });
   const dispatch = useDispatch();
   const bottomSheetRef = React.useRef(null);
-  const isFlexDepartureTime = false;
+  const isFlexdeparture_time = false;
   const handlerConfirm = async () => {
     try {
       const validateForm = formValidatePerField(fixedRouteValidator, {
-        startLocation: fixedRouteTmp.startLocation?.display_name,
-        endLocation: fixedRouteTmp.endLocation?.display_name,
+        start_location: fixedRouteTmp.start_location?.display_name,
+        end_location: fixedRouteTmp.end_location?.display_name,
         price: `${fixedRouteTmp?.price || ""}`,
-        departureTime: `${fixedRouteTmp?.departureTime || ""}`,
+        departure_time: `${fixedRouteTmp?.departure_time || ""}`,
       });
       setError({
         price: validateForm.price?.message || "",
-        departureTime: validateForm.departureTime?.message || "",
+        departure_time: validateForm.departure_time?.message || "",
       });
       if (!formValidateSuccess(validateForm)) {
         return;
@@ -127,7 +127,7 @@ export default function CreateFixedRoute() {
         onPress={(location) => dispatch(setFixedRouteLocation(location))}
         ref={bottomSheetRef}
         isDisableFetchRemind={
-          !!fixedRouteTmp.startLocation && !!fixedRouteTmp.endLocation
+          !!fixedRouteTmp.start_location && !!fixedRouteTmp.end_location
         }
         locationSearchComponent={
           <VStack space="md">
@@ -136,7 +136,7 @@ export default function CreateFixedRoute() {
               isShareHide={true}
               onQueryFullfiled={() => bottomSheetRef.current?.openFull()}
             />
-            {!!fixedRouteTmp.startLocation && !!fixedRouteTmp.endLocation && (
+            {!!fixedRouteTmp.start_location && !!fixedRouteTmp.end_location && (
               <>
                 <Divider />
                 <Box>
@@ -169,23 +169,23 @@ export default function CreateFixedRoute() {
                 <Box>
                   <Text
                     className={`${
-                      isFlexDepartureTime ? "text-typography-300" : "text-black"
+                      isFlexdeparture_time ? "text-typography-300" : "text-black"
                     } font-bold mb-2`}
                   >
                     Khởi hành lúc
                   </Text>
                   <DateTimePicker
-                    isDisabled={isFlexDepartureTime}
-                    date={departureTime}
+                    isDisabled={isFlexdeparture_time}
+                    date={departure_time}
                     onChangeDate={(date) => {
-                      setDepartureTime(date);
-                      dispatch(setFixedRouteDepartureTime(date));
-                      // setErrors({ ...errors, departureTime: "" });
+                      setdeparture_time(date);
+                      dispatch(setFixedRoutedeparture_time(date));
+                      // setErrors({ ...errors, departure_time: "" });
                     }}
                   />
-                  {!!error.departureTime && (
+                  {!!error.departure_time && (
                     <Text className="text-red-500 text-sm mt-1">
-                      {error.departureTime}
+                      {error.departure_time}
                     </Text>
                   )}
                 </Box>

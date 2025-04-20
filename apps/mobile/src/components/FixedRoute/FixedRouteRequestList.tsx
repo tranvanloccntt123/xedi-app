@@ -92,7 +92,7 @@ const FixedRouteRequestList: React.FC<{
             key={v.id}
             isDisabled={
               !isAuthor ||
-              (acceptCountable || 0) >= (fixedRoute.totalSeats || 0)
+              (acceptCountable || 0) >= (fixedRoute.total_seats || 0)
             }
             onDeleted={() => {
               loadData();

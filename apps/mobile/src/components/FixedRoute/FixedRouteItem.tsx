@@ -27,7 +27,7 @@ const FixedRouteItem: React.FC<{
 }> = ({ fixedRoute: item, disabled, className, isHiddenPrice }) => {
   const { title: startTitle, subTitle: startSubTitle } = useMemo(
     () =>
-      splitLocation(item?.startLocation?.display_name) ?? {
+      splitLocation(item?.start_location?.display_name) ?? {
         title: "",
         subTitle: "",
       },
@@ -35,7 +35,7 @@ const FixedRouteItem: React.FC<{
   );
   const { title: endTitle, subTitle: endSubTitle } = useMemo(
     () =>
-      splitLocation(item?.endLocation?.display_name) ?? {
+      splitLocation(item?.end_location?.display_name) ?? {
         title: "",
         subTitle: "",
       },
@@ -47,12 +47,12 @@ const FixedRouteItem: React.FC<{
       className={`mx-2 bg-xedi-card p-4 rounded-md ${className}`}
     >
       <HStack className="justify-between h-[30px]">
-        {!!item.departureTime && (
+        {!!item.departure_time && (
           <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
-            {moment(item.departureTime).format("HH:mm")}
+            {moment(item.departure_time).format("HH:mm")}
           </Text>
         )}
-        {!item.departureTime && (
+        {!item.departure_time && (
           <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
             Thời gian linh động
           </Text>
@@ -68,9 +68,9 @@ const FixedRouteItem: React.FC<{
               Hoàn thành
             </Text>
           )}
-          {!!item.departureTime && (
+          {!!item.departure_time && (
             <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
-              {moment(item.departureTime).format("DD/MM/YYYY")}
+              {moment(item.departure_time).format("DD/MM/YYYY")}
             </Text>
           )}
         </HStack>

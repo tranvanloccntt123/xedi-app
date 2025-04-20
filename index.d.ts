@@ -27,11 +27,11 @@ interface InputLocation {
 interface IFixedRoute {
     id: number;
     user_id: string;
-    startLocation: InputLocation;
-    endLocation: InputLocation;
-    departureTime: string;
-    totalSeats: number;
-    availableSeats: number;
+    start_location: InputLocation;
+    end_location: InputLocation;
+    departure_time: string;
+    total_seats: number;
+    available_seats: number;
     price: number;
     created_at: Date;
     status: number;
@@ -51,9 +51,9 @@ interface ITripRequest {
     id: number;
     user_id: string;
     users?: IUser;
-    startLocation: InputLocation;
-    endLocation: InputLocation;
-    departureTime: Date;
+    start_location: InputLocation;
+    end_location: InputLocation;
+    departure_time: Date;
     status: number;
     type: "Delivery" | "Taxi";
     created_at?: string;

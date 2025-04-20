@@ -5,21 +5,21 @@ import { OrsDirections } from "../../lib/osrm";
 export const setAndFetchRouteLocation = createAsyncThunk<
   {
     routes?: Route[];
-    startLocation?: InputLocation;
-    endLocation?: InputLocation;
+    start_location?: InputLocation;
+    end_location?: InputLocation;
     inputSelectionType?: SelectLocationType;
   },
   never
 >("post/setAndFetchRouteLocation", async (_, { rejectWithValue, getState }) => {
   try {
     const state = getState() as RootState;
-    const { startLocation, endLocation } = state.postForm.tripRequest;
+    const { start_location, end_location } = state.postForm.tripRequest;
 
-    if (startLocation && endLocation) {
+    if (start_location && end_location) {
       let res = await OrsDirections.calculate({
         coordinates: [
-          [startLocation.lon, startLocation.lat],
-          [endLocation.lon, endLocation.lat],
+          [start_location.lon, start_location.lat],
+          [end_location.lon, end_location.lat],
         ],
         profile: "driving-car",
       });
@@ -37,8 +37,8 @@ export const setAndFetchRouteLocation = createAsyncThunk<
 export const setAndFetchFixedRouteLocation = createAsyncThunk<
   {
     routes?: Route[];
-    startLocation?: InputLocation;
-    endLocation?: InputLocation;
+    start_location?: InputLocation;
+    end_location?: InputLocation;
     inputSelectionType?: SelectLocationType;
   },
   never
@@ -47,13 +47,13 @@ export const setAndFetchFixedRouteLocation = createAsyncThunk<
   async (_, { rejectWithValue, getState }) => {
     try {
       const state = getState() as RootState;
-      const { startLocation, endLocation } = state.postForm.fixedRoutes;
+      const { start_location, end_location } = state.postForm.fixedRoutes;
 
-      if (startLocation && endLocation) {
+      if (start_location && end_location) {
         let res = await OrsDirections.calculate({
           coordinates: [
-            [startLocation.lon, startLocation.lat],
-            [endLocation.lon, endLocation.lat],
+            [start_location.lon, start_location.lat],
+            [end_location.lon, end_location.lat],
           ],
           profile: "driving-car",
         });

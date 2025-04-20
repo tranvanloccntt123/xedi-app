@@ -67,22 +67,22 @@ export const fixedRouteValidator: ValidatorObject<keyof IFixedRoute> = {
       message: "Tuyến cố định này chưa có người lái xe.",
     },
   },
-  startLocation: {
+  start_location: {
     required: {
       message: "Bạn cần thêm điểm bắt đầu cho chuyến đi.",
     },
   },
-  endLocation: {
+  end_location: {
     required: {
       message: "Bạn cần thêm điểm kết thúc cho chuyến đi.",
     },
   },
-  departureTime: {
+  departure_time: {
     required: {
       message: "Bạn cần thêm thời điểm bắt đầu chuyến đi.",
     },
   },
-  totalSeats: {
+  total_seats: {
     required: {
       message: "Số ghế ngồi không được để trống.",
     },

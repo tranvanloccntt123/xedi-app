@@ -8,13 +8,13 @@ import TripRequestMapSelectionLayout from "@/src/components/TripRequest/TripRequ
 export default function CreatePostLocation() {
   useLocation({ isWatchLocation: true });
   const { type } = useLocalSearchParams<{
-    type: "startLocation" | "endLocation";
+    type: "start_location" | "end_location";
   }>();
   const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (type === "startLocation") {
+    if (type === "start_location") {
       dispatch(setTripRequestInputSelectionType("start-location"));
     } else {
       dispatch(setTripRequestInputSelectionType("end-location"));

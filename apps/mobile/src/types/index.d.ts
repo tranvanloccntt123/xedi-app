@@ -40,8 +40,8 @@ type CustomerInFixedRouteType = "TripRequest" | "FixedRouteOrder";
 type CustomerInFixedRoute = {
   id: string;
   user: IUser;
-  startLocation: InputLocation;
-  endLocation: InputLocation;
+  start_location: InputLocation;
+  end_location: InputLocation;
   type: CustomerInFixedRouteType;
 };
 

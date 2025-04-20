@@ -26,19 +26,19 @@ export default function EditFixedRoute() {
   const dispatch = useDispatch()
   const route = useSelector((state: RootState) => state.fixedRoutes.routes.find((r) => r.id === id))
 
-  const [startLocation, setStartLocation] = useState(route?.startLocation || "")
-  const [endLocation, setEndLocation] = useState(route?.endLocation || "")
-  const [departureTime, setDepartureTime] = useState(new Date(route?.departureTime || Date.now()))
-  const [totalSeats, setTotalSeats] = useState(route?.totalSeats.toString() || "")
+  const [start_location, setstart_location] = useState(route?.start_location || "")
+  const [end_location, setend_location] = useState(route?.end_location || "")
+  const [departure_time, setdeparture_time] = useState(new Date(route?.departure_time || Date.now()))
+  const [total_seats, settotal_seats] = useState(route?.total_seats.toString() || "")
   const [price, setPrice] = useState(route?.price.toString() || "")
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     if (route) {
-      setStartLocation(route.startLocation)
-      setEndLocation(route.endLocation)
-      setDepartureTime(new Date(route.departureTime))
-      setTotalSeats(route.totalSeats.toString())
+      setstart_location(route.start_location)
+      setend_location(route.end_location)
+      setdeparture_time(new Date(route.departure_time))
+      settotal_seats(route.total_seats.toString())
       setPrice(route.price.toString())
     }
   }, [route])
@@ -53,10 +53,10 @@ export default function EditFixedRoute() {
 
   const handleUpdate = () => {
     const formData = {
-      startLocation,
-      endLocation,
-      departureTime: departureTime.toISOString(),
-      totalSeats,
+      start_location,
+      end_location,
+      departure_time: departure_time.toISOString(),
+      total_seats,
       price,
     }
 
@@ -66,10 +66,10 @@ export default function EditFixedRoute() {
     if (formValidateSuccess(validateForm)) {
       const updatedRoute = {
         ...route,
-        startLocation,
-        endLocation,
-        departureTime: departureTime.toISOString(),
-        totalSeats: Number.parseInt(totalSeats, 10),
+        start_location,
+        end_location,
+        departure_time: departure_time.toISOString(),
+        total_seats: Number.parseInt(total_seats, 10),
         price: unformatMoney(price),
       }
       dispatch(updateFixedRoute(updatedRoute))
@@ -77,9 +77,9 @@ export default function EditFixedRoute() {
     }
   }
 
-  const onChangeDepartureTime = (date: Date) => {
-    setDepartureTime(date)
-    setErrors({ ...errors, departureTime: "" })
+  const onChangedeparture_time = (date: Date) => {
+    setdeparture_time(date)
+    setErrors({ ...errors, departure_time: "" })
   }
 
   return (
@@ -88,57 +88,57 @@ export default function EditFixedRoute() {
         <Box className="flex-1 p-4 bg-gray-100">
           <VStack space="md">
             <Heading size="xl">Chỉnh sửa tuyến cố định</Heading>
-            <FormControl isInvalid={!!errors.startLocation}>
+            <FormControl isInvalid={!!errors.start_location}>
               <FormControlLabel>Điểm đi</FormControlLabel>
               <Input>
                 <InputField
-                  value={startLocation}
+                  value={start_location}
                   onChangeText={(value) => {
-                    setStartLocation(value)
-                    setErrors({ ...errors, startLocation: "" })
+                    setstart_location(value)
+                    setErrors({ ...errors, start_location: "" })
                   }}
                 />
               </Input>
               <FormControlError>
-                <FormControlErrorText>{errors.startLocation}</FormControlErrorText>
+                <FormControlErrorText>{errors.start_location}</FormControlErrorText>
               </FormControlError>
             </FormControl>
-            <FormControl isInvalid={!!errors.endLocation}>
+            <FormControl isInvalid={!!errors.end_location}>
               <FormControlLabel>Điểm đến</FormControlLabel>
               <Input>
                 <InputField
-                  value={endLocation}
+                  value={end_location}
                   onChangeText={(value) => {
-                    setEndLocation(value)
-                    setErrors({ ...errors, endLocation: "" })
+                    setend_location(value)
+                    setErrors({ ...errors, end_location: "" })
                   }}
                 />
               </Input>
               <FormControlError>
-                <FormControlErrorText>{errors.endLocation}</FormControlErrorText>
+                <FormControlErrorText>{errors.end_location}</FormControlErrorText>
               </FormControlError>
             </FormControl>
-            <FormControl isInvalid={!!errors.departureTime}>
+            <FormControl isInvalid={!!errors.departure_time}>
               <FormControlLabel>Thời gian khởi hành</FormControlLabel>
-              <DateTimePicker date={departureTime} onChangeDate={onChangeDepartureTime} />
+              <DateTimePicker date={departure_time} onChangeDate={onChangedeparture_time} />
               <FormControlError>
-                <FormControlErrorText>{errors.departureTime}</FormControlErrorText>
+                <FormControlErrorText>{errors.departure_time}</FormControlErrorText>
               </FormControlError>
             </FormControl>
-            <FormControl isInvalid={!!errors.totalSeats}>
+            <FormControl isInvalid={!!errors.total_seats}>
               <FormControlLabel>Tổng số ghế</FormControlLabel>
               <Input>
                 <InputField
-                  value={totalSeats}
+                  value={total_seats}
                   onChangeText={(value) => {
-                    setTotalSeats(value)
-                    setErrors({ ...errors, totalSeats: "" })
+                    settotal_seats(value)
+                    setErrors({ ...errors, total_seats: "" })
                   }}
                   keyboardType="numeric"
                 />
               </Input>
               <FormControlError>
-                <FormControlErrorText>{errors.totalSeats}</FormControlErrorText>
+                <FormControlErrorText>{errors.total_seats}</FormControlErrorText>
               </FormControlError>
             </FormControl>
             <FormControl isInvalid={!!errors.price}>

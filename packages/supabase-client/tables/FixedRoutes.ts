@@ -11,11 +11,11 @@ export default class FixedRoutes extends BaseTable<IFixedRoute> {
     try {
       return this.add(
         _data.map((v) => ({
-          startLocation: v.startLocation,
-          endLocation: v.endLocation,
-          departureTime: v.departureTime,
-          totalSeats: v.totalSeats,
-          availableSeats: v.availableSeats,
+          start_location: v.start_location,
+          end_location: v.end_location,
+          departure_time: v.departure_time,
+          total_seats: v.total_seats,
+          available_seats: v.available_seats,
           price: v.price,
           created_at: v.created_at.toISOString(),
           user_id: v.user_id,

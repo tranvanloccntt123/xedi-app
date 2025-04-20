@@ -41,19 +41,19 @@ const CreatePostButton: React.FC<{
   };
 
   const handlerCustomerPostWithTripRequest = async () => {
-    if (!tripRequest.departureTime) {
+    if (!tripRequest.departure_time) {
       onError(
         "Bạn cần thêm thời điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!tripRequest.startLocation?.display_name) {
+    if (!tripRequest.start_location?.display_name) {
       onError(
         "Bạn cần thêm điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!tripRequest.endLocation?.display_name) {
+    if (!tripRequest.end_location?.display_name) {
       onError(
         "Bạn cần thêm điểm đến hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
@@ -62,10 +62,10 @@ const CreatePostButton: React.FC<{
     const { data: tripRequestData } = await xediSupabase.tables.tripRequest.add(
       [
         {
-          startLocation: tripRequest.startLocation,
-          endLocation: tripRequest.endLocation,
+          start_location: tripRequest.start_location,
+          end_location: tripRequest.end_location,
           user_id: user.id,
-          departureTime: tripRequest.departureTime,
+          departure_time: tripRequest.departure_time,
           type: "Taxi",
         },
       ]
@@ -85,19 +85,19 @@ const CreatePostButton: React.FC<{
   };
 
   const handlerDriverPostWithFixedRoute = async () => {
-    if (!fixedRoutes.departureTime) {
+    if (!fixedRoutes.departure_time) {
       onError(
         "Bạn cần thêm thời điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!fixedRoutes.startLocation?.display_name) {
+    if (!fixedRoutes.start_location?.display_name) {
       onError(
         "Bạn cần thêm điểm khởi hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
       return;
     }
-    if (!fixedRoutes.endLocation?.display_name) {
+    if (!fixedRoutes.end_location?.display_name) {
       onError(
         "Bạn cần thêm điểm đến hành để tài xế thuận tiện trong việc đưa đón nhé!"
       );
@@ -109,12 +109,12 @@ const CreatePostButton: React.FC<{
     }
     const { data: fixedRouteData } = await xediSupabase.tables.fixedRoutes.add([
       {
-        startLocation: fixedRoutes.startLocation,
-        endLocation: fixedRoutes.endLocation,
+        start_location: fixedRoutes.start_location,
+        end_location: fixedRoutes.end_location,
         user_id: user.id,
-        departureTime: fixedRoutes.departureTime,
-        totalSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
-        availableSeats: parseInt(`${fixedRoutes?.totalSeats || 0}`),
+        departure_time: fixedRoutes.departure_time,
+        total_seats: parseInt(`${fixedRoutes?.total_seats || 0}`),
+        available_seats: parseInt(`${fixedRoutes?.total_seats || 0}`),
         price: parseFloat(`${fixedRoutes.price || 0}`),
       },
     ]);
@@ -134,9 +134,9 @@ const CreatePostButton: React.FC<{
 
   const handlerCustomerPost = async () => {
     if (
-      !!tripRequest.departureTime ||
-      !!tripRequest.startLocation?.display_name ||
-      !!tripRequest.endLocation?.display_name
+      !!tripRequest.departure_time ||
+      !!tripRequest.start_location?.display_name ||
+      !!tripRequest.end_location?.display_name
     ) {
       await handlerCustomerPostWithTripRequest();
     } else {
@@ -152,9 +152,9 @@ const CreatePostButton: React.FC<{
 
   const handleDriverPost = async () => {
     if (
-      !!fixedRoutes.departureTime ||
-      !!fixedRoutes.startLocation?.display_name ||
-      !fixedRoutes.endLocation?.display_name
+      !!fixedRoutes.departure_time ||
+      !!fixedRoutes.start_location?.display_name ||
+      !fixedRoutes.end_location?.display_name
     ) {
       await handlerDriverPostWithFixedRoute();
       return;

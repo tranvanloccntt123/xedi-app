@@ -33,15 +33,15 @@ const FixedRouteCustomerMarker: React.FC<{
       {(data || [])
         .filter(
           (customer) =>
-            !!customer.startLocation.lon && !!customer.startLocation.lat
+            !!customer.start_location.lon && !!customer.start_location.lat
         )
         .map((customer) => {
           return (
             <MarkerView
               key={customer.id}
               coordinate={[
-                customer.startLocation.lon,
-                customer.startLocation.lat,
+                customer.start_location.lon,
+                customer.start_location.lat,
               ]}
             >
               <Animated.View style={[markerStyle, { alignItems: "center" }]}>

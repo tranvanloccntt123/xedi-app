@@ -14,7 +14,7 @@ import { Box } from "../ui/box";
 import { ScrollView } from "react-native";
 import lodash from "lodash";
 import { useDispatch } from "react-redux";
-import { resetPostWithStartLocation } from "@/src/store/postForm/postFormSlice";
+import { resetPostWithstart_location } from "@/src/store/postForm/postFormSlice";
 
 const HomeListUserLocation: React.FC<object> = () => {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const HomeListUserLocation: React.FC<object> = () => {
                 key={userLocations.id}
                 variant="link"
                 onPress={() => {
-                  dispatch(resetPostWithStartLocation(userLocations.location));
+                  dispatch(resetPostWithstart_location(userLocations.location));
                   router.navigate("/trip/create?type=end-location");
                 }}
                 style={styles.locationBtn}

@@ -54,49 +54,49 @@ const AddFixedRouteModal: React.FC<{
   const setLocationFor = React.useRef(LocationFor.START_LOCATION);
   const [locationModal, setLocationModal] = React.useState(false);
 
-  const [startLocation, setStartLocation] = React.useState<InputLocation>({
+  const [start_location, setstart_location] = React.useState<InputLocation>({
     display_name: "",
     lat: 0,
     lon: 0,
   });
-  const [endLocation, setEndLocation] = React.useState<InputLocation>({
+  const [end_location, setend_location] = React.useState<InputLocation>({
     display_name: "",
     lat: 0,
     lon: 0,
   });
   const [price, setPrice] = React.useState("");
-  const [totalSeats, setTotalSeats] = React.useState("");
-  const [departureTime, setDepartureTime] = React.useState(new Date());
+  const [total_seats, settotal_seats] = React.useState("");
+  const [departure_time, setdeparture_time] = React.useState(new Date());
   const [description, setDescription] = React.useState("");
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  const [isFlexDepartureTime, setIsFlexDepartureTime] = React.useState(false);
+  const [isFlexdeparture_time, setIsFlexdeparture_time] = React.useState(false);
   const onCreateFixedRoute = async () => {
     const _errors = {};
-    const validateStartLocation = formValidatePerField(
+    const validatestart_location = formValidatePerField(
       locationValidator,
-      startLocation as never
+      start_location as never
     );
 
-    if (!formValidateSuccess(validateStartLocation)) {
-      _errors["startLocation"] = validateStartLocation["display_name"].message;
+    if (!formValidateSuccess(validatestart_location)) {
+      _errors["start_location"] = validatestart_location["display_name"].message;
     }
 
-    const validateEndLocation = formValidatePerField(
+    const validateend_location = formValidatePerField(
       locationValidator,
-      endLocation as never
+      end_location as never
     );
 
-    if (!formValidateSuccess(validateEndLocation)) {
-      _errors["endLocation"] = validateEndLocation["display_name"].message;
+    if (!formValidateSuccess(validateend_location)) {
+      _errors["end_location"] = validateend_location["display_name"].message;
     }
 
     const formData = {
-      totalSeats,
+      total_seats,
       price,
     };
 
-    if (!isFlexDepartureTime) {
-      formData["departureTime"] = departureTime.toISOString();
+    if (!isFlexdeparture_time) {
+      formData["departure_time"] = departure_time.toISOString();
     }
 
     const validateForm = formValidatePerField(
@@ -121,12 +121,12 @@ const AddFixedRouteModal: React.FC<{
     try {
       const { data } = await xediSupabase.tables.fixedRoutes.addWithUserId([
         {
-          startLocation,
-          endLocation,
-          departureTime: isFlexDepartureTime ? undefined : departureTime,
+          start_location,
+          end_location,
+          departure_time: isFlexdeparture_time ? undefined : departure_time,
           description,
-          totalSeats: parseInt(totalSeats),
-          availableSeats: parseInt(totalSeats),
+          total_seats: parseInt(total_seats),
+          available_seats: parseInt(total_seats),
           price: parseFloat(price),
         },
       ]);
@@ -163,12 +163,12 @@ const AddFixedRouteModal: React.FC<{
                   }}
                 >
                   <ButtonText>
-                    {startLocation?.display_name || "Điểm khởi hành"}
+                    {start_location?.display_name || "Điểm khởi hành"}
                   </ButtonText>
                 </Button>
-                {!!errors.startLocation && (
+                {!!errors.start_location && (
                   <Text className="text-red-500 text-sm mt-1">
-                    {errors.startLocation}
+                    {errors.start_location}
                   </Text>
                 )}
               </Box>
@@ -181,7 +181,7 @@ const AddFixedRouteModal: React.FC<{
                   }}
                 >
                   <ButtonText>
-                    {endLocation.display_name || "Điểm đến"}
+                    {end_location.display_name || "Điểm đến"}
                   </ButtonText>
                 </Button>
               </Box>
@@ -189,22 +189,22 @@ const AddFixedRouteModal: React.FC<{
               <Box>
                 <Text
                   className={`${
-                    isFlexDepartureTime ? "text-typography-300" : "text-black"
+                    isFlexdeparture_time ? "text-typography-300" : "text-black"
                   }`}
                 >
                   Khởi hành lúc
                 </Text>
                 <DateTimePicker
-                  isDisabled={isFlexDepartureTime}
-                  date={departureTime}
+                  isDisabled={isFlexdeparture_time}
+                  date={departure_time}
                   onChangeDate={(date) => {
-                    setDepartureTime(date);
-                    setErrors({ ...errors, departureTime: "" });
+                    setdeparture_time(date);
+                    setErrors({ ...errors, departure_time: "" });
                   }}
                 />
-                {!!errors.departureTime && (
+                {!!errors.departure_time && (
                   <Text className="text-red-500 text-sm mt-1">
-                    {errors.departureTime}
+                    {errors.departure_time}
                   </Text>
                 )}
               </Box>
@@ -213,7 +213,7 @@ const AddFixedRouteModal: React.FC<{
                 size="md"
                 isInvalid={false}
                 isDisabled={false}
-                onChange={setIsFlexDepartureTime}
+                onChange={setIsFlexdeparture_time}
               >
                 <CheckboxIndicator>
                   <CheckboxIcon as={CheckIcon} />
@@ -247,15 +247,15 @@ const AddFixedRouteModal: React.FC<{
                 <Text>Số ghế trống</Text>
                 <Input>
                   <InputField
-                    value={totalSeats}
-                    onChangeText={setTotalSeats}
+                    value={total_seats}
+                    onChangeText={settotal_seats}
                     keyboardType="numeric"
                     placeholder="Nhập số ghế"
                   />
                 </Input>
-                {!!errors.totalSeats && (
+                {!!errors.total_seats && (
                   <Text className="text-red-500 text-sm mt-1">
-                    {errors.totalSeats}
+                    {errors.total_seats}
                   </Text>
                 )}
               </Box>
@@ -312,21 +312,21 @@ const AddFixedRouteModal: React.FC<{
             </Text>
           </ModalHeader>
           <ModalBody className="mb-4">
-            <FormControl isInvalid={!!errors.startLocation}>
+            <FormControl isInvalid={!!errors.start_location}>
               <LocationSearch
                 onSelectLocation={(location) => {
                   if (setLocationFor.current === LocationFor.START_LOCATION) {
-                    setStartLocation(location);
+                    setstart_location(location);
                   } else {
-                    setEndLocation(location);
+                    setend_location(location);
                   }
-                  setErrors({ ...errors, startLocation: "" });
+                  setErrors({ ...errors, start_location: "" });
                   setLocationModal(false);
                 }}
               />
               <FormControlError>
                 <FormControlErrorText>
-                  {errors.startLocation}
+                  {errors.start_location}
                 </FormControlErrorText>
               </FormControlError>
             </FormControl>

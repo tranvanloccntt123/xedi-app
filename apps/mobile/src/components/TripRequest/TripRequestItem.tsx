@@ -21,11 +21,11 @@ const TripRequestItem: React.FC<{
   className?: string;
 }> = ({ tripRequest: item, disabled, className }) => {
   const { title: startTitle, subTitle: startSubTitle } = useMemo(
-    () => splitLocation(item.startLocation.display_name),
+    () => splitLocation(item.start_location.display_name),
     []
   );
   const { title: endTitle, subTitle: endSubTitle } = useMemo(
-    () => splitLocation(item.endLocation.display_name),
+    () => splitLocation(item.end_location.display_name),
     []
   );
   return (
@@ -44,19 +44,19 @@ const TripRequestItem: React.FC<{
         </Text>
       )}
       <HStack className="justify-between items-center">
-        {!!item.departureTime && (
+        {!!item.departure_time && (
           <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
-            {moment(item.departureTime).format("HH:mm")}
+            {moment(item.departure_time).format("HH:mm")}
           </Text>
         )}
-        {!item.departureTime && (
+        {!item.departure_time && (
           <Text style={wrapTextStyle({ fontWeight: "700" }, "sm")}>
             Thời gian linh động
           </Text>
         )}
-        {!!item.departureTime && (
+        {!!item.departure_time && (
           <Text style={wrapTextStyle({ fontWeight: "700" }, "2xs")}>
-            {moment(item.departureTime).format("DD/MM/YYYY")}
+            {moment(item.departure_time).format("DD/MM/YYYY")}
           </Text>
         )}
       </HStack>

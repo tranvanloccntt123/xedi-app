@@ -19,7 +19,7 @@ import { RootState } from "@/src/store/store";
 import {
   setContent,
   resetPost,
-  setTripRequestDepartureTime,
+  setTripRequestdeparture_time,
   removeImage,
 } from "@/src/store/postForm/postFormSlice";
 import DateTime from "@/src/components/DateTime";
@@ -44,7 +44,7 @@ const truncateText = (text: string, maxLength: number) => {
 };
 
 const CustomerExpand: React.FC<object> = () => {
-  const { startLocation, endLocation, departureTime } = useSelector(
+  const { start_location, end_location, departure_time } = useSelector(
     (state: RootState) => state.postForm.tripRequest
   );
   const dispatch = useDispatch();
@@ -52,9 +52,9 @@ const CustomerExpand: React.FC<object> = () => {
     <OnlyCustomer>
       <Box className="bg-white p-2 rounded-full">
         <DateTime
-          date={departureTime}
+          date={departure_time}
           onChangeDate={(date) => {
-            dispatch(setTripRequestDepartureTime(date));
+            dispatch(setTripRequestdeparture_time(date));
           }}
           placeholder="Khởi hành lúc"
           variant={"link"}
@@ -64,7 +64,7 @@ const CustomerExpand: React.FC<object> = () => {
         variant="link"
         className="justify-start"
         onPress={() =>
-          router.push("/post/create/post-location?type=startLocation")
+          router.push("/post/create/post-location?type=start_location")
         }
       >
         <HStack space="sm" className="items-center">
@@ -75,8 +75,8 @@ const CustomerExpand: React.FC<object> = () => {
             className="color-xedi-text"
             style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
           >
-            {startLocation
-              ? truncateText(startLocation.display_name, 30)
+            {start_location
+              ? truncateText(start_location.display_name, 30)
               : "Thêm điểm đón"}
           </ButtonText>
         </HStack>
@@ -85,7 +85,7 @@ const CustomerExpand: React.FC<object> = () => {
         variant="link"
         className="justify-start"
         onPress={() =>
-          router.push("/post/create/post-location?type=endLocation")
+          router.push("/post/create/post-location?type=end_location")
         }
       >
         <HStack space="sm" className="items-center">
@@ -96,8 +96,8 @@ const CustomerExpand: React.FC<object> = () => {
             className="color-xedi-text"
             style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
           >
-            {endLocation
-              ? truncateText(endLocation.display_name, 30)
+            {end_location
+              ? truncateText(end_location.display_name, 30)
               : "Thêm điểm đến"}
           </ButtonText>
         </HStack>
@@ -213,7 +213,7 @@ export default function CreatePost() {
               </Box>
             )}
             <OnlyDriver>
-              {!!fixedRoutes.startLocation && !!fixedRoutes.endLocation && (
+              {!!fixedRoutes.start_location && !!fixedRoutes.end_location && (
                 <Box className="w-full">
                   <FixedRouteItem
                     fixedRoute={
@@ -222,10 +222,10 @@ export default function CreatePost() {
                         id: 0,
                         user_id: "",
                         created_at: new Date(),
-                        availableSeats: 0,
+                        available_seats: 0,
                         status: 0,
-                        departureTime: (
-                          fixedRoutes.departureTime || new Date()
+                        departure_time: (
+                          fixedRoutes.departure_time || new Date()
                         ).toDateString(),
                       } as IFixedRoute
                     }

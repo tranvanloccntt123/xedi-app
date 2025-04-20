@@ -6,8 +6,8 @@ import { RootState } from "../../store/store";
 import {
   setTripRequestInputSelectionType,
   setTripRequestLocation,
-  setTripRequestStartLocation,
-  setTripRequestEndLocation,
+  setTripRequeststart_location,
+  setTripRequestend_location,
   resetPost,
 } from "../../store/postForm/postFormSlice";
 import { setAndFetchRouteLocation } from "../../store/postForm/postFormThunks";
@@ -30,7 +30,7 @@ export default function LocationSearchTripRequest({
 }: LocationSearchProps) {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
-  const { inputSelectionType, startLocation, endLocation, departureTime } =
+  const { inputSelectionType, start_location, end_location, departure_time } =
     useSelector((state: RootState) => state.postForm.tripRequest);
 
   const dispatch = useDispatch();
@@ -38,18 +38,18 @@ export default function LocationSearchTripRequest({
   const debounceSendEvent = useDebounce({ time: 100 });
 
   useEffect(() => {
-    if (startLocation && endLocation)
+    if (start_location && end_location)
       debounceSendEvent(() => {
         dispatch(setAndFetchRouteLocation());
         onQueryFullfiled?.();
       });
-  }, [startLocation, endLocation]);
+  }, [start_location, end_location]);
 
   const handlerSwap = () => {
-    const tmpEndLocation = endLocation;
-    const tmpStartLocation = startLocation;
-    dispatch(setTripRequestStartLocation(tmpEndLocation));
-    dispatch(setTripRequestEndLocation(tmpStartLocation));
+    const tmpend_location = end_location;
+    const tmpstart_location = start_location;
+    dispatch(setTripRequeststart_location(tmpend_location));
+    dispatch(setTripRequestend_location(tmpstart_location));
   };
 
   return (
@@ -62,10 +62,10 @@ export default function LocationSearchTripRequest({
               const { data: tripRequestData } =
                 await xediSupabase.tables.tripRequest.add([
                   {
-                    startLocation,
-                    endLocation,
+                    start_location,
+                    end_location,
                     user_id: user.id,
-                    departureTime,
+                    departure_time,
                     type: "Taxi",
                   },
                 ]);
@@ -75,17 +75,17 @@ export default function LocationSearchTripRequest({
       }
       isShareHide={isShareHide}
       inputSelectionType={inputSelectionType}
-      startLocation={startLocation}
-      endLocation={endLocation}
-      departureTime={departureTime}
+      start_location={start_location}
+      end_location={end_location}
+      departure_time={departure_time}
       onSwap={handlerSwap}
       onSelectLocation={(item) => dispatch(setTripRequestLocation(item))}
-      onClearStartLocation={() => dispatch(setTripRequestStartLocation())}
-      onClearEndLocation={() => dispatch(setTripRequestEndLocation())}
-      onStartLocationFocus={() =>
+      onClearstart_location={() => dispatch(setTripRequeststart_location())}
+      onClearend_location={() => dispatch(setTripRequestend_location())}
+      onstart_locationFocus={() =>
         dispatch(setTripRequestInputSelectionType("start-location"))
       }
-      onEndLocationFocus={() =>
+      onend_locationFocus={() =>
         dispatch(setTripRequestInputSelectionType("end-location"))
       }
     />

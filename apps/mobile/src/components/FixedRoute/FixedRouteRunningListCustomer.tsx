@@ -65,8 +65,8 @@ const FixedRouteRunningListCustomer: React.FC<{
           ...fixedRouteRequestList.map((v) => ({
             id: generateUUID(),
             user: v.users,
-            startLocation: v.location,
-            endLocation: fixedRoute.endLocation,
+            start_location: v.location,
+            end_location: fixedRoute.end_location,
             type: "FixedRouteOrder" as CustomerInFixedRouteType,
           }))
         );
@@ -77,8 +77,8 @@ const FixedRouteRunningListCustomer: React.FC<{
           ...mergeRequestList.map((v) => ({
             id: generateUUID(),
             user: v.users,
-            startLocation: v.startLocation,
-            endLocation: v.endLocation,
+            start_location: v.start_location,
+            end_location: v.end_location,
             type: "TripRequest" as CustomerInFixedRouteType,
           }))
         );
@@ -111,21 +111,21 @@ const FixedRouteRunningListCustomer: React.FC<{
                 <PhoneIcon size={scale(24)} color="#000" />
               </Button>
             </HStack>
-            {item.startLocation?.display_name && (
+            {item.start_location?.display_name && (
               <TouchableOpacity
                 onPress={() =>
-                  item.startLocation?.lat &&
-                  item.startLocation?.lon &&
+                  item.start_location?.lat &&
+                  item.start_location?.lon &&
                   onMoveTo?.({
-                    lat: item.startLocation?.lat,
-                    lon: item.startLocation.lon,
+                    lat: item.start_location?.lat,
+                    lon: item.start_location.lon,
                   })
                 }
               >
                 <HStack space="sm" className="items-center">
                   <HiIcon size={scale(18)} color="#000" />
                   <Text className="tet-md font-[500] flex-1">
-                    {item.startLocation.display_name}
+                    {item.start_location.display_name}
                   </Text>
                 </HStack>
               </TouchableOpacity>

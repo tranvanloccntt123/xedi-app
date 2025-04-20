@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {
   resetPost,
-  setFixedRouteStartLocation,
-  setFixedRouteEndLocation,
+  setFixedRoutestart_location,
+  setFixedRouteend_location,
   setFixedRouteLocation,
   setFixedRouteInputSelectionType,
 } from "../../store/postForm/postFormSlice";
@@ -30,7 +30,7 @@ export default function LocationSearchFixedRoute({
 }: LocationSearchProps) {
   const user: IUser | null = useSelector((state: RootState) => state.auth.user);
 
-  const { inputSelectionType, startLocation, endLocation, departureTime } =
+  const { inputSelectionType, start_location, end_location, departure_time } =
     useSelector((state: RootState) => state.postForm.fixedRoutes);
 
   const dispatch = useDispatch();
@@ -42,13 +42,13 @@ export default function LocationSearchFixedRoute({
       dispatch(setAndFetchFixedRouteLocation());
       onQueryFullfiled?.();
     });
-  }, [startLocation, endLocation]);
+  }, [start_location, end_location]);
 
   const handlerSwap = () => {
-    const tmpEndLocation = endLocation;
-    const tmpStartLocation = startLocation;
-    dispatch(setFixedRouteStartLocation(tmpEndLocation));
-    dispatch(setFixedRouteEndLocation(tmpStartLocation));
+    const tmpend_location = end_location;
+    const tmpstart_location = start_location;
+    dispatch(setFixedRoutestart_location(tmpend_location));
+    dispatch(setFixedRouteend_location(tmpstart_location));
   };
 
   return (
@@ -57,17 +57,17 @@ export default function LocationSearchFixedRoute({
       onConfirm={onConfirm}
       isShareHide={isShareHide}
       inputSelectionType={inputSelectionType}
-      startLocation={startLocation}
-      endLocation={endLocation}
-      departureTime={departureTime}
+      start_location={start_location}
+      end_location={end_location}
+      departure_time={departure_time}
       onSwap={handlerSwap}
       onSelectLocation={(item) => dispatch(setFixedRouteLocation(item))}
-      onClearStartLocation={() => dispatch(setFixedRouteStartLocation())}
-      onClearEndLocation={() => dispatch(setFixedRouteEndLocation())}
-      onStartLocationFocus={() =>
+      onClearstart_location={() => dispatch(setFixedRoutestart_location())}
+      onClearend_location={() => dispatch(setFixedRouteend_location())}
+      onstart_locationFocus={() =>
         dispatch(setFixedRouteInputSelectionType("start-location"))
       }
-      onEndLocationFocus={() =>
+      onend_locationFocus={() =>
         dispatch(setFixedRouteInputSelectionType("end-location"))
       }
     />

@@ -39,11 +39,11 @@ export default function PostDetail() {
                     created_at,
                     ${Tables.FIXED_ROUTES} ( 
                       id, 
-                      startLocation, 
-                      endLocation, 
-                      departureTime, 
-                      totalSeats,
-                      availableSeats,
+                      start_location, 
+                      end_location, 
+                      departure_time, 
+                      total_seats,
+                      available_seats,
                       price,
                       created_at 
                     ),

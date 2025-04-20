@@ -47,19 +47,19 @@ const postFormSlice = createSlice({
     setFixedRoutes: (state, action: PayloadAction<IFixedRoute | undefined>) => {
       // state.fixedRoutes = [...(state.fixedRoutes || []), action.payload];
     },
-    setTripRequeststart_location: (
+    setTripRequestStartLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
       state.tripRequest.start_location = action.payload;
     },
-    setTripRequestend_location: (
+    setTripRequestEndLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
       state.tripRequest.end_location = action.payload;
     },
-    setTripRequestdeparture_time: (
+    setTripRequestDepartureTime: (
       state,
       action: PayloadAction<Date | undefined>
     ) => {
@@ -79,7 +79,7 @@ const postFormSlice = createSlice({
         routes: [],
       },
     }),
-    resetPostWithstart_location: (_, action: PayloadAction<InputLocation>) => ({
+    resetPostWithStartLocation: (_, action: PayloadAction<InputLocation>) => ({
       ...initialState,
       tripRequest: {
         inputSelectionType: "end-location",
@@ -110,19 +110,19 @@ const postFormSlice = createSlice({
 
     //Fixed Route
 
-    setFixedRoutestart_location: (
+    setFixedRouteStartLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
       state.fixedRoutes.start_location = action.payload;
     },
-    setFixedRouteend_location: (
+    setFixedRouteEndLocation: (
       state,
       action: PayloadAction<InputLocation | undefined>
     ) => {
       state.fixedRoutes.end_location = action.payload;
     },
-    setFixedRoutedeparture_time: (
+    setFixedRouteDepartureTime: (
       state,
       action: PayloadAction<Date | undefined>
     ) => {
@@ -196,21 +196,21 @@ const postFormSlice = createSlice({
 
 export const {
   setContent,
-  setTripRequeststart_location,
-  setTripRequestend_location,
+  setTripRequestStartLocation,
+  setTripRequestEndLocation,
   setFixedRoutes,
   resetPost,
-  setTripRequestdeparture_time,
+  setTripRequestDepartureTime,
   setTripRequestInputSelectionType,
   setTripRequestLocation,
-  setFixedRoutedeparture_time,
-  setFixedRouteend_location,
+  setFixedRouteDepartureTime,
+  setFixedRouteEndLocation,
   setFixedRouteInputSelectionType,
   setFixedRouteLocation,
   setFixedRoutePrice,
-  setFixedRoutestart_location,
+  setFixedRouteStartLocation,
   setFixedRouteTotalSeat,
-  resetPostWithstart_location,
+  resetPostWithStartLocation,
   addImage,
   removeImage,
 } = postFormSlice.actions;

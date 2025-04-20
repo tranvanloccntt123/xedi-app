@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import {
   resetPost,
-  setFixedRoutestart_location,
-  setFixedRouteend_location,
+  setFixedRouteStartLocation,
+  setFixedRouteEndLocation,
   setFixedRouteLocation,
   setFixedRouteInputSelectionType,
 } from "../../store/postForm/postFormSlice";
@@ -45,10 +45,10 @@ export default function LocationSearchFixedRoute({
   }, [start_location, end_location]);
 
   const handlerSwap = () => {
-    const tmpend_location = end_location;
-    const tmpstart_location = start_location;
-    dispatch(setFixedRoutestart_location(tmpend_location));
-    dispatch(setFixedRouteend_location(tmpstart_location));
+    const tmpEndLocation = end_location;
+    const tmpStartLocation = start_location;
+    dispatch(setFixedRouteStartLocation(tmpEndLocation));
+    dispatch(setFixedRouteEndLocation(tmpStartLocation));
   };
 
   return (
@@ -57,17 +57,17 @@ export default function LocationSearchFixedRoute({
       onConfirm={onConfirm}
       isShareHide={isShareHide}
       inputSelectionType={inputSelectionType}
-      start_location={start_location}
-      end_location={end_location}
+      startLocation={start_location}
+      endLocation={end_location}
       departure_time={departure_time}
       onSwap={handlerSwap}
       onSelectLocation={(item) => dispatch(setFixedRouteLocation(item))}
-      onClearstart_location={() => dispatch(setFixedRoutestart_location())}
-      onClearend_location={() => dispatch(setFixedRouteend_location())}
-      onstart_locationFocus={() =>
+      onClearStartLocation={() => dispatch(setFixedRouteStartLocation())}
+      onClearEndLocation={() => dispatch(setFixedRouteEndLocation())}
+      onStartLocationFocus={() =>
         dispatch(setFixedRouteInputSelectionType("start-location"))
       }
-      onend_locationFocus={() =>
+      onEndLocationFocus={() =>
         dispatch(setFixedRouteInputSelectionType("end-location"))
       }
     />

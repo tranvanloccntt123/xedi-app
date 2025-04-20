@@ -10,7 +10,7 @@ import { Center } from "@/src/components/ui/center";
 import { StyleSheet } from "react-native";
 import BottomSheetGesture from "@/src/components/BottomSheetGesture";
 import {
-  setFixedRoutedeparture_time,
+  setFixedRouteDepartureTime,
   setFixedRouteLocation,
   setFixedRoutePrice,
 } from "@/src/store/postForm/postFormSlice";
@@ -34,22 +34,20 @@ import EclipseMarkerIcon from "@/src/components/EclipseMarkerIcon";
 const EclipseMarker: React.FC<{ coordinate: { lat: number; lon: number } }> = ({
   coordinate,
 }) => {
-  const { start_location, end_location } = useSelector(
-    (state: RootState) => state.postForm.fixedRoutes
-  );
+  const { start_location: startLocation, end_location: endLocation } =
+    useSelector((state: RootState) => state.postForm.fixedRoutes);
   return (
-    (!start_location?.display_name || !end_location?.display_name) && (
+    (!startLocation?.display_name || !endLocation?.display_name) && (
       <EclipseMarkerIcon coordinate={coordinate} />
     )
   );
 };
 
 const PinMarker: React.FC<object> = () => {
-  const { start_location, end_location } = useSelector(
-    (state: RootState) => state.postForm.fixedRoutes
-  );
+  const { start_location: startLocation, end_location: endLocation } =
+    useSelector((state: RootState) => state.postForm.fixedRoutes);
   return (
-    (!start_location?.display_name || !end_location?.display_name) && (
+    (!startLocation?.display_name || !endLocation?.display_name) && (
       <PinMarkerIcon />
     )
   );
@@ -71,7 +69,7 @@ export default function CreateFixedRoute() {
     lat: lat,
     lon: lon,
   });
-  const [departure_time, setdeparture_time] = React.useState(
+  const [departureTime, setDepartureTime] = React.useState(
     fixedRouteTmp.departure_time || new Date()
   );
   const [error, setError] = React.useState({
@@ -80,7 +78,7 @@ export default function CreateFixedRoute() {
   });
   const dispatch = useDispatch();
   const bottomSheetRef = React.useRef(null);
-  const isFlexdeparture_time = false;
+  const isFlexDepartureTime = false;
   const handlerConfirm = async () => {
     try {
       const validateForm = formValidatePerField(fixedRouteValidator, {
@@ -169,17 +167,19 @@ export default function CreateFixedRoute() {
                 <Box>
                   <Text
                     className={`${
-                      isFlexdeparture_time ? "text-typography-300" : "text-black"
+                      isFlexDepartureTime
+                        ? "text-typography-300"
+                        : "text-black"
                     } font-bold mb-2`}
                   >
                     Khởi hành lúc
                   </Text>
                   <DateTimePicker
-                    isDisabled={isFlexdeparture_time}
-                    date={departure_time}
+                    isDisabled={isFlexDepartureTime}
+                    date={departureTime}
                     onChangeDate={(date) => {
-                      setdeparture_time(date);
-                      dispatch(setFixedRoutedeparture_time(date));
+                      setDepartureTime(date);
+                      dispatch(setFixedRouteDepartureTime(date));
                       // setErrors({ ...errors, departure_time: "" });
                     }}
                   />

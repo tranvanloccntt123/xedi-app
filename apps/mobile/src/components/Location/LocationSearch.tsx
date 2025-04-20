@@ -38,15 +38,15 @@ interface LocationSearchProps {
   onConfirm?: () => any;
   isShareHide?: boolean;
   inputSelectionType: SelectLocationType;
-  start_location: InputLocation;
-  end_location: InputLocation;
+  startLocation: InputLocation;
+  endLocation: InputLocation;
   departure_time: Date;
   onSwap?: () => any;
-  onClearstart_location?: () => any;
-  onClearend_location?: () => any;
+  onClearStartLocation?: () => any;
+  onClearEndLocation?: () => any;
   onSelectLocation?: (data: InputLocation) => any;
-  onstart_locationFocus?: () => any;
-  onend_locationFocus?: () => any;
+  onStartLocationFocus?: () => any;
+  onEndLocationFocus?: () => any;
 }
 
 const BORDER_RADIUS = 16;
@@ -56,55 +56,55 @@ export default function LocationSearch({
   onConfirm,
   isShareHide,
   inputSelectionType,
-  start_location,
-  end_location,
+  startLocation,
+  endLocation,
   onSelectLocation,
   onSwap,
-  onClearstart_location,
-  onClearend_location,
-  onstart_locationFocus,
-  onend_locationFocus,
+  onClearStartLocation,
+  onClearEndLocation,
+  onStartLocationFocus,
+  onEndLocationFocus,
 }: LocationSearchProps) {
   // Initialize query with default location if it exists
-  const [querystart_location, setQuerystart_location] = useState(
+  const [queryStartLocation, setQueryStartLocation] = useState(
     defaultLocation?.display_name || ""
   );
-  const [queryend_location, setQueryend_location] = useState(
+  const [queryEndLocation, setQueryEndLocation] = useState(
     defaultLocation?.display_name || ""
   );
-  const [resultstart_location, setResultstart_location] = useState<
+  const [resultStartLocation, setResultStartLocation] = useState<
     InputLocation[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const start_locationAnim = useSharedValue(0);
+  const startLocationAnim = useSharedValue(0);
 
-  const end_locationAnim = useSharedValue(0);
+  const endLocationAnim = useSharedValue(0);
 
-  const start_locationStyle = useAnimatedStyle(() => {
+  const startLocationStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
-        start_locationAnim.value,
+        startLocationAnim.value,
         [0, 1],
         ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
       ),
       borderColor: interpolateColor(
-        start_locationAnim.value,
+        startLocationAnim.value,
         [0, 1],
         ["rgba(255, 255, 255, 0)", AppColors.primary]
       ),
     };
   });
 
-  const end_locationStyle = useAnimatedStyle(() => {
+  const endLocationStyle = useAnimatedStyle(() => {
     return {
       backgroundColor: interpolateColor(
-        end_locationAnim.value,
+        endLocationAnim.value,
         [0, 1],
         ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
       ),
       borderColor: interpolateColor(
-        end_locationAnim.value,
+        endLocationAnim.value,
         [0, 1],
         ["rgba(255, 255, 255, 0)", AppColors.primary]
       ),
@@ -115,23 +115,23 @@ export default function LocationSearch({
 
   // const debounceSendEvent = useDebounce({ time: 100 });
 
-  const start_locationRef = React.useRef<TextInput>(null);
+  const startLocationRef = React.useRef<TextInput>(null);
 
-  const end_locationRef = React.useRef<TextInput>(null);
+  const endLocationRef = React.useRef<TextInput>(null);
 
   React.useEffect(() => {
     debounce(async () => {
       const query =
-        start_locationAnim.value === 1 ? querystart_location : queryend_location;
+        startLocationAnim.value === 1 ? queryStartLocation : queryEndLocation;
       if (
-        resultstart_location.find((location) => location.display_name === query)
+        resultStartLocation.find((location) => location.display_name === query)
       ) {
-        setResultstart_location([]);
+        setResultStartLocation([]);
         return;
       }
       if (
-        (querystart_location.length > 2 && start_locationAnim.value === 1) ||
-        (queryend_location.length > 2 && end_locationAnim.value === 1)
+        (queryStartLocation.length > 2 && startLocationAnim.value === 1) ||
+        (queryEndLocation.length > 2 && endLocationAnim.value === 1)
       ) {
         setIsLoading(true);
 
@@ -142,7 +142,7 @@ export default function LocationSearch({
             )}`
           );
           const data = await response.json();
-          setResultstart_location(
+          setResultStartLocation(
             data.features
               .map((v) => ({
                 display_name: [
@@ -166,24 +166,24 @@ export default function LocationSearch({
           setIsLoading(false);
         }
       } else {
-        setResultstart_location([]);
+        setResultStartLocation([]);
       }
     });
-  }, [querystart_location, queryend_location]);
+  }, [queryStartLocation, queryEndLocation]);
 
   useEffect(() => {
-    setQuerystart_location(start_location?.display_name || "");
-  }, [start_location]);
+    setQueryStartLocation(startLocation?.display_name || "");
+  }, [startLocation]);
 
   useEffect(() => {
-    setQueryend_location(end_location?.display_name || "");
-  }, [end_location]);
+    setQueryEndLocation(endLocation?.display_name || "");
+  }, [endLocation]);
 
   useEffect(() => {
     if (inputSelectionType === "end-location") {
-      end_locationRef.current.focus();
+      endLocationRef.current.focus();
     } else {
-      start_locationRef.current.focus();
+      startLocationRef.current.focus();
     }
   }, [inputSelectionType]);
 
@@ -200,29 +200,29 @@ export default function LocationSearch({
             className="bg-xedi-primary/[.08] flex-1"
             style={{ borderRadius: BORDER_RADIUS }}
           >
-            <Animated.View style={[styles.inputContainer, start_locationStyle]}>
+            <Animated.View style={[styles.inputContainer, startLocationStyle]}>
               <Input className="h-[55px] border-0 px-2">
                 <HiIcon size={24} color={AppColors.black} />
                 <InputField
-                  ref={start_locationRef as never}
+                  ref={startLocationRef as never}
                   placeholder="Điểm đón"
-                  value={querystart_location}
-                  onChangeText={setQuerystart_location}
+                  value={queryStartLocation}
+                  onChangeText={setQueryStartLocation}
                   onFocus={() => {
-                    start_locationAnim.value = withTiming(1, { duration: 50 });
-                    onstart_locationFocus?.();
+                    startLocationAnim.value = withTiming(1, { duration: 50 });
+                    onStartLocationFocus?.();
                   }}
                   style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
-                    (start_locationAnim.value = withTiming(0, { duration: 50 }))
+                    (startLocationAnim.value = withTiming(0, { duration: 50 }))
                   }
                 />
                 <Box className="w-[55px] items-end">
-                  {!!querystart_location && (
+                  {!!queryStartLocation && (
                     <Pressable
                       onPress={() => {
-                        setQuerystart_location("");
-                        onClearstart_location?.();
+                        setQueryStartLocation("");
+                        onClearStartLocation?.();
                       }}
                     >
                       <CloseIcon size={24} color={AppColors.black} />
@@ -231,29 +231,29 @@ export default function LocationSearch({
                 </Box>
               </Input>
             </Animated.View>
-            <Animated.View style={[styles.inputContainer, end_locationStyle]}>
+            <Animated.View style={[styles.inputContainer, endLocationStyle]}>
               <Input className="h-[55px] border-0 px-2">
                 <LocationIcon size={24} color={AppColors.warning} />
                 <InputField
-                  ref={end_locationRef as never}
+                  ref={endLocationRef as never}
                   placeholder="Điểm đến"
-                  value={queryend_location}
-                  onChangeText={setQueryend_location}
+                  value={queryEndLocation}
+                  onChangeText={setQueryEndLocation}
                   onFocus={() => {
-                    end_locationAnim.value = withTiming(1, { duration: 50 });
-                    onend_locationFocus?.();
+                    endLocationAnim.value = withTiming(1, { duration: 50 });
+                    onEndLocationFocus?.();
                   }}
                   style={wrapTextStyle({ fontWeight: "500" }, "2xs")}
                   onBlur={() =>
-                    (end_locationAnim.value = withTiming(0, { duration: 50 }))
+                    (endLocationAnim.value = withTiming(0, { duration: 50 }))
                   }
                 />
                 <Box className="w-[55px] items-end">
-                  {!!queryend_location && (
+                  {!!queryEndLocation && (
                     <Pressable
                       onPress={() => {
-                        setQueryend_location("");
-                        onClearend_location?.();
+                        setQueryEndLocation("");
+                        onClearEndLocation?.();
                       }}
                     >
                       <CloseIcon size={24} color="#000000" />
@@ -269,7 +269,7 @@ export default function LocationSearch({
             </Pressable>
           </Box>
         </HStack>
-        {!!start_location && !!end_location && (
+        {!!startLocation && !!endLocation && (
           <HStack space="md" className="w-full">
             <Box className="flex-1">
               <Button onPress={onConfirm} className="mt-4 h-[45px]">
@@ -292,7 +292,7 @@ export default function LocationSearch({
         )}
         {isLoading && <ActivityIndicator style={{ marginTop: 10 }} />}
         <VStack space="sm" className="mt-2">
-          {resultstart_location.map((item, index) => (
+          {resultStartLocation.map((item, index) => (
             <Pressable
               key={index}
               onPress={() => {

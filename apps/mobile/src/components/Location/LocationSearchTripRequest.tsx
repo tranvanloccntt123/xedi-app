@@ -6,8 +6,8 @@ import { RootState } from "../../store/store";
 import {
   setTripRequestInputSelectionType,
   setTripRequestLocation,
-  setTripRequeststart_location,
-  setTripRequestend_location,
+  setTripRequestStartLocation,
+  setTripRequestEndLocation,
   resetPost,
 } from "../../store/postForm/postFormSlice";
 import { setAndFetchRouteLocation } from "../../store/postForm/postFormThunks";
@@ -46,10 +46,10 @@ export default function LocationSearchTripRequest({
   }, [start_location, end_location]);
 
   const handlerSwap = () => {
-    const tmpend_location = end_location;
-    const tmpstart_location = start_location;
-    dispatch(setTripRequeststart_location(tmpend_location));
-    dispatch(setTripRequestend_location(tmpstart_location));
+    const tmpEndLocation = end_location;
+    const tmpStartLocation = start_location;
+    dispatch(setTripRequestStartLocation(tmpEndLocation));
+    dispatch(setTripRequestEndLocation(tmpStartLocation));
   };
 
   return (
@@ -75,17 +75,17 @@ export default function LocationSearchTripRequest({
       }
       isShareHide={isShareHide}
       inputSelectionType={inputSelectionType}
-      start_location={start_location}
-      end_location={end_location}
+      startLocation={start_location}
+      endLocation={end_location}
       departure_time={departure_time}
       onSwap={handlerSwap}
       onSelectLocation={(item) => dispatch(setTripRequestLocation(item))}
-      onClearstart_location={() => dispatch(setTripRequeststart_location())}
-      onClearend_location={() => dispatch(setTripRequestend_location())}
-      onstart_locationFocus={() =>
+      onClearStartLocation={() => dispatch(setTripRequestStartLocation())}
+      onClearEndLocation={() => dispatch(setTripRequestendLocation())}
+      onStartLocationFocus={() =>
         dispatch(setTripRequestInputSelectionType("start-location"))
       }
-      onend_locationFocus={() =>
+      onEndLocationFocus={() =>
         dispatch(setTripRequestInputSelectionType("end-location"))
       }
     />

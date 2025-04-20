@@ -19,7 +19,7 @@ import { RootState } from "@/src/store/store";
 import {
   setContent,
   resetPost,
-  setTripRequestdeparture_time,
+  setTripRequestDepartureTime,
   removeImage,
 } from "@/src/store/postForm/postFormSlice";
 import DateTime from "@/src/components/DateTime";
@@ -54,7 +54,7 @@ const CustomerExpand: React.FC<object> = () => {
         <DateTime
           date={departure_time}
           onChangeDate={(date) => {
-            dispatch(setTripRequestdeparture_time(date));
+            dispatch(setTripRequestDepartureTime(date));
           }}
           placeholder="Khởi hành lúc"
           variant={"link"}

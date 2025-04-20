@@ -26,19 +26,19 @@ export default function EditFixedRoute() {
   const dispatch = useDispatch()
   const route = useSelector((state: RootState) => state.fixedRoutes.routes.find((r) => r.id === id))
 
-  const [start_location, setstart_location] = useState(route?.start_location || "")
-  const [end_location, setend_location] = useState(route?.end_location || "")
-  const [departure_time, setdeparture_time] = useState(new Date(route?.departure_time || Date.now()))
-  const [total_seats, settotal_seats] = useState(route?.total_seats.toString() || "")
+  const [startLocation, setStartLocation] = useState(route?.start_location || "")
+  const [endLocation, setEndLocation] = useState(route?.end_location || "")
+  const [departureTime, setDepartureTime] = useState(new Date(route?.departure_time || Date.now()))
+  const [totalSeats, setTotalSeats] = useState(route?.total_seats.toString() || "")
   const [price, setPrice] = useState(route?.price.toString() || "")
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     if (route) {
-      setstart_location(route.start_location)
-      setend_location(route.end_location)
-      setdeparture_time(new Date(route.departure_time))
-      settotal_seats(route.total_seats.toString())
+      setStartLocation(route.start_location)
+      setEndLocation(route.end_location)
+      setDepartureTime(new Date(route.departure_time))
+      setTotalSeats(route.total_seats.toString())
       setPrice(route.price.toString())
     }
   }, [route])
@@ -53,10 +53,10 @@ export default function EditFixedRoute() {
 
   const handleUpdate = () => {
     const formData = {
-      start_location,
-      end_location,
-      departure_time: departure_time.toISOString(),
-      total_seats,
+      start_location: startLocation,
+      end_location: endLocation,
+      departure_time: departureTime.toISOString(),
+      total_seats: totalSeats,
       price,
     }
 
@@ -66,10 +66,10 @@ export default function EditFixedRoute() {
     if (formValidateSuccess(validateForm)) {
       const updatedRoute = {
         ...route,
-        start_location,
-        end_location,
-        departure_time: departure_time.toISOString(),
-        total_seats: Number.parseInt(total_seats, 10),
+        start_location: startLocation,
+        end_location: endLocation,
+        departure_time: departureTime.toISOString(),
+        total_seats: Number.parseInt(totalSeats, 10),
         price: unformatMoney(price),
       }
       dispatch(updateFixedRoute(updatedRoute))
@@ -78,7 +78,7 @@ export default function EditFixedRoute() {
   }
 
   const onChangedeparture_time = (date: Date) => {
-    setdeparture_time(date)
+    setDepartureTime(date)
     setErrors({ ...errors, departure_time: "" })
   }
 
@@ -92,9 +92,9 @@ export default function EditFixedRoute() {
               <FormControlLabel>Điểm đi</FormControlLabel>
               <Input>
                 <InputField
-                  value={start_location}
+                  value={startLocation}
                   onChangeText={(value) => {
-                    setstart_location(value)
+                    setStartLocation(value)
                     setErrors({ ...errors, start_location: "" })
                   }}
                 />
@@ -107,9 +107,9 @@ export default function EditFixedRoute() {
               <FormControlLabel>Điểm đến</FormControlLabel>
               <Input>
                 <InputField
-                  value={end_location}
+                  value={endLocation}
                   onChangeText={(value) => {
-                    setend_location(value)
+                    setEndLocation(value)
                     setErrors({ ...errors, end_location: "" })
                   }}
                 />
@@ -120,7 +120,7 @@ export default function EditFixedRoute() {
             </FormControl>
             <FormControl isInvalid={!!errors.departure_time}>
               <FormControlLabel>Thời gian khởi hành</FormControlLabel>
-              <DateTimePicker date={departure_time} onChangeDate={onChangedeparture_time} />
+              <DateTimePicker date={departureTime} onChangeDate={onChangedeparture_time} />
               <FormControlError>
                 <FormControlErrorText>{errors.departure_time}</FormControlErrorText>
               </FormControlError>
@@ -129,9 +129,9 @@ export default function EditFixedRoute() {
               <FormControlLabel>Tổng số ghế</FormControlLabel>
               <Input>
                 <InputField
-                  value={total_seats}
+                  value={totalSeats}
                   onChangeText={(value) => {
-                    settotal_seats(value)
+                    setTotalSeats(value)
                     setErrors({ ...errors, total_seats: "" })
                   }}
                   keyboardType="numeric"

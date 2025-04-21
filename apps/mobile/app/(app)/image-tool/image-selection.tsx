@@ -31,7 +31,6 @@ import { router } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addImage } from "@/src/store/postForm/postFormSlice";
 import { AvatarImageSize, CameraImageSize } from "@/src/constants";
-import * as ImageManipulator from "expo-image-manipulator";
 import ImagePreview, {
   ImagePreviewMethods,
 } from "@/src/components/ImagePreview";

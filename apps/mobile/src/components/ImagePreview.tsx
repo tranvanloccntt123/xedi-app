@@ -131,7 +131,7 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
     });
 
     return (
-      <View style={{ width, height }} ref={viewRef}>
+      <View style={{ width, height }} ref={viewRef} collapsable={false}>
         <GestureDetector gesture={multiGesture}>
           <Box style={{ width, height }}>
             <Box className="absolute top-0 left-0 right-0 bottom-0">

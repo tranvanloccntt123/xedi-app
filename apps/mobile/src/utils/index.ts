@@ -32,9 +32,7 @@ export function splitLocation(address: string) {
 }
 
 export const base64ToUint8Array = (base64: string) => {
-  console.log(base64);
   const binaryString = atob(base64);
-  console.log(binaryString);
   const len = binaryString.length;
   const bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) {

@@ -1,7 +1,7 @@
+import React from "react";
 import Header from "@/src/components/Header";
 import { Box } from "@/src/components/ui/box";
 import { router } from "expo-router";
-import React from "react";
 import { Platform } from "react-native";
 import NetworkLogger from "react-native-network-logger";
 import { SafeAreaView } from "react-native-safe-area-context";

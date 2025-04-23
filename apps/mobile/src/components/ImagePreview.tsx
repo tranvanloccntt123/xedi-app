@@ -120,8 +120,12 @@ const ImagePreview = React.forwardRef<ImagePreviewMethods, { image: Asset }>(
           };
         },
         async getBase64Image() {
-          const snapshot = await makeImageFromView(viewRef);
-          return snapshot.encodeToBase64();
+          try {
+            const snapshot = await makeImageFromView(viewRef);
+            return snapshot.encodeToBase64();
+          } catch (e) {
+            return "";
+          }
         },
       };
     });

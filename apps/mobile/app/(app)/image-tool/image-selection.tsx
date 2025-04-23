@@ -218,6 +218,7 @@ export default function ImageSelection() {
                   action="default"
                   onPress={async () => {
                     const base64 = await previewRef.current?.getBase64Image();
+                    console.log('BASE 64', base64);
                     if (markType === MarkImageType.AVATAR) {
                       try {
                         const name = `${generateUUID()}.jpg`;
